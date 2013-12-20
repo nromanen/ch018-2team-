@@ -49,7 +49,9 @@ public class BooksController {
         
         @RequestMapping(value = "/addBook", method = RequestMethod.POST)
 	public String addBook(@ModelAttribute() Book book, @RequestParam("genreId") Integer gid) {
+                            
 		          book.setGenre(gServ.getById(gid));
+                          System.out.println(book);
                           try{
                           bServ.save(book);
                           }catch(Exception e){

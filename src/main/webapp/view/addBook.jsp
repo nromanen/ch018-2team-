@@ -31,7 +31,7 @@
 
                 <select name="genreId" >
                     <c:forEach var="genre" items="${genres}">
-                        <option value="${genre.getId()}">${genre.getDescription()}}</option>
+                        <option value="${genre.getId()}">${genre.getDescription()}</option>
                     </c:forEach>
                 </select>
                 <input type="submit">
