@@ -3,11 +3,12 @@ package com.ch018.library.DAO;
 import java.util.List;
 
 
+
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
 import org.springframework.stereotype.Repository;
 @Repository
-public interface BookDAO {
+public interface BookDao {
 	void save(Book book);
         void delete(Book book);
         void update(Book book);

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.service;
 
 //import com.ch018.library.dao.PersonDao;
@@ -93,8 +89,6 @@ public class PersonServiceImpl implements PersonService {
     public List<Person> getSmsEnabled() {
         return pDao.getConfirmed();
     }
-    
-    
     
 }
 

@@ -13,20 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Repository
-
-public class BookDAOImpl implements BookDAO {
-
+public class BookDaoImpl implements BookDao {
 
 
-    @Autowired
-    SessionFactory factory;
-    
-    static Logger log = LogManager.getLogger(BookDAOImpl.class);
+	
+    static Logger log = LogManager.getLogger(BookDaoImpl.class);
 
         
+    @Autowired
+    SessionFactory factory;
+
     @Override
     public void save(Book book) {
+
             factory.getCurrentSession().save(book);
+
     }
 
     @Override

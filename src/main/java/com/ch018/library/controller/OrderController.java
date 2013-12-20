@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.controller;
 
 import com.ch018.library.entity.Book;
@@ -18,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+
+import com.ch018.library.entity.Orders;
+import com.ch018.library.service.OrdersService;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- *
- * @author Admin
- */
 @Controller
 public class OrderController {
     
@@ -45,9 +41,9 @@ public class OrderController {
         model.addAttribute("biulist", bis);
         return "bookorder";   
     }
-    
+    /*
     @RequestMapping(value = "/addOrder", method = RequestMethod.GET)
-        public String addOrder(@RequestParam("id") int id, Model model) throws Exception {
+        public String addOrder(@RequestParam("id") int id, Model model){
 
                 model.addAttribute("person", pService.getById(id));
                 model.addAttribute("book", bService.getAll());
@@ -56,13 +52,14 @@ public class OrderController {
         }
 
         @RequestMapping(value = "/addOrder", method = RequestMethod.POST)
-        public String addOrder(@RequestParam("personId") int personId, @RequestParam("bookId") int bookId, Model model) throws Exception {
+        public String addOrder(@RequestParam("personId") int personId, @RequestParam("bookId") int bookId, Model model){
                 Date date = new Date();
                 Orders orders = new Orders(pService.getById(personId), bService.getBookById(bookId), date);
                 oService.save(orders);
                 
                 
                 return "redirect:/addOrder";
-        }
+        }*/
     
+
 }

@@ -4,9 +4,8 @@
  */
 package com.ch018.library.DAO;
 
-
-import com.ch018.library.entity.Person;
 import com.ch018.library.util.HibernateUtil;
+import com.ch018.library.entity.Person;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.core.Logger;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+
 /**
  *
  * @author Edd Arazian
@@ -26,8 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class PersonDaoImpl implements PersonDao {
 
  
+
     @Autowired
     SessionFactory factory;
+
     
     @Override
     public void save(Person person) {
@@ -94,8 +96,7 @@ public class PersonDaoImpl implements PersonDao {
     @Override
     public List<Person> getByRole(String role) {
         
-            return factory.getCurrentSession().createCriteria(Person.class).add(Restrictions.eq("role", role)).
-                    list();
+            return factory.getCurrentSession().createCriteria(Person.class).add(Restrictions.eq("role", role)).list();
            
     }
 
@@ -114,6 +115,12 @@ public class PersonDaoImpl implements PersonDao {
                     list();
            
     }
+
+	@Override
+	public Person getPersonById(int id) {
+			return (Person) factory.getCurrentSession().load(Person.class, id);
+		
+	}
 
     
     

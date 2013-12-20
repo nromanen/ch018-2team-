@@ -1,6 +1,5 @@
 package com.ch018.library.controller;
 
-import com.ch018.library.DAO.BookDAO;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.service.BookService;
+
 import com.ch018.library.service.GenreService;
 import java.util.List;
 import org.springframework.ui.Model;
@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping(value = "/books")
 public class BooksController {
-	
 
     @Autowired
     BookService bServ;

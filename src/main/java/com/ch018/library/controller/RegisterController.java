@@ -4,7 +4,7 @@
  */
 package com.ch018.library.controller;
 
-import com.ch018.library.DAO.BookDAOImpl;
+import com.ch018.library.DAO.BookDaoImpl;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
 import org.apache.logging.log4j.LogManager;

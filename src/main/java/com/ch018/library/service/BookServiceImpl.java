@@ -4,18 +4,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.ch018.library.DAO.BookDAO;
+import com.ch018.library.DAO.BookDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BookServiceImpl implements BookService {
 
     @Autowired
-    BookDAO bookDAO;
+    BookDao bookDAO;
 
     @Override
     @Transactional
@@ -82,11 +82,4 @@ public class BookServiceImpl implements BookService {
     public List<Book> getBooksByGenre(Genre genre) {
         return bookDAO.getBooksByGenre(genre);
     }
-	
-        
-        
-        
-
-	
-
 }
