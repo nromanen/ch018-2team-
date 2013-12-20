@@ -10,11 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.hibernate.annotations.OnDelete;
 
 
 @Entity
@@ -90,25 +88,8 @@ public class BooksInUse implements Serializable {
             this.returnDate = returnDate;
         }
         
-        @Override
-        public boolean equals(Object other) {
-            if (other == null) return false;
-            if (other == this) return true;
-            if (!(other instanceof BooksInUse))return false;
-            BooksInUse otherBookInUse = (BooksInUse) other;
-            return person.getPid() == otherBookInUse.person.getPid() 
-                    && book.getbId() == otherBookInUse.book.getbId();
-        }
-        
-        @Override
-        public int hashCode() {
-            return person.hashCode() + book.hashCode() + returnDate.hashCode();
-        }
+
        
-        @Override 
-        public String toString() {
-            return person.getPid() + " " + book.getbId() + " " + returnDate;
-        }
 
 	
 }

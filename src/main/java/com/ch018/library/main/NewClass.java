@@ -4,25 +4,15 @@
  */
 package com.ch018.library.main;
 
-import com.ch018.library.DAO.BookDAO;
-import com.ch018.library.DAO.BookDAOImpl;
-import com.ch018.library.DAO.BooksInUseDao;
-import com.ch018.library.DAO.BooksInUseDaoImpl;
-import com.ch018.library.DAO.GenreDao;
-import com.ch018.library.DAO.GenreDaoImpl;
-
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.entity.Genre;
-import com.ch018.library.entity.Person;
-import com.ch018.library.util.HibernateUtil;
+import java.sql.SQLException;
 import java.util.Date;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import sun.applet.Main;
+
+import com.ch018.library.DAO.BookDAOImpl;
+import com.ch018.library.DAO.OrdersDAOImpl;
+import com.ch018.library.DAO.PersonDaoImpl;
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Orders;
+import com.ch018.library.entity.Person;
 
 
 /**
@@ -31,14 +21,28 @@ import sun.applet.Main;
  */
 public class NewClass {
     
-    
+    public static void main(String[] args) throws SQLException {
+    	
+    	BookDAOImpl bookDAO = new BookDAOImpl();
+    	PersonDaoImpl personDAO = new PersonDaoImpl();
+    	OrdersDAOImpl ordersDAO = new OrdersDAOImpl();
+    	
+    	Book book = new Book();
+    	Person person = new Person();
+    	Orders order = new Orders();
+    	Date date = new Date();
+    	
+        book.setTitle("Good Code");
+        bookDAO.addBook(book);
+        
+        person.setName("Reader");
+        personDAO.save(person);
+        
+        order.setBook(book);
+        order.setPerson(person);
+        order.setDate(date);
+        ordersDAO.addNewOrder(order);
+        
     }
-
-               
-        
-        
-        
-        
     
-    
-
+}

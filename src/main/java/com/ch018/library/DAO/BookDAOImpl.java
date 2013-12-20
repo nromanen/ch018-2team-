@@ -6,33 +6,32 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.springframework.stereotype.Repository;
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Genre;
-import com.ch018.library.util.HibernateUtil;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
-import sun.java2d.loops.DrawGlyphListAA;
 
-@Repository
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Person;
+import com.ch018.library.util.HibernateUtil;
+
+@Component
 public class BookDAOImpl implements BookDAO {
 
 
 	
-    static Logger log = LogManager.getLogger(BookDAOImpl.class);
+	static Logger log = LogManager.getLogger(BookDAOImpl.class);
 
-        
-
-    @Override
-    public void save(Book book) {
-        Session session = null;
-        try{
+	@Override
+	public void addBook(Book book) {
+		// TODO Auto-generated method stub
+		Session session = null;
+        try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.save(book);
+            System.out.println("saved");
             session.getTransaction().commit();
-        }catch(Exception e){
+        } catch(Exception e){
             log.error(e);
+            System.out.println(e);
         }finally{
             try{
                 session.close();
@@ -40,58 +39,23 @@ public class BookDAOImpl implements BookDAO {
                 log.error(e);
             }
         }
-    }
+	}
 
-    @Override
-    public void delete(Book book) {
-    
-        Session session = null;
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.delete(book);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-        
-    }
+	@Override
+	public void updateBook(int id, Book book) {
+		// TODO Auto-generated method stub
 
-    @Override
-    public void update(Book book) {
-        Session session = null;
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.update(book);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-    }
+	}
 
-    @Override
-    public List<Book> getAll() {
-        Session session = null;
-        List<Book> books = new ArrayList<>();
-        try{
+	@Override
+	public List<Book> getAllBooks() {
+		// TODO Auto-generated method stub
+		List<Book> books = new ArrayList<Book>();
+		Session session = null;
+        try {
             session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            books = session.createCriteria(Book.class).list();
-            session.getTransaction().commit();
-        }catch(Exception e){
+            books.addAll(session.createCriteria(Book.class).list());
+        } catch(Exception e){
             log.error(e);
         }finally{
             try{
@@ -100,156 +64,55 @@ public class BookDAOImpl implements BookDAO {
                 log.error(e);
             }
         }
-        return books;
-    }
+		return books;
+	}
 
-    @Override
-    public Book getBookById(int id) {
-        Session session = null;
-        Book book = null;
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            book = (Book) session.get(Book.class, id);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-        return book;
-    }
+	@Override
+	public Book getBooksById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public List<Book> getBooksByTitle(String title) {
-        Session session = null;
-        List<Book> books = new ArrayList<>();
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            books = session.createCriteria(Book.class).add(Restrictions.like("title", title)).list();
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-        return books;
-    }
+	@Override
+	public void deleteBook(Book book) {
+		// TODO Auto-generated method stub
 
-    @Override
-    public List<Book> getBooksByAuthors(String authors) {
-        Session session = null;
-        List<Book> books = new ArrayList<>();
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            books = session.createCriteria(Book.class).add(Restrictions.like("author", authors)).list();
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-        return books;
-    }
+	}
 
-    @Override
-    public List<Book> getBooksByYear(int year) {
-        Session session = null;
-        List<Book> books = new ArrayList<>();
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            books = session.createCriteria(Book.class).add(Restrictions.eq("year", year)).list();
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-        return books;
-    }
+	@Override
+	public List<Book> getBooksByTitle(String title) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public List<Book> getBooksByPublisher(String publisher) {
-        Session session = null;
-        List<Book> books = new ArrayList<>();
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            books = session.createCriteria(Book.class).add(Restrictions.eq("publisher", publisher)).list();
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-        return books;
-    }
+	@Override
+	public List<Book> getBooksByAuthors(String authors) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public List<Book> getBooksByPagesEq(int pages) {
-        Session session = null;
-        List<Book> books = new ArrayList<>();
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            books = session.createCriteria(Book.class).add(Restrictions.eq("pages", pages)).list();
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-        return books;
-    }
+	@Override
+	public List<Book> getBooksByYear(int year) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public List<Book> getBooksByGenre(Genre genre) {
-        Session session = null;
-        List<Book> books = new ArrayList<>();
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            books = session.createCriteria(Book.class).add(Restrictions.eq("genre", genre)).list();
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-        return books;
-    }
-        
-    
-	
+	@Override
+	public List<Book> getBooksByPerson(Person person) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getCount(Book book) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getCurrentCount(Book book) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

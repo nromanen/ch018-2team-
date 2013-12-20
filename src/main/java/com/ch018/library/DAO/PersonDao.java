@@ -8,7 +8,6 @@ import com.ch018.library.entity.Person;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
-
 /**
  *
  * @author Edd Arazian
@@ -25,8 +24,9 @@ public interface PersonDao {
     List<Person> getByName(String name);
     List<Person> getBySurname(String surname);
     Person getByCellPhone(String cellphone);
-    List<Person> getByRole(String role);
+    List<Person> getByRole(int role);
     List<Person> getConfirmed();
     List<Person> getSmsEnabled();
+    Person getPersonById(int id);
     
 }

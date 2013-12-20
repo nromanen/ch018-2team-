@@ -3,19 +3,16 @@ package com.ch018.library.entity;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Proxy;
 
 /**
  *
@@ -26,6 +23,7 @@ enum Roles{ROLE_ADMIN, ROLE_LIBRARIAN, ROLE_USER}
 
 @Entity
 @Table(name = "persons")
+@Proxy(lazy = false)
 public class Person implements Serializable {
     
     @Id
@@ -72,7 +70,7 @@ public class Person implements Serializable {
     private float generalRating;
     
     @OneToMany(targetEntity = BooksInUse.class, mappedBy = "person")
-    private Set<Book> booksInUse = new HashSet<>();
+    private Set<Book> booksInUse = new HashSet<Book>();
     
     
     public Person() {
@@ -219,11 +217,6 @@ public class Person implements Serializable {
         if (!(other instanceof Person))return false;
         Person otherPerson = (Person) other;
         return email.equals(otherPerson.getEmail());
-    }
-    
-    @Override 
-    public int hashCode() {
-        return this.email.hashCode();
     }
     
     @Override

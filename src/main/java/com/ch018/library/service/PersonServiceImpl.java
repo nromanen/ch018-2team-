@@ -1,86 +1,47 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.service;
 
-//import com.ch018.library.dao.PersonDao;
-import com.ch018.library.entity.Person;
+import java.sql.SQLException;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Edd Arazian
- */
+import com.ch018.library.DAO.PersonDao;
+import com.ch018.library.DAO.PersonDaoImpl;
+import com.ch018.library.entity.Person;
+
 @Service
-public class PersonServiceImpl {/*implements PersonService {
-    
-    @Autowired
-    PersonDao pDao;
+public class PersonServiceImpl implements PersonService {
+	
+	private PersonDao personDAO = new PersonDaoImpl();
 
-    @Override
-    public void save(Person person) {
-        pDao.save(person);
-    }
+	@Override
+	public void addPerson(Person person) throws SQLException {
+		// TODO Auto-generated method stub
+		personDAO.save(person);
+	}
 
-    @Override
-    public void delete(int id) {
-        pDao.delete(id);
-    }
+	@Override
+	public void updatePerson(Person person) throws SQLException {
+		// TODO Auto-generated method stub
+		personDAO.update(person);
+	}
 
-    @Override
-    public void update(Person person) {
-        pDao.update(person);
-    }
+	@Override
+	public void deletePerson(int id) throws SQLException {
+		// TODO Auto-generated method stub
+		personDAO.delete(id);
+	}
 
-    @Override
-    public List<Person> getAll() {
-        return pDao.getAll();
-    }
+	@Override
+	public List<Person> getAllPersons() throws SQLException {
+		// TODO Auto-generated method stub
+		return personDAO.getAll();
+	}
 
-    @Override
-    public Person getById(int id) {
-        return pDao.getById(id);
-    }
+	@Override
+	public Person getPersonById(int id) throws SQLException {
+		// TODO Auto-generated method stub
+		return personDAO.getById(id);
+	}
 
-    @Override
-    public Person getByEmail(String email) {
-        return pDao.getByEmail(email);
-    }
-
-    @Override
-    public List<Person> getByName(String name) {
-        return pDao.getByName(name);
-    }
-
-    @Override
-    public List<Person> getBySurname(String surname) {
-        return pDao.getBySurname(surname);
-    }
-
-    @Override
-    public Person getByCellPhone(String cellphone) {
-        return pDao.getByCellPhone(cellphone);
-    }
-
-    @Override
-    public List<Person> getByRole(String role) {
-        return pDao.getByRole(role);
-    }
-
-    @Override
-    public List<Person> getConfirmed() {
-        return pDao.getConfirmed();
-    }
-
-    @Override
-    public List<Person> getSmsEnabled() {
-        return pDao.getConfirmed();
-    }
-    
-    
-    
-}*/
 }

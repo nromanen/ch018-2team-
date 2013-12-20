@@ -5,20 +5,19 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 
 @Service
 public interface BookService {
-	void save(Book book);
-        void delete(Book book);
-        void update(Book book);
-	List<Book> getAll();
-	Book getBookById(int id);
+	void addBook(Book book);
+	void updateBook(int id, Book book);
+	List<Book> getAllBooks();
+	Book getBooksById(int id);
+	void deleteBook(Book book);
 	List<Book> getBooksByTitle(String title);
 	List<Book> getBooksByAuthors(String authors);
 	List<Book> getBooksByYear(int year);
-        List<Book> getBooksByPublisher(String publisher);
-        List<Book> getBooksByPagesEq(int pages);
-        List<Book> getBooksByGenre(Genre genre);
+	List<Book> getBooksByPerson(Person person);
+	int getCount(Book book);
+	int getCurrentCount(Book book);
 }

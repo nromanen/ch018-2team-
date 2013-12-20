@@ -4,16 +4,14 @@
  */
 package com.ch018.library.DAO;
 
-
-import com.ch018.library.entity.Person;
 import com.ch018.library.util.HibernateUtil;
+import com.ch018.library.entity.Person;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.core.Logger;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 /**
  *
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Repository;
 public class PersonDaoImpl implements PersonDao {
 
  
-    
     
     @Override
     public void save(Person person) {
@@ -48,7 +45,7 @@ public class PersonDaoImpl implements PersonDao {
     public List<Person> getAll() {
         
         Session session = null;
-        List<Person> persons = new ArrayList<>();
+        List<Person> persons = new ArrayList<Person>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -219,7 +216,7 @@ public class PersonDaoImpl implements PersonDao {
     }
 
     @Override
-    public List<Person> getByRole(String role) {
+    public List<Person> getByRole(int role) {
         Session session = null;
         List<Person> persons = null;
         try {
@@ -283,6 +280,23 @@ public class PersonDaoImpl implements PersonDao {
         }
         return persons;
     }
+
+	@Override
+	public Person getPersonById(int id) {
+		// TODO Auto-generated method stub
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Person person = null;
+		try {
+			person = (Person) session.load(Person.class, id);
+		} catch (Exception e) {
+			// TODO: handle exceptions
+		}finally{
+			if (session != null && session.isOpen()){ 
+                session.close();
+			}
+		}
+        return person;
+	}
 
     
     

@@ -1,6 +1,5 @@
 package com.ch018.library.controller;
 
-import com.ch018.library.DAO.BookDAO;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.service.BookService;
-import java.util.List;
+
 /**
  * 
  * @author Yurik Mikhaletskiy
@@ -23,15 +22,16 @@ import java.util.List;
 @Controller
 public class BooksController {
 	
+	@Autowired
+	BookService bookService;
+	
 
-    @Autowired
-    BookDAO bDao;
 	
 	@RequestMapping(value = "/books")
 	public ModelAndView booksList() {
 		
-		List<Book> books = bDao.getAll();
 		
-		return new ModelAndView("books", "books", books);
+		
+		return new ModelAndView("books", "books", bookService.getAllBooks());
 	}
 }

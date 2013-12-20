@@ -2,32 +2,21 @@ package com.ch018.library.entity;
 
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.stereotype.Component;
+import org.hibernate.annotations.Proxy;
 
 
 @Entity
 @Table(name="books")
+@Proxy(lazy = false)
 public class Book implements Serializable{
 	
         @Id
@@ -35,21 +24,17 @@ public class Book implements Serializable{
 	@Column(name = "bid", unique = true, nullable = false)
 	private int bId;
         
-        @Column(name="title", unique = true)
+        @Column(name="title")
 	private String title;
         
         @Column(name="authors")
 	private String authors;
         
-        @ManyToOne()
-        @JoinColumn(name = "gid")
-        private Genre genre;
-        
         @Column(name="year_public")
 	private int year;
         
-        @Column(name="publisher")
-	private String publisher;
+        @Column(name="publication")
+	private String publication;
         
         @Column(name="pages")
 	private int pages;
@@ -57,14 +42,7 @@ public class Book implements Serializable{
         @Column(name="description")
 	private String description;
         
-        @Column(name = "bookcase")
-        //@OneToOne(targetEntity = BookCase.class)
-        //@JoinColumn(name = "caseid", referencedColumnName = "id")
-        private int bookcase;
-        
         @Column(name="shelf")
-        //@OneToOne(targetEntity = BookCase.class)
-        //@JoinColumn(name = "shelfid", referencedColumnName = "shelfid")
 	private int shelf;
         
         @Column(name="term")
@@ -105,8 +83,8 @@ public class Book implements Serializable{
 	}
 	
 	
-	public String getPublisher() {
-		return publisher;
+	public String getPublication() {
+		return publication;
 	}
 	
 	
@@ -142,8 +120,8 @@ public class Book implements Serializable{
 		this.year = year;
 	}
 	
-	public void setPublisher(String publisher) {
-		this.publisher = publisher;
+	public void setPublication(String publication) {
+		this.publication = publication;
 	}
 	
 	public void setPages(int pages) {
@@ -170,24 +148,7 @@ public class Book implements Serializable{
         this.personsUse = personsUse;
     }
 
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
-    }
-
-    public int getBookcase() {
-        return bookcase;
-    }
-
-    public void setBookcase(int bookcase) {
-        this.bookcase = bookcase;
-    }
-
-       
-    
+        
         
 
     
@@ -203,7 +164,7 @@ public class Book implements Serializable{
 		}
 		if (this.title.equals(((Book) obj).getTitle())
 				&& this.getAuthors().equals(((Book) obj).getAuthors())
-				&& this.getPublisher().equals(((Book) obj).getPublisher())) {
+				&& this.getPublication().equals(((Book) obj).getPublication())) {
 			return true;
 		}
 		return false;
