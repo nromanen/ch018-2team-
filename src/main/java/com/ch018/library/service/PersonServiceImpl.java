@@ -29,56 +29,67 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
         pDao.delete(id);
     }
 
     @Override
+    @Transactional
     public void update(Person person) {
         pDao.update(person);
     }
 
     @Override
+    @Transactional
     public List<Person> getAll() {
         return pDao.getAll();
     }
 
     @Override
+    @Transactional
     public Person getById(int id) {
         return pDao.getById(id);
     }
 
     @Override
+    @Transactional
     public Person getByEmail(String email) {
         return pDao.getByEmail(email);
     }
 
     @Override
+    @Transactional
     public List<Person> getByName(String name) {
         return pDao.getByName(name);
     }
 
     @Override
+    @Transactional
     public List<Person> getBySurname(String surname) {
         return pDao.getBySurname(surname);
     }
 
     @Override
+    @Transactional
     public Person getByCellPhone(String cellphone) {
         return pDao.getByCellPhone(cellphone);
     }
 
     @Override
+    @Transactional
     public List<Person> getByRole(String role) {
         return pDao.getByRole(role);
     }
 
     @Override
+    @Transactional
     public List<Person> getConfirmed() {
         return pDao.getConfirmed();
     }
 
     @Override
+    @Transactional
     public List<Person> getSmsEnabled() {
         return pDao.getConfirmed();
     }

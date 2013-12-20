@@ -13,9 +13,9 @@
     </head>
     <body>
        
-            <c:import url="/view/homeheader.jsp" />
-            <c:import url="/view/homemain.jsp" />
-            <c:import url="/view/footer.jsp" />
+            <c:import url="/WEB-INF/views/homeheader.jsp" />
+            <c:import url="/WEB-INF/views/homemain.jsp" />
+            <c:import url="/WEB-INF/views/footer.jsp" />
 
     </body>
 </html>

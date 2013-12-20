@@ -10,6 +10,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -21,148 +23,54 @@ public class GenreDaoImpl implements GenreDao {
 
     static Logger log = LogManager.getLogger(GenreDaoImpl.class);
     
+    @Autowired
+    SessionFactory factory;
+    
     @Override
     public void save(Genre genre) {
-        Session session = null;
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(genre);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
+             factory.getCurrentSession().save(genre);
+            
+        
     }
 
     @Override
     public void update(Genre genre) {
-        Session session = null;
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.update(genre);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
+            factory.getCurrentSession().update(genre);
+            
     }
 
     @Override
     public void update(int id, Genre genre) {
-        Session session = null;
-        Genre tmp = null;
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            tmp = (Genre) session.get(Genre.class, id);
+        Genre tmp;
+            tmp = (Genre) factory.getCurrentSession().get(Genre.class, id);
             tmp.setDescription(genre.getDescription());
-            session.update(tmp);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
+            factory.getCurrentSession().update(tmp);
     }
 
     @Override
     public void delete(Genre genre) {
-        Session session = null;
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.delete(genre);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }  
+            factory.getCurrentSession().delete(genre);
     }
 
     @Override
     public List<Genre> getAll() {
-        Session session = null;
-        List<Genre> genres = null;
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            genres = session.createCriteria(Genre.class).list();
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-        return genres;
+            return factory.getCurrentSession().createCriteria(Genre.class).list();
+            
     }
 
     @Override
     public Genre getById(int id) {
-        Session session = null;
-        Genre genre = null;
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            genre = (Genre) session.get(Genre.class, id);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-        return genre;
+        
+            return (Genre) factory.getCurrentSession().get(Genre.class, id);
+            
     }
 
     @Override
     public Genre getByDescription(String description) {
     
-        Session session = null;
-        Genre genre = null;
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            genre = (Genre) session.createQuery("from Genre where description = :d").
+            return (Genre) factory.getCurrentSession().createQuery("from Genre where description = :d").
                     setString("d", description).list().get(0);
-            session.getTransaction().commit();
-        }catch(Exception e){
-            log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                log.error(e);
-            }
-        }
-        return genre;
+            
     }
     
     

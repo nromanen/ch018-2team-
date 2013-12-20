@@ -5,7 +5,7 @@
         
     </div>
     <div id="login_head">
-            <c:import url="/view/login.jsp" />
+            <c:import url="/WEB-INF/views/login.jsp" />
     </div>
    
 </div>

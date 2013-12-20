@@ -10,7 +10,7 @@
   <script type="text/javascript" src="/resources/js/genScript.js" /></script>
 </head>
 <body>
-<c:import url="/view/header.jsp" />
+<c:import url="/WEB-INF/views/header.jsp" />
 <div id="main_body">
     <div id="left">
         
@@ -28,6 +28,6 @@
         </form>
     </div>
 </div>
-<c:import url="/view/footer.jsp" />
+<c:import url="/WEB-INF/views/footer.jsp" />
 </body>
 </html>

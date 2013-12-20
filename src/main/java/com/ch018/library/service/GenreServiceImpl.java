@@ -9,6 +9,7 @@ import com.ch018.library.entity.Genre;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -21,36 +22,43 @@ public class GenreServiceImpl implements GenreService {
     GenreDao gDao;
 
     @Override
+    @Transactional
     public void save(Genre genre) {
         gDao.save(genre);
     }
 
     @Override
+    @Transactional
     public void update(Genre genre) {
         gDao.update(genre);
     }
 
     @Override
+    @Transactional
     public void update(int id, Genre genre) {
         gDao.update(id, genre);
     }
 
     @Override
+    @Transactional
     public void delete(Genre genre) {
         gDao.delete(genre);
     }
 
     @Override
+    @Transactional
     public List<Genre> getAll() {
         return gDao.getAll();
     }
 
     @Override
+    @Transactional
     public Genre getById(int id) {
         return gDao.getById(id);
     }
 
     @Override
+    @Transactional
     public Genre getByDescription(String description) {
         return gDao.getByDescription(description);
     }

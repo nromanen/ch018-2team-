@@ -16,6 +16,7 @@ import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import java.util.List;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +49,7 @@ public class BooksController {
 	}
         
         @RequestMapping(value = "/addBook", method = RequestMethod.POST)
-	public String addBook(@ModelAttribute() Book book, @RequestParam("genreId") Integer gid) {
+	public String addBook(@ModelAttribute Book book, BindingResult result, @RequestParam("genreId") Integer gid) {
                             
 		          book.setGenre(gServ.getById(gid));
                           System.out.println(book);
@@ -69,7 +70,7 @@ public class BooksController {
         }
         
         @RequestMapping(value = "/edit", method = RequestMethod.POST)
-        public String editBook(@RequestParam("genreId") Integer gid, @ModelAttribute() Book book){
+        public String editBook(@ModelAttribute Book book, BindingResult result, @RequestParam("genreId") Integer gid){
                 book.setGenre(gServ.getById(gid));
                 System.out.println(book);
                 bServ.update(book);
