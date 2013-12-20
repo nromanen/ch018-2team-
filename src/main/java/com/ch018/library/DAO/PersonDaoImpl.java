@@ -10,8 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.core.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  *
@@ -21,24 +26,15 @@ import org.springframework.stereotype.Component;
 public class PersonDaoImpl implements PersonDao {
 
  
+
+    @Autowired
+    SessionFactory factory;
+
     
     @Override
+    @Transactional
     public void save(Person person) {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(person);
-            session.getTransaction().commit();
-        } catch(Exception e){
-            System.out.println(e);//log.error(e);
-        }finally{
-            try{
-                session.close();
-            }catch(Exception e){
-                //log.error(e);
-            }
-        }
+        factory.openSession().save(person);
     }
 
     @Override

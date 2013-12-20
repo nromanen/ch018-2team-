@@ -1,7 +1,44 @@
 package com.ch018.library.service;
 
-import java.sql.SQLException;
+//import com.ch018.library.dao.PersonDao;
+import com.ch018.library.DAO.PersonDao;
+import com.ch018.library.entity.Person;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ *
+ * @author Edd Arazian
+ */
+@Service
+public class PersonServiceImpl implements PersonService {
+    
+    @Autowired
+    PersonDao pDao;
+
+    @Override
+    @Transactional
+    public void save(Person person) {
+        pDao.save(person);
+    }
+
+    @Override
+    public void delete(int id) {
+        pDao.delete(id);
+    }
+
+    @Override
+    public void update(Person person) {
+        pDao.update(person);
+    }
+
+    @Override
+    public List<Person> getAll() {
+        return pDao.getAll();
+    }
+>>>>>>> master
 
 import org.springframework.stereotype.Service;
 
@@ -44,4 +81,15 @@ public class PersonServiceImpl implements PersonService {
 		return personDAO.getById(id);
 	}
 
+<<<<<<< HEAD
+=======
+    @Override
+    public List<Person> getSmsEnabled() {
+        return pDao.getConfirmed();
+    }
+    
+    
+    
+>>>>>>> master
 }
+

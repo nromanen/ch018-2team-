@@ -92,6 +92,7 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             booksInUse = session.createCriteria(BooksInUse.class).list();
+            System.out.println("!!!!+==============+++++++++++++++++++++++++ " + booksInUse);
             session.getTransaction().commit();
         }catch(Exception e){
             log.error(e);

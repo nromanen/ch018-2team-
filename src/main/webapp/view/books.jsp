@@ -9,8 +9,29 @@
 <title>Books</title>
 </head>
 <body>
-    <c:forEach var="book" items="${books}">
-        <p>${book.getTitle()}
-    </c:forEach>
+    <div id="book_table">
+        <table>
+            <tr>
+                <td>Title</td>
+                <td>Author</td>
+                <td>Year</td>
+                <td>Publisher</td>
+                <td>Pages</td>>
+                <td>Genre</td>
+                <td>Edit</td>
+            </tr>
+            <c:forEach var="book" items="${books}">
+                <tr>
+                    <td>${book.getTitle()}</td>
+                    <td>${book.getAuthors()}</td>
+                    <td>${book.getYear()}</td>
+                    <td>${book.getPublisher()}</td>
+                    <td>${book.getPages()}</td>
+                    <td>${book.getGenre().getDescription()}</td>
+                    <td><a href="<c:url value="/books/edit?id=${book.getbId()}" />">edit</a></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </div>
 </body>
 </html>

@@ -36,10 +36,10 @@ public class Person implements Serializable {
     @Column(name = "surname")
     private String surname;
     
-    @Column(name = "email")
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
     
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
     
     @Column(name = "prole")
@@ -81,6 +81,15 @@ public class Person implements Serializable {
         this.email = email;
     }
 
+    public Person(String name, String surname, String email, String password, String cellphone) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.cellphone = cellphone;
+    }
+
+    
     public int getPid() {
         return pid;
     }

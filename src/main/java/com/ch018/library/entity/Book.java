@@ -2,7 +2,6 @@ package com.ch018.library.entity;
 
 import java.io.Serializable;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +11,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 
 
 @Entity
@@ -24,7 +28,8 @@ public class Book implements Serializable{
 	@Column(name = "bid", unique = true, nullable = false)
 	private int bId;
         
-        @Column(name="title")
+
+        @Column(name="title", unique = true, nullable = false)
 	private String title;
         
         @Column(name="authors")
@@ -47,6 +52,15 @@ public class Book implements Serializable{
         
         @Column(name="term")
 	private int term;
+        
+        @Column(name = "img")
+        private String img;
+        
+        @Column(name = "cur_quantity")
+        private int currentQuantity;
+        
+        @Column(name = "gen_quantity")
+        private int generalQuantity;
         
         @OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
 	private Set<Person> personsUse;
@@ -129,7 +143,7 @@ public class Book implements Serializable{
 	}
 	
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = description.substring(0, 254);
 	}
 	
 	public void setShelf(int shelf) {
@@ -148,7 +162,46 @@ public class Book implements Serializable{
         this.personsUse = personsUse;
     }
 
-        
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public int getBookcase() {
+        return bookcase;
+    }
+
+    public void setBookcase(int bookcase) {
+        this.bookcase = bookcase;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+     public int getCurrentQuantity() {
+        return currentQuantity;
+    }
+
+    public void setCurrentQuantity(int currentQuantity) {
+        this.currentQuantity = currentQuantity;
+    }
+
+    public int getGeneralQuantity() {
+        return generalQuantity;
+    }
+
+    public void setGeneralQuantity(int generalQuantity) {
+        this.generalQuantity = generalQuantity;
+    }
+
         
 
     

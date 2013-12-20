@@ -13,10 +13,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
+import org.hibernate.annotations.OnDelete;
+
 
 
 @Entity
-@Table(name="BooksInUse")
+@Table(name="BooksInUse",
+        uniqueConstraints = { @UniqueConstraint( columnNames = { "pid", "bid" } ) })
 public class BooksInUse implements Serializable {
 
         @Id
@@ -40,6 +44,8 @@ public class BooksInUse implements Serializable {
         @Temporal(value = TemporalType.DATE)
         @Column(name = "return_date")
         private Date returnDate;
+        
+       
 
         
 
@@ -87,6 +93,9 @@ public class BooksInUse implements Serializable {
         public void setReturnDate(Date returnDate) {
             this.returnDate = returnDate;
         }
+
+   
+        
         
 
        

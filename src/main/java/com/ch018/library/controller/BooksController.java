@@ -13,6 +13,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ch018.library.entity.Book;
 import com.ch018.library.service.BookService;
 
+import com.ch018.library.service.GenreService;
+import java.util.List;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 /**
  * 
  * @author Yurik Mikhaletskiy
@@ -20,18 +26,51 @@ import com.ch018.library.service.BookService;
  */
 
 @Controller
+@RequestMapping(value = "/books")
 public class BooksController {
-	
-	@Autowired
-	BookService bookService;
-	
 
+    @Autowired
+    BookService bServ;
+    @Autowired
+    GenreService gServ;
+    
+        @RequestMapping(value = "/")
+        public String bookList(Model model){
+            model.addAttribute("books", bServ.getAll());
+            return "books";
+        }
 	
-	@RequestMapping(value = "/books")
-	public ModelAndView booksList() {
-		
-		
-		
-		return new ModelAndView("books", "books", bookService.getAllBooks());
+	@RequestMapping(value = "/addBook", method = RequestMethod.GET)
+	public String addBook(Model model) {
+		          model.addAttribute("genres", gServ.getAll());
+                          return "addBook";
 	}
+        
+        @RequestMapping(value = "/addBook", method = RequestMethod.POST)
+	public String addBook(@ModelAttribute() Book book, @RequestParam("genreId") Integer gid) {
+		          book.setGenre(gServ.getById(gid));
+                          try{
+                          bServ.save(book);
+                          }catch(Exception e){
+                              System.out.println(e);
+                          }
+                          return "redirect:/books/addBook";
+	}
+        
+        @RequestMapping(value = "/edit", method = RequestMethod.GET)
+        public String editBook(@RequestParam("id") Integer id, Model model){
+                Book book = bServ.getBookById(id);
+                model.addAttribute("book", book);
+                model.addAttribute("genres", gServ.getAll());
+                return "editBook";
+        }
+        
+        @RequestMapping(value = "/edit", method = RequestMethod.POST)
+        public String editBook(@RequestParam("genreId") Integer gid, @ModelAttribute() Book book){
+                book.setGenre(gServ.getById(gid));
+                System.out.println(book);
+                bServ.update(book);
+                return "redirect:/books/";
+                
+        }
 }
