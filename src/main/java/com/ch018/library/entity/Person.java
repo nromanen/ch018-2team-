@@ -1,5 +1,6 @@
 package com.ch018.library.entity;
 
+import com.sun.xml.internal.ws.api.ha.HaInfo;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -73,6 +74,9 @@ public class Person implements Serializable {
     
     @OneToMany(targetEntity = BooksInUse.class, mappedBy = "person")
     private Set<Book> booksInUse = new HashSet<>();
+    
+    @OneToMany(targetEntity = Orders.class, mappedBy = "person")
+    private Set<Book> orders = new HashSet<>();
     
     
     public Person() {
@@ -212,6 +216,14 @@ public class Person implements Serializable {
 
     public void setBooksInUse(Set<Book> booksInUse) {
         this.booksInUse = booksInUse;
+    }
+
+    public Set<Book> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Book> orders) {
+        this.orders = orders;
     }
     
     

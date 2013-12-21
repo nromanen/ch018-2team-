@@ -69,6 +69,9 @@ public class Book implements Serializable{
         
         @OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
 	private Set<Person> personsUse;
+        
+        @OneToMany(targetEntity = Orders.class, mappedBy = "book")
+        private Set<Person> personsOrders;
 	
 	public Book() {
 		
@@ -167,6 +170,16 @@ public class Book implements Serializable{
         this.personsUse = personsUse;
     }
 
+    public Set<Person> getPersonsOrders() {
+        return personsOrders;
+    }
+
+    public void setPersonsOrders(Set<Person> personsOrders) {
+        this.personsOrders = personsOrders;
+    }
+
+    
+    
     public Genre getGenre() {
         return genre;
     }

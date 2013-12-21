@@ -53,7 +53,7 @@ public class Orders implements Serializable {
         }
         
         @ManyToOne
-        @JoinColumn(name = "bookId")
+        @JoinColumn(name = "bid", referencedColumnName = "bid")
         public Book getBook() {
                 return book;
         }
@@ -63,7 +63,7 @@ public class Orders implements Serializable {
         }
         
         @ManyToOne
-        @JoinColumn(name = "personId")
+        @JoinColumn(name = "pid", referencedColumnName = "pid")
         public Person getPerson() {
                 return person;
         }

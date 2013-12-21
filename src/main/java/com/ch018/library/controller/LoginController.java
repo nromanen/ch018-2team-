@@ -9,6 +9,8 @@ import com.ch018.library.service.BookService;
 import com.ch018.library.service.PersonService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,21 @@ public class LoginController {
     @Autowired
     BookService bService;
     
+    
+    @RequestMapping(value = "/")
+    public String loginProcess(HttpServletRequest req, Authentication auth){
+        if(auth != null && auth.isAuthenticated()){
+            if(req.isUserInRole("ROLE_USER"))
+                return "redirect:/books/";
+            else if(req.isUserInRole("ROLE_LIBRARIAN"))
+                return "redirect:/librarian";
+        }
+        return "redirect:/login";
+            
+        
+    }
+    
+    
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String home(Model model){
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -35,18 +52,18 @@ public class LoginController {
     }
     
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(Model model){
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-        return "index";
+    public String index(HttpServletRequest req, Authentication auth){
+        if(auth != null && auth.isAuthenticated()){
+            if(req.isUserInRole("ROLE_USER"))
+                return "redirect:/books/";
+            else if(req.isUserInRole("ROLE_LIBRARIAN"))
+                return "redirect:/librarian";
+        }
+        return "redirect:/login";
     }
     
     
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public String loginProcess(HttpServletRequest request, Model model){
-            return "index";
-        
-        
-    }
+    
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginProcess(){
