@@ -9,6 +9,7 @@ import com.ch018.library.service.BookService;
 import com.ch018.library.service.PersonService;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,18 +28,22 @@ public class LoginController {
     @Autowired
     BookService bService;
     
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String home(Model model){
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
+        return "home";
+    }
+    
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index(Model model){
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
+        return "index";
+    }
+    
+    
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public String loginProcess(HttpServletRequest request, Model model){
-        
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        Person person = pService.getByEmail(email);
-        if(person != null && person.getPassword().equals(password)){
-            model.addAttribute("books", bService.getAll());
-            model.addAttribute("person", person);
-            return "home";
-        }else
-            return "unsuccessful";
+            return "index";
         
         
     }

@@ -15,6 +15,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import java.util.List;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,6 +39,7 @@ public class BooksController {
     
         @RequestMapping(value = "/")
         public String bookList(Model model){
+            System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
             model.addAttribute("books", bServ.getAll());
             return "books";
         }
