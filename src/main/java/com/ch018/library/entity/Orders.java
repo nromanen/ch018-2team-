@@ -12,19 +12,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Proxy;
 
 @Entity
-@Table(name = "orders")
-@Proxy(lazy = false)
+@Table(name = "orders", 
+        uniqueConstraints = { @UniqueConstraint( columnNames = { "pid", "bid" } ) })
 public class Orders implements Serializable {
-        
-        /*
-         * Unfinished connection with Book.class and Person.class
-         * Finished but not tested OrdersDAOimpl.class
-         * Finished OrdersServiceImpl.class
-        */
         
         private int id;
         private Person person;

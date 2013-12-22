@@ -48,13 +48,13 @@ public class OrdersDaoImpl implements OrdersDao{
 
         @Override //Unchecked
         public List<Orders> getOrderByPerson(Person person){
-                return factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("personId", person)).list();
+                return factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("person", person)).list();
                 
         }
 
         @Override
         public List<Orders> getOrderByBook(Book book){
-                return factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("bookId", book)).list();
+                return factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("book", book)).list();
         }
 
         @Override

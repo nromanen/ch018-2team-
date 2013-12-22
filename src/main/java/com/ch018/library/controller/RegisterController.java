@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,22 +33,23 @@ public class RegisterController {
     
     
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView addUser(@ModelAttribute Person person){
+    @Secured({"ROLE_ANONYMOUS"})
+    public String addUser(@ModelAttribute Person person){
         try{
-            System.out.println("+++++++++============");
+            person.setProle("ROLE_USER");
+            person.setConfirm(true); //temporary
             pService.save(person);
         }catch(Exception e){
-            System.out.println(e + "+++++++++============");
             log.error(e);
-            return new ModelAndView("unsuccessful");
+            return "unsuccessful";
         }
         
-        return new ModelAndView("home", "person", pService.getByEmail(person.getEmail()));
+        return "redirect:/index";
     }
     
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String addUser(){
-        return "index";
+        return "redirect:/index";
     }
     
 }
