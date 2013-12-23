@@ -71,6 +71,14 @@ public class BookInUseServiceImpl implements BookInUseService {
     public List<BooksInUse> getBooksInUseByReturnDate(Date returnDate) {
         return useDao.getBooksInUseByReturnDate(returnDate);
     }
+
+    @Override
+    @Transactional
+    public Date getBookWithLastDate(Book book) throws Exception{
+        Date date = useDao.getBookWithLastDate(book);
+        return date;
+    }
+    
     
     
     

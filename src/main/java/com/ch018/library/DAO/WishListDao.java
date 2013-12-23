@@ -21,8 +21,8 @@ public interface WishListDao {
         public void delete(WishList wish);
         public void update(WishList wish);
         public List<WishList> getAll();
-        public List<WishList> getOrderByPerson(Person person);
-        public List<WishList> getOrderByBook(Book book);
-        public WishList getOrderByID(int id);
+        public List<WishList> getWishByPerson(Person person);
+        public List<WishList> getWishByBook(Book book);
+        public WishList getWishByID(int id);
     
 }

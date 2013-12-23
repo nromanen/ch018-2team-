@@ -1,0 +1,53 @@
+root { 
+    display: block;
+}
+
+#order_main{
+    float: left;
+    min-height: 600px;
+    width: 70%;
+    background-color: gainsboro;
+}
+#order_left{
+    float: left;
+    width: 60%;
+    min-height: 400px;
+    
+}
+
+#order_img{
+    float: left;
+    width: 60%
+}
+#order_img img{
+    width: 90%;
+    height: auto;
+}
+#order_title_wrapper{
+    float: left;
+    width: 39%;
+}
+#order_title{
+    margin-top: 20px;
+}
+#order_title span{
+    display: block;
+    margin: 5px 0;
+}
+#order_description{
+    margin-top: 50px;
+}
+#order_right{
+    float: left;
+    width: 39%;
+    
+    height: 400px;
+}
+#order_order{
+    margin: 15% 30%;
+    min-height: 150px;
+}
+#order_wish{
+    margin: 10% 30%;
+    min-height: 150px;
+}

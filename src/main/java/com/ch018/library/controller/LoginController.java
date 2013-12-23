@@ -54,7 +54,7 @@ public class LoginController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(HttpServletRequest req, Authentication auth){
         if(auth != null && auth.isAuthenticated()){
-            if(req.isUserInRole("ROLE_USER"))
+            if(req.isUserInRole("ROLE_USER") || req.isUserInRole("ROLE_ADMIN"))
                 return "redirect:/books/";
             else if(req.isUserInRole("ROLE_LIBRARIAN"))
                 return "redirect:/librarian";

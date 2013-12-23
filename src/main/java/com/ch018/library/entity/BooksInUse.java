@@ -1,6 +1,7 @@
 package com.ch018.library.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -37,11 +38,11 @@ public class BooksInUse implements Serializable {
         @JoinColumn(name = "bid", referencedColumnName = "bid")
         private Book book;
 
-        @Temporal(value = TemporalType.DATE)
+        @Temporal(value = TemporalType.TIMESTAMP)
         @Column(name = "issue_date")
         private Date issueDate;
         
-        @Temporal(value = TemporalType.DATE)
+        @Temporal(value = TemporalType.TIMESTAMP)
         @Column(name = "return_date")
         private Date returnDate;
         

@@ -36,7 +36,10 @@ public class RegisterController {
     @Secured({"ROLE_ANONYMOUS"})
     public String addUser(@ModelAttribute Person person){
         try{
-            person.setProle("ROLE_USER");
+            if(person.getName().equals("admin"))
+                person.setProle("ROLE_ADMIN");
+            else
+                person.setProle("ROLE_USER");
             person.setConfirm(true); //temporary
             pService.save(person);
         }catch(Exception e){

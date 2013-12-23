@@ -37,7 +37,7 @@ public class BooksController {
     @Autowired
     GenreService gServ;
     
-        @RequestMapping(value = "/")
+        @RequestMapping(value = "")
         public String bookList(Model model){
             System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
             model.addAttribute("books", bServ.getAll());
@@ -46,6 +46,7 @@ public class BooksController {
 	
 	@RequestMapping(value = "/addBook", method = RequestMethod.GET)
 	public String addBook(Model model) {
+                            System.out.println("TEST");
 		          model.addAttribute("genres", gServ.getAll());
                           return "addBook";
 	}

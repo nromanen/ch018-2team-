@@ -26,5 +26,6 @@ public interface BooksInUseDao {
     List<BooksInUse> getBooksInUseByBook(Book book);
     List<BooksInUse> getBooksInUseByIssueDate(Date issue);
     List<BooksInUse> getBooksInUseByReturnDate(Date issue);
+    Date getBookWithLastDate(Book book) throws Exception;
     
 }

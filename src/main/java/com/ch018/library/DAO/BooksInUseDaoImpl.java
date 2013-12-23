@@ -81,6 +81,15 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
             return  factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("returnDate", returnDate)).list();
             
     }
+
+    @Override
+    public Date getBookWithLastDate(Book book) throws Exception {
+       
+        return (Date) factory.getCurrentSession().createSQLQuery("select max(return_date) from booksinuse where bid = :id")
+                .setString("id", String.valueOf(book.getbId())).list().get(0);
+ 
+     
+    }
     
     
     

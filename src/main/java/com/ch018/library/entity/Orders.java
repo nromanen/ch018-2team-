@@ -68,7 +68,7 @@ public class Orders implements Serializable {
         }
         
         @Column(name = "order_date")
-        @Temporal(TemporalType.DATE)
+        @Temporal(TemporalType.TIMESTAMP)
         public Date getOrderDate() {
             return orderDate;
         }

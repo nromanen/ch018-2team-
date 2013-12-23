@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ch018.library.DAO.BookDAO;
 import com.ch018.library.entity.Book;
+import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 
@@ -44,6 +45,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book getBookById(int id) {
+        System.out.println("+++++++++++++====================+++++++++++++++++");
         return bookDAO.getBookById(id);
     }
 
@@ -82,8 +84,11 @@ public class BookServiceImpl implements BookService {
     public List<Book> getBooksByGenre(Genre genre) {
         return bookDAO.getBooksByGenre(genre);
     }
+
+    
 	
         
+    
         
         
 
