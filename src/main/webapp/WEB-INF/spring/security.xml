@@ -8,11 +8,13 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	<http use-expressions="true">
                 
 		<intercept-url pattern="/" access="permitAll()" />
-                <intercept-url pattern="/books*" access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" />
-                <intercept-url pattern="/books" access="hasRole('ROLE_ANONYMOUS')" />
+           
+                <intercept-url pattern="/books/*" access="hasRole('ROLE_USER')" />
+                
 		
                 <intercept-url pattern="/account" access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" />
               
+                
 		<form-login login-page="/login" default-target-url="/"
 			authentication-failure-url="/login?fail=true" />
 		<logout logout-success-url="/index" />

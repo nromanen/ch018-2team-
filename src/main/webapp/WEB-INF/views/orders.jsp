@@ -26,14 +26,14 @@
                         <tr>
                             <td>book</td>
                             <td>order date</td>
-                            <td>edit<input type="text" id="datetimepicker"></td>
+                            <td>edit</td>
                             <td>delete</td>
                         </tr>
                         <c:forEach var="order" items="${orders}">
                             <tr>
                                 <td>${order.getBook().getTitle()}</td>
                                 <td>${order.getOrderDate()}</td>
-                                <td><input type="text" class="datetimepicker"><button class="order_edit" value="edit"></button></td>
+                                <td><input type="text" class="datetimepicker"><button class="order_edit">Edit</button></td>
                                 <td><a href="<c:url value="/orders/delete?bid=entry.key.getbId()" />">delete</a>
                             </tr>
                         </c:forEach>

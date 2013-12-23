@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.access.annotation.Secured;
 /**
  * 
  * @author Yurik Mikhaletskiy
@@ -45,6 +46,7 @@ public class BooksController {
         }
 	
 	@RequestMapping(value = "/addBook", method = RequestMethod.GET)
+        @Secured({"ROLE_USER"})
 	public String addBook(Model model) {
                             System.out.println("TEST");
 		          model.addAttribute("genres", gServ.getAll());
