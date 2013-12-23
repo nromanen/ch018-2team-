@@ -37,7 +37,7 @@ public class BooksController {
     @Autowired
     GenreService gServ;
     
-        @RequestMapping(value = "")
+        @RequestMapping()
         public String bookList(Model model){
             System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
             model.addAttribute("books", bServ.getAll());

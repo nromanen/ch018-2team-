@@ -51,3 +51,11 @@ root {
     margin: 10% 30%;
     min-height: 150px;
 }
+#orders_main{
+    float: left;
+    width: 70%;
+}
+#orders_table_wrapper{
+    width:80%;
+    margin: 20px 25%;
+}

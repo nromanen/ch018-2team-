@@ -5,10 +5,11 @@ $(document).ready(
         var mindate = $('#mindate').val().split(" ");
         alert(mindate[0]);
     $('#datetimepicker').datetimepicker({
-        
-        formatDate: 'Y/m/d H:m:s',
-        minDate: mindate[0]
+        format: 'Y/m/d H',
+        minDate: mindate[0],
+        minTime: mindate[1]
     });
+    
 });
 function sendR(){
   
@@ -29,7 +30,7 @@ function sendR(){
                   + '&date=' 
                   + final.getTime(),
          success: function() {
-                      location.href = "/ch018-2team-/books";
+                      location.href = "/books";
                   },
          async:   false
     });       

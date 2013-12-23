@@ -14,7 +14,9 @@ import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -69,6 +71,14 @@ public class OrderController {
                 return "redirect:/books";
         }
     
+    @RequestMapping(value = "/my", method = RequestMethod.GET)
+    public String myOrders(Model model){
+        model.addAttribute("orders", oService.getOrderByPerson(pService.getByEmail(SecurityContextHolder.getContext()
+                .getAuthentication().getName())));
+        return "orders";
+        
+    }
+
     
     private String createMinTime(Book book){
         System.out.println("======+++++++++++++++++++ IN CREATRE");
