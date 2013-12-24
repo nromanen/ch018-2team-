@@ -14,6 +14,7 @@ import com.ch018.library.DAO.GenreDaoImpl;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.util.HibernateUtil;
 import java.util.Date;
@@ -34,12 +35,19 @@ public class NewClass {
     
     
         public static void main(String[] args){
-            
+            try{
             Session sess = HibernateUtil.getSessionFactory().openSession();
             sess.beginTransaction();
-            //List l = sess.createSQLQuery("select max(return_date) from booksinuse where bid = :id").setString("id", "6").list();
-            System.out.println((Date) sess.createSQLQuery("select max(return_date) from booksinuse where bid = :id")
-                .setString("id", String.valueOf(6)).list().get(0));
+            int oid = (int) sess.createSQLQuery("select id from orders where pid = :pid and bid = :bid").
+                    setInteger("pid", 2).setInteger("bid", 4).list().get(0);
+            System.out.println(oid);
+            Orders o = (Orders) sess.get(Orders.class, oid);
+            o.setOrderDate(new Date());
+                System.out.println(o);
+                sess.update(o);
+            }catch(Exception e){
+                System.out.println(e);
+            }
             
         }
     

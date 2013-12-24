@@ -25,16 +25,19 @@
                     <table>
                         <tr>
                             <td>book</td>
-                            <td>order date</td>
                             <td>edit</td>
                             <td>delete</td>
                         </tr>
-                        <c:forEach var="order" items="${orders}">
+                        <c:forEach var="entry" items="${map}">
                             <tr>
-                                <td>${order.getBook().getTitle()}</td>
-                                <td>${order.getOrderDate()}</td>
-                                <td><input type="text" class="datetimepicker"><button class="order_edit">Edit</button></td>
-                                <td><a href="<c:url value="/orders/delete?bid=entry.key.getbId()" />">delete</a>
+                                <td>${entry.key.getBook().getTitle()}</td>
+                                <td>
+                                    <input type="text" class="datetimepicker" value="${entry.key.getOrderDate()}">
+                                    <input type="hidden" value="${entry.value}">
+                                    <input type="hidden" value="${entry.key.getBook().getbId()}">
+                                    <button class="edit">edit</button>
+                                </td>
+                                <td><a href="<c:url value="/books/order/delete?id=${entry.key.getId()}" />">delete</a>
                             </tr>
                         </c:forEach>
                     </table>

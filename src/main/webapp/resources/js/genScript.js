@@ -3,7 +3,7 @@
 $(document).ready(
       function() {
         var mindate = $('#mindate').val().split(" ");
-        alert(mindate[0]);
+        
     $('#datetimepicker').datetimepicker({
         format: 'Y/m/d H',
         minDate: mindate[0],
@@ -30,7 +30,7 @@ function sendR(){
                   + '&date=' 
                   + finalD.getTime(),
          success: function() {
-                      location.href = "/library/books";
+                      location.href = "books";
                   },
          async:   false
     });       

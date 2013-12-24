@@ -12,11 +12,12 @@ public interface OrdersDao {
 
         public void save(Orders order);
         public void delete(Orders order);
-        public void update(Orders order);
+        public void update(int id, Orders order);
         public List<Orders> getAll();
         public List<Orders> getOrderByPerson(Person person);
         public List<Orders> getOrderByBook(Book book);
         public List<Orders> getOrderByDate(Date date);
+        public Orders getOrderIdByPersonIdBookId(int pId, int bId);
         public Orders getOrderByID(int id);
         
 }

@@ -13,12 +13,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import org.springframework.context.annotation.Lazy;
 
-import org.hibernate.annotations.Proxy;
 
 @Entity
 @Table(name = "orders", 
         uniqueConstraints = { @UniqueConstraint( columnNames = { "pid", "bid" } ) })
+@Lazy(value = false)
 public class Orders implements Serializable {
         
         private int id;
@@ -75,6 +76,11 @@ public class Orders implements Serializable {
 
         public void setOrderDate(Date orderDate) {
             this.orderDate = orderDate;
+        }
+        
+        @Override
+        public String toString() {
+           return person.getPid() + " " + book.getbId() + " " + orderDate;
         }
         
 }

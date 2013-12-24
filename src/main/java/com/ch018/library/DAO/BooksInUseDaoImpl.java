@@ -83,13 +83,15 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
     }
 
     @Override
-    public Date getBookWithLastDate(Book book) throws Exception {
+    public Date getBookWithLastDate(Book book){
        
         return (Date) factory.getCurrentSession().createSQLQuery("select min(return_date) from booksinuse where bid = :id")
                 .setString("id", String.valueOf(book.getbId())).list().get(0);
  
      
     }
+    
+    
     
     
     

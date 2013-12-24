@@ -12,11 +12,15 @@ import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -41,22 +45,21 @@ public class OrderController {
     OrdersService oService;
     @Autowired
     BookInUseService useService;
+    @Autowired
+    SessionFactory fact;
     
     @RequestMapping(method = RequestMethod.GET)
     public String order(@RequestParam("bookid") Integer bId, Model model){
         useService.save(new BooksInUse());
-        System.out.println("======+++++++++++++++++++ BEFORE CREATE" + bId);
         Book book = bService.getBookById(bId);
-        System.out.println("======+++++++++++++++++++ BEFORE CREATE");
         String minDate = createMinTime(book);
-        System.out.println("======+++++++++++++++++++ AFTER CREATE");
         model.addAttribute("book", book);
         model.addAttribute("minDate", minDate);
         return "bookorder";   
     }
     
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-        public String addOrder(@RequestParam("bookid") int bId, @RequestParam("date") long date, Model model) throws Exception {
+        public String addOrder(@RequestParam("bookid") int bId, @RequestParam("date") long date, Model model) {
                 
                 Book book = bService.getBookById(bId);
                 Person person = pService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -71,17 +74,58 @@ public class OrderController {
                 return "redirect:/books";
         }
     
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+        public String edit(@RequestParam("bookid") int bId, @RequestParam("date") long date){
+            Person person = pService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+            //Orders order = oService.getOrderIdByPersonIdBookId(person.getPid(), bId);
+            Orders order = new Orders(person, bService.getBookById(bId), new Date(date));
+            Orders tmp = oService.getOrderIdByPersonIdBookId(person.getPid(), bId);
+            try{
+            oService.update(tmp.getId() , order);
+            
+            
+            }catch(Exception e){
+                System.out.println(e);
+            }
+           
+            return "books";
+    }
+    
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public String delete(@RequestParam("id") int id){
+        Orders order = oService.getOrderByID(id);
+        try{
+        oService.delete(order);
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return "redirect:/books/order";
+    }
+    
     @RequestMapping(value = "/my", method = RequestMethod.GET)
     public String myOrders(Model model){
-        model.addAttribute("orders", oService.getOrderByPerson(pService.getByEmail(SecurityContextHolder.getContext()
-                .getAuthentication().getName())));
+        List<Orders> orders = oService.getOrderByPerson(pService.getByEmail(SecurityContextHolder.getContext()
+                .getAuthentication().getName()));
+        
+        Map<Orders, Date> map = new HashMap<>();
+        for(Orders order : orders) {
+            Date minDate;
+            try{
+                minDate = useService.getBookWithLastDate(order.getBook());
+                System.out.println("MINDATE " + minDate);
+                map.put(order, minDate);
+            }catch(Exception e){
+                System.out.println(e);
+                map.put(order, new Date());
+            }
+        }
+        model.addAttribute("map", map);
         return "orders";
         
     }
 
     
     private String createMinTime(Book book){
-        System.out.println("======+++++++++++++++++++ IN CREATRE");
         Long mindate;
         try {
             mindate = useService.getBookWithLastDate(book).getTime();

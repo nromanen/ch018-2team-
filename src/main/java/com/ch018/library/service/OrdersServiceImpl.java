@@ -36,9 +36,9 @@ public class OrdersServiceImpl implements OrdersService{
 
         @Override
         @Transactional
-        public void update(Orders order){
+        public void update(int id, Orders order){
                 // TODO Auto-generated method stub
-                ordersDao.update(order);
+                ordersDao.update(id, order);
         }
 
         @Override
@@ -75,5 +75,13 @@ public class OrdersServiceImpl implements OrdersService{
                 // TODO Auto-generated method stub
                 return ordersDao.getOrderByID(id);
         }
+
+        @Override
+        @Transactional
+        public Orders getOrderIdByPersonIdBookId(int pId, int bId) {
+                return ordersDao.getOrderIdByPersonIdBookId(pId, bId);
+        }
+        
+        
 
 }
