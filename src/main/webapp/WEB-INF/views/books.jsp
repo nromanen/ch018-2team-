@@ -1,37 +1,23 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" isELIgnored="false"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Books</title>
-</head>
-<body>
-    <div id="book_table">
-        <table>
-            <tr>
-                <td>Title</td>
-                <td>Author</td>
-                <td>Year</td>
-                <td>Publisher</td>
-                <td>Pages</td>>
-                <td>Genre</td>
-                <td>Edit</td>
-            </tr>
-            <c:forEach var="book" items="${books}">
-                <tr>
-                    <td>${book.getTitle()}</td>
-                    <td>${book.getAuthors()}</td>
-                    <td>${book.getYear()}</td>
-                    <td>${book.getPublisher()}</td>
-                    <td>${book.getPages()}</td>
-                    <td>${book.getGenre().getDescription()}</td>
-                    <td><a href="<c:url value="/books/edit?id=${book.getbId()}" />">edit</a></td>
-                </tr>
-            </c:forEach>
-        </table>
-    </div>
-</body>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Home Page</title>
+        <c:url value="/resources/css/books.css" var="booksCSS" />  
+        <link rel="stylesheet" type="text/css" media="screen" href="${booksCSS}" />  
+        <c:url value="/resources/css/jquery.js" var="jquery" /> 
+        <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/genScript.js" />"></script>
+    </head>
+    <body>
+       
+            <c:import url="/WEB-INF/views/booksheader.jsp" />
+            <c:import url="/WEB-INF/views/booksmainleft.jsp" />
+            <c:import url="/WEB-INF/views/booksmain.jsp" />
+            <c:import url="/WEB-INF/views/booksmainright.jsp" />
+            <c:import url="/WEB-INF/views/footer.jsp" />
+
+    </body>
 </html>

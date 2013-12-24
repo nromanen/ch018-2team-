@@ -1,5 +1,6 @@
 package com.ch018.library.entity;
 
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,6 +43,9 @@ public class Person implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
     
+    @Column(name = "salt")
+    private String salt;
+    
     @Column(name = "prole")
     private String prole;
     
@@ -71,6 +75,12 @@ public class Person implements Serializable {
     
     @OneToMany(targetEntity = BooksInUse.class, mappedBy = "person")
     private Set<Book> booksInUse = new HashSet<Book>();
+    
+    @OneToMany(targetEntity = Orders.class, mappedBy = "person")
+    private Set<Book> orders = new HashSet<>();
+    
+    @OneToMany(targetEntity = WishList.class, mappedBy = "person")
+    private Set<Book> wishes = new HashSet<>();
     
     
     public Person() {
@@ -129,6 +139,16 @@ public class Person implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+    
+    
 
     public String getCellphone() {
         return cellphone;
@@ -211,12 +231,23 @@ public class Person implements Serializable {
     public void setBooksInUse(Set<Book> booksInUse) {
         this.booksInUse = booksInUse;
     }
-    
-    
-    
 
-   
+    public Set<Book> getOrders() {
+        return orders;
+    }
 
+    public void setOrders(Set<Book> orders) {
+        this.orders = orders;
+    }
+
+    public Set<Book> getWishes() {
+        return wishes;
+    }
+
+    public void setWishes(Set<Book> wishes) {
+        this.wishes = wishes;
+    }
+    
     
     
     @Override

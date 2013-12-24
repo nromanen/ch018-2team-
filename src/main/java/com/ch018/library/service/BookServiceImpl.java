@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ch018.library.DAO.BookDao;
 import com.ch018.library.entity.Book;
+import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book getBookById(int id) {
+        System.out.println("+++++++++++++====================+++++++++++++++++");
         return bookDAO.getBookById(id);
     }
 
@@ -82,4 +84,6 @@ public class BookServiceImpl implements BookService {
     public List<Book> getBooksByGenre(Genre genre) {
         return bookDAO.getBooksByGenre(genre);
     }
+
 }
+

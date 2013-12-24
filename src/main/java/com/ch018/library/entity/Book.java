@@ -69,6 +69,12 @@ public class Book implements Serializable{
         
         @OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
 	private Set<Person> personsUse;
+        
+        @OneToMany(targetEntity = Orders.class, mappedBy = "book")
+        private Set<Person> personsOrders;
+        
+        @OneToMany(targetEntity = WishList.class, mappedBy = "book")
+        private Set<Person> personsWishes;
 	
 	public Book() {
 		
@@ -167,6 +173,16 @@ public class Book implements Serializable{
         this.personsUse = personsUse;
     }
 
+    public Set<Person> getPersonsOrders() {
+        return personsOrders;
+    }
+
+    public void setPersonsOrders(Set<Person> personsOrders) {
+        this.personsOrders = personsOrders;
+    }
+
+    
+    
     public Genre getGenre() {
         return genre;
     }
@@ -206,14 +222,15 @@ public class Book implements Serializable{
     public void setGeneralQuantity(int generalQuantity) {
         this.generalQuantity = generalQuantity;
     }
-        
-    
-        
 
-    
-        
-        
-	
+    public Set<Person> getPersonsWishes() {
+        return personsWishes;
+    }
+
+    public void setPersonsWishes(Set<Person> personsWishes) {
+        this.personsWishes = personsWishes;
+    }
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;

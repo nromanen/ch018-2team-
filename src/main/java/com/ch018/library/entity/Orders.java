@@ -14,20 +14,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
+import org.springframework.context.annotation.Lazy;
+
 
 
 import org.hibernate.annotations.Proxy;
 
+
 @Entity
-@Table(name = "orders")
-@Proxy(lazy = false)
+@Table(name = "orders", 
+        uniqueConstraints = { @UniqueConstraint( columnNames = { "pid", "bid" } ) })
+@Lazy(value = false)
 public class Orders implements Serializable {
-        
-        /*
-         * Unfinished connection with Book.class and Person.class
-         * Finished but not tested OrdersDAOimpl.class
-         * Finished OrdersServiceImpl.class
-        */
         
         private int id;
         private Person person;
@@ -56,7 +55,7 @@ public class Orders implements Serializable {
         }
         
         @ManyToOne
-        @JoinColumn(name = "bookId")
+        @JoinColumn(name = "bid", referencedColumnName = "bid")
         public Book getBook() {
                 return book;
         }
@@ -66,7 +65,7 @@ public class Orders implements Serializable {
         }
         
         @ManyToOne
-        @JoinColumn(name = "personId")
+        @JoinColumn(name = "pid", referencedColumnName = "pid")
         public Person getPerson() {
                 return person;
         }
@@ -76,13 +75,18 @@ public class Orders implements Serializable {
         }
         
         @Column(name = "order_date")
-        @Temporal(TemporalType.DATE)
+        @Temporal(TemporalType.TIMESTAMP)
         public Date getOrderDate() {
             return orderDate;
         }
 
         public void setOrderDate(Date orderDate) {
             this.orderDate = orderDate;
+        }
+
+        @Override
+        public String toString() {
+           return person.getPid() + " " + book.getbId() + " " + orderDate;
         }
         
 }

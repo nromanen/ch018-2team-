@@ -11,13 +11,14 @@ import com.ch018.library.entity.Person;
 
 public interface OrdersService {
 
-        public void save(Orders order);
-        public void delete(Orders order);
-        public void update(Orders order);
-        public List<Orders> getAll();
-        public List<Orders> getOrderByPerson(Person person);
-        public List<Orders> getOrderByBook(Book book);
-        public List<Orders> getOrderByDate(Date date);
-        public Orders getOrderByID(int id); 
 
+         void save(Orders order);
+         void delete(Orders order);
+         void update(int id, Orders order);
+         List<Orders> getAll();
+         List<Orders> getOrderByPerson(Person person);
+         List<Orders> getOrderByBook(Book book);
+         List<Orders> getOrderByDate(Date date);
+         Orders getOrderByID(int id); 
+         Orders getOrderIdByPersonIdBookId(int pId, int bId);
 }

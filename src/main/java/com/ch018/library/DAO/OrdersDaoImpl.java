@@ -36,8 +36,10 @@ public class OrdersDaoImpl implements OrdersDao{
                 factory.getCurrentSession().delete(order);}
 
         @Override
-        public void update(Orders order){
-                factory.getCurrentSession().update(order);
+        public void update(int id, Orders order){
+                Orders o = getOrderByID(id);
+                o.setOrderDate(order.getOrderDate());
+               factory.getCurrentSession().flush();
         }
 
         @Override
@@ -46,15 +48,15 @@ public class OrdersDaoImpl implements OrdersDao{
                 
         }
 
-        @Override //Unchecked
+        @Override 
         public List<Orders> getOrderByPerson(Person person){
-                return factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("personId", person)).list();
+                return factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("person", person)).list();
                 
         }
 
         @Override
         public List<Orders> getOrderByBook(Book book){
-                return factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("bookId", book)).list();
+                return factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("book", book)).list();
         }
 
         @Override
@@ -67,6 +69,14 @@ public class OrdersDaoImpl implements OrdersDao{
                 return (Orders) factory.getCurrentSession().load(Orders.class, id);
                
         }
+
+        @Override
+        public Orders getOrderIdByPersonIdBookId(int pId, int bId) {
+            int oid =  (int) factory.getCurrentSession().createSQLQuery("select id from orders where pid = :pid and bid = :bid").
+                    setInteger("pid", pId).setInteger("bid", bId).list().get(0);
+            return (Orders) factory.getCurrentSession().load(Orders.class, oid);
+        }
+        
 
         
 }
