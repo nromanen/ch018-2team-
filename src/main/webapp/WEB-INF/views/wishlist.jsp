@@ -27,16 +27,18 @@
                             <td>book</td>
                             <td>free from</td>
                             <td>estimated date</td>
+                            <td>delete</td>
                         </tr>
                         <c:forEach var="entry" items="${map}">
                             <tr>
-                                <td>${entry.key.getBook().getTitle()}</td>
+                                <td>${entry.key.getTitle()}</td>
                                 <td>${entry.value}</td>
                                 <td>
-                                    <input type="text" class="datetimepicker" value="${entry.value}">
-                                    <button class="confirm">edit</button>
+                                    <input type="text" class="datetimepicker" value="${entry.value}" />
+                                    <input type="hidden" value="${entry.key.getbId()}" />
+                                    <button class="confirm">confirm</button>
                                 </td>
-                                <td><a href="<c:url value="/books/wishlist/delete?id=${entry.key.getId()}" />">delete</a>
+                                <td><a href="<c:url value="/books/wishlist/delete?id=${entry.key.getbId()}" />">delete</a>
                             </tr>
                         </c:forEach>
                     </table>

@@ -18,4 +18,32 @@ $(document).ready(function(){
        
    });
    
+   $('.edit').click(function () {
+        var date = $(this).val().split(" ");
+        var yearPart = date[0].split("/");
+        var timepart = date[1].substring(1,2);
+        var finalD = new Date();
+        finalD.setYear(Number(yearPart[0]));
+        finalD.setMonth(Number(yearPart[1]) - 1);
+        finalD.setDate(Number(yearPart[2]));
+        
+        finalD.setHours(Number(timepart));
+        finalD.setMinutes(0);
+        finalD.setSeconds(0);
+       
+        
+        var bookid = $(this).prev().val();
+        
+        $.ajax({
+         url:    'edit?bookid=' 
+                  + bookid
+                  + '&date=' 
+                  + finalD.getTime(),
+         success: function() {
+                      alert("yeah");
+                  },
+         async:   false
+    });     
+   });
+   
 });

@@ -64,7 +64,7 @@ public class WishListController {
         }
         System.out.println(wishes);
         Map<Book, String> booksWithDate = new HashMap<>();
-        DateFormat format = new SimpleDateFormat("yyyy/mm/dd HH");
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH");
         Date free;
         for(WishList wish : wishes){
             Book book = wish.getBook();
@@ -75,7 +75,7 @@ public class WishListController {
             booksWithDate.put(book, format.format(free).toString());
         }
         System.out.println(wishes); 
-        model.addAttribute("map", wishes);
+        model.addAttribute("map", booksWithDate);
         return "wishlist";
     }
     
