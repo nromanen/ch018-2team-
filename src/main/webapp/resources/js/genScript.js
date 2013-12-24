@@ -30,7 +30,7 @@ function sendR(){
                   + '&date=' 
                   + finalD.getTime(),
          success: function() {
-                      location.href = "books";
+                      location.href = "/books";
                   },
          async:   false
     });       

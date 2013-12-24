@@ -60,7 +60,7 @@ public class OrderController {
     }
     
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-        public RedirectView addOrder(@RequestParam("bookid") int bId, @RequestParam("date") long date, Model model) {
+        public String addOrder(@RequestParam("bookid") int bId, @RequestParam("date") long date, Model model) {
                 
                 Book book = bService.getBookById(bId);
                 Person person = pService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -70,9 +70,9 @@ public class OrderController {
                 try{
                     oService.save(order);
                 }catch(Exception e){
-                    return new RedirectView("unsuccessful", true);
+                    return "unsuccessful";
                 }
-                return new RedirectView("books", true);
+                return "redirect:/books";
         }
     
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
