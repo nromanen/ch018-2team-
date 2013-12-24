@@ -5,12 +5,14 @@ $(document).ready(function(){
    
    $('.datetimepicker').each(function (){
       
-       var minTime = $(this).next().val().replace(/-/g, '/').split(" ");
+       var minD = $(this).next().val().replace(/-/g, '/').split(" ");
+       if(minD == "")
+           minD = new Date().dateFormat("Y/m/d H");
        
        $(this).datetimepicker({
         format: 'Y/m/d H',
-        minDate: minTime[0],
-        minTime: minTime[1].split(":")[0]
+        minDate: minD[0],
+        minTime: minD[1].split(":")[0]
            
        });
        

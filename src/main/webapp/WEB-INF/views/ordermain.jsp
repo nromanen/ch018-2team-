@@ -34,7 +34,7 @@
             
             </div>
             <div id ="order_wish">
-                <a id="wish_button" href="<c:url value="/books/wish/add?bookid=${book.getbId()}" />">Wish</a>
+                <a id="wish_button" href="<c:url value="/books/wishlist/add?bookid=${book.getbId()}" />">Wish</a>
             </div>
         </div>
         

@@ -10,11 +10,13 @@ import com.ch018.library.entity.Person;
 import com.ch018.library.entity.WishList;
 import java.util.Date;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Edd Arazian
  */
+@Repository
 public interface WishListDao {
     
         public void save(WishList wish);

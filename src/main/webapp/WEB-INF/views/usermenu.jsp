@@ -5,7 +5,7 @@
     <ul>
         <li><a href="<c:url value="/books/mybooks" />">My Books</li>
         <li><a href="<c:url value="/books/order/my" />">Ordered</li>
-        <li><a href="<c:url value="/books/wish" />">WishList</li>
+        <li><a href="<c:url value="/books/wishlist/my" />">WishList</li>
         <li><a href="<c:url value="/account" />">Hello <sec:authentication property="principal.username" /></a> <a href="<c:url value="/j_spring_security_logout" />">logout</a></li>
     </ul>
     </sec:authorize>

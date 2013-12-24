@@ -13,11 +13,13 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Edd Arazian
  */
+@Repository
 public class WishListDaoImpl implements WishListDao {
     
     static Logger log = LogManager.getLogger(WishListDaoImpl.class);

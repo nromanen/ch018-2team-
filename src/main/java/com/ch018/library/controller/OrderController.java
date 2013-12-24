@@ -28,6 +28,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 /**
  *
@@ -59,7 +60,7 @@ public class OrderController {
     }
     
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-        public String addOrder(@RequestParam("bookid") int bId, @RequestParam("date") long date, Model model) {
+        public RedirectView addOrder(@RequestParam("bookid") int bId, @RequestParam("date") long date, Model model) {
                 
                 Book book = bService.getBookById(bId);
                 Person person = pService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -69,9 +70,9 @@ public class OrderController {
                 try{
                     oService.save(order);
                 }catch(Exception e){
-                    return "unsuccessful";
+                    return new RedirectView("unsuccessful", true);
                 }
-                return "redirect:/books";
+                return new RedirectView("books", true);
         }
     
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
@@ -99,7 +100,7 @@ public class OrderController {
         }catch(Exception e){
             System.out.println(e);
         }
-        return "redirect:/books/order";
+        return "redirect:/books/order/my";
     }
     
     @RequestMapping(value = "/my", method = RequestMethod.GET)
