@@ -22,6 +22,7 @@ public interface WishListService {
         List<WishList> getAll();
         List<WishList> getWishByPerson(Person person);
         List<WishList> getWishByBook(Book book);
+        WishList getWishByPersonBook(Person person, Book book);
         WishList getWishByID(int id);
         
         

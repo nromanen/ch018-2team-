@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import java.util.Set;
 import org.springframework.stereotype.Repository;
 @Repository
 public interface BookDAO {
@@ -19,4 +20,5 @@ public interface BookDAO {
         List<Book> getBooksByPublisher(String publisher);
         List<Book> getBooksByPagesEq(int pages);
         List<Book> getBooksByGenre(Genre genre);
+        List<Book> getBooksComplex(String query);
 }

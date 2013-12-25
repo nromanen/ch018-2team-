@@ -44,6 +44,12 @@ public class BooksController {
             model.addAttribute("books", bServ.getAll());
             return "books";
         }
+        
+        @RequestMapping(value = "/search", method = RequestMethod.GET)
+        public String search(@RequestParam("query") String query, Model model){
+            model.addAttribute("books", bServ.getBooksComplex(query));
+            return "books";
+        }
 	
 	@RequestMapping(value = "/addBook", method = RequestMethod.GET)
         @Secured({"ROLE_USER"})

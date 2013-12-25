@@ -14,6 +14,7 @@
         
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/main.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/genScript.js" />"></script>
     </head>
     <body>

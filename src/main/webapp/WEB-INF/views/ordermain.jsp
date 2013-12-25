@@ -30,7 +30,7 @@
                 <input type="text" id="datetimepicker">
                 <input type="hidden" id="mindate" value="${minDate}">
                 <input type="hidden" id="bookid" value="${book.getbId()}">
-                <button onclick="sendR();">Order</a>
+                <button onclick="order();">Order</a>
             
             </div>
             <div id ="order_wish">
