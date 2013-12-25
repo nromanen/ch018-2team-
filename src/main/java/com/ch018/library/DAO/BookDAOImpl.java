@@ -85,7 +85,8 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public List<Book> getBooksComplex(String query) {
-        return factory.getCurrentSession().createQuery("from Book b where b.title like :q").setString("q", "%" + query + "%").list();
+        query = "%" + query + "%";
+        return factory.getCurrentSession().createQuery("from Book b where b.title like :q").setString("q", query).list();
     }
         
     
