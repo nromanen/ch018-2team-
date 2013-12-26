@@ -14,12 +14,13 @@
         
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/main.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/wish.js" />"></script>
     </head>
     <body>
        
-            <c:import url="/WEB-INF/views/booksheader.jsp" />
-            <c:import url="/WEB-INF/views/booksmainleft.jsp" />
+            <c:import url="/WEB-INF/views/mainheader.jsp" />
+            <c:import url="/WEB-INF/views/mainleft.jsp" />
             <div id="wish_list_main">
                 <div id="wish_list_table_wrapper">
                     <table>
@@ -38,13 +39,13 @@
                                     <input type="hidden" value="${entry.key.getbId()}" />
                                     <button class="confirm">confirm</button>
                                 </td>
-                                <td><a href="<c:url value="/books/wishlist/delete?id=${entry.key.getbId()}" />">delete</a>
+                                <td><a href="<c:url value="/books/wishlist/delete?bookid=${entry.key.getbId()}" />">delete</a>
                             </tr>
                         </c:forEach>
                     </table>
                 </div>
             </div>
-            <c:import url="/WEB-INF/views/booksmainright.jsp" />
+            <c:import url="/WEB-INF/views/mainright.jsp" />
             <c:import url="/WEB-INF/views/footer.jsp" />
 
     </body>

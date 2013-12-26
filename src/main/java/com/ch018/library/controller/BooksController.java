@@ -14,7 +14,10 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.service.BookService;
 
 import com.ch018.library.service.GenreService;
+import java.util.ArrayList;
 import java.util.List;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 
  * @author Yurik Mikhaletskiy
@@ -33,14 +37,53 @@ import org.springframework.security.access.annotation.Secured;
 public class BooksController {
 
     @Autowired
-    BookService bServ;
+    BookService bookService;
     @Autowired
-    GenreService gServ;
+    GenreService genreService;
     
-        @RequestMapping()
+    //JSON PART
+    
+    @RequestMapping(method = RequestMethod.GET)
+    public String booksG(){
+        return "books";
+    }
+    
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    public  String books(){
+        List<Book> books = bookService.getAll();
+        List<JSONObject> jsons = new ArrayList<>();
+        
+        for(Book book : books){
+            JSONObject json = new JSONObject();
+            json.put("bId", book.getbId());
+            json.put("title", book.getTitle());
+            json.put("authors", book.getAuthors());
+            json.put("description", book.getDescription());
+            json.put("generalQuantity", book.getGeneralQuantity());
+            json.put("currentQuantity", book.getCurrentQuantity());
+            json.put("img", book.getImg());
+            jsons.add(json);
+        }
+        
+        
+        return jsons.toString();
+    }
+    
+    
+    
+    //OLD PART
+    
+    /*    @RequestMapping()
         public String bookList(Model model){
             System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
             model.addAttribute("books", bServ.getAll());
+            return "books";
+        }
+        
+        @RequestMapping(value = "/search", method = RequestMethod.GET)
+        public String search(@RequestParam("query") String query, Model model){
+            model.addAttribute("books", bServ.getBooksComplex(query));
             return "books";
         }
 	
@@ -80,5 +123,5 @@ public class BooksController {
                 bServ.update(book);
                 return "redirect:/books/";
                 
-        }
+        }*/
 }

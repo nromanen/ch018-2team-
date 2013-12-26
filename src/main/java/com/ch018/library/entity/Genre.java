@@ -7,6 +7,7 @@ package com.ch018.library.entity;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
+import org.springframework.context.annotation.Lazy;
 
 /**
  *

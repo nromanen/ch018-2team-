@@ -84,7 +84,13 @@ public class BookDaoImpl implements BookDao {
         return factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.eq("genre", genre)).list();
     }
 
-    
+
+    @Override
+    public List<Book> getBooksComplex(String query) {
+        query = "%" + query + "%";
+        return factory.getCurrentSession().createQuery("from Book b where b.title like :q").setString("q", query).list();
+    }
+
         
     
         

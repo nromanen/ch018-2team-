@@ -18,8 +18,8 @@
     </head>
     <body>
        
-            <c:import url="/WEB-INF/views/booksheader.jsp" />
-            <c:import url="/WEB-INF/views/booksmainleft.jsp" />
+            <c:import url="/WEB-INF/views/mainheader.jsp" />
+            <c:import url="/WEB-INF/views/mainleft.jsp" />
             <div id="orders_main">
                 <div id="orders_table_wrapper">
                     <table>
@@ -43,7 +43,7 @@
                     </table>
                 </div>
             </div>
-            <c:import url="/WEB-INF/views/booksmainright.jsp" />
+            <c:import url="/WEB-INF/views/mainright.jsp" />
             <c:import url="/WEB-INF/views/footer.jsp" />
 
     </body>

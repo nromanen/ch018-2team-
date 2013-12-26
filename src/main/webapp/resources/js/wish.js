@@ -40,7 +40,7 @@ $(document).ready(function(){
                   + '&date=' 
                   + finalD.getTime(),
          success: function() {
-                      alert("yeah");
+                      location.href = "/library/wishlist/my";
                   },
          async:   false
     });     

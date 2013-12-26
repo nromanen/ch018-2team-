@@ -10,8 +10,10 @@ $(document).ready(
         minTime: mindate[1]
     });
     
+    
+    
 });
-function sendR(){
+function order(){
   
     var a = $('#datetimepicker').val().toString().split(" ");
             var yearPart = a[0].split("/");
@@ -30,7 +32,9 @@ function sendR(){
                   + '&date=' 
                   + finalD.getTime(),
          success: function() {
-                      location.href = "/books";
+                      alert(location.href);
+                      location.href = "/library/books";
+                      alert(location.href);
                   },
          async:   false
     });       

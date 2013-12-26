@@ -2,7 +2,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
     <div id="center_main">
         <div id="books">
-            <c:forEach var="book" items="${books}">
+           <!-- <c:forEach var="book" items="${books}">
             <div class="book">
                 <div class="book_img">
                     <img src="${book.getImg()}"/>
@@ -12,8 +12,7 @@
                     <b>by</b> ${book.getAuthors()}
                 </div>
                 <div class="book_quantity">
-                    <span>general: ${book.getGeneralQuantity()}
-                    <span>current: ${book.getCurrentQuantity()}
+                    
                 </div>
                 <sec:authorize access="isAuthenticated()">
                 <div class="book_order">
@@ -21,7 +20,8 @@
                 </div>
                 </sec:authorize>
             </div>
-            </c:forEach>
+            </c:forEach>-->
+            
         </div>
         <div id="pages">
             

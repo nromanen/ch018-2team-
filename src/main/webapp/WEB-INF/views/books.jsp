@@ -9,14 +9,15 @@
         <link rel="stylesheet" type="text/css" media="screen" href="${booksCSS}" />  
         <c:url value="/resources/css/jquery.js" var="jquery" /> 
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/genScript.js" />"></script>
+        
+        <script type="text/javascript" src="<c:url value="/resources/js/main.js" />"></script>
     </head>
     <body>
        
-            <c:import url="/WEB-INF/views/booksheader.jsp" />
-            <c:import url="/WEB-INF/views/booksmainleft.jsp" />
-            <c:import url="/WEB-INF/views/booksmain.jsp" />
-            <c:import url="/WEB-INF/views/booksmainright.jsp" />
+            <c:import url="/WEB-INF/views/mainheader.jsp" />
+            <c:import url="/WEB-INF/views/mainleft.jsp" />
+            <c:import url="/WEB-INF/views/bookscenter.jsp" />
+            <c:import url="/WEB-INF/views/mainright.jsp" />
             <c:import url="/WEB-INF/views/footer.jsp" />
 
     </body>
