@@ -22,5 +22,6 @@ public interface BookService {
         List<Book> getBooksByPublisher(String publisher);
         List<Book> getBooksByPagesEq(int pages);
         List<Book> getBooksByGenre(Genre genre);
+        List<Book> getBooksComplex(String query);
         
 }

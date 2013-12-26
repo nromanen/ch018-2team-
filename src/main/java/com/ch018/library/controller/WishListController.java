@@ -53,6 +53,15 @@ public class WishListController {
         return "redirect:/books";
     }
     
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public String delete(@RequestParam("bookid") int bookId){
+        Person person = pService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        Book book = bService.getBookById(bookId);
+        WishList wish = wService.getWishByPersonBook(person, book);
+        wService.delete(wish);
+        return "redirect:/books/wishlist/my";
+    }
+    
     @RequestMapping(value = "/my", method = RequestMethod.GET)
     public String myList(Model model){
         Person person = pService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());

@@ -61,6 +61,13 @@ public class WishListDaoImpl implements WishListDao {
     public WishList getWishByID(int id) {
         return (WishList) factory.getCurrentSession().get(WishList.class, id);
     }
+
+    @Override
+    public WishList getWishByPersonBook(Person person, Book book) {
+         return (WishList) factory.getCurrentSession().createQuery("from WishList w where w.person = :p and w.book = :b")
+                 .setParameter("p", person).setParameter("b", book).list().get(0);
+    }
+    
     
     
     

@@ -85,5 +85,11 @@ public class BookServiceImpl implements BookService {
         return bookDAO.getBooksByGenre(genre);
     }
 
+    @Override
+    @Transactional
+    public List<Book> getBooksComplex(String query) {
+        return bookDAO.getBooksComplex(query);
+    }
+
 }
 

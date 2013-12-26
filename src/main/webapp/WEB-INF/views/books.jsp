@@ -9,7 +9,8 @@
         <link rel="stylesheet" type="text/css" media="screen" href="${booksCSS}" />  
         <c:url value="/resources/css/jquery.js" var="jquery" /> 
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/genScript.js" />"></script>
+        
+        <script type="text/javascript" src="<c:url value="/resources/js/main.js" />"></script>
     </head>
     <body>
        

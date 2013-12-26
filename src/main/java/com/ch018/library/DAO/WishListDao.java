@@ -19,12 +19,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WishListDao {
     
-        public void save(WishList wish);
-        public void delete(WishList wish);
-        public void update(WishList wish);
-        public List<WishList> getAll();
-        public List<WishList> getWishByPerson(Person person);
-        public List<WishList> getWishByBook(Book book);
-        public WishList getWishByID(int id);
+        void save(WishList wish);
+        void delete(WishList wish);
+        void update(WishList wish);
+        List<WishList> getAll();
+        List<WishList> getWishByPerson(Person person);
+        List<WishList> getWishByBook(Book book);
+        WishList getWishByPersonBook(Person person, Book book);
+        WishList getWishByID(int id);
     
 }

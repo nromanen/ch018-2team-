@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import java.util.Set;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> getBooksByTitle(String title) {
-            return factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.like("title", title)).list();
+            return factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.like("title", "%" + title + "%")).list();
     }
 
     @Override
@@ -81,6 +82,12 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> getBooksByGenre(Genre genre) {
         return factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.eq("genre", genre)).list();
+    }
+
+    @Override
+    public List<Book> getBooksComplex(String query) {
+        query = "%" + query + "%";
+        return factory.getCurrentSession().createQuery("from Book b where b.title like :q").setString("q", query).list();
     }
         
     
