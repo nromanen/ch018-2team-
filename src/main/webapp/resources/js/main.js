@@ -1,17 +1,30 @@
 
 $(document).ready(function () {
    
-   
-   
-   $.ajax({
-      
-       
-       url: "/library/books",
-       type: "POST",
-       dataType: "json",
-       contentType: 'application/json',
-       mimeType: 'application/json',
-       success: function (data) {
+     search("");
+     
+     $('#search_field').autocomplete({
+         serviceUrl: window.location.pathname + "autocomplete",
+         minChars: 2
+         
+     });
+     
+});
+     
+
+
+
+function search(query){
+    //var query = $('#search_field').val();
+    $.ajax({
+            url: window.location.pathname,
+            type: "POST",
+            data: {'query' : query},
+            dataType: "json",
+            contentType: 'application/x-www-form-urlencoded',
+            mimeType: 'application/json',
+            
+         success: function (data) {
             
            $('#books').empty();
            $.each(data, function (indx, value){
@@ -44,21 +57,5 @@ $(document).ready(function () {
                
             });
        }
-   }); 
-  
-    
-});
-
-
-function search(){
-    var query = $('#search_field').val();
-    alert(query);
-    $.ajax({
-         url:    'search?query=' 
-                  + query,
-         success: function(data) {
-                     $('html').html(data);
-                  },
-         async:   false
     });     
 }

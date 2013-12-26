@@ -50,8 +50,14 @@ public class BooksController {
     
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public  String books(){
-        List<Book> books = bookService.getAll();
+    public  String books(@RequestParam(value = "query") String query){
+        List<Book> books;
+        
+        if(query.equals(""))
+            books = bookService.getAll();
+        else
+            books = bookService.getBooksByTitle(query);
+        
         List<JSONObject> jsons = new ArrayList<>();
         
         for(Book book : books){
@@ -68,6 +74,26 @@ public class BooksController {
         
         
         return jsons.toString();
+    }
+    
+    
+    @RequestMapping(value = "/autocomplete", method = RequestMethod.GET)
+    public @ResponseBody String autocomplete(){
+        List<String> titles = new ArrayList<>();
+        
+        List<Book> books = bookService.getAll();
+        
+        for(Book book : books)
+            titles.add(book.getTitle());
+        
+        //List<JSONObject> jsons = new ArrayList<>();
+        
+        
+        JSONObject json = new JSONObject();
+        json.put("suggestions", titles);
+        
+        return json.toString();
+       
     }
     
     

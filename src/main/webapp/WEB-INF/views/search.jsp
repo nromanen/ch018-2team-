@@ -2,7 +2,7 @@
 <div id="search">
     
         <input id="search_field" type="text" name="search" />
-        <button onclick="search();">search</button>
+        <button onclick="search($('#search_field').val());">search</button>
         
     
 </div>
