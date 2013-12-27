@@ -37,10 +37,13 @@ function search(query){
                 $book_quantity.appendTo($book);
                 $book.appendTo($books);
                 
+                
+                
                 if(data.auth === true){
                     var $book_order = $('<div>', {class : 'book_order'});
-                    var $a = $('<a>', {class: 'button', href: '/library/books/order?bookid=' + value.bId});
-                    $a.appendTo($book_order);
+                    var $button = $('<button>', {class: 'button', value: value.bId});
+                    $button.text("Order");
+                    $button.appendTo($book_order);
                     $book_order.appendTo($book);
                 }
                 
@@ -48,6 +51,9 @@ function search(query){
             });
           
            }
-       
-    });     
+        
+     });
+     
+     
+  
 }

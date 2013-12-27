@@ -1,5 +1,6 @@
 package com.ch018.library.controller;
 
+import com.ch018.library.controller.errors.IncorrectDate;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Orders;
@@ -26,11 +27,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ch018.library.entity.Orders;
 import com.ch018.library.service.OrdersService;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -45,12 +49,7 @@ public class OrderController {
     OrdersService ordersService;
     @Autowired
     BookInUseService useService;
-    
-    @RequestMapping(method = RequestMethod.GET)
-    public String orderGet(@RequestParam("bookid") Integer bId, Model model){
-        model.addAttribute("bookid", bId);
-        return "order";
-    }
+
     
     @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody String order(@RequestParam("bookid") Integer bId){
@@ -59,20 +58,40 @@ public class OrderController {
         
         if(book.getCurrentQuantity() > 0)
             minReturn = new Date();
-        else
+        else{
             minReturn = useService.getBookWithLastDate(book);
-        
+            minReturn =  minReturn == null ? new Date() : minReturn;
+        }
+    
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
         JSONObject json = new JSONObject();
         json.put("bId", book.getbId());
+        json.put("img", book.getImg());
         json.put("title", book.getTitle());
         json.put("authors", book.getAuthors());
         json.put("publisher", book.getPublisher());
-        json.put("decription", book.getDescription());
+        json.put("description", book.getDescription());
         json.put("minReturn", format.format(minReturn).toString());
         return json.toString();   
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public @ResponseBody String add(@RequestParam("bookId") Integer bookId, @RequestParam("time") String time, 
+                        Principal principal) throws IncorrectDate{
+        Book book = bookService.getBookById(bookId);
+        Person person = personService.getByEmail(principal.getName());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        Date date;
+        try{
+                date = format.parse(time);
+        }catch(Exception e){
+            throw new IncorrectDate("Incorrect Date");
+        }
+        ordersService.save(new Orders(person, book, date));
+        
+        return new JSONObject().toString();
+    }
+    
     /*
     @RequestMapping(value = "/add", method = RequestMethod.GET)
         public String addOrder(@RequestParam("bookid") int bId, @RequestParam("date") long date, Model model) {

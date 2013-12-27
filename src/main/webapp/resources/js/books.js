@@ -9,6 +9,15 @@ $(document).ready(function () {
          
      });
      
+    $('body').on('click', '.button', function() {
+        order($(this).val());
+    });
+    $('body').on('click', '#order_button', function() {
+        var bookId = $(this).val();
+        var time = $(this).prev().val();
+        makeOrder(bookId, time);
+    });
+
 });
      
 

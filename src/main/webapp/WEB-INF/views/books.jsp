@@ -9,10 +9,17 @@
         <link rel="stylesheet" type="text/css" media="screen" href="${mainCSS}" />
         <c:url value="/resources/css/books.css" var="booksCSS" />  
         <link rel="stylesheet" type="text/css" media="screen" href="${booksCSS}" /> 
+        <c:url value="/resources/css/jquery.datetimepicker.css" var="dateCSS" />  
+        <link rel="stylesheet" type="text/css" media="screen" href="${dateCSS}" /> 
+        <c:url value="/resources/css/order.css" var="orderCSS" />  
+        <link rel="stylesheet" type="text/css" media="screen" href="${orderCSS}" /> 
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/order.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/books.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
+        
     </head>
     <body>
        
