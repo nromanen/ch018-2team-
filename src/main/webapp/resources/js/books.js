@@ -17,6 +17,16 @@ $(document).ready(function () {
         var time = $(this).prev().val();
         makeOrder(bookId, time);
     });
+    
+    $('body').on('click', '#my_orders', function() {
+        myOrders();
+    });
+    
+    $('body').on('click', '.delete_order_button', function() {
+        var orderId = $(this).val();
+        deleteOrder(orderId);
+    });
+    
 
 });
      

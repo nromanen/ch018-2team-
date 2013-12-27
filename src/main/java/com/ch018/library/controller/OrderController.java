@@ -92,6 +92,47 @@ public class OrderController {
         return new JSONObject().toString();
     }
     
+    @RequestMapping(value = "/my", method = RequestMethod.GET)
+    public @ResponseBody String my(Principal principal){
+        Person person = personService.getByEmail(principal.getName());
+        List<Orders> orders = ordersService.getOrderByPerson(person);
+        JSONObject json;
+        List<JSONObject> jsons = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        for(Orders order : orders){
+            json = new JSONObject();
+            Date minDate;
+            Date orderDate = order.getOrderDate();
+            if(order.getBook().getCurrentQuantity() > 0)
+                minDate = new Date();
+            else
+                minDate =  useService.getBookWithLastDate(order.getBook());
+            minDate = minDate == null ? new Date() : minDate;
+            /*if(minDate.compareTo(orderDate) > 0){
+                orderDate = minDate;
+                json.put("changed", true);
+            }else{
+                json.put("changed", false);
+            }*/
+            
+            json.put("orderId", order.getId());
+            json.put("title", order.getBook().getTitle());
+            json.put("orderDate", format.format(orderDate));
+            json.put("minDate", format.format(minDate));
+            
+            jsons.add(json);
+            System.out.println(order.getBook().getTitle());
+        }
+        System.out.println(jsons.toString());
+        return jsons.toString();
+    }
+    
+    @RequestMapping(value = "/delete")
+    public @ResponseBody String delete(@RequestParam("orderId") Integer orderId){
+        ordersService.delete(ordersService.getOrderByID(orderId));
+        return new JSONObject().toString();
+    }
+    
     /*
     @RequestMapping(value = "/add", method = RequestMethod.GET)
         public String addOrder(@RequestParam("bookid") int bId, @RequestParam("date") long date, Model model) {
