@@ -36,10 +36,14 @@ public class OrdersDaoImpl implements OrdersDao{
                 factory.getCurrentSession().delete(order);}
 
         @Override
-        public void update(int id, Orders order){
-                Orders o = getOrderByID(id);
-                o.setOrderDate(order.getOrderDate());
-               factory.getCurrentSession().flush();
+        public void update(int id, Date newDate){
+                Orders order = (Orders) factory.getCurrentSession().get(Orders.class, id);
+                order.setOrderDate(newDate);
+                
+                //Orders o = getOrderByID(id);
+                //o.setOrderDate(order.getOrderDate());
+                
+               //factory.getCurrentSession().flush();
         }
 
         @Override

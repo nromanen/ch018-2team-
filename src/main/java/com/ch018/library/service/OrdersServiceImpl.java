@@ -41,9 +41,9 @@ public class OrdersServiceImpl implements OrdersService{
 
         @Override
         @Transactional
-        public void update(int id, Orders order){
+        public void update(int id, Date newDate){
                 // TODO Auto-generated method stub
-                ordersDao.update(id, order);
+                ordersDao.update(id, newDate);
         }
 
         @Override

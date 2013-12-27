@@ -117,6 +117,7 @@ public class OrderController {
             
             json.put("orderId", order.getId());
             json.put("title", order.getBook().getTitle());
+            json.put("bookId", order.getBook().getbId());
             json.put("orderDate", format.format(orderDate));
             json.put("minDate", format.format(minDate));
             
@@ -131,6 +132,29 @@ public class OrderController {
     public @ResponseBody String delete(@RequestParam("orderId") Integer orderId){
         ordersService.delete(ordersService.getOrderByID(orderId));
         return new JSONObject().toString();
+    }
+    
+    @RequestMapping(value = "/edit")
+    public @ResponseBody String edit(@RequestParam("orderId") Integer orderId,
+                    @RequestParam("date") String date, Principal principal) throws IncorrectDate{
+        Orders order = ordersService.getOrderByID(orderId);
+        Book book = bookService.getBookById(order.getBook().getbId());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        Date newDate;
+        try{
+            newDate = format.parse(date);
+        }catch(Exception e){
+            throw new IncorrectDate("incorrect date");
+        }
+        
+        ordersService.update(orderId, newDate);
+        Date minDate = useService.getBookWithLastDate(book);
+        JSONObject json = new JSONObject();
+        json.put("orderId", orderId);
+        json.put("date", date);
+        json.put("minDate", minDate);
+        
+        return json.toString();
     }
     
     /*

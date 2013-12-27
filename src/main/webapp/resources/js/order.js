@@ -78,7 +78,7 @@ function makeOrder(bookId, time){
          success: function () {
             
             
-                $popup = $('<div>', {id : 'popup'});
+                /*$popup = $('<div>', {id : 'popup'});
                 $continue_button = $('<button>', {id : 'continue_button'})
                         .text("Continue");
                 $wishList_button = $('<button>', {class : 'wishList_button'})
@@ -88,7 +88,7 @@ function makeOrder(bookId, time){
                 $popup.appendTo($('body'));
                 
                 $('#center_main').css("opacity", "0.1");
-                $popup.css("display", "block");
+                $popup.css("display", "block");*/
             
              
                  
@@ -122,7 +122,7 @@ function myOrders(){
                 
                
                
-               var $li = $('<li>', {class : 'orders_li'});
+               var $li = $('<li>', {id : 'orders_li_' + value.orderId});
                
                
                var $inner_div_li = $('<div>', {class : 'inner_div_li'});
@@ -182,9 +182,40 @@ function deleteOrder(orderId){
         mimeType: 'application/json',
         success: function() {
             
-            myOrders();
+            //myOrders();
+            $('#orders_li_' + orderId).remove();
                
                 
+            }
+
+
+
+        });
+    
+}
+
+function editOrder(orderId, date){
+    $.ajax({
+        url: window.location.pathname + "order/edit",
+        type: "POST",
+        data: {'orderId' : orderId, 'date' : date},
+        dataType: "json",
+        contentType: 'application/x-www-form-urlencoded',
+        mimeType: 'application/json',
+        success: function(data) {
+            
+                var $li = $('#orders_li_' + orderId);
+                $li.find('input').remove();
+           
+                var $edit_input = $('<input>', {class : 'edit_calendar', type : "text", value : date});
+                var minD = data.minDate.split(" ");
+                $edit_input.datetimepicker({
+                    format: 'Y/m/d H:m',
+                    minDate: minD[0],
+                    minTime: minD[1]
+               });
+               
+               $edit_input.appendTo($li);
             }
 
 

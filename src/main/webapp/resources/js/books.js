@@ -27,6 +27,14 @@ $(document).ready(function () {
         deleteOrder(orderId);
     });
     
+    $('body').on('click', '.edit_order_button', function() {
+        
+        var orderId = $(this).val();
+        var date = $(this).prev().val();
+        
+        editOrder(orderId, date);
+    });
+    
 
 });
      
