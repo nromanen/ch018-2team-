@@ -75,6 +75,7 @@ public class BookInUseServiceImpl implements BookInUseService {
     @Override
     @Transactional
     public Date getBookWithLastDate(Book book){
+        
         return useDao.getBookWithLastDate(book);
          
     }

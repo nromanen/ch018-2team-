@@ -14,14 +14,14 @@
         
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/main.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/genScript.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/order.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
     </head>
     <body>
-       
+        <input id="bookid" type="hidden" value="${bookid}">
             <c:import url="/WEB-INF/views/mainheader.jsp" />
             <c:import url="/WEB-INF/views/mainleft.jsp" />
-            <c:import url="/WEB-INF/views/ordercenter.jsp" />
+            <c:import url="/WEB-INF/views/center.jsp" />
             <c:import url="/WEB-INF/views/mainright.jsp" />
             <c:import url="/WEB-INF/views/footer.jsp" />
 

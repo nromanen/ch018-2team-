@@ -1,19 +1,3 @@
-
-$(document).ready(function () {
-   
-     search("");
-     
-     $('#search_field').autocomplete({
-         serviceUrl: window.location.pathname + "autocomplete",
-         minChars: 2
-         
-     });
-     
-});
-     
-
-
-
 function search(query){
     //var query = $('#search_field').val();
     $.ajax({
@@ -25,18 +9,19 @@ function search(query){
             mimeType: 'application/json',
             
          success: function (data) {
-            
-           $('#books').empty();
-           $.each(data, function (indx, value){
+             
+           $('#center_main').empty();
+           var $books = $('<div>', {id : 'books'});
+           $books.appendTo($('#center_main'));
+               $.each(data.books, function (indx, value){
                 
-                var $book_order = $('<div>', {class : 'book_order'});
+                
+                
                 var $book_quantity = $('<div>', {class : 'book_quantity'});
                 var $book_info = $('<div>', {class : 'book_info'});
                 var $book_img = $('<div>', {class : 'book_img'});
                 var $book = $('<div>', {class : 'book'});
                 
-                var $a = $('<a>', {class: 'button', href: '/library/books/order?bookid=' + value.bId});
-                $a.appendTo($book_order);
                 
                 $('<span></span>').text(value.generalQuantity).appendTo($book_quantity);
                 $('<span></span>').text(value.currentQuantity).appendTo($book_quantity);
@@ -50,12 +35,19 @@ function search(query){
                 $book_info.appendTo($book);
                 $book_info.appendTo($book);
                 $book_quantity.appendTo($book);
-                $book_order.appendTo($book);
-                $book.appendTo($('#books'));
+                $book.appendTo($books);
                 
+                if(data.auth === true){
+                    var $book_order = $('<div>', {class : 'book_order'});
+                    var $a = $('<a>', {class: 'button', href: '/library/books/order?bookid=' + value.bId});
+                    $a.appendTo($book_order);
+                    $book_order.appendTo($book);
+                }
                 
                
             });
-       }
+          
+           }
+       
     });     
 }

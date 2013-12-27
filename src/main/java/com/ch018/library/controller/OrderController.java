@@ -26,8 +26,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ch018.library.entity.Orders;
 import com.ch018.library.service.OrdersService;
+import java.text.SimpleDateFormat;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -35,27 +38,42 @@ import org.springframework.web.servlet.view.RedirectView;
 public class OrderController {
     
     @Autowired
-    BookService bService;
+    BookService bookService;
     @Autowired
-    PersonService pService;
+    PersonService personService;
     @Autowired
-    OrdersService oService;
+    OrdersService ordersService;
     @Autowired
     BookInUseService useService;
-    @Autowired
-    SessionFactory fact;
     
     @RequestMapping(method = RequestMethod.GET)
-    public String order(@RequestParam("bookid") Integer bId, Model model){
-        useService.save(new BooksInUse());
-        Book book = bService.getBookById(bId);
-        String minDate = createMinTime(book);
-        model.addAttribute("book", book);
-        model.addAttribute("minDate", minDate);
-        return "bookorder";   
+    public String orderGet(@RequestParam("bookid") Integer bId, Model model){
+        model.addAttribute("bookid", bId);
+        return "order";
+    }
+    
+    @RequestMapping(method = RequestMethod.POST)
+    public @ResponseBody String order(@RequestParam("bookid") Integer bId){
+        Book book = bookService.getBookById(bId);
+        Date minReturn;
+        
+        if(book.getCurrentQuantity() > 0)
+            minReturn = new Date();
+        else
+            minReturn = useService.getBookWithLastDate(book);
+        
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        JSONObject json = new JSONObject();
+        json.put("bId", book.getbId());
+        json.put("title", book.getTitle());
+        json.put("authors", book.getAuthors());
+        json.put("publisher", book.getPublisher());
+        json.put("decription", book.getDescription());
+        json.put("minReturn", format.format(minReturn).toString());
+        return json.toString();   
     }
 
-    
+    /*
     @RequestMapping(value = "/add", method = RequestMethod.GET)
         public String addOrder(@RequestParam("bookid") int bId, @RequestParam("date") long date, Model model) {
                 
@@ -143,5 +161,5 @@ public class OrderController {
         sb.append(" ");
         sb.append(calendar.get(Calendar.HOUR));
         return sb.toString();
-    }
+    }*/
 }

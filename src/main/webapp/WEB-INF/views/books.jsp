@@ -5,18 +5,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Home Page</title>
+        <c:url value="/resources/css/main.css" var="mainCSS" />  
+        <link rel="stylesheet" type="text/css" media="screen" href="${mainCSS}" />
         <c:url value="/resources/css/books.css" var="booksCSS" />  
-        <link rel="stylesheet" type="text/css" media="screen" href="${booksCSS}" />  
-        <c:url value="/resources/css/jquery.js" var="jquery" /> 
+        <link rel="stylesheet" type="text/css" media="screen" href="${booksCSS}" /> 
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/main.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/books.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
     </head>
     <body>
        
             <c:import url="/WEB-INF/views/mainheader.jsp" />
             <c:import url="/WEB-INF/views/mainleft.jsp" />
-            <c:import url="/WEB-INF/views/bookscenter.jsp" />
+            <c:import url="/WEB-INF/views/center.jsp" />
             <c:import url="/WEB-INF/views/mainright.jsp" />
             <c:import url="/WEB-INF/views/footer.jsp" />
 

@@ -14,8 +14,11 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.service.BookService;
 
 import com.ch018.library.service.GenreService;
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +28,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 
@@ -50,7 +55,8 @@ public class BooksController {
     
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public  String books(@RequestParam(value = "query") String query){
+    public  String books(@RequestParam(value = "query") String query, HttpServletRequest request){
+        
         List<Book> books;
         
         if(query.equals(""))
@@ -60,29 +66,46 @@ public class BooksController {
         
         List<JSONObject> jsons = new ArrayList<>();
         
-        for(Book book : books){
-            JSONObject json = new JSONObject();
-            json.put("bId", book.getbId());
-            json.put("title", book.getTitle());
-            json.put("authors", book.getAuthors());
-            json.put("description", book.getDescription());
-            json.put("generalQuantity", book.getGeneralQuantity());
-            json.put("currentQuantity", book.getCurrentQuantity());
-            json.put("img", book.getImg());
-            jsons.add(json);
+        if(request.isUserInRole("ROLE_USER")){
+            for(Book book : books){
+                JSONObject json = new JSONObject();
+                json.put("bId", book.getbId());
+                json.put("title", book.getTitle());
+                json.put("authors", book.getAuthors());
+                json.put("description", book.getDescription());
+                json.put("generalQuantity", book.getGeneralQuantity());
+                json.put("currentQuantity", book.getCurrentQuantity());
+                json.put("img", book.getImg());
+                jsons.add(json);
+        }
+        }else{
+            for(Book book : books){
+                JSONObject json = new JSONObject();
+                
+                json.put("title", book.getTitle());
+                json.put("authors", book.getAuthors());
+                json.put("description", book.getDescription());
+                json.put("generalQuantity", book.getGeneralQuantity());
+                json.put("currentQuantity", book.getCurrentQuantity());
+                json.put("img", book.getImg());
+                jsons.add(json);
+        }
         }
         
+        JSONObject finalJson = new JSONObject();
+        finalJson.put("auth", request.isUserInRole("ROLE_USER"));
+        finalJson.put("books", jsons);
         
-        return jsons.toString();
+        return finalJson.toString();
     }
     
     
+    
     @RequestMapping(value = "/autocomplete", method = RequestMethod.GET)
-    public @ResponseBody String autocomplete(){
+    public @ResponseBody String autocomplete(@RequestParam("query") String query){
         List<String> titles = new ArrayList<>();
         
-        List<Book> books = bookService.getAll();
-        
+        List<Book> books = bookService.getBooksByTitle(query);
         for(Book book : books)
             titles.add(book.getTitle());
         
