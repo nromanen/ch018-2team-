@@ -138,7 +138,7 @@ public class OrderController {
     public @ResponseBody String edit(@RequestParam("orderId") Integer orderId,
                     @RequestParam("date") String date, Principal principal) throws IncorrectDate{
         Orders order = ordersService.getOrderByID(orderId);
-        Book book = bookService.getBookById(order.getBook().getbId());
+        Book book = order.getBook();
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
         Date newDate;
         try{

@@ -118,12 +118,31 @@ public class BooksController {
         return json.toString();
        
     }
-    
-    
-    
     //OLD PART
     
-    /*    @RequestMapping()
+    /* 
+    @RequestMapping(value = "/addBook", method = RequestMethod.GET)
+        @Secured({"ROLE_USER"})
+	public String addBook(Model model) {
+                            System.out.println("TEST");
+		          model.addAttribute("genres", genreService.getAll());
+                          return "addBook";
+	}
+        
+        @RequestMapping(value = "/addBook", method = RequestMethod.POST)
+	public String addBook(@ModelAttribute Book book, BindingResult result, @RequestParam("genreId") Integer gid) {
+                            
+		          book.setGenre(genreService.getById(gid));
+                          System.out.println(book);
+                          try{
+                          bookService.save(book);
+                          }catch(Exception e){
+                              System.out.println(e);
+                          }
+                          return "redirect:/books/addBook";
+	}
+    
+       @RequestMapping()
         public String bookList(Model model){
             System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
             model.addAttribute("books", bServ.getAll());
@@ -136,26 +155,7 @@ public class BooksController {
             return "books";
         }
 	
-	@RequestMapping(value = "/addBook", method = RequestMethod.GET)
-        @Secured({"ROLE_USER"})
-	public String addBook(Model model) {
-                            System.out.println("TEST");
-		          model.addAttribute("genres", gServ.getAll());
-                          return "addBook";
-	}
-        
-        @RequestMapping(value = "/addBook", method = RequestMethod.POST)
-	public String addBook(@ModelAttribute Book book, BindingResult result, @RequestParam("genreId") Integer gid) {
-                            
-		          book.setGenre(gServ.getById(gid));
-                          System.out.println(book);
-                          try{
-                          bServ.save(book);
-                          }catch(Exception e){
-                              System.out.println(e);
-                          }
-                          return "redirect:/books/addBook";
-	}
+	
         
         @RequestMapping(value = "/edit", method = RequestMethod.GET)
         public String editBook(@RequestParam("id") Integer id, Model model){

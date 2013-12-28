@@ -64,7 +64,7 @@ public class Orders implements Serializable {
                 this.book = book;
         }
         
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "pid", referencedColumnName = "pid")
         public Person getPerson() {
                 return person;

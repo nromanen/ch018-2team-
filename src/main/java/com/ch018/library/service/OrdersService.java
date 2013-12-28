@@ -21,4 +21,5 @@ public interface OrdersService {
          List<Orders> getOrderByDate(Date date);
          Orders getOrderByID(int id); 
          Orders getOrderIdByPersonIdBookId(int pId, int bId);
+         int getBookIdByPerson(Person person);
 }

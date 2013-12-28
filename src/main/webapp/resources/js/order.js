@@ -2,7 +2,7 @@
 function order(val){
         
         $.ajax({
-            url: window.location.pathname + "order",
+            url: window.location.pathname + "/order",
             type: "POST",
             data: {'bookid' : val},
             dataType: "json",
@@ -205,17 +205,18 @@ function editOrder(orderId, date){
         success: function(data) {
             
                 var $li = $('#orders_li_' + orderId);
-                $li.find('input').remove();
+                $edit_input.appendTo($li);
            
                 var $edit_input = $('<input>', {class : 'edit_calendar', type : "text", value : date});
+                $edit_input.appendTo($li);
                 var minD = data.minDate.split(" ");
-                $edit_input.datetimepicker({
+                 $edit_input.datetimepicker({
                     format: 'Y/m/d H:m',
                     minDate: minD[0],
                     minTime: minD[1]
                });
                
-               $edit_input.appendTo($li);
+               
             }
 
 

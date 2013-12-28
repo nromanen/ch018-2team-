@@ -19,5 +19,6 @@ public interface OrdersDao {
         public List<Orders> getOrderByDate(Date date);
         public Orders getOrderIdByPersonIdBookId(int pId, int bId);
         public Orders getOrderByID(int id);
+        public int getBookIdByPerson(Person person);
         
 }

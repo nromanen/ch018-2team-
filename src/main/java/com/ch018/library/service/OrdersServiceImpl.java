@@ -88,6 +88,12 @@ public class OrdersServiceImpl implements OrdersService{
         public Orders getOrderIdByPersonIdBookId(int pId, int bId) {
                 return ordersDao.getOrderIdByPersonIdBookId(pId, bId);
         }
+
+    @Override
+    @Transactional
+    public int getBookIdByPerson(Person person) {
+        return ordersDao.getBookIdByPerson(person);
+    }
         
         
 
