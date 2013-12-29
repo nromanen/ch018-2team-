@@ -13,6 +13,8 @@
         <link rel="stylesheet" type="text/css" media="screen" href="${dateCSS}" /> 
         <c:url value="/resources/css/order.css" var="orderCSS" />  
         <link rel="stylesheet" type="text/css" media="screen" href="${orderCSS}" /> 
+        <c:url value="/resources/css/search.css" var="searchCSS" />  
+        <link rel="stylesheet" type="text/css" media="screen" href="${searchCSS}" /> 
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
