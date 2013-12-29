@@ -10,7 +10,69 @@ function search(query){
             
          success: function (data) {
              
-           $('#center_main').empty();
+             buildMainBooksFromJson(data);
+          
+           }
+        
+     });
+     
+     
+  
+}
+
+function advancedSearch(){
+    
+        var title = $('#advanced_search_title').val();
+        var authors = $('#advanced_search_authors').val();
+        var publisher = $('#advanced_search_publisher').val();
+        var genreId = $('#advanced_search_select').val();
+        
+        $.ajax({
+            url: window.location.pathname + "/advancedSearch",
+            type: "POST",
+            data: {'title' : title, 'authors' : authors, 'publisher' : publisher, 'genreId' : genreId},
+            dataType: "json",
+            contentType: 'application/x-www-form-urlencoded',
+            mimeType: 'application/json',
+            
+         success: function (data) {
+                buildMainBooksFromJson(data);
+           }
+        
+     });
+   
+    
+}
+
+function advancedSearchPanel(){
+    
+    $.ajax({
+            url: window.location.pathname + "advancedSearch/getGenres",
+            type: "POST",
+            dataType: "json",
+            contentType: 'application/x-www-form-urlencoded',
+            mimeType: 'application/json',
+            
+         success: function (data) {
+             
+                var $select = $('#advanced_search_select');
+                $.each(data, function (indx, value){
+                   
+                    $('<option>', {value : value.id}).text(value.description).appendTo($select);
+                    
+                    
+                });
+                
+          
+           }
+        
+     });
+    
+}
+
+function buildMainBooksFromJson(data){
+    
+    $('#center_main').empty();
            var $books = $('<div>', {id : 'books'});
            $books.appendTo($('#center_main'));
                $.each(data.books, function (indx, value){
@@ -49,11 +111,4 @@ function search(query){
                 
                
             });
-          
-           }
-        
-     });
-     
-     
-  
-}
+};

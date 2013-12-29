@@ -10,6 +10,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
+import java.util.Comparator;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -87,9 +88,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public List<Book> getBooksComplex(String query) {
-        return bookDAO.getBooksComplex(query);
+    public List<Book> getBooksComplex(Comparator<Book> comparator, String... query) {
+        return bookDAO.getBooksComplex(comparator, query);
     }
+
+    
 
 }
 

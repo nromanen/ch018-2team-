@@ -96,7 +96,6 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
         try{
         BooksInUse use = (BooksInUse) factory.getCurrentSession().createQuery("from BooksInUse where person = :p AND book = :b")
                 .setParameter("p", person).setParameter("b", book).list().get(0);
-            System.out.println("+++++++++++====================" + use);
         return use == null ? false : true;
         }catch(Exception e){
             return false;

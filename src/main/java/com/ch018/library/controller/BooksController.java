@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
@@ -23,10 +24,12 @@ import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TreeSet;
 import javax.persistence.Cache;
 import javax.servlet.http.HttpServletRequest;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -70,13 +73,23 @@ public class BooksController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public  String books(@RequestParam(value = "query") String query, HttpServletRequest request){
-        
+        String[] queries = query.split(" ");
         List<Book> books;
+        Comparator<Book> comparator = new Comparator<Book>(){
+            
+            @Override
+            public int compare(Book b1, Book b2){
+                return b1.getTitle().compareTo(b2.getTitle());
+            }
+            
+            
+                    
+        };
         
         if(query.equals(""))
             books = bookService.getAll();
         else
-            books = bookService.getBooksByTitle(query);
+            books = bookService.getBooksComplex(comparator, queries);
         
         List<JSONObject> jsons = new ArrayList<>();
         
@@ -114,6 +127,82 @@ public class BooksController {
         return finalJson.toString();
     }
     
+    @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
+    public @ResponseBody String advancedSearch(@RequestParam("title") String title,
+                                                @RequestParam("authors") String authors,
+                                                @RequestParam("publisher") String publisher,
+                                                @RequestParam("genreId") Integer genreId,
+                                                HttpServletRequest request){
+        Set<Book> books = new TreeSet<>(new Comparator<Book>() {
+
+            @Override
+            public int compare(Book b1, Book b2) {
+                return b1.getTitle().compareTo(b2.getTitle());
+            }
+        });
+        List<JSONObject> jsons = new ArrayList<>();
+        /*List<Book> byTitle = new ArrayList<>();
+        List<Book> byAuthors = new ArrayList<>();
+        List<Book> byPublisher = new ArrayList<>();
+        List<Book> byGenre = new ArrayList<>();*/
+        if(!title.equals(""))
+            books.addAll(bookService.getBooksByTitle(title));
+        if(!authors.equals(""))
+            books.addAll(bookService.getBooksByAuthors(authors));
+        if(!authors.equals(""))
+            books.addAll(bookService.getBooksByPublisher(publisher));
+        if(genreId > 0)
+            books.addAll(bookService.getBooksByGenre(genreService.getById(genreId)));
+        
+        if(request.isUserInRole("ROLE_USER")){
+            
+            for(Book book : books){
+                JSONObject json = new JSONObject();
+                json.put("bId", book.getbId());
+                json.put("title", book.getTitle());
+                json.put("authors", book.getAuthors());
+                json.put("description", book.getDescription());
+                json.put("generalQuantity", book.getGeneralQuantity());
+                json.put("currentQuantity", book.getCurrentQuantity());
+                json.put("img", book.getImg());
+                jsons.add(json);
+        }
+        }else{
+            for(Book book : books){
+                JSONObject json = new JSONObject();
+                
+                json.put("title", book.getTitle());
+                json.put("authors", book.getAuthors());
+                json.put("description", book.getDescription());
+                json.put("generalQuantity", book.getGeneralQuantity());
+                json.put("currentQuantity", book.getCurrentQuantity());
+                json.put("img", book.getImg());
+                jsons.add(json);
+        }
+        }
+        
+        JSONObject finalJson = new JSONObject();
+        finalJson.put("auth", request.isUserInRole("ROLE_USER"));
+        finalJson.put("books", jsons);
+        
+        return finalJson.toString();
+    }
+    
+    
+    
+    @RequestMapping(value = "/advancedSearch/getGenres", method = RequestMethod.POST)
+    public @ResponseBody String advancedSearchGenres(){
+        List<Genre> genres = genreService.getAll();
+        List<JSONObject> jsons = new ArrayList<>();
+        for(Genre genre : genres){
+            JSONObject json = new JSONObject();
+            json.put("id", genre.getId());
+            json.put("description", genre.getDescription());
+            jsons.add(json);
+        }
+        
+        return jsons.toString();
+    }
     
     
     @RequestMapping(value = "/autocomplete", method = RequestMethod.GET)

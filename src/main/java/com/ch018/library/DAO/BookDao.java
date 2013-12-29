@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import java.util.Comparator;
 import java.util.Set;
 import org.springframework.stereotype.Repository;
 @Repository
@@ -22,4 +23,6 @@ public interface BookDao {
         List<Book> getBooksByPagesEq(int pages);
         List<Book> getBooksByGenre(Genre genre);
         List<Book> getBooksComplex(String query);
+        List<Book> getBooksComplex(Comparator<Book> comparator, String... query);
+        
 }

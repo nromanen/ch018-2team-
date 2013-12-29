@@ -7,7 +7,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,9 +90,27 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> getBooksComplex(String query) {
+        
         query = "%" + query + "%";
-        return factory.getCurrentSession().createQuery("from Book b where b.title like :q").setString("q", query).list();
+        return factory.getCurrentSession().createQuery("from Book b where b.title like :q"
+                + " OR b.authors like :q"
+                + " OR b.publisher like :q"
+                + " OR b.genre.description like :q").
+                setString("q", query).list();
     }
+    
+    @Override
+    public List<Book> getBooksComplex(Comparator<Book> comparator, String... query) {
+        
+        Set<Book> books = new TreeSet<>(comparator);
+        for(int i = 0; i < query.length; i++){
+            books.addAll(getBooksComplex(query[i]));
+        }
+        
+        return new ArrayList<>(books);
+    }
+
+
         
     
 	

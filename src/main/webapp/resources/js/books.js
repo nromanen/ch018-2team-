@@ -3,6 +3,8 @@ $(document).ready(function () {
    
      search("");
      
+     advancedSearchPanel();
+     
      $('#search_field').autocomplete({
          serviceUrl: window.location.pathname + "autocomplete",
          minChars: 2
@@ -59,6 +61,18 @@ $(document).ready(function () {
         myBooks();
     });
 
+    $('body').on('click', '#advanced_search_button', function() {
+        
+        
+        $('#advanced_search_panel').toggle("slow");
+        
+        
+    });
+    
+    $('body').on('click', '#advanced_search_submit', function() {
+        
+        advancedSearch();
+    });
 });
      
 
