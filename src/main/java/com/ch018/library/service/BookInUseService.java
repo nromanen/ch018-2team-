@@ -27,5 +27,6 @@ public interface BookInUseService {
     List<BooksInUse> getBooksInUseByIssueDate(Date issue);
     List<BooksInUse> getBooksInUseByReturnDate(Date issue);
     Date getBookWithLastDate(Book book);
+    boolean isPersonHaveBook(Person person, Book book);
     
 }

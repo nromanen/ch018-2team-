@@ -79,6 +79,13 @@ public class BookInUseServiceImpl implements BookInUseService {
         return useDao.getBookWithLastDate(book);
          
     }
+
+    @Override
+    @Transactional
+    public boolean isPersonHaveBook(Person person, Book book) {
+        return useDao.isPersonHaveBook(person, book);
+    }
+    
     
     
     

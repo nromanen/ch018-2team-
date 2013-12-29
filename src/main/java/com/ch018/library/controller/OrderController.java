@@ -52,8 +52,12 @@ public class OrderController {
 
     
     @RequestMapping(method = RequestMethod.POST)
-    public @ResponseBody String order(@RequestParam("bookid") Integer bId){
+    public @ResponseBody String order(@RequestParam("bookid") Integer bId, Principal principal){
+        Person person = personService.getByEmail(principal.getName());
         Book book = bookService.getBookById(bId);
+        
+        
+        
         Date minReturn;
         
         if(book.getCurrentQuantity() > 0)
@@ -62,9 +66,14 @@ public class OrderController {
             minReturn = useService.getBookWithLastDate(book);
             minReturn =  minReturn == null ? new Date() : minReturn;
         }
+        
     
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
         JSONObject json = new JSONObject();
+        if(useService.isPersonHaveBook(person, book))
+            json.put("inUse", true);
+        else
+            json.put("inUse", false);
         json.put("bId", book.getbId());
         json.put("img", book.getImg());
         json.put("title", book.getTitle());
@@ -149,10 +158,11 @@ public class OrderController {
         
         ordersService.update(orderId, newDate);
         Date minDate = useService.getBookWithLastDate(book);
+        minDate = minDate == null ? new Date() : minDate;
         JSONObject json = new JSONObject();
         json.put("orderId", orderId);
         json.put("date", date);
-        json.put("minDate", minDate);
+        json.put("minDate", format.format(minDate).toString());
         
         return json.toString();
     }

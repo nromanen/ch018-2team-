@@ -59,7 +59,12 @@ function order(val){
             $wish_button.appendTo($wishing_div);
             $wishing_div.appendTo($book_ordering_wrapper);
              
-             
+            if(data.inUse == true){
+                alert("AAAAA");
+                $('#order_button').attr('disabled', 'disabled');
+                $('#wish_button').attr('disabled', 'disabled');
+                
+            }
                  
              }
          });
@@ -205,10 +210,9 @@ function editOrder(orderId, date){
         success: function(data) {
             
                 var $li = $('#orders_li_' + orderId);
-                $edit_input.appendTo($li);
-           
-                var $edit_input = $('<input>', {class : 'edit_calendar', type : "text", value : date});
-                $edit_input.appendTo($li);
+                
+                $li.find('.li_orderDate').text(date);
+                var $edit_input = $li.find(".edit_calendar");
                 var minD = data.minDate.split(" ");
                  $edit_input.datetimepicker({
                     format: 'Y/m/d H:m',

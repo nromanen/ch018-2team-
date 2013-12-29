@@ -17,6 +17,8 @@
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/order.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/wish.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/mybooks.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/books.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
         

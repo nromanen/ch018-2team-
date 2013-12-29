@@ -11,13 +11,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ch018.library.entity.Book;
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Person;
+import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 
 import com.ch018.library.service.GenreService;
+import com.ch018.library.service.PersonService;
 import java.security.Principal;
+import java.sql.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.GregorianCalendar;
 import java.util.List;
+import javax.persistence.Cache;
 import javax.servlet.http.HttpServletRequest;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
@@ -45,6 +55,10 @@ public class BooksController {
     BookService bookService;
     @Autowired
     GenreService genreService;
+    @Autowired
+    PersonService personService;
+    @Autowired
+    BookInUseService useService;
     
     //JSON PART
     
@@ -67,6 +81,7 @@ public class BooksController {
         List<JSONObject> jsons = new ArrayList<>();
         
         if(request.isUserInRole("ROLE_USER")){
+            
             for(Book book : books){
                 JSONObject json = new JSONObject();
                 json.put("bId", book.getbId());
@@ -118,6 +133,24 @@ public class BooksController {
         return json.toString();
        
     }
+    
+    @RequestMapping(value = "/mybooks", method = RequestMethod.POST)
+    public @ResponseBody String myBooks(Principal principal){
+        Person person = personService.getByEmail(principal.getName());
+        List<BooksInUse> uses = useService.getBooksInUseByPerson(person);
+        List<JSONObject> jsons = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        for(BooksInUse use : uses){
+            JSONObject json = new JSONObject();
+            json.put("title", use.getBook().getTitle());
+            json.put("returnDate", use.getReturnDate());
+            int days = (int) (use.getReturnDate().getTime() - new Date().getTime())/(1000 * 3600 * 24);
+            json.put("days", days);
+            jsons.add(json);
+        }
+        return jsons.toString();
+    }
+    
     //OLD PART
     
     /* 

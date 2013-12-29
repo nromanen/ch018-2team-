@@ -35,6 +35,29 @@ $(document).ready(function () {
         editOrder(orderId, date);
     });
     
+    $('body').on('click', '#wish_button', function() {
+        var bookId = $(this).val();
+        addToWishList(bookId);
+    });
+    
+    $('body').on('click', '#my_wishlist', function() {
+        myWishes();
+    });
+    
+    $('body').on('click', '.delete_wish_button', function() {
+        var wishId = $(this).val();
+        deleteWish(wishId);
+    });
+    
+    $('body').on('click', '.confirm_wish_button', function() {
+        var wishId = $(this).val();
+        var date = $(this).prev().val();
+        confirmWish(wishId, date);
+    });
+    
+    $('body').on('click', '#my_books', function() {
+        myBooks();
+    });
 
 });
      

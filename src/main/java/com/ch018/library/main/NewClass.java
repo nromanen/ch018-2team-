@@ -15,6 +15,10 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import com.ch018.library.service.BookInUseServiceImpl;
+import com.ch018.library.service.BookServiceImpl;
+import com.ch018.library.service.PersonService;
+import com.ch018.library.service.PersonServiceImpl;
 import com.ch018.library.util.HibernateUtil;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +39,14 @@ public class NewClass {
 
     public static void main(String[] args){
     	
-
+        
+        //BookInUseServiceImpl use = new BookInUseServiceImpl();
+        
+        Person person = new PersonDaoImpl().getByEmail("user2@mail.com");
+        
+        
+        //List<BooksInUse> uses = use.getBooksInUseByPerson(person);
+        System.out.println(person);//uses.get(0).getPerson().getBooksInUse());
         
     }
     
