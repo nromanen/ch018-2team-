@@ -1,3 +1,3 @@
-    <div id="center_main">
+<div class="col-md-8" id="center_main">
         
     </div>

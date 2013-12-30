@@ -1,76 +1,10 @@
-root { 
-    display: block;
-}
-body{
-    margin: 0px;
-    padding: 0px;
-}
 
-#home_header{
-    height: 100px;
-    background-color: activeborder;
-}
-#search{
-    float: left;
-    height: 100px;
-    width: 65%;
-    
-    
-}
-#search input[type="text"]{
-    margin-left: 30%;
-    margin-top: 20px;
-    width: 60%;
-}
-#search input[type="submit"]{
-    width: 60px;
-    height: 30px;
-}
 #advanced_search_panel{
     display: none;
+    position: absolute;
     width: 250px;
     height: 250px;
     border: 2px solid black;
     background: black;
     z-index: 9999;
-}
-#user_menu{
-    float: left;
-    height: 100px;
-    width: 34%;
-   
-}
-#user_menu ul li{
-    display: inline;
-    margin-right: 5px;
-    font-size: 1em;
-}
-#home_main{
-    clear: both;
-    width: 100%;
-    min-height: 600px;
-    background-color: buttonface;
-    
-}
-#left_main{
-    float: left;
-    width: 14%;
-    min-height: 600px;
-    
-}
-#right_main{
-    float: left;
-    width: 14%;
-    min-height: 600px;
-   
-}
-#center_main{
-    float: left;
-    width: 70%;
-    min-height: 600px;
-
-}
-#footer{
-    clear: both;
-    height: 100px;
 }
