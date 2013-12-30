@@ -72,10 +72,10 @@
 
             </div>
             <div class="row">
-                <div class="col-md-4" id="left_main">
+                <div class="col-md-2" id="left_main">
                     New Arrivals
                 </div>
-                <div class="col-md-8" id="center_main">
+                <div class="col-md-10" id="center_main">
 
                 </div>
                 <!--<div class="col-md-2" id="right_main">

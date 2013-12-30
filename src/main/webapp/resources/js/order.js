@@ -60,7 +60,6 @@ function order(val){
             $wishing_div.appendTo($book_ordering_wrapper);
              
             if(data.inUse == true){
-                alert("AAAAA");
                 $('#order_button').attr('disabled', 'disabled');
                 $('#wish_button').attr('disabled', 'disabled');
                 
