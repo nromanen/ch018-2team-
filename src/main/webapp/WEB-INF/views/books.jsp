@@ -7,8 +7,8 @@
         <title>Home Page</title>
         <c:url value="/resources/css/bootstrap.min.css" var="bootstrapCSS" />  
         <link rel="stylesheet" type="text/css" media="screen" href="${bootstrapCSS}" />
-        <!--<c:url value="/resources/css/main.css" var="mainCSS" />  
-        <link rel="stylesheet" type="text/css" media="screen" href="${mainCSS}" />-->
+        <c:url value="/resources/css/main.css" var="mainCSS" />  
+        <link rel="stylesheet" type="text/css" media="screen" href="${mainCSS}" />
         <c:url value="/resources/css/books.css" var="booksCSS" />  
         <link rel="stylesheet" type="text/css" media="screen" href="${booksCSS}" /> 
         <c:url value="/resources/css/jquery.datetimepicker.css" var="dateCSS" />  
@@ -44,18 +44,21 @@
                         <div class="col-md-4 col-md-offset-8">
                         <a id="advanced_search_button" >Advanced search</a> 
                         <div id="advanced_search_panel">
-                            <p>
-                                <input id="advanced_search_title" type="text">
-                            <p>
-                                <input id="advanced_search_authors" type="text">
-                            <p>
-                                <input id="advanced_search_publisher" type="text">
-                            <p>
-                                <select id="advanced_search_select">
+                           <div class="control-group col-md-12">
+                                <input class="form-control" id="advanced_search_title" type="text">
+                           </div>
+                           <div class="control-group col-md-12">
+                                <input class="form-control" id="advanced_search_authors" type="text">
+                           </div>
+                           <div class="control-group col-md-12">
+                                <input class="form-control" id="advanced_search_publisher" type="text">
+                           </div>
+                           <div class="control-group col-md-12">
+                                <select class="form-control" id="advanced_search_select">
 
                                 </select>    
-                            <p>
-                                <button id="advanced_search_submit">search</button>  
+                           </div>
+                            <button class="btn-info form-control" id="advanced_search_submit">search</button>  
                         </div>
                         </div>
 
@@ -69,7 +72,7 @@
 
             </div>
             <div class="row">
-                <div class="col-md-2" id="left_main">
+                <div class="col-md-4" id="left_main">
                     New Arrivals
                 </div>
                 <div class="col-md-8" id="center_main">
