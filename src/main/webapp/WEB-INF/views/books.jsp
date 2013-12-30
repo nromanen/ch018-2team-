@@ -41,8 +41,9 @@
                         </div>
                     </div>
                     <div class="row" id="advanced_search" >
-                        <button id="advanced_search_button" >Advanced search</button> 
-                        <div id="advanced_search_panel" style="display: none">
+                        <div class="col-md-4 col-md-offset-8">
+                        <a id="advanced_search_button" >Advanced search</a> 
+                        <div id="advanced_search_panel">
                             <p>
                                 <input id="advanced_search_title" type="text">
                             <p>
@@ -54,7 +55,8 @@
 
                                 </select>    
                             <p>
-                                <button id="advanced_search_submit">search</button>    
+                                <button id="advanced_search_submit">search</button>  
+                        </div>
                         </div>
 
 
@@ -73,9 +75,9 @@
                 <div class="col-md-8" id="center_main">
 
                 </div>
-                <div class="col-md-2" id="right_main">
+                <!--<div class="col-md-2" id="right_main">
                     Most ordered
-                </div>
+                </div>-->
             </div>
             <div class="row">
             </div>

@@ -73,25 +73,25 @@ function advancedSearchPanel(){
 function buildMainBooksFromJson(data){
     
     $('#center_main').empty();
-           var $books = $('<div>', {id : 'books'});
+           var $books = $('<div>', {class : 'row'});
            $books.appendTo($('#center_main'));
                $.each(data.books, function (indx, value){
                 
                 
                 
-                var $book_quantity = $('<div>', {class : 'book_quantity'});
-                var $book_info = $('<div>', {class : 'book_info'});
-                var $book_img = $('<div>', {class : 'book_img'});
-                var $book = $('<div>', {class : 'book'});
+                var $book_quantity = $('<div>', {class : 'row'});
+                var $book_info = $('<div>', {class : 'row'});
+                var $book_img = $('<div>', {class : 'row'});
+                var $book = $('<div>', {class : 'col-md-3 book'});
                 
                 
-                $('<span></span>').text(value.generalQuantity).appendTo($book_quantity);
-                $('<span></span>').text(value.currentQuantity).appendTo($book_quantity);
+                $('<div>', {class : 'col-md-6'}).text(value.generalQuantity).appendTo($book_quantity);
+                $('<div>', {class : 'col-md-6'}).text(value.currentQuantity).appendTo($book_quantity);
                 
-                $('<span></span>').text(value.title).appendTo($book_info);
-                $('<b></b>').text("by " + value.authors).appendTo($book_info);
+                $('<div>', {class : 'row'}).text(value.title).appendTo($book_info);
+                $('<div>', {class : 'row'}).text("by " + value.authors).appendTo($book_info);
                 
-                $('<img>', {src : value.img}).appendTo($book_img);
+                $('<img>', {src : value.img, class : 'img-responsive'}).appendTo($book_img);
                 
                 $book_img.appendTo($book);
                 $book_info.appendTo($book);

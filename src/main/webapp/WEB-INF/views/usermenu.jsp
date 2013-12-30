@@ -3,10 +3,10 @@
 <div class="col-md-4" id="user_menu">
     <sec:authorize access="isAuthenticated()">
     <ul class="list-inline">
-        <li><button id="my_books">My Books</button></li>
-        <li><button id="my_orders">Ordered</button></li>
-        <li><button id="my_wishlist">WishList</button></li>
-        <li><button id="my_account">Hello <sec:authentication property="principal.username" /></button> <a href="<c:url value="/j_spring_security_logout" />">logout</a></li>
+        <li><a id="my_books">My Books</a></li>
+        <li><a id="my_orders">Ordered</a></li>
+        <li><a id="my_wishlist">WishList</a></li>
+        <li><a id="my_account">Hello <sec:authentication property="principal.username" /></a> <a href="<c:url value="/j_spring_security_logout" />">logout</a></li>
     </ul>
     </sec:authorize>
 </div>
