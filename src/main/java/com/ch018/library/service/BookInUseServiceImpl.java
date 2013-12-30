@@ -8,8 +8,10 @@ import com.ch018.library.DAO.BooksInUseDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,6 +80,24 @@ public class BookInUseServiceImpl implements BookInUseService {
         return useDao.getBookWithLastDate(book);
          
     }
+
+	@Override
+	public BooksInUse getBookInUseById(int id) {
+		// TODO Auto-generated method stub
+		return useDao.getBookInUseById(id);
+	}
+
+	@Override
+	public List<Date> getBooksInUseToReturnDate() {
+		// TODO Auto-generated method stub
+		return useDao.getBooksInUseToReturnDate();
+	}
+
+	@Override
+	public List<Date> getBooksInUseToIssue() {
+		// TODO Auto-generated method stub
+		return useDao.getBooksInUseToIssue();
+	}
     
     
     

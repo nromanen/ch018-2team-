@@ -4,10 +4,13 @@
  */
 package com.ch018.library.controller;
 
+import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.PersonService;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -40,10 +43,7 @@ public class LoginController {
                 return "redirect:/librarian";
         }
         return "redirect:/login";
-            
-        
     }
-    
     
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String home(Model model){
@@ -61,9 +61,6 @@ public class LoginController {
         }
         return "redirect:/login";
     }
-    
-    
-    
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginProcess(){

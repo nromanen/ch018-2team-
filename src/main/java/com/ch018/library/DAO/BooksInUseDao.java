@@ -21,11 +21,13 @@ public interface BooksInUseDao {
     void save(BooksInUse booksInUse);
     void delete(BooksInUse booksInUse);
     void update(BooksInUse booksInUse);
+    BooksInUse getBookInUseById(int id);
     List<BooksInUse> getAll();
     List<BooksInUse> getBooksInUseByPerson(Person person);
     List<BooksInUse> getBooksInUseByBook(Book book);
     List<BooksInUse> getBooksInUseByIssueDate(Date issue);
     List<BooksInUse> getBooksInUseByReturnDate(Date issue);
     Date getBookWithLastDate(Book book);
-    
+    List<Date> getBooksInUseToReturnDate();
+    List<Date> getBooksInUseToIssue();
 }

@@ -7,8 +7,10 @@ package com.ch018.library.service;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,5 +29,7 @@ public interface BookInUseService {
     List<BooksInUse> getBooksInUseByIssueDate(Date issue);
     List<BooksInUse> getBooksInUseByReturnDate(Date issue);
     Date getBookWithLastDate(Book book);
-    
+    List<Date> getBooksInUseToReturnDate();
+    BooksInUse getBookInUseById(int id);
+    List<Date> getBooksInUseToIssue();
 }
