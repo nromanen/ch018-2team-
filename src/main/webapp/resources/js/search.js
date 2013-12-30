@@ -103,7 +103,7 @@ function buildMainBooksFromJson(data){
                 
                 if(data.auth === true){
                     var $book_order = $('<div>', {class : 'book_order'});
-                    var $button = $('<button>', {class: 'button', value: value.bId});
+                    var $button = $('<button>', {class: 'order_button', value: value.bId});
                     $button.text("Order");
                     $button.appendTo($book_order);
                     $book_order.appendTo($book);

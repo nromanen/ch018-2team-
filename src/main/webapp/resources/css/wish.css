@@ -52,7 +52,7 @@ root {
     min-height: 150px;
 }
 #order_wish{
-    margin: 10% 30%;
+    margin: 30% 30%;
     min-height: 150px;
 }
 #wish_main{
@@ -61,5 +61,15 @@ root {
 }
 #wish_list_table_wrapper{
     width:80%;
-    margin: 20px 15%;
+    margin: 30% 15%;
+}
+#wishes_wrap{
+    
+    margin-top: 20%;
+    
+}
+
+.main_wishes_ul{
+    
+    margin-top: 20%;
 }
