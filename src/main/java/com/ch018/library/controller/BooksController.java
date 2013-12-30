@@ -66,7 +66,11 @@ public class BooksController {
     //JSON PART
     
     @RequestMapping(method = RequestMethod.GET)
-    public String booksG(){
+    public String booksG(Model model){
+        List<Genre> genres = genreService.getAll();
+        List<Book> books = bookService.getAll();
+        model.addAttribute("genres", genres);
+        model.addAttribute("books", books);
         return "books";
     }
     
@@ -190,7 +194,7 @@ public class BooksController {
     
     
     
-    @RequestMapping(value = "/advancedSearch/getGenres", method = RequestMethod.POST)
+  /*  @RequestMapping(value = "/advancedSearch/getGenres", method = RequestMethod.POST)
     public @ResponseBody String advancedSearchGenres(){
         List<Genre> genres = genreService.getAll();
         List<JSONObject> jsons = new ArrayList<>();
@@ -202,7 +206,7 @@ public class BooksController {
         }
         
         return jsons.toString();
-    }
+    }*/
     
     
     @RequestMapping(value = "/autocomplete", method = RequestMethod.GET)

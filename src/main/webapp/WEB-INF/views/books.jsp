@@ -8,13 +8,9 @@
         <c:url value="/resources/css/bootstrap.min.css" var="bootstrapCSS" />  
         <link rel="stylesheet" type="text/css" media="screen" href="${bootstrapCSS}" />
         <c:url value="/resources/css/main.css" var="mainCSS" />  
-        <link rel="stylesheet" type="text/css" media="screen" href="${mainCSS}" />
-        <c:url value="/resources/css/books.css" var="booksCSS" />  
-        <link rel="stylesheet" type="text/css" media="screen" href="${booksCSS}" /> 
+        <link rel="stylesheet" type="text/css" media="screen" href="${mainCSS}" /> 
         <c:url value="/resources/css/jquery.datetimepicker.css" var="dateCSS" />  
         <link rel="stylesheet" type="text/css" media="screen" href="${dateCSS}" /> 
-        <c:url value="/resources/css/order.css" var="orderCSS" />  
-        <link rel="stylesheet" type="text/css" media="screen" href="${orderCSS}" /> 
         <c:url value="/resources/css/search.css" var="searchCSS" />  
         <link rel="stylesheet" type="text/css" media="screen" href="${searchCSS}" /> 
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
@@ -28,62 +24,82 @@
 
     </head>
     <body>
+        
         <div class="container">
+            <c:import url="/WEB-INF/views/mainheader.jsp" />
             <div class="row">
-                <div class="col-md-8" id="search">
-                    <div class="row">
-                        <div class="col-md-10">
-                            <input class="form-control" id="search_field" type="text" name="search" onkeydown="if (window.event.keyCode == 13)
-                                        search($(this).val())"/>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn-info" onclick="search($('#search_field').val());">search</button>
-                        </div>
-                    </div>
-                    <div class="row" id="advanced_search" >
-                        <div class="col-md-4 col-md-offset-8">
-                        <a id="advanced_search_button" >Advanced search</a> 
-                        <div id="advanced_search_panel">
-                           <div class="control-group col-md-12">
-                                <input class="form-control" id="advanced_search_title" type="text">
-                           </div>
-                           <div class="control-group col-md-12">
-                                <input class="form-control" id="advanced_search_authors" type="text">
-                           </div>
-                           <div class="control-group col-md-12">
-                                <input class="form-control" id="advanced_search_publisher" type="text">
-                           </div>
-                           <div class="control-group col-md-12">
-                                <select class="form-control" id="advanced_search_select">
-
-                                </select>    
-                           </div>
-                            <button class="btn-info form-control" id="advanced_search_submit">search</button>  
-                        </div>
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-
-                <c:import url="/WEB-INF/views/usermenu.jsp" />
-
-            </div>
-            <div class="row">
-                <div class="col-md-2" id="left_main">
+                
+                <div class="col-md-1" id="left_main">
                     New Arrivals
                 </div>
-                <div class="col-md-10" id="center_main">
+                
+                <div class="col-md-11" id="center_main">
+                    <ul class="list-inline">
+                        <c:forEach var="book" items="${books}">
+                            
+                            <li class="LLLL">
+                                <div class="book">
+                                    <div class="book_img_wrapper">
+                                        <a href="<c:url value="order/?id=${book.getbId()}" />">
+                                            <img src="${book.getImg()}">
+                                        </a>
 
+                                    </div>
+
+                                    <div class="clearer">
+
+                                    </div>
+                                        <div class="book_title">
+                                            ${book.getTitle()}
+                                        </div>
+                                        <div class="book_quantity">
+                                            <span><b>Quantity</b></span>
+                                            <span>Current: ${book.getCurrentQuantity()}</span>
+                                            <span>General: ${book.getGeneralQuantity()}</span>
+                                        </div>
+                                        
+                                    </div>
+                                
+                                    <div class="book_ext">
+                                        <div style="background-color: white">
+                                    <div class="book_ext_img_wrapper">
+                                        <a href="<c:url value="order/?id=${book.getbId()}" />">
+                                            <img src="${book.getImg()}">
+                                        </a>
+
+                                    </div>
+                                        
+                                    <div class="clearer">
+
+                                    </div>
+                                        <div class="book_title">
+                                            ${book.getTitle()}
+                                        </div>
+                                        <div class="book_title">
+                                           Authors: ${book.getAuthors()}
+                                        </div>
+                                        <div class="book_title">
+                                           Publisher: ${book.getPublisher()}
+                                        </div>
+                                        <div class="book_quantity">
+                                            <span><b>Quantity</b></span>
+                                            <span>Current: ${book.getCurrentQuantity()}</span>
+                                            <span>General: ${book.getGeneralQuantity()}</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </li>
+                            
+                        </c:forEach>
+                        
+                    </ul>
+                    
                 </div>
-                <!--<div class="col-md-2" id="right_main">
-                    Most ordered
-                </div>-->
+                <c:import url="/WEB-INF/views/center.jsp" />
+                
             </div>
-            <div class="row">
-            </div>
+            <c:import url="/WEB-INF/views/footer.jsp" />
         </div>
     </body>
 </html>

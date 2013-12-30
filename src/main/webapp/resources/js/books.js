@@ -1,9 +1,16 @@
 
 $(document).ready(function () {
    
-     search("");
+     //search("");
      
-     advancedSearchPanel();
+     //advancedSearchPanel();
+     
+    $('.book').hover(function(e) {
+        
+        
+        $(this).next().toggle("slow");
+    });
+    
      
      $('#search_field').autocomplete({
          serviceUrl: window.location.pathname + "autocomplete",
