@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BookDaoImpl implements BookDao {
 
 
-	
+        
     static Logger log = LogManager.getLogger(BookDaoImpl.class);
 
         
@@ -88,6 +88,7 @@ public class BookDaoImpl implements BookDao {
         return factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.eq("genre", genre)).list();
     }
 
+
     @Override
     public List<Book> getBooksComplex(String query) {
         
@@ -110,8 +111,7 @@ public class BookDaoImpl implements BookDao {
         return new ArrayList<>(books);
     }
 
-
         
     
-	
+        
 }
