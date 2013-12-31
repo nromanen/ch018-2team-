@@ -10,18 +10,9 @@
 
 </head>
 <body>
-
-<td><a href="<c:url value="/librarian/books"/>"><h3>Books</h3></a>
+<h3>Books</h3>
 <c:set var="highlight" value="books" scope="request"/>
 <br>
-
-<form name="search" action="<c:url value="/librarian/books/simplesearch" />" method="POST" >
-		
-		<input type="text"  name="request"/>
-		<input type="submit" value="Show Result"/>
-		
-		</form>
-
 <table border = "1">
         <thead>
                 <tr>
@@ -39,24 +30,18 @@
                         
                 </tr>
         </thead>
-        <c:forEach items="${books}" var="book">
+        <c:forEach items="${booksInUse}" var="book">
                 <tr>
-                        <td>${book.bId}</td>
-                        <td>${book.title}</td>
-                        <td>${book.authors}</td>
-                        <td>${book.year}</td>
-                        <td>${book.publisher}</td>
-                        <td>${book.pages}</td>
-                        <td>${book.genre}</td>
-                        <td>${book.description}</td>
-                        <td>${book.shelf}</td>
-                        <td>${book.term}</td>
-                    <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>">Edit</a>
-                    <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>">Delete</a></td>
+                        <td>${book.book.getbId()}</td>
+                        <td>${book.getBook().getTitle()}</td>
+                        <td>${book.getBook().getAuthors()}</td>
+                        <td>${book.getBook().getYear()}</td>
+                        <td>${book.getBook().getPublisher()}</td>
+                        <td>${book.getBook().getPages()}</td>
+                        <td>${book.getBook().getGenre()}</td>
+                        <td>${book.getReturnDate()}</td>
                 </tr>
         </c:forEach>
 </table>
-	<td><a href="<c:url value="/librarian/books/addbook"/>">Add</a></td>
-	<td><a href="<c:url value="/librarian/books/advancedsearch"/>">Advanced Search</a></td>
 </body>
 </html>

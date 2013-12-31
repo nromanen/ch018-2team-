@@ -98,7 +98,7 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 
 	@Override
 	public List<Date> getBooksInUseToReturnDate() {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
 		Session session = factory.openSession();
 		Query query = session.createQuery("SELECT returnDate FROM BooksInUse");//Session is still open???
 		List<Date> dates = query.list(); 

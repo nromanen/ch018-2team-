@@ -4,8 +4,10 @@ import java.util.List;
 
 
 
+
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+
 import org.springframework.stereotype.Repository;
 @Repository
 public interface BookDao {
@@ -17,7 +19,10 @@ public interface BookDao {
 	List<Book> getBooksByTitle(String title);
 	List<Book> getBooksByAuthors(String authors);
 	List<Book> getBooksByYear(int year);
-        List<Book> getBooksByPublisher(String publisher);
-        List<Book> getBooksByPagesEq(int pages);
-        List<Book> getBooksByGenre(Genre genre);
+    List<Book> getBooksByPublisher(String publisher);
+    List<Book> getBooksByPagesEq(int pages);
+    List<Book> getBooksByGenre(Genre genre);
+    List<Book> advancedSearch(Book book);
+    List<Book> simpleSearch(String query);
+
 }

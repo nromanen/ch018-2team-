@@ -94,61 +94,15 @@ public class LibrarianBooksController {
 		return "redirect:/librarian/books";
 	}
 	
-	@RequestMapping(value = "/simplesearch", method=RequestMethod.GET)
-	public String simpleSearch(Model model) {
-		
-		return "simplesearch";
-	}
-	
-	@RequestMapping(value = "/simplesearch", method=RequestMethod.POST)
-	public String simpleSearch(@RequestParam("request") String request) throws Exception {
-		System.out.println("Search request: " + request);
-		ArrayList<Book> allbooks = (ArrayList<Book>) bookService.getAll();
-		ArrayList<Book> searchResult = new ArrayList<Book>();
-		Book book = new Book();
-		book = allbooks.get(0);
-		if(book.getAuthors().equals(request)) {
-			System.out.println("Author");
-		}
-		
-		if(book.getTitle().equals(request)) { 
-			System.out.println("Title");
-		}
-		
-		return "redirect:/librarian/books";
-	}
-	
-	//ToReturn*all time*(Unfinished)
-	@RequestMapping(value = "/toreturn")
-	public String toReturn(Model model) throws SQLException {
-		
-		List<Date> result = bookInUseService.getBooksInUseToReturnDate();
-		List<BooksInUse> biu = new ArrayList<BooksInUse>();
-		ArrayList<Book> books = new ArrayList<Book>();
-		for (Date date : result) {
-			biu = bookInUseService.getBooksInUseByReturnDate(date);
-			System.out.println("The date is: " + date);
-			for (BooksInUse booksInUse : biu) {
-				books.add(booksInUse.getBook());
-			}
-		}
-		
-		for (Book book : books) {
-			System.out.println("Book is: " + book.getAuthors() + " " +book.getTitle());
-		}
-		
-		model.addAttribute("books", books);
-		
-		return "librarianbooks";
-	}
 	
 	//ToIssue*all time*(Unfinished) 
 	@RequestMapping(value = "/toissue")
 	public String toIssue(Model model) throws SQLException {
-		/**/
+		
 		List<Date> result = bookInUseService.getBooksInUseToIssue();
 		List<BooksInUse> biu = new ArrayList<BooksInUse>();
 		ArrayList<Book> books = new ArrayList<Book>();
+		
 		for (Date date: result) {
 			biu = bookInUseService.getBooksInUseByIssueDate(date);
 			System.out.println("The date is: " + date);
@@ -163,8 +117,9 @@ public class LibrarianBooksController {
 		
 		model.addAttribute("books", books);
 		
-		return "librarianbooks";
+		return "librarianbookstoissue";
 	}
+	
 	//Add book is not finished. But Dates work pretty good
 	@RequestMapping(value = "/toissueinhour")
 	public String toIssueInHour(Model model) throws SQLException {
@@ -196,6 +151,31 @@ public class LibrarianBooksController {
 		return "redirect:/librarian/books";
 	}
 	
+	//ToReturn*all time*(Unfinished)
+	@RequestMapping(value = "/toreturn")
+	public String toReturn(Model model) throws SQLException {
+			
+		/*List<Date> result = bookInUseService.getBooksInUseToReturnDate();
+		List<BooksInUse> biu = new ArrayList<BooksInUse>();
+		ArrayList<Book> books = new ArrayList<Book>();
+		
+		for (Date date : result) {
+			biu = bookInUseService.getBooksInUseByReturnDate(date);
+			System.out.println("The date is: " + date);
+			for (BooksInUse booksInUse : biu) {
+				books.add(booksInUse.getBook());
+			}
+		}
+			
+		for (Book book : books) {
+			System.out.println("Book is: " + book.getAuthors() + " " +book.getTitle());
+		}*/
+		
+		//model.addAttribute("books", books);
+		model.addAttribute("booksInUse", bookInUseService.getAll());
+
+		return "librarianbookstoreturn";
+	}
 	//Is not finished, but date comparison works fine
 	@RequestMapping(value = "/toreturntoday")
 	public String toReturnToday(Model model) throws Exception {
@@ -233,109 +213,31 @@ public class LibrarianBooksController {
 	}
 	
 	@RequestMapping(value = "/advancedsearch", method = RequestMethod.POST)
-	public String advancedSearch(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("genreId") Integer gid) throws Exception {
+	public String advancedSearch(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("genreId") Integer gid, Model model) throws Exception {
+		
 		Genre genre = genreService.getById(gid);
-		System.out.println("Genre Id = " + gid);
 		book.setGenre(genre);
-		System.out.println("Book title = " + book.getTitle());
 		
-		List<Book> filteredBooks = new ArrayList<Book>();
-		List<Book> allBooks = bookService.getAll();
+		List<Book> books = bookService.advancedSearch(book);
 		
+		model.addAttribute("books", books);
+
 		
-		for (Book bk : allBooks) {
-		if (bk.getTitle().equals(book.getTitle())){ //Search By title
-			filteredBooks.add(bk);
-		}
-		}
+		return "librarianbooks";
+	}
+	
+	@RequestMapping(value = "/simplesearch", method=RequestMethod.GET)
+	public String simpleSearch(Model model) {
+		return "librarianbooks";
+	}
+	
+	@RequestMapping(value = "/simplesearch", method=RequestMethod.POST)
+	public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
+		System.out.println("Search request: " + request);
+		List<Book> books = bookService.simpleSearch(request);
 		
-		if (filteredBooks.size() > 0) {
-			allBooks.clear();
-			allBooks.addAll(filteredBooks);
-			filteredBooks.clear();
-			System.out.println(allBooks.get(0) + "~~~~" + "Found by title");
-		}else {
-			System.out.println("Title is null!");
-		}
+		model.addAttribute("books", books);
 		
-		for (Book bk : allBooks) {
-			if (bk.getAuthors().equals(book.getAuthors())){ //Search By Authors
-				filteredBooks.add(bk);
-		}
-		}
-			
-		if (filteredBooks.size() > 0) {
-			allBooks.clear();
-			allBooks.addAll(filteredBooks);
-			filteredBooks.clear();
-			System.out.println(allBooks.get(0) + "~~~~" + "Found by authors");
-		}else {
-			System.out.println("Title is null!");
-		}
-		
-		for (Book bk : allBooks) {
-			if (bk.getGenre().equals(book.getGenre())){ //Search By Genre
-				filteredBooks.add(bk);
-		}
-		}
-			
-		if (filteredBooks.size() > 0) {
-			allBooks.clear();
-			allBooks.addAll(filteredBooks);
-			filteredBooks.clear();
-			System.out.println(allBooks.get(0) + "~~~~" + "Found by genre");
-		}else {
-			System.out.println("Title is null!");
-		}
-		
-		for (Book bk : allBooks) {
-			if (bk.getYear() == (book.getYear())){ //Search By Year
-				filteredBooks.add(bk);
-		}
-		}
-			
-		if (filteredBooks.size() > 0) {
-			allBooks.clear();
-			allBooks.addAll(filteredBooks);
-			filteredBooks.clear();
-			System.out.println(allBooks.get(0) + "~~~~" + "Found by year");
-		}else {
-			System.out.println("Title is null!");
-		}
-		
-		for (Book bk : allBooks) {
-			if (bk.getPages() == (book.getPages())){ //Search By Pages
-				filteredBooks.add(bk);
-		}
-		}
-			
-		if (filteredBooks.size() > 0) {
-			allBooks.clear();
-			allBooks.addAll(filteredBooks);
-			filteredBooks.clear();
-			System.out.println(allBooks.get(0) + "~~~~" + "Found by pages");
-		}else {
-			System.out.println("Title is null!");
-		}
-		
-		for (Book bk : allBooks) {
-			if (bk.getPublisher().equals(book.getPages())){ //Search By Publisher
-				filteredBooks.add(bk);
-		}
-		}
-			
-		if (filteredBooks.size() > 0) {
-			allBooks.clear();
-			allBooks.addAll(filteredBooks);
-			filteredBooks.clear();
-			System.out.println(allBooks.get(0) + "~~~~" + "Found by publisher");
-		}else {
-			System.out.println("Title is null!");
-		}
-		
-		for (Book book2 : allBooks) {
-			System.out.println(book2.getAuthors() + " " + book2.getTitle() + "THE END!");
-		}
-		return "redirect:/librarian/books";
+		return "librarianbooks";
 	}
 }

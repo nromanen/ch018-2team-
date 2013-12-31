@@ -10,18 +10,9 @@
 
 </head>
 <body>
-
-<td><a href="<c:url value="/librarian/books"/>"><h3>Books</h3></a>
+<h3>Books</h3>
 <c:set var="highlight" value="books" scope="request"/>
 <br>
-
-<form name="search" action="<c:url value="/librarian/books/simplesearch" />" method="POST" >
-		
-		<input type="text"  name="request"/>
-		<input type="submit" value="Show Result"/>
-		
-		</form>
-
 <table border = "1">
         <thead>
                 <tr>
@@ -52,11 +43,9 @@
                         <td>${book.shelf}</td>
                         <td>${book.term}</td>
                     <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>">Edit</a>
-                    <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>">Delete</a></td>
+                    <td><a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>">Delete</a></td>
                 </tr>
         </c:forEach>
 </table>
-	<td><a href="<c:url value="/librarian/books/addbook"/>">Add</a></td>
-	<td><a href="<c:url value="/librarian/books/advancedsearch"/>">Advanced Search</a></td>
 </body>
 </html>
