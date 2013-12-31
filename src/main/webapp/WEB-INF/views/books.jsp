@@ -37,7 +37,7 @@
                     <ul class="list-inline">
                         <c:forEach var="book" items="${books}">
                             
-                            <li class="LLLL">
+                            <li>
                                 <div class="book">
                                     <div class="book_img_wrapper">
                                         <a href="<c:url value="order/?id=${book.getbId()}" />">
@@ -46,9 +46,7 @@
 
                                     </div>
 
-                                    <div class="clearer">
-
-                                    </div>
+                                    
                                         <div class="book_title">
                                             ${book.getTitle()}
                                         </div>

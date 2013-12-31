@@ -73,41 +73,51 @@ function advancedSearchPanel(){
 function buildMainBooksFromJson(data){
     
     $('#center_main').empty();
-           var $books = $('<div>', {class : 'row'});
-           $books.appendTo($('#center_main'));
+           var $ul = $('<ul>', {class : 'list-inline'});
+           $ul.appendTo($('#center_main'));
                $.each(data.books, function (indx, value){
                 
                 
+                var $li = $('<li>');
+                $li.appendTo($ul);
+                var $book_quantity = $('<div>', {class : 'book_quantity'});
+                var $book_title = $('<div>', {class : 'book_title'});
+                var $book_img_wrapper = $('<div>', {class : 'book_img_wrapper'});
+                var $book = $('<div>', {class : 'book'});
                 
-                var $book_quantity = $('<div>', {class : 'row'});
-                var $book_info = $('<div>', {class : 'row'});
-                var $book_img = $('<div>', {class : 'row'});
-                var $book = $('<div>', {class : 'col-md-3 book'});
+                $('<span>').text("Quantity").appendTo($book_quantity);
+                $('<span>').text(value.generalQuantity).appendTo($book_quantity);
+                $('<span>').text(value.currentQuantity).appendTo($book_quantity);
                 
                 
-                $('<div>', {class : 'col-md-6'}).text(value.generalQuantity).appendTo($book_quantity);
-                $('<div>', {class : 'col-md-6'}).text(value.currentQuantity).appendTo($book_quantity);
+                $book_title.text(value.title);
+           
+                $a = $('<a>', {href : "order?id=" + value.bId});
+                $('<img>', {src : value.img}).appendTo($book_img_wrapper).appendTo($a);
+                $a.appendTo($book_img_wrapper);
                 
-                $('<div>', {class : 'row'}).text(value.title).appendTo($book_info);
-                $('<div>', {class : 'row'}).text("by " + value.authors).appendTo($book_info);
-                
-                $('<img>', {src : value.img, class : 'img-responsive'}).appendTo($book_img);
-                
-                $book_img.appendTo($book);
-                $book_info.appendTo($book);
-                $book_info.appendTo($book);
+                $book_img_wrapper.appendTo($book);
+                $book_title.appendTo($book);
                 $book_quantity.appendTo($book);
-                $book.appendTo($books);
+                $book.appendTo($li);
                 
+                //------book_ext
+                /*
+                var $book_ext = $('<div>', {class : 'book_ext'});
+                var $book_ext_img_wrapper = $('<div>', {class : 'book_ext_img_wrapper'});
+                $a.appendTo($book_ext_img_wrapper);
+                $book_ext_img_wrapper.appendTo($book_ext);
+                $book_title.appendTo($book_ext);
+                $book_quantity.appendTo($book_ext);
+                $book_ext.appendTo($li);*/
                 
-                
-                if(data.auth === true){
+                /*if(data.auth === true){
                     var $book_order = $('<div>', {class : 'book_order'});
                     var $button = $('<button>', {class: 'order_button', value: value.bId});
                     $button.text("Order");
                     $button.appendTo($book_order);
                     $book_order.appendTo($book);
-                }
+                }*/
                 
                
             });

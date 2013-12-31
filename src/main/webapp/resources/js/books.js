@@ -5,10 +5,15 @@ $(document).ready(function () {
      
      //advancedSearchPanel();
      
-    $('.book').hover(function(e) {
+    $('.book').hover(function() {
         
+        $(this).next().css("display", "block");
+        $(this).next().hover(function(){
+            
+        }, function(){
+            $(this).css("display", "none");
+        });
         
-        $(this).next().toggle("slow");
     });
     
      
