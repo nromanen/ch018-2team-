@@ -55,6 +55,9 @@
                             <input class="form-control" type="password" name="password" placeholder="Password">
                         </div>
                         <div class="form-group col-lg-8">
+                            <input class="form-control" type="password" name="rPassword" placeholder="Re-enter Password">
+                        </div>
+                        <div class="form-group col-lg-8">
                             <input class="form-control" type="text" name="cellphone" placeholder="Phone Number">
                         </div>
                         <div class="form-group col-lg-8">
