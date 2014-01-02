@@ -14,11 +14,8 @@
         <c:url value="/resources/css/search.css" var="searchCSS" />  
         <link rel="stylesheet" type="text/css" media="screen" href="${searchCSS}" /> 
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/order.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/wish.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/mybooks.js" />"></script>
+        
         <script type="text/javascript" src="<c:url value="/resources/js/books.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
 
@@ -30,7 +27,7 @@
             <div class="row">
                 
                 <div class="col-md-1" id="left_main">
-                    New Arrivals
+                    <!--New Arrivals-->
                 </div>
                 
                 <div class="col-md-11" id="center_main">
@@ -40,7 +37,7 @@
                             <li>
                                 <div class="book">
                                     <div class="book_img_wrapper">
-                                        <a href="<c:url value="order/?id=${book.getbId()}" />">
+                                        <a href="<c:url value="order?id=${book.getbId()}" />">
                                             <img src="${book.getImg()}">
                                         </a>
 
@@ -61,15 +58,13 @@
                                     <div class="book_ext">
                                         <div style="background-color: white">
                                     <div class="book_ext_img_wrapper">
-                                        <a href="<c:url value="order/?id=${book.getbId()}" />">
+                                        <a href="<c:url value="order?id=${book.getbId()}" />">
                                             <img src="${book.getImg()}">
                                         </a>
 
                                     </div>
                                         
-                                    <div class="clearer">
-
-                                    </div>
+                                    
                                         <div class="book_title">
                                             ${book.getTitle()}
                                         </div>
@@ -94,7 +89,7 @@
                     </ul>
                     
                 </div>
-                <c:import url="/WEB-INF/views/center.jsp" />
+                
                 
             </div>
             <c:import url="/WEB-INF/views/footer.jsp" />

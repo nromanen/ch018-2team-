@@ -85,9 +85,7 @@ public class BooksController {
             public int compare(Book b1, Book b2){
                 return b1.getTitle().compareTo(b2.getTitle());
             }
-            
-            
-                    
+        
         };
         
         if(query.equals(""))
@@ -104,6 +102,7 @@ public class BooksController {
                 json.put("bId", book.getbId());
                 json.put("title", book.getTitle());
                 json.put("authors", book.getAuthors());
+                json.put("publisher", book.getPublisher());
                 json.put("description", book.getDescription());
                 json.put("generalQuantity", book.getGeneralQuantity());
                 json.put("currentQuantity", book.getCurrentQuantity());
@@ -116,6 +115,7 @@ public class BooksController {
                 
                 json.put("title", book.getTitle());
                 json.put("authors", book.getAuthors());
+                json.put("publisher", book.getPublisher());
                 json.put("description", book.getDescription());
                 json.put("generalQuantity", book.getGeneralQuantity());
                 json.put("currentQuantity", book.getCurrentQuantity());
@@ -225,6 +225,14 @@ public class BooksController {
         
         return json.toString();
        
+    }
+    
+    @RequestMapping(value = "/mybooks", method = RequestMethod.GET)
+    public String myBooksG(Model model, Principal principal){
+        Person person = personService.getByEmail(principal.getName());
+        List<BooksInUse> uses = useService.getBooksInUseByPerson(person);
+        model.addAttribute("uses", uses);
+        return "myBooks";
     }
     
     @RequestMapping(value = "/mybooks", method = RequestMethod.POST)

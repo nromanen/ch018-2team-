@@ -5,7 +5,18 @@ $(document).ready(function () {
      
      //advancedSearchPanel();
      
-    $('.book').hover(function() {
+   $('body').on({
+       mouseenter : function(){
+           $(this).next().css("display", "block");
+           $(this).next().hover(function(){
+            
+        }, function(){
+            $(this).css("display", "none");
+        });
+       }
+   }, '.book');  
+     
+   /*$('body').on('hover', '.book', function() {
         
         $(this).next().css("display", "block");
         $(this).next().hover(function(){
@@ -14,7 +25,7 @@ $(document).ready(function () {
             $(this).css("display", "none");
         });
         
-    });
+    });*/
     
      
      $('#search_field').autocomplete({

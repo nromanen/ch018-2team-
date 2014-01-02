@@ -1,4 +1,30 @@
 
+
+$(document).ready(function(){
+    minD = $('#minDate').val().split(" ");
+    
+    $('#datetimepicker').datetimepicker({
+                format: 'Y/m/d H:m',
+                minDate: minD[0],
+                minTime: minD[1]
+            });
+    $('#order_button').click(function() {
+        
+        bookId = $(this).prev().val();
+        time = $(this).prev().prev().val();
+        makeOrder(bookId, time);
+        
+    });
+    
+    $('#wish_button').click(function() {
+       bookId = $(this).prev().val();
+        addToWishList(bookId);
+    });
+    
+    $('.order_delete_button').click(function(){
+        deleteOrder($this.prev().val());
+    });
+});
 function order(val){
         
         $.ajax({
@@ -72,7 +98,7 @@ function order(val){
     
 function makeOrder(bookId, time){
     $.ajax({
-            url: window.location.pathname + "order/add",
+            url: window.location.pathname + "/add",
             type: "POST",
             data: {'bookId' : bookId, 'time' : time},
             dataType: "json",
@@ -187,7 +213,7 @@ function deleteOrder(orderId){
         success: function() {
             
             //myOrders();
-            $('#orders_li_' + orderId).remove();
+            $('#order_li_' + orderId).remove();
                
                 
             }

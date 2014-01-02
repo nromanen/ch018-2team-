@@ -45,6 +45,9 @@
     
     position: absolute;
 }
+.book_ext_back{
+    background-color: white; 
+}
 .book_ext_img_wrapper{
     margin: 0 15px;
     width: 280px;

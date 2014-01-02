@@ -50,6 +50,32 @@ public class OrderController {
     @Autowired
     BookInUseService useService;
 
+    @RequestMapping(method = RequestMethod.GET)
+    public String orderG(@RequestParam("id") Integer bookId , Model model, Principal principal){
+        Person person = personService.getByEmail(principal.getName());
+        Book book = bookService.getBookById(bookId);
+        model.addAttribute("book", book);
+        
+        Date minDate;
+        
+        if(book.getCurrentQuantity() > 0)
+            minDate = new Date();
+        else{
+            minDate = useService.getBookWithLastDate(book);
+            minDate =  minDate == null ? new Date() : minDate;
+        }
+        
+    
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        model.addAttribute("minDate", format.format(minDate).toString());
+       
+        if(useService.isPersonHaveBook(person, book))
+            model.addAttribute("inUse", true);
+        else
+            model.addAttribute("inUse", false);
+        
+        return "order";
+    }
     
     @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody String order(@RequestParam("bookid") Integer bId, Principal principal){
@@ -101,7 +127,30 @@ public class OrderController {
         return new JSONObject().toString();
     }
     
+   
     @RequestMapping(value = "/my", method = RequestMethod.GET)
+    public String myG(Model model, Principal principal){
+        Person person = personService.getByEmail(principal.getName());
+        List<Orders> orders = ordersService.getOrderByPerson(person);
+        Map<Orders, String> ordersMinDates = new HashMap<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        for(Orders order : orders){
+            
+            Date minDate;
+            
+            if(order.getBook().getCurrentQuantity() > 0)
+                minDate = new Date();
+            else
+                minDate =  useService.getBookWithLastDate(order.getBook());
+            minDate = minDate == null ? new Date() : minDate;
+            ordersMinDates.put(order, format.format(minDate));
+        }
+        model.addAttribute("ordersMinDates", ordersMinDates);
+        return "orders";
+        
+    }
+    
+    /*@RequestMapping(value = "/my", method = RequestMethod.GET)
     public @ResponseBody String my(Principal principal){
         Person person = personService.getByEmail(principal.getName());
         List<Orders> orders = ordersService.getOrderByPerson(person);
@@ -117,12 +166,7 @@ public class OrderController {
             else
                 minDate =  useService.getBookWithLastDate(order.getBook());
             minDate = minDate == null ? new Date() : minDate;
-            /*if(minDate.compareTo(orderDate) > 0){
-                orderDate = minDate;
-                json.put("changed", true);
-            }else{
-                json.put("changed", false);
-            }*/
+          
             
             json.put("orderId", order.getId());
             json.put("title", order.getBook().getTitle());
@@ -135,7 +179,7 @@ public class OrderController {
         }
         System.out.println(jsons.toString());
         return jsons.toString();
-    }
+    }*/
     
     @RequestMapping(value = "/delete")
     public @ResponseBody String delete(@RequestParam("orderId") Integer orderId){
@@ -155,8 +199,9 @@ public class OrderController {
         }catch(Exception e){
             throw new IncorrectDate("incorrect date");
         }
-        
+        System.out.println(newDate);
         ordersService.update(orderId, newDate);
+        
         Date minDate = useService.getBookWithLastDate(book);
         minDate = minDate == null ? new Date() : minDate;
         JSONObject json = new JSONObject();

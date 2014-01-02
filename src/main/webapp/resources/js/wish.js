@@ -1,7 +1,7 @@
 function addToWishList(bookId){
     
     $.ajax({
-        url: window.location.pathname + "wishlist/add",
+        url: "wishlist/add",
         type: "POST",
         data: {'bookId' : bookId},
         dataType: "json",
