@@ -130,7 +130,7 @@ function deleteWish(wishId){
 function confirmWish(wishId, date){
     
     $.ajax({
-            url: window.location.pathname + "wishlist/confirm",
+            url: "confirm",
             type: "POST",
             data: {'wishId' : wishId, 'date' : date},
             dataType: "json",

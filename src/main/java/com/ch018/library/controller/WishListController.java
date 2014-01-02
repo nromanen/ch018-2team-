@@ -66,8 +66,19 @@ public class WishListController {
         return json.toString();
     }
     
+    @RequestMapping(value="/my", method = RequestMethod.GET)
+    public String myG(Model model, Principal principal){
+        Person person = personService.getByEmail(principal.getName());
+        List<WishList> wishes = wishService.getWishByPerson(person);
+        Map<WishList, String> wishesWithDates = new HashMap<>();
+        for(WishList wish : wishes){
+            wishesWithDates.put(wish, calculateMinDate(wish.getBook()));
+        }
+        model.addAttribute("map", wishesWithDates);
+        return "wishlist";
+    }
     
-    @RequestMapping(value = "/my", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/my", method = RequestMethod.POST)
     public @ResponseBody String my(Principal principal){
         Person person = personService.getByEmail(principal.getName());
         List<WishList> wishes = wishService.getWishByPerson(person);
@@ -81,7 +92,7 @@ public class WishListController {
         }
         return jsons.toString();
         
-    }
+    }*/
     
     @RequestMapping(value = "/delete")
     public @ResponseBody String delete(@RequestParam("wishId") Integer wishId){
@@ -90,19 +101,24 @@ public class WishListController {
     }
     
     @RequestMapping(value = "/confirm")
-    public @ResponseBody String add(@RequestParam("wishId") Integer wishId,
+    public @ResponseBody String add(@RequestParam("wishId") Integer wishId, @RequestParam("bookId") Integer bookId,
         @RequestParam("date") String date, Principal principal) throws IncorrectDate{
         Person person = personService.getByEmail(principal.getName());
-        WishList wish = wishService.getWishByID(wishId);
-        Book book = wish.getBook();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        Book book = bookService.getBookById(bookId);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
         Date d;
+        
         try{
             d = format.parse(date);
+            
         }catch(Exception e){
+           
             throw new IncorrectDate("incorrect date");
         }
         ordersService.save(new Orders(person, book, d));
+        System.out.append("@@@@@@44444444444###########");
+        wishService.delete(wishService.getWishByID(wishId));
+        System.out.append("@@@@@@333333333###########");
         return new JSONObject().toString();
                 
         
