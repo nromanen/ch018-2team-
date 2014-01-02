@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -112,17 +113,19 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 	}
 
 	@Override
-	public List<Date> getBooksInUseToIssue() {
-
+	public List<Date> getBooksInUseToIssueToday() {
+		
+		Calendar begin = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
+		begin.set(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH);
+		
+		
 		Session session = factory.openSession();  
-		Query query = session.createQuery("SELECT issueDate FROM BooksInUse"); //Session is still open???
+		Query query = session.createQuery("FROM BooksInUse WHERE "); //Session is still open???
 		List<Date> dates = query.list(); 
 		
 		return dates;
 	}
-    
-    
-    
     
     
 }

@@ -21,4 +21,7 @@ public interface OrdersService {
          List<Orders> getOrderByDate(Date date);
          Orders getOrderByID(int id); 
          Orders getOrderIdByPersonIdBookId(int pId, int bId);
+         List<Orders> search(String request);
+         List<Orders> getOrdersToday();
+         List<Orders> getOrdersInHour();
 }

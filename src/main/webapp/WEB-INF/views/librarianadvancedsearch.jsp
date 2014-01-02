@@ -6,23 +6,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Library</title>
+<title>Advanced Search</title>
 
 </head>
 <body>
 
 <td><a href="<c:url value="/librarian/books"/>"><h3>Books</h3></a>
-<td><a href="<c:url value="/librarian/orders"/>"><h3>Orders</h3></a>
-<td><a href="<c:url value="/librarian/toreturn"/>"><h3>To Return</h3></a>
 <c:set var="highlight" value="books" scope="request"/>
 <br>
-
-<form name="search" action="<c:url value="/librarian/books/simplesearch" />" method="POST" >
-		
-		<input type="text"  name="request"/>
-		<input type="submit" value="Show Result"/>
-		
-		</form>
 
 <table border = "1">
         <thead>
@@ -56,7 +47,8 @@
                         <td>${book.term}</td>
                         <td>${book.generalQuantity}</td>
                     <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>">Edit</a>
-                    <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>">Delete</a></td>
+                    <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>">Delete</a>
+                     <a href="<c:url value="/librarian/books/holders?id=${book.bId}"/>">Show holders</a></td>
                 </tr>
         </c:forEach>
 </table>

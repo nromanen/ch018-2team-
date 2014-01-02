@@ -31,5 +31,5 @@ public interface BookInUseService {
     Date getBookWithLastDate(Book book);
     List<Date> getBooksInUseToReturnDate();
     BooksInUse getBookInUseById(int id);
-    List<Date> getBooksInUseToIssue();
+    List<Date> getBooksInUseToIssueToday();
 }

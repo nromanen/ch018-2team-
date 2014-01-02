@@ -94,9 +94,9 @@ public class BookInUseServiceImpl implements BookInUseService {
 	}
 
 	@Override
-	public List<Date> getBooksInUseToIssue() {
+	public List<Date> getBooksInUseToIssueToday() {
 		// TODO Auto-generated method stub
-		return useDao.getBooksInUseToIssue();
+		return useDao.getBooksInUseToIssueToday();
 	}
     
     

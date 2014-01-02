@@ -1,22 +1,25 @@
 package com.ch018.library.DAO;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
-import com.ch018.library.util.HibernateUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Repository
 public class OrdersDaoImpl implements OrdersDao{
@@ -76,6 +79,93 @@ public class OrdersDaoImpl implements OrdersDao{
                     setInteger("pid", pId).setInteger("bid", bId).list().get(0);
             return (Orders) factory.getCurrentSession().load(Orders.class, oid);
         }
+
+		@Override
+		public List<Orders> search(String request) {
+			// TODO Auto-generated method stub
+			if (!request.equals("")){
+				
+				Session session = factory.openSession();
+				
+				Query query = session.createQuery("from Orders where book like :book or"
+												+ " person like :person");
+				query.setParameter("book", request + "%");
+				query.setParameter("person", request + "%");
+				
+				List<Orders> orders = query.list();
+				
+				return orders;
+				}else {
+					return null;
+				}
+		}
+
+		@Override
+		public List<Orders> getOrdersToday() {
+			// TODO Auto-generated method stub
+			
+		Calendar start = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
+		
+		start.set(Calendar.HOUR_OF_DAY, 0);
+	    start.set(Calendar.MINUTE, 0);
+	    start.set(Calendar.SECOND, 0);
+	    start.set(Calendar.MILLISECOND, 0);
+		
+	    System.out.println(start.getTime());
+	    
+	    end.add(Calendar.DAY_OF_YEAR, 1);
+	    end.set(Calendar.HOUR_OF_DAY, 0);
+	    end.set(Calendar.MINUTE, 0);
+	    end.set(Calendar.SECOND, 0);
+	    end.set(Calendar.MILLISECOND, 0);
+	    
+	    System.out.println(end.getTime());
+	    
+		Session session = factory.openSession();	
+		Query query = session.createQuery("from Orders where orderDate BETWEEN :start and :end");
+		query.setCalendar("start", start);
+		query.setCalendar("end", end);
+		List<Orders> orders = query.list();
+		
+		Orders order = new Orders();
+		order = orders.get(0);
+					
+		System.out.println(order.getOrderDate() + " gsdkjvbasldj akhfsadkhsn cnhfls");
+			
+			
+			return orders;
+		}
+
+		@Override
+		public List<Orders> getOrdersInHour() {
+			// TODO Auto-generated method stub
+			
+			Calendar start = Calendar.getInstance();
+			Calendar end = Calendar.getInstance();
+			
+		    System.out.println(start.getTime() + "Start");
+		    
+		    end.add(Calendar.HOUR_OF_DAY, 1);
+		    
+		    System.out.println(end.getTime() + "end");
+		    
+			Session session = factory.openSession();	
+			Query query = session.createQuery("from Orders where orderDate BETWEEN :start AND :end");
+			query.setCalendar("start", start);
+			query.setCalendar("end", end);
+			List<Orders> orders = query.list();
+			
+			/*Orders order = new Orders();
+			order = orders.get(0);
+						
+			System.out.println(order.getOrderDate() + " Order 1");
+			
+			order = orders.get(1);
+			System.out.println(order.getOrderDate() + " Order 2");*/
+
+			return orders;
+		}
         
 
         

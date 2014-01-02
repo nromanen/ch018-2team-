@@ -13,20 +13,26 @@
         
         <form:form method="POST" commandName="book" >
             
-            title
+            Title
                 <input type="text" name="title">
-            author
+            Author
                 <input type="text" name="authors">
-            year
+            Year
                 <input type="text" name="year">
-            publisher
+            Publisher
                 <input type="text" name="publisher">
-            pages
+            Pages
                 <input type="text" name="pages">
-            description
+            Description
                 <input type="text" name="description">
-            img url
+            Img url
                 <input type="text" name="img">
+            Shelf 
+            	<input type="text" name="shelf"> 
+            Term
+            	<input type="text" name="term">	    
+            Quantity
+            	<input type="text" name="generalQuantity">	
             genre
 
                 <select name="genreId" >

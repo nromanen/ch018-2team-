@@ -75,8 +75,8 @@ public class Book implements Serializable{
         
         @OneToMany(targetEntity = WishList.class, mappedBy = "book")
         private Set<Person> personsWishes;
-	
-	public Book() {
+
+        public Book() {
 		
 	}
 	
@@ -230,6 +230,7 @@ public class Book implements Serializable{
     public void setPersonsWishes(Set<Person> personsWishes) {
         this.personsWishes = personsWishes;
     }
+    
 
 	@Override
 	public boolean equals(Object obj) {

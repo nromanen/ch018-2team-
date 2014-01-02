@@ -7,13 +7,16 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 
+
 import com.ch018.library.DAO.OrdersDao;
 import com.ch018.library.DAO.OrdersDaoImpl;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
@@ -88,6 +91,24 @@ public class OrdersServiceImpl implements OrdersService{
         public Orders getOrderIdByPersonIdBookId(int pId, int bId) {
                 return ordersDao.getOrderIdByPersonIdBookId(pId, bId);
         }
+
+		@Override
+		public List<Orders> search(String request) {
+			// TODO Auto-generated method stub
+			return ordersDao.search(request);
+		}
+
+		@Override
+		public List<Orders> getOrdersToday() {
+			// TODO Auto-generated method stub
+			return ordersDao.getOrdersToday();
+		}
+
+		@Override
+		public List<Orders> getOrdersInHour() {
+			// TODO Auto-generated method stub
+			return ordersDao.getOrdersInHour();
+		}
         
         
 

@@ -1,10 +1,5 @@
 package com.ch018.library.controller;
 
-/**
-*
-* @author Dmitry Sankovsky
-*/
-
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -95,61 +90,6 @@ public class LibrarianBooksController {
 	}
 	
 	
-	//ToIssue*all time*(Unfinished) 
-	@RequestMapping(value = "/toissue")
-	public String toIssue(Model model) throws SQLException {
-		
-		List<Date> result = bookInUseService.getBooksInUseToIssue();
-		List<BooksInUse> biu = new ArrayList<BooksInUse>();
-		ArrayList<Book> books = new ArrayList<Book>();
-		
-		for (Date date: result) {
-			biu = bookInUseService.getBooksInUseByIssueDate(date);
-			System.out.println("The date is: " + date);
-			for (BooksInUse booksInUse : biu) {
-				books.add(booksInUse.getBook());
-			}
-		}
-		
-		for (Book book : books) {
-			System.out.println("Book is: " + book.getAuthors() + " " +book.getTitle());
-		}
-		
-		model.addAttribute("books", books);
-		
-		return "librarianbookstoissue";
-	}
-	
-	//Add book is not finished. But Dates work pretty good
-	@RequestMapping(value = "/toissueinhour")
-	public String toIssueInHour(Model model) throws SQLException {
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, +35);
-		Date date = new Date();
-		date = calendar.getTime();
-		
-		Calendar calendar1 = Calendar.getInstance();
-		calendar1.add(Calendar.DAY_OF_YEAR, -1);
-		Date currentDate = new Date();
-		currentDate = calendar1.getTime();
-		System.out.println("Current date is: " + currentDate);
-		List<Date> result = bookInUseService.getBooksInUseToIssue();
-		List<BooksInUse> biu = new ArrayList<BooksInUse>();
-		for (Date dt : result) {
-			biu = bookInUseService.getBooksInUseByIssueDate(dt);
-			for (BooksInUse bkInus : biu) {
-				System.out.println("Current book is: " + bkInus.getIssueDate());
-				if (bkInus.getIssueDate().after(currentDate) && bkInus.getIssueDate().before(date)){
-						System.out.println("BINGO!!!!!");
-				}
-			}
-		}
-		
-		System.out.println("Next date is: " + date);
-		System.out.println(date);
-		return "redirect:/librarian/books";
-	}
 	
 	//ToReturn*all time*(Unfinished)
 	@RequestMapping(value = "/toreturn")
@@ -223,7 +163,38 @@ public class LibrarianBooksController {
 		model.addAttribute("books", books);
 
 		
-		return "librarianbooks";
+		return "librarianadvancedsearch";
+	}
+	
+	@RequestMapping(value = "/holders", method = RequestMethod.GET)
+	public String showBookHolders(@RequestParam("id") int id, Model model) throws Exception {
+			Book book = new Book();
+			book = bookService.getBookById(id);
+			BooksInUse bookInUse = new BooksInUse();
+			List<BooksInUse> booksInUse = bookInUseService.getBooksInUseByBook(book);
+			List<BooksInUse> booksInUseEx = new ArrayList<BooksInUse>();
+
+			Date date = new Date();
+			Calendar currentDate = Calendar.getInstance();
+			Calendar endDate = Calendar.getInstance();
+			currentDate.setTime(date);
+			int difference;
+			
+			for (BooksInUse booksInUse2 : booksInUse) {
+				
+				endDate.setTime(booksInUse2.getReturnDate());
+				difference = endDate.get(Calendar.DAY_OF_YEAR) - currentDate.get(Calendar.DAY_OF_YEAR);
+				booksInUse2.setDaysToreturn(difference);
+				System.out.println("The difference is: " + difference);
+				booksInUseEx.add(booksInUse2);
+			}
+			
+			model.addAttribute("book", book);
+			model.addAttribute("booksInUse", booksInUseEx);
+			
+			
+			
+		return "librarianbookholders";
 	}
 	
 	@RequestMapping(value = "/simplesearch", method=RequestMethod.GET)
@@ -238,6 +209,6 @@ public class LibrarianBooksController {
 		
 		model.addAttribute("books", books);
 		
-		return "librarianbooks";
+		return "librarianadvancedsearch";
 	}
 }
