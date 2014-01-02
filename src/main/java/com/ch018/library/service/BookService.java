@@ -9,6 +9,7 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 import java.util.Comparator;
+import java.util.Map;
 
 @Service
 public interface BookService {
@@ -23,6 +24,7 @@ public interface BookService {
         List<Book> getBooksByPublisher(String publisher);
         List<Book> getBooksByPagesEq(int pages);
         List<Book> getBooksByGenre(Genre genre);
-        List<Book> getBooksComplex(Comparator<Book> comparator, String... query);
+        List<Book> getBooksComplex(String query);
+        List<Book> getBooksComplexByParams(String query, Map<String, String> params);
         
 }

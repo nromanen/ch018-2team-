@@ -24,8 +24,9 @@
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/orders.js" />"></script>
-        <!--<script type="text/javascript" src="<c:url value="/resources/js/books.js" />"></script>-->
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/books.js"></script>
+        
 
     </head>
     <body>

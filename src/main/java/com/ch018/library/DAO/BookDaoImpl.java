@@ -10,8 +10,10 @@ import com.ch018.library.entity.Genre;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,6 +103,18 @@ public class BookDaoImpl implements BookDao {
     }
     
     @Override
+    public List<Book> getBooksComplexByParams(String query, Map<String, String> params){
+        Query q = factory.getCurrentSession().createQuery(query);
+        for(Map.Entry<String, String> param : params.entrySet()){
+            if(param.getKey().equals("g"))
+                q.setInteger("g", Integer.valueOf(param.getValue()));
+            else
+                q.setString(param.getKey(), param.getValue());
+        }
+        return q.list();
+    }
+    
+   /*@Override
     public List<Book> getBooksComplex(Comparator<Book> comparator, String... query) {
         
         Set<Book> books = new TreeSet<>(comparator);
@@ -109,7 +123,7 @@ public class BookDaoImpl implements BookDao {
         }
         
         return new ArrayList<>(books);
-    }
+    }*/
 
         
     

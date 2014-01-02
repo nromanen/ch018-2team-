@@ -6,7 +6,8 @@ $(document).ready(function(){
     $('#datetimepicker').datetimepicker({
                 format: 'Y/m/d H:m',
                 minDate: minD[0],
-                minTime: minD[1]
+                minTime: minD[1],
+                validateOnBlur: true
             });
     $('#order_button').click(function() {
         

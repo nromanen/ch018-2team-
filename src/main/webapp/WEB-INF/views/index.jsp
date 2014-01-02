@@ -21,7 +21,7 @@
             <div class="col-md-7">
             </div>
             <div class="col-md-5">
-                <form class="form-inline" role="form" action="<c:url value="/j_spring_security_check" />" method="post">
+                <form class="form-inline" role="form" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
                     <div class="form-group">
                         <input  class="form-control" type="text" name="j_username" placeholder="Enter Email">
                     </div>

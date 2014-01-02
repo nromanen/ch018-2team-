@@ -10,7 +10,7 @@ $(document).ready(function(){
                     minTime: minD[1]
                });
         
-    })
+    });
     
     $('.wish_delete_button').click(function(){
         var wishId = $(this).prev().val();
@@ -21,7 +21,7 @@ $(document).ready(function(){
         var bookId = $(this).prev().prev().val();
         var wishId = $(this).prev().prev().prev().val();
         alert(wishId + " " + bookId + " " + date);
-        confirmWish(wishId, bookId, date)
+        confirmWish(wishId, bookId, date);
     });
     
 });

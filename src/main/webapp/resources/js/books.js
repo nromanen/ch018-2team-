@@ -29,12 +29,12 @@ $(document).ready(function () {
     
      
      $('#search_field').autocomplete({
-         serviceUrl: window.location.pathname + "autocomplete",
+         serviceUrl: "/library/books/autocomplete",
          minChars: 2
          
      });
      
-    $('body').on('click', '.button', function() {
+   /* $('body').on('click', '.button', function() {
         order($(this).val());
     });
     $('body').on('click', '#order_button', function() {
@@ -82,7 +82,7 @@ $(document).ready(function () {
     
     $('body').on('click', '#my_books', function() {
         myBooks();
-    });
+    });*/
 
     $('body').on('click', '#advanced_search_button', function() {
         

@@ -11,6 +11,7 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 import java.util.Comparator;
+import java.util.Map;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -46,7 +47,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book getBookById(int id) {
-        System.out.println("+++++++++++++====================+++++++++++++++++");
+        
         return bookDAO.getBookById(id);
     }
 
@@ -88,10 +89,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public List<Book> getBooksComplex(Comparator<Book> comparator, String... query) {
-        return bookDAO.getBooksComplex(comparator, query);
+    public List<Book> getBooksComplex(String query) {
+        return bookDAO.getBooksComplex(query);
     }
 
+    @Override
+    @Transactional
+    public List<Book> getBooksComplexByParams(String query, Map<String, String> params) {
+        return bookDAO.getBooksComplexByParams(query, params);
+    }
+
+    
     
 
 }

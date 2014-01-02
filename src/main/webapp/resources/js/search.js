@@ -1,7 +1,7 @@
 function search(query){
     //var query = $('#search_field').val();
     $.ajax({
-            url: window.location.pathname,
+            url: "/library/books",
             type: "POST",
             data: {'query' : query},
             dataType: "json",
@@ -28,7 +28,7 @@ function advancedSearch(){
         var genreId = $('#advanced_search_select').val();
         
         $.ajax({
-            url: window.location.pathname + "/advancedSearch",
+            url: "/library/books/advancedSearch",
             type: "POST",
             data: {'title' : title, 'authors' : authors, 'publisher' : publisher, 'genreId' : genreId},
             dataType: "json",
@@ -112,7 +112,7 @@ function buildMainBooksFromJson(data){
                 var $book_ext = $('<div>', {class : 'book_ext'});
                 var $book_ext_img_wrapper = $('<div>', {class : 'book_ext_img_wrapper'});
                 
-                var $order_a_ext = $('<a>', {href : "order?id=" + value.bId});
+                var $order_a_ext = $('<a>', {href : "/library/books/order?id=" + value.bId});
                 $('<img>', {src : value.img}).appendTo($book_ext_img_wrapper).appendTo($order_a_ext);
                 $order_a_ext.appendTo($book_ext_img_wrapper);
                 

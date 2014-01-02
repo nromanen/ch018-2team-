@@ -34,7 +34,7 @@ public class PersonDaoImpl implements PersonDao {
     @Override
     public void save(Person person) {
         factory.getCurrentSession().save(person);
-        System.out.println("++++++++====================");
+       
     }
 
     @Override

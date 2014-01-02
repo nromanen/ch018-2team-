@@ -28,7 +28,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.persistence.Cache;
 import javax.servlet.http.HttpServletRequest;
@@ -77,21 +80,13 @@ public class BooksController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public  String books(@RequestParam(value = "query") String query, HttpServletRequest request){
-        String[] queries = query.split(" ");
-        List<Book> books;
-        Comparator<Book> comparator = new Comparator<Book>(){
-            
-            @Override
-            public int compare(Book b1, Book b2){
-                return b1.getTitle().compareTo(b2.getTitle());
-            }
         
-        };
+        List<Book> books;
         
         if(query.equals(""))
             books = bookService.getAll();
         else
-            books = bookService.getBooksComplex(comparator, queries);
+            books = bookService.getBooksComplex(query);
         
         List<JSONObject> jsons = new ArrayList<>();
         
@@ -137,26 +132,35 @@ public class BooksController {
                                                 @RequestParam("publisher") String publisher,
                                                 @RequestParam("genreId") Integer genreId,
                                                 HttpServletRequest request){
-        Set<Book> books = new TreeSet<>(new Comparator<Book>() {
-
-            @Override
-            public int compare(Book b1, Book b2) {
-                return b1.getTitle().compareTo(b2.getTitle());
-            }
-        });
+        
+        StringBuilder query = new StringBuilder("from Book where ");
+        Map<String, String> params = new HashMap<>();
+        if(genreId > 0){
+            query.append("genre.id = :g ");
+            params.put("g", genreId.toString());
+        }else if(genreId == 0){
+            query.append("genre.id LIKE :gAll ");
+            params.put("gAll", "%");
+        }
+        if(!title.equals("")){
+            query.append("AND title LIKE :t ");
+            params.put("t", "%" + title + "%");
+        }
+        if(!authors.equals("")){
+            query.append("AND authors LIKE :a ");
+            params.put("a", "%" + authors + "%");
+        }
+        if(!publisher.equals("")){
+            query.append("AND publisher LIKE :p ");
+            params.put("p", "%" + publisher + "%");
+        }
+        
+        
+        System.out.println(query);
+        System.out.println(params);
+        List<Book> books = bookService.getBooksComplexByParams(query.toString(), params);
+        System.out.println(books);
         List<JSONObject> jsons = new ArrayList<>();
-        /*List<Book> byTitle = new ArrayList<>();
-        List<Book> byAuthors = new ArrayList<>();
-        List<Book> byPublisher = new ArrayList<>();
-        List<Book> byGenre = new ArrayList<>();*/
-        if(!title.equals(""))
-            books.addAll(bookService.getBooksByTitle(title));
-        if(!authors.equals(""))
-            books.addAll(bookService.getBooksByAuthors(authors));
-        if(!authors.equals(""))
-            books.addAll(bookService.getBooksByPublisher(publisher));
-        if(genreId > 0)
-            books.addAll(bookService.getBooksByGenre(genreService.getById(genreId)));
         
         if(request.isUserInRole("ROLE_USER")){
             

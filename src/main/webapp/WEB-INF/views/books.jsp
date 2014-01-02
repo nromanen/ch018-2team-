@@ -37,7 +37,7 @@
                             <li>
                                 <div class="book">
                                     <div class="book_img_wrapper">
-                                        <a href="<c:url value="order?id=${book.getbId()}" />">
+                                        <a href="${pageContext.request.contextPath}/books/order?id=${book.getbId()}">
                                             <img src="${book.getImg()}">
                                         </a>
 
@@ -58,7 +58,7 @@
                                     <div class="book_ext">
                                         <div style="background-color: white">
                                     <div class="book_ext_img_wrapper">
-                                        <a href="<c:url value="order?id=${book.getbId()}" />">
+                                        <a href="${pageContext.request.contextPath}/books/order?id=${book.getbId()}">
                                             <img src="${book.getImg()}">
                                         </a>
 
