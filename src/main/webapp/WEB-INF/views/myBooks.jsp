@@ -1,6 +1,3 @@
-<%@page import="com.ch018.library.entity.Orders"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.ch018.library.entity.BooksInUse"%>
 <%@page import="java.util.Date"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -18,15 +15,14 @@
         <link rel="stylesheet" type="text/css" media="screen" href="${dateCSS}" /> 
         <c:url value="/resources/css/search.css" var="searchCSS" />  
         <link rel="stylesheet" type="text/css" media="screen" href="${searchCSS}" />
-        <c:url value="/resources/css/orders.css" var="ordersCSS" />  
-        <link rel="stylesheet" type="text/css" media="screen" href="${ordersCSS}" />
+        <c:url value="/resources/css/mybooks.css" var="mybooksCSS" />  
+        <link rel="stylesheet" type="text/css" media="screen" href="${mybooksCSS}" />
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/wishlist.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/books.js"></script>
         
+        <!--<script type="text/javascript" src="<c:url value="/resources/js/order.js" />"></script>-->
+        <script type="text/javascript" src="<c:url value="/resources/js/books.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
 
     </head>
     <body>
@@ -41,38 +37,36 @@
                 
                 <div class="col-md-11" id="center_main">
                     <ul class="list-unstyled">
-                        <li class="list-group-item">
+                        
+                        <c:forEach var="use" items="${uses}">
+                            <li class="list-group-item">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-5">
                                         Title
                                     </div>
-                                    <div class="col-md-5">
-                                        Free From
+                                    <div class="col-md-4">
+                                        Return Date
                                     </div>
                                     <div class="col-md-3">
-                                        Delete
+                                        Days To Return
                                     </div>
                                 </div>
                             </li>
-                        <c:forEach var="entry" items="${map}">
-                            
-                            <li class="list-group-item" id="wish_li_${entry.key.getId()}">
+                            <li class="list-group-item">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        ${entry.key.getBook().getTitle()}
-                                    </div>
                                     <div class="col-md-5">
-                                        
-                                        
-                                        <!--<input type="hidden" value="${entry.value}">-->
-                                        <input type="hidden" value="${entry.key.getId()}">
-                                        <input type="hidden" value="${entry.key.getBook().getbId()}">
-                                        <input type="text" class="calendar" value="${entry.value}">
-                                        <button class="btn-info wish_confirm_button">Confirm</button>
+                                        ${use.getBook().getTitle()}
+                                    </div>
+                                    <div class="col-md-4">
+                                        ${use.getReturnDate()}
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="hidden" value="${entry.key.getId()}">
-                                        <button class="btn-danger wish_delete_button">Delete</button>
+                                        <%
+                                            BooksInUse u = (BooksInUse) pageContext.getAttribute("use");
+                                            int days = (int) (u.getReturnDate().getTime() - new Date().getTime())/(1000 * 3600 * 24);
+                                            pageContext.setAttribute("days", days);
+                                        %>
+                                        ${days}
                                     </div>
                                 </div>
                             </li>

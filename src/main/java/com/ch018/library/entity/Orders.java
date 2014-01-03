@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -25,7 +26,6 @@ import org.hibernate.annotations.Proxy;
 @Entity
 @Table(name = "orders", 
         uniqueConstraints = { @UniqueConstraint( columnNames = { "pid", "bid" } ) })
-@Lazy(value = false)
 public class Orders implements Serializable {
         
         private int id;
@@ -54,7 +54,7 @@ public class Orders implements Serializable {
                 this.id = id;
         }
         
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "bid", referencedColumnName = "bid")
         public Book getBook() {
                 return book;
@@ -64,7 +64,7 @@ public class Orders implements Serializable {
                 this.book = book;
         }
         
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "pid", referencedColumnName = "pid")
         public Person getPerson() {
                 return person;

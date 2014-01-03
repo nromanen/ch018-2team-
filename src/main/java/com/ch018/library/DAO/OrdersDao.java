@@ -10,6 +10,7 @@ import com.ch018.library.entity.Person;
 
 public interface OrdersDao {
 
+
         void save(Orders order);
         void delete(Orders order);
         void update(int id, Orders order);
@@ -22,5 +23,9 @@ public interface OrdersDao {
         List<Orders> search(String request);
         List<Orders> getOrdersToday();
         List<Orders> getOrdersInHour();
+
+        
+        int getBookIdByPerson(Person person);
+
         
 }

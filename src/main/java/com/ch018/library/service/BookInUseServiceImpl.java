@@ -77,9 +77,11 @@ public class BookInUseServiceImpl implements BookInUseService {
     @Override
     @Transactional
     public Date getBookWithLastDate(Book book){
+        
         return useDao.getBookWithLastDate(book);
          
     }
+
 
 	@Override
 	public BooksInUse getBookInUseById(int id) {
@@ -98,6 +100,14 @@ public class BookInUseServiceImpl implements BookInUseService {
 		// TODO Auto-generated method stub
 		return useDao.getBooksInUseToIssueToday();
 	}
+
+    @Override
+    @Transactional
+    public boolean isPersonHaveBook(Person person, Book book) {
+        return useDao.isPersonHaveBook(person, book);
+    }
+    
+
     
     
     

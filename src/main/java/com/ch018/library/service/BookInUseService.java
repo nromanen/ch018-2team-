@@ -29,7 +29,12 @@ public interface BookInUseService {
     List<BooksInUse> getBooksInUseByIssueDate(Date issue);
     List<BooksInUse> getBooksInUseByReturnDate(Date issue);
     Date getBookWithLastDate(Book book);
+
     List<Date> getBooksInUseToReturnDate();
     BooksInUse getBookInUseById(int id);
     List<Date> getBooksInUseToIssueToday();
+
+    boolean isPersonHaveBook(Person person, Book book);
+    
+
 }

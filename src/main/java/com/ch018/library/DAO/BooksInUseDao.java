@@ -28,6 +28,11 @@ public interface BooksInUseDao {
     List<BooksInUse> getBooksInUseByIssueDate(Date issue);
     List<BooksInUse> getBooksInUseByReturnDate(Date issue);
     Date getBookWithLastDate(Book book);
+
     List<Date> getBooksInUseToReturnDate();
     List<Date> getBooksInUseToIssueToday();
+
+    boolean isPersonHaveBook(Person person, Book book);
+    
+
 }

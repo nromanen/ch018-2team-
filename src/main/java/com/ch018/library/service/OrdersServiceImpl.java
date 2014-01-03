@@ -44,9 +44,9 @@ public class OrdersServiceImpl implements OrdersService{
 
         @Override
         @Transactional
-        public void update(int id, Orders order){
+        public void update(int id, Date newDate){
                 // TODO Auto-generated method stub
-                ordersDao.update(id, order);
+                ordersDao.update(id, newDate);
         }
 
         @Override
@@ -92,6 +92,7 @@ public class OrdersServiceImpl implements OrdersService{
                 return ordersDao.getOrderIdByPersonIdBookId(pId, bId);
         }
 
+
 		@Override
 		public List<Orders> search(String request) {
 			// TODO Auto-generated method stub
@@ -109,6 +110,13 @@ public class OrdersServiceImpl implements OrdersService{
 			// TODO Auto-generated method stub
 			return ordersDao.getOrdersInHour();
 		}
+
+    @Override
+    @Transactional
+    public int getBookIdByPerson(Person person) {
+        return ordersDao.getBookIdByPerson(person);
+    }
+
         
         
 

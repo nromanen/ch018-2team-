@@ -97,6 +97,7 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
      
     }
 
+
 	@Override
 	public List<Date> getBooksInUseToReturnDate() {
 		
@@ -126,6 +127,21 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 		
 		return dates;
 	}
+
+    
+    @Override
+    public boolean isPersonHaveBook(Person person, Book book) {
+        try{
+        BooksInUse use = (BooksInUse) factory.getCurrentSession().createQuery("from BooksInUse where person = :p AND book = :b")
+                .setParameter("p", person).setParameter("b", book).list().get(0);
+        return use == null ? false : true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+    
+    
+
     
     
 }

@@ -14,14 +14,18 @@ public interface OrdersService {
 
          void save(Orders order);
          void delete(Orders order);
-         void update(int id, Orders order);
+         void update(int id, Date newDate);
          List<Orders> getAll();
          List<Orders> getOrderByPerson(Person person);
          List<Orders> getOrderByBook(Book book);
          List<Orders> getOrderByDate(Date date);
          Orders getOrderByID(int id); 
          Orders getOrderIdByPersonIdBookId(int pId, int bId);
+
          List<Orders> search(String request);
          List<Orders> getOrdersToday();
          List<Orders> getOrdersInHour();
+
+         int getBookIdByPerson(Person person);
+
 }

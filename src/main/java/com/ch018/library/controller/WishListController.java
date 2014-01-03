@@ -5,13 +5,17 @@
 package com.ch018.library.controller;
 
 import com.ch018.library.DAO.PersonDao;
+import com.ch018.library.controller.errors.IncorrectDate;
 import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.entity.WishList;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
+import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.service.WishListService;
+import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +23,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.codehaus.jackson.annotate.JsonAnyGetter;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,6 +32,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -36,58 +43,100 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class WishListController {
     
     @Autowired
-    WishListService wService;
+    WishListService wishService;
     @Autowired
-    PersonService pService;
+    PersonService personService;
     @Autowired
-    BookService bService;
+    BookService bookService;
     @Autowired
     BookInUseService useService;
+    @Autowired
+    OrdersService ordersService;
+   
     
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String add(@RequestParam("bookid") int bookId){
-        Person person = pService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        Book book = bService.getBookById(bookId);
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public @ResponseBody String add(@RequestParam("bookId") Integer bookId, 
+            Principal principal){
+        Person person = personService.getByEmail(principal.getName());
+        Book book = bookService.getBookById(bookId);
         WishList wish = new WishList(person, book);
-        wService.save(wish);
-        return "redirect:/books";
+        wishService.save(wish);
+        JSONObject json = new JSONObject();
+        json.put("title", book.getTitle());
+        return json.toString();
     }
     
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String delete(@RequestParam("bookid") int bookId){
-        Person person = pService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        Book book = bService.getBookById(bookId);
-        WishList wish = wService.getWishByPersonBook(person, book);
-        wService.delete(wish);
-        return "redirect:/books/wishlist/my";
-    }
-    
-    @RequestMapping(value = "/my", method = RequestMethod.GET)
-    public String myList(Model model){
-        Person person = pService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        List<WishList> wishes  = new ArrayList<>();
-        try{
-            wishes = wService.getWishByPerson(person);
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        System.out.println(wishes);
-        Map<Book, String> booksWithDate = new HashMap<>();
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH");
-        Date free;
+    @RequestMapping(value="/my", method = RequestMethod.GET)
+    public String myG(Model model, Principal principal){
+        Person person = personService.getByEmail(principal.getName());
+        List<WishList> wishes = wishService.getWishByPerson(person);
+        Map<WishList, String> wishesWithDates = new HashMap<>();
         for(WishList wish : wishes){
-            Book book = wish.getBook();
-            free = useService.getBookWithLastDate(book);
-            if(book.getCurrentQuantity() > 0 || free == null)
-                free = new Date();
-                
-            booksWithDate.put(book, format.format(free).toString());
+            wishesWithDates.put(wish, calculateMinDate(wish.getBook()));
         }
-        System.out.println(wishes); 
-        model.addAttribute("map", booksWithDate);
+        model.addAttribute("map", wishesWithDates);
         return "wishlist";
     }
     
+    /*@RequestMapping(value = "/my", method = RequestMethod.POST)
+    public @ResponseBody String my(Principal principal){
+        Person person = personService.getByEmail(principal.getName());
+        List<WishList> wishes = wishService.getWishByPerson(person);
+        List<JSONObject> jsons = new ArrayList<>();
+        for(WishList wish : wishes){
+            JSONObject json = new JSONObject();
+            json.put("wishId", wish.getId());
+            json.put("title", wish.getBook().getTitle());
+            json.put("minDate", calculateMinDate(wish.getBook()));
+            jsons.add(json);
+        }
+        return jsons.toString();
+        
+    }*/
     
+    @RequestMapping(value = "/delete")
+    public @ResponseBody String delete(@RequestParam("wishId") Integer wishId){
+        wishService.delete(wishService.getWishByID(wishId));
+        return new JSONObject().toString();
+    }
+    
+    @RequestMapping(value = "/confirm")
+    public @ResponseBody String add(@RequestParam("wishId") Integer wishId, @RequestParam("bookId") Integer bookId,
+        @RequestParam("date") String date, Principal principal) throws IncorrectDate{
+        Person person = personService.getByEmail(principal.getName());
+        Book book = bookService.getBookById(bookId);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        Date d;
+        
+        try{
+            d = format.parse(date);
+            
+        }catch(Exception e){
+           
+            throw new IncorrectDate("incorrect date");
+        }
+        ordersService.save(new Orders(person, book, d));
+        System.out.append("@@@@@@44444444444###########");
+        wishService.delete(wishService.getWishByID(wishId));
+        System.out.append("@@@@@@333333333###########");
+        return new JSONObject().toString();
+                
+        
+    }
+    
+    
+    private String calculateMinDate(Book book){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        Date minDate;
+        int current = book.getCurrentQuantity();
+        Date dateFromUse = useService.getBookWithLastDate(book);
+        if(dateFromUse == null || current > 0)
+            minDate = new Date();
+        else{
+            minDate = dateFromUse;
+        }
+        return format.format(minDate).toString();
+             
+    }
     
 }

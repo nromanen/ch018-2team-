@@ -25,11 +25,21 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	</http>
 
         <global-method-security pre-post-annotations="enabled" secured-annotations="enabled"/> 
-       
 
+        <beans:bean name="myUserDetailsService" class="com.ch018.library.service.MyUserDetailsService" />
+        
+        <beans:bean name="bcryptEncoder"
+            class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+        <!--<beans:bean id="saltSource"
+            class="org.springframework.security.providers.dao.salt.ReflectionSaltSource"
+             />-->
+        
 	<authentication-manager>
-		<authentication-provider>
-                        <!--<password-encoder hash="sha" />-->
+		<authentication-provider user-service-ref="myUserDetailsService" >
+                    <password-encoder ref="bcryptEncoder" />
+                </authentication-provider>
+                   
+                        <!--<password-encoder hash="sha" />
 			<jdbc-user-service data-source-ref="dataSource"
                             users-by-username-query="
                                 select email, password, confirm from persons where email = ?
@@ -38,7 +48,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
                                 select email, prole from persons where email = ?
                             "
                         />
-		</authentication-provider>
+		</authentication-provider>-->
 	</authentication-manager>
 
 </beans:beans>

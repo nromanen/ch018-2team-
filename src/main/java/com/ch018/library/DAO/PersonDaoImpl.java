@@ -34,7 +34,7 @@ public class PersonDaoImpl implements PersonDao {
     @Override
     public void save(Person person) {
         factory.getCurrentSession().save(person);
-        System.out.println("++++++++====================");
+       
     }
 
     @Override
@@ -66,10 +66,12 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public Person getByEmail(String email) {
-        
+        try{
            return (Person) factory.getCurrentSession().createCriteria(Person.class).add(Restrictions.eq("email", email)).
                     list().get(0);
-            
+        }catch(Exception e){
+            return null;
+        }
        
     }
 

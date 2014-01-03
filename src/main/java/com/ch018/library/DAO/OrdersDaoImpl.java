@@ -39,10 +39,15 @@ public class OrdersDaoImpl implements OrdersDao{
                 factory.getCurrentSession().delete(order);}
 
         @Override
-        public void update(int id, Orders order){
-                Orders o = getOrderByID(id);
-                o.setOrderDate(order.getOrderDate());
-               factory.getCurrentSession().flush();
+        public void update(int id, Date newDate){
+                Orders order = (Orders) factory.getCurrentSession().get(Orders.class, id);
+                order.setOrderDate(newDate);
+                
+                //Orders o = getOrderByID(id);
+                //o.setOrderDate(order.getOrderDate());
+                
+               //factory.getCurrentSession().flush();
+               
         }
 
         @Override
@@ -69,7 +74,7 @@ public class OrdersDaoImpl implements OrdersDao{
 
         @Override
         public Orders getOrderByID(int id) {
-                return (Orders) factory.getCurrentSession().load(Orders.class, id);
+                return (Orders) factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("id", id)).list().get(0);
                
         }
 
@@ -79,6 +84,7 @@ public class OrdersDaoImpl implements OrdersDao{
                     setInteger("pid", pId).setInteger("bid", bId).list().get(0);
             return (Orders) factory.getCurrentSession().load(Orders.class, oid);
         }
+
 
 		@Override
 		public List<Orders> search(String request) {
@@ -168,5 +174,13 @@ public class OrdersDaoImpl implements OrdersDao{
 		}
         
 
+
+    @Override
+    public int getBookIdByPerson(Person person) {
+       return ((Orders) factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("person", person)).list().get(0)
+                ).getBook().getbId();
+    }
+        
+        
         
 }

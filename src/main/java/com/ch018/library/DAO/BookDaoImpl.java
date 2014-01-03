@@ -8,10 +8,19 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+
+
+import java.util.TreeSet;
+import org.hibernate.Query;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -94,6 +103,7 @@ public class BookDaoImpl implements BookDao {
     }
 
 
+
 	@Override
 	public List<Book> advancedSearch(Book book) {
 		// TODO Auto-generated method stub
@@ -169,6 +179,41 @@ public class BookDaoImpl implements BookDao {
 			return null;
 		}
 	}
+
+    @Override
+    public List<Book> getBooksComplex(String query) {
+        
+        query = "%" + query + "%";
+        return factory.getCurrentSession().createQuery("from Book b where b.title like :q"
+                + " OR b.authors like :q"
+                + " OR b.publisher like :q"
+                + " OR b.genre.description like :q").
+                setString("q", query).list();
+    }
+    
+    @Override
+    public List<Book> getBooksComplexByParams(String query, Map<String, String> params){
+        Query q = factory.getCurrentSession().createQuery(query);
+        for(Map.Entry<String, String> param : params.entrySet()){
+            if(param.getKey().equals("g"))
+                q.setInteger("g", Integer.valueOf(param.getValue()));
+            else
+                q.setString(param.getKey(), param.getValue());
+        }
+        return q.list();
+    }
+    
+   /*@Override
+    public List<Book> getBooksComplex(Comparator<Book> comparator, String... query) {
+        
+        Set<Book> books = new TreeSet<>(comparator);
+        for(int i = 0; i < query.length; i++){
+            books.addAll(getBooksComplex(query[i]));
+        }
+        
+        return new ArrayList<>(books);
+    }*/
+
 
         
     

@@ -40,47 +40,51 @@
                 </div>
                 
                 <div class="col-md-11" id="center_main">
-                    <ul class="list-unstyled">
-                        <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        Title
+                    <div class="row">
+                        <div class="col-md-5" id="acc_img_graph_wrapper">
+                            <div class="row" id="acc_img_wrapper">
+                                <img class="img-responsive" src="${pageContext.request.contextPath}/resources/img/freebsd.jpg">
+                                <button class="btn-sm" id="acc_img_button">Change</button>
+                            </div>
+                            <div class="row" id="acc_graph_wrapper">
+                                Area For Ratio Graph
+                            </div>
+                        </div>
+                        <div class="col-md-7" id="acc_user_info_wrapper">
+                            <ul class="list-unstyled">
+                                <li class="list-group-item">
+                                    <div class="row">
+                                    <div class="col-md-7">${person.getEmail()}</div>
+                                    <div class="col-md-5"><button class="btn-sm" id="acc_email_button">Change</button></div>
                                     </div>
-                                    <div class="col-md-5">
-                                        Free From
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                    <div class="col-md-7">${person.getName()}</div>
+                                    <div class="col-md-5"><button class="btn-sm" id="acc_name_button">Change</button></div>
                                     </div>
-                                    <div class="col-md-3">
-                                        Delete
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                    <div class="col-md-7">${person.getSurname()}</div>
+                                    <div class="col-md-5"><button class="btn-sm" id="acc_surname_button">Change</button></div>
                                     </div>
-                                </div>
-                            </li>
-                        <c:forEach var="entry" items="${map}">
-                            
-                            <li class="list-group-item" id="wish_li_${entry.key.getId()}">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        ${entry.key.getBook().getTitle()}
+                                </li>
+                                
+                                <li class="list-group-item">
+                                    <div class="row">
+                                    <div class="col-md-7">${person.getCellphone()}</div>
+                                    <div class="col-md-5"><button class="btn-sm" id="acc_phone_button">Change</button></div>
                                     </div>
-                                    <div class="col-md-5">
-                                        
-                                        
-                                        <!--<input type="hidden" value="${entry.value}">-->
-                                        <input type="hidden" value="${entry.key.getId()}">
-                                        <input type="hidden" value="${entry.key.getBook().getbId()}">
-                                        <input type="text" class="calendar" value="${entry.value}">
-                                        <button class="btn-info wish_confirm_button">Confirm</button>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                    <div class="col-md-12"><button class="btn-sm" id="acc_password_button">Change Password</button></div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <input type="hidden" value="${entry.key.getId()}">
-                                        <button class="btn-danger wish_delete_button">Delete</button>
-                                    </div>
-                                </div>
-                            </li>
-                            
-                        </c:forEach>
-                        
-                    </ul>
-                    
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 
                 
