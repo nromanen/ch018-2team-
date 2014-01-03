@@ -46,9 +46,7 @@ public class BooksInUse implements Serializable {
         @Column(name = "return_date")
         private Date returnDate;
         
-       
-
-        
+        private int daysToreturn;
 
         public BooksInUse() {
         }
@@ -96,10 +94,14 @@ public class BooksInUse implements Serializable {
         }
 
    
-        
+        public int getDaysToreturn() {
+			return daysToreturn;
+		}
         
 
-       
+       public void setDaysToreturn(int daysToreturn) {
+		this.daysToreturn = daysToreturn;
+	}
 
 	
 }

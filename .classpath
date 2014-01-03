@@ -43,8 +43,4 @@
   <classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-taglibs/3.1.0.RELEASE/spring-security-taglibs-3.1.0.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-acl/3.1.0.RELEASE/spring-security-acl-3.1.0.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/dbcp/6.0.33/dbcp-6.0.33.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/catalina/6.0.37/catalina-6.0.37.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/servlet-api/6.0.37/servlet-api-6.0.37.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/juli/6.0.37/juli-6.0.37.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/annotations-api/6.0.37/annotations-api-6.0.37.jar"/>
 </classpath>

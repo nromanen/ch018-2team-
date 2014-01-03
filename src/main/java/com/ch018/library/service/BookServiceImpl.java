@@ -10,6 +10,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
+
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -85,11 +86,25 @@ public class BookServiceImpl implements BookService {
         return bookDAO.getBooksByGenre(genre);
     }
 
+
     @Override
     @Transactional
     public List<Book> getBooksComplex(String query) {
         return bookDAO.getBooksComplex(query);
     }
+
+	@Override
+	public List<Book> advancedSearch(Book book) {
+		// TODO Auto-generated method stub
+		return bookDAO.advancedSearch(book);
+	}
+
+	@Override
+	public List<Book> simpleSearch(String query) {
+		// TODO Auto-generated method stub
+		return bookDAO.simpleSearch(query);
+	}
+
 
 }
 

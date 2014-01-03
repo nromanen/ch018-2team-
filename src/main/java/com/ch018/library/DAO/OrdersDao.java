@@ -10,14 +10,17 @@ import com.ch018.library.entity.Person;
 
 public interface OrdersDao {
 
-        public void save(Orders order);
-        public void delete(Orders order);
-        public void update(int id, Orders order);
-        public List<Orders> getAll();
-        public List<Orders> getOrderByPerson(Person person);
-        public List<Orders> getOrderByBook(Book book);
-        public List<Orders> getOrderByDate(Date date);
-        public Orders getOrderIdByPersonIdBookId(int pId, int bId);
-        public Orders getOrderByID(int id);
+        void save(Orders order);
+        void delete(Orders order);
+        void update(int id, Orders order);
+        List<Orders> getAll();
+        List<Orders> getOrderByPerson(Person person);
+        List<Orders> getOrderByBook(Book book);
+        List<Orders> getOrderByDate(Date date);
+        Orders getOrderIdByPersonIdBookId(int pId, int bId);
+        Orders getOrderByID(int id);
+        List<Orders> search(String request);
+        List<Orders> getOrdersToday();
+        List<Orders> getOrdersInHour();
         
 }

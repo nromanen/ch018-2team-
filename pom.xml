@@ -101,6 +101,7 @@
       <version>6.0.33</version>
     </dependency>
 
+
     
     <dependency>
         <groupId>org.json</groupId>
@@ -109,6 +110,15 @@
     </dependency>
 
             
+
+<!--  
+	<dependency>
+		<groupId>org.apache.tomcat</groupId>
+		<artifactId>tomcat-catalina</artifactId>
+		<version>7.0.47</version>
+	</dependency>
+            -->
+
   </dependencies>
   <build>
     <finalName>library</finalName>
