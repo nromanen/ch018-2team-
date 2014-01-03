@@ -138,7 +138,7 @@ public class BooksController {
         if(genreId > 0){
             query.append("genre.id = :g ");
             params.put("g", genreId.toString());
-        }else if(genreId == 0){
+        }else if(genreId <= 0){
             query.append("genre.id LIKE :gAll ");
             params.put("gAll", "%");
         }
