@@ -73,6 +73,9 @@ public class Person implements Serializable {
     @Column(name = "generalratio")
     private float generalRating;
     
+    @Column(name = "img")
+    private String img;
+    
     @OneToMany(targetEntity = BooksInUse.class, mappedBy = "person")
     private Set<Book> booksInUse = new HashSet<Book>();
     
@@ -247,6 +250,15 @@ public class Person implements Serializable {
     public void setWishes(Set<Book> wishes) {
         this.wishes = wishes;
     }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+    
     
     
     

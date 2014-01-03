@@ -20,6 +20,7 @@
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/wishlist.js"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/order.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/books.js"></script>
