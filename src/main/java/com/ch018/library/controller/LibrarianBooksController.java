@@ -173,7 +173,7 @@ public class LibrarianBooksController {
 			BooksInUse bookInUse = new BooksInUse();
 			List<BooksInUse> booksInUse = bookInUseService.getBooksInUseByBook(book);
 			List<BooksInUse> booksInUseEx = new ArrayList<BooksInUse>();
-
+			
 			Date date = new Date();
 			Calendar currentDate = Calendar.getInstance();
 			Calendar endDate = Calendar.getInstance();

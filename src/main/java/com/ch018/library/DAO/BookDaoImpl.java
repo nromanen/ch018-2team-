@@ -91,10 +91,10 @@ public class BookDaoImpl implements BookDao {
 		// TODO Auto-generated method stub
 		Session session = factory.openSession();
 		
-		String q =  "from Book where";
+		String q =  "from Book where 1=1 ";
 		
 		if(!book.getTitle().equals("")){
-			q += q.endsWith("where") ? " title = :title" : " and title = :title";
+			q += " and title = :title";
 		}
 		if(!book.getAuthors().equals("")) {
 			q += q.endsWith("where") ? " authors = :authors" : " and authors = :authors";
@@ -149,12 +149,10 @@ public class BookDaoImpl implements BookDao {
 		
 		Session session = factory.openSession();
 		
-		Query q = session.createQuery("from Book where title like :title or"
-										+ " authors like :authors or "
-										+ " publisher like :publisher");
-		q.setParameter("title", query + "%");
-		q.setParameter("authors", query + "%");
-		q.setParameter("publisher", query + "%");
+		Query q = session.createQuery("from Book where title like :parameter or"
+										+ " authors like :parameter or "
+										+ " publisher like :parameter");
+		q.setParameter("parameter", query + "%");
 		
 		List<Book> books = q.list();
 		

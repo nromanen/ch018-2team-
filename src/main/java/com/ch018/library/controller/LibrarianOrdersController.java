@@ -76,8 +76,6 @@ public class LibrarianOrdersController {
 		
 		model.addAttribute("orders", ordersService.getAll());
 		
-		ordersService.getOrdersToday();
-		
 		return "librarianorders";
 	}
 	
@@ -92,8 +90,7 @@ public class LibrarianOrdersController {
 		BooksInUse  bookInUse = new BooksInUse();
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, +14);
-		Date date = new Date();
-		date = calendar.getTime();
+		Date date = calendar.getTime();
 		
 		bookInUse.setBook(order.getBook());
 		bookInUse.setPerson(order.getPerson());
@@ -104,12 +101,24 @@ public class LibrarianOrdersController {
 	}
 	
 	//Add book is not finished. But Dates work pretty good
-		@RequestMapping(value = "/toissueinhour")
-		public String toIssueInHour(Model model) throws SQLException {
+	@RequestMapping(value = "/toissueinhour")
+	public String toIssueInHour(Model model) throws SQLException {
 			
-			return "redirect:/librarian/books";
-		}
+		List<Orders> orders = ordersService.getOrdersInHour();
 		
+		model.addAttribute("orders", orders);
+
+		return "librarianorders";
+	}
+		
+	@RequestMapping(value = "/toissuetoday")
+	public String toIssueToday(Model model) throws Exception {
+		
+		List<Orders> orders = ordersService.getOrdersToday();
+		
+		model.addAttribute("orders", orders);
+		return "librarianorders";
+	}
 	
 	@RequestMapping (value = "/addOrder", method = RequestMethod.GET)
 	public String addOrder (Model model) throws Exception {

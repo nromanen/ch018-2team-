@@ -17,12 +17,18 @@
 <td><a href="<c:url value="/librarian/toreturn"/>"><h3>To Return</h3></a>
 <br>
 <br>
-<form name="search" action="<c:url value="/librarian/orders/search" />" method="POST" >
+	<form name="search" action="<c:url value="/librarian/orders/search" />" method="POST" >
 		
 		<input type="text"  name="request"/>
 		<input type="submit" value="Show Result"/>
 		
-		</form>
+	</form>
+<tr>
+<a href="<c:url value="/librarian/orders/toissueinhour"/>">To issue hour</a>
+
+<a href="<c:url value="/librarian/orders/toissuetoday"/>">To issue today</a>
+</tr>
+
 <table border = "1">
         <thead>
                 <tr>

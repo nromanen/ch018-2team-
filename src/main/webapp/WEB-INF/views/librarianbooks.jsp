@@ -11,9 +11,10 @@
 </head>
 <body>
 
-<td><a href="<c:url value="/librarian/books"/>"><h3>Books</h3></a>
-<td><a href="<c:url value="/librarian/orders"/>"><h3>Orders</h3></a>
-<td><a href="<c:url value="/librarian/toreturn"/>"><h3>To Return</h3></a>
+<a href="<c:url value="/librarian/books"/>"><h3>Books</h3></a>
+<a href="<c:url value="/librarian/orders"/>"><h3>Orders</h3></a>
+<a href="<c:url value="/librarian/toreturn"/>"><h3>To Return</h3></a>
+
 <c:set var="highlight" value="books" scope="request"/>
 <br>
 
