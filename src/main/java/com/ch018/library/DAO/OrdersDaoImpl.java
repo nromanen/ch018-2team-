@@ -134,11 +134,11 @@ public class OrdersDaoImpl implements OrdersDao{
 		query.setCalendar("end", end);
 		List<Orders> orders = query.list();
 		
-		Orders order = new Orders();
+		/*Orders order = new Orders();
 		order = orders.get(0);
 					
 		System.out.println(order.getOrderDate() + " gsdkjvbasldj akhfsadkhsn cnhfls");
-			
+			*/
 			
 			return orders;
 		}
