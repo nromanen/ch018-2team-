@@ -75,3 +75,10 @@
     display: block;
     margin: 2px;
 }
+
+#acc_img_wrapper img{
+    
+    width: 150px;
+    height: 150px;
+    
+}

@@ -66,10 +66,12 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public Person getByEmail(String email) {
-        
+        try{
            return (Person) factory.getCurrentSession().createCriteria(Person.class).add(Restrictions.eq("email", email)).
                     list().get(0);
-            
+        }catch(Exception e){
+            return null;
+        }
        
     }
 
