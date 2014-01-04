@@ -28,7 +28,7 @@ public interface BookInUseService {
     List<BooksInUse> getBooksInUseByBook(Book book);
     List<BooksInUse> getBooksInUseByIssueDate(Date issue);
     List<BooksInUse> getBooksInUseByReturnDate(Date issue);
-    Date getBookWithLastDate(Book book);
+    Date getMinOrderDate(Book book);
 
     List<Date> getBooksInUseToReturnDate();
     BooksInUse getBookInUseById(int id);

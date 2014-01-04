@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ch018.library.entity.Orders;
 import com.ch018.library.service.OrdersService;
+import com.ch018.library.service.WishListService;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import org.json.JSONObject;
@@ -48,80 +49,33 @@ public class OrderController {
     @Autowired
     OrdersService ordersService;
     @Autowired
+    WishListService wishService;
+    @Autowired
     BookInUseService useService;
+    
 
     @RequestMapping(method = RequestMethod.GET)
-    public String orderG(@RequestParam("id") Integer bookId , Model model, Principal principal){
+    public String orderGet(@RequestParam("id") Integer bookId , Model model, Principal principal){
         Person person = personService.getByEmail(principal.getName());
         Book book = bookService.getBookById(bookId);
         model.addAttribute("book", book);
         
-        Date minDate;
-        
-        if(book.getCurrentQuantity() > 0)
-            minDate = new Date();
-        else{
-            minDate = useService.getBookWithLastDate(book);
-            minDate =  minDate == null ? new Date() : minDate;
-        }
-        
-    
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-        model.addAttribute("minDate", format.format(minDate).toString());
+        model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
+        model.addAttribute("inOrders", ordersService.isPersonOrderedBook(person, book));
+        model.addAttribute("inWishList", wishService.isPersonWishBook(person, book));
+        Date minDate = useService.getMinOrderDate(book);
+        model.addAttribute("minDate", minDate.getTime());
+        return "user/order";
        
-        if(useService.isPersonHaveBook(person, book))
-            model.addAttribute("inUse", true);
-        else
-            model.addAttribute("inUse", false);
-        
-        return "order";
-    }
-    
-    @RequestMapping(method = RequestMethod.POST)
-    public @ResponseBody String order(@RequestParam("bookid") Integer bId, Principal principal){
-        Person person = personService.getByEmail(principal.getName());
-        Book book = bookService.getBookById(bId);
-        
-        
-        
-        Date minReturn;
-        
-        if(book.getCurrentQuantity() > 0)
-            minReturn = new Date();
-        else{
-            minReturn = useService.getBookWithLastDate(book);
-            minReturn =  minReturn == null ? new Date() : minReturn;
-        }
-        
-    
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-        JSONObject json = new JSONObject();
-        if(useService.isPersonHaveBook(person, book))
-            json.put("inUse", true);
-        else
-            json.put("inUse", false);
-        json.put("bId", book.getbId());
-        json.put("img", book.getImg());
-        json.put("title", book.getTitle());
-        json.put("authors", book.getAuthors());
-        json.put("publisher", book.getPublisher());
-        json.put("description", book.getDescription());
-        json.put("minReturn", format.format(minReturn).toString());
-        return json.toString();   
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public @ResponseBody String add(@RequestParam("bookId") Integer bookId, @RequestParam("time") String time, 
+    public @ResponseBody String add(@RequestParam("bookId") Integer bookId, @RequestParam("time") Long time, 
                         Principal principal) throws IncorrectDate{
         Book book = bookService.getBookById(bookId);
         Person person = personService.getByEmail(principal.getName());
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-        Date date;
-        try{
-                date = format.parse(time);
-        }catch(Exception e){
-            throw new IncorrectDate("Incorrect Date");
-        }
+        System.out.println(time);
+        Date date = new Date(time);
         ordersService.save(new Orders(person, book, date));
         
         return new JSONObject().toString();
@@ -132,23 +86,58 @@ public class OrderController {
     public String myG(Model model, Principal principal){
         Person person = personService.getByEmail(principal.getName());
         List<Orders> orders = ordersService.getOrderByPerson(person);
-        Map<Orders, String> ordersMinDates = new HashMap<>();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+        Map<Orders, Long> ordersMinDates = new HashMap<>();
+        
         for(Orders order : orders){
             
-            Date minDate;
+           ordersMinDates.put(order, useService.getMinOrderDate(order.getBook()).getTime());
             
-            if(order.getBook().getCurrentQuantity() > 0)
-                minDate = new Date();
-            else
-                minDate =  useService.getBookWithLastDate(order.getBook());
-            minDate = minDate == null ? new Date() : minDate;
-            ordersMinDates.put(order, format.format(minDate));
         }
         model.addAttribute("ordersMinDates", ordersMinDates);
-        return "orders";
+        return "user/orders";
         
     }
+    
+    @RequestMapping(value = "/delete")
+    public @ResponseBody String delete(@RequestParam("orderId") Integer orderId){
+        ordersService.delete(ordersService.getOrderByID(orderId));
+        return new JSONObject().toString();
+    }
+    
+    @RequestMapping(value = "/edit")
+    public @ResponseBody String edit(@RequestParam("orderId") Integer orderId,
+                    @RequestParam("date") Long date, Principal principal) throws IncorrectDate{
+        Orders order = ordersService.getOrderByID(orderId);
+        Book book = order.getBook();
+        Date newDate = new Date(date);
+        ordersService.update(orderId, newDate);
+        
+        Date minDate = useService.getMinOrderDate(book);
+        
+        JSONObject json = new JSONObject();
+        json.put("orderId", orderId);
+        json.put("date", date);
+        json.put("minDate", minDate.getTime());
+        
+        return json.toString();
+    }
+    
+    /*
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+        public String addOrder(@RequestParam("bookid") int bId, @RequestParam("date") long date, Model model) {
+                
+                Book book = bService.getBookById(bId);
+                Person person = pService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+                
+                    
+                Orders order = new Orders(person, book, new Date(date));
+                try{
+                    oService.save(order);
+                }catch(Exception e){
+                    return "unsuccessful";
+                }
+                return "redirect:/books";
+        }
     
     /*@RequestMapping(value = "/my", method = RequestMethod.GET)
     public @ResponseBody String my(Principal principal){
@@ -181,11 +170,7 @@ public class OrderController {
         return jsons.toString();
     }*/
     
-    @RequestMapping(value = "/delete")
-    public @ResponseBody String delete(@RequestParam("orderId") Integer orderId){
-        ordersService.delete(ordersService.getOrderByID(orderId));
-        return new JSONObject().toString();
-    }
+   /* 
     
     @RequestMapping(value = "/edit")
     public @ResponseBody String edit(@RequestParam("orderId") Integer orderId,

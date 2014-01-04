@@ -9,32 +9,42 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Map;
 
 @Service
 public interface BookService {
-	void save(Book book);
-        void delete(Book book);
-        void update(Book book);
-	List<Book> getAll();
-	Book getBookById(int id);
-	List<Book> getBooksByTitle(String title);
-	List<Book> getBooksByAuthors(String authors);
-	List<Book> getBooksByYear(int year);
+             void save(Book book);
 
-   
-        List<Book> getBooksByGenre(Genre genre);
-        List<Book> getBooksComplex(String query);
+             void delete(Book book);
 
+             void update(Book book);
 
-    List<Book> getBooksByPublisher(String publisher);
-    List<Book> getBooksByPagesEq(int pages);
-   
-    List<Book> advancedSearch(Book book);
-    List<Book> simpleSearch(String query);
+             List<Book> getAll();
 
+             Book getBookById(int id);
 
-        List<Book> getBooksComplexByParams(String query, Map<String, String> params);
+             List<Book> getBooksByTitle(String title);
+
+             List<Book> getBooksByAuthors(String authors);
+
+             List<Book> getBooksByYear(int year);
+
+             List<Book> getBooksByGenre(Genre genre);
+
+             List<Book> getBooksComplex(String query);
+
+             List<Book> getBooksByPublisher(String publisher);
+
+             List<Book> getBooksByPagesEq(int pages);
+
+             List<Book> advancedSearch(Book book);
+
+             List<Book> simpleSearch(String query);
+
+             List<Book> getBooksComplexByParams(String query, Map<String, String> params);
+             
+             
 
         
 }

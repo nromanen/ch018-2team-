@@ -5,6 +5,7 @@
 package com.ch018.library.DAO;
 
 import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.entity.WishList;
 import java.util.List;
@@ -66,6 +67,20 @@ public class WishListDaoImpl implements WishListDao {
     public WishList getWishByPersonBook(Person person, Book book) {
          return (WishList) factory.getCurrentSession().createQuery("from WishList w where w.person = :p and w.book = :b")
                  .setParameter("p", person).setParameter("b", book).list().get(0);
+    }
+
+    @Override
+    public boolean isPersonWishBook(Person person, Book book) {
+    
+        try{   
+            WishList wish = (WishList) factory.getCurrentSession().createCriteria(WishList.class)
+                        .add(Restrictions.eq("person", person))
+                            .add(Restrictions.eq("book", book)).list().get(0);
+            return wish == null ? false : true;
+        }catch(Exception e){
+         return false;
+        }
+        
     }
     
     

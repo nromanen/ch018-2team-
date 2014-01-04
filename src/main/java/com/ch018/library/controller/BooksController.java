@@ -74,7 +74,7 @@ public class BooksController {
         List<Book> books = bookService.getAll();
         model.addAttribute("genres", genres);
         model.addAttribute("books", books);
-        return "books";
+        return "user/books";
     }
     
     @RequestMapping(method = RequestMethod.POST)
@@ -236,7 +236,7 @@ public class BooksController {
         Person person = personService.getByEmail(principal.getName());
         List<BooksInUse> uses = useService.getBooksInUseByPerson(person);
         model.addAttribute("uses", uses);
-        return "myBooks";
+        return "user/myBooks";
     }
     
     @RequestMapping(value = "/mybooks", method = RequestMethod.POST)

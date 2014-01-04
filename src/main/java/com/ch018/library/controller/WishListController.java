@@ -75,7 +75,7 @@ public class WishListController {
             wishesWithDates.put(wish, calculateMinDate(wish.getBook()));
         }
         model.addAttribute("map", wishesWithDates);
-        return "wishlist";
+        return "user/wishlist";
     }
     
     /*@RequestMapping(value = "/my", method = RequestMethod.POST)
@@ -129,13 +129,13 @@ public class WishListController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         Date minDate;
         int current = book.getCurrentQuantity();
-        Date dateFromUse = useService.getBookWithLastDate(book);
+       /* Date dateFromUse = useService.getBookWithLastDate(book);
         if(dateFromUse == null || current > 0)
             minDate = new Date();
         else{
             minDate = dateFromUse;
-        }
-        return format.format(minDate).toString();
+        }*/
+        return "";//format.format(minDate).toString();
              
     }
     

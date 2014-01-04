@@ -28,11 +28,16 @@ public class OrdersServiceImpl implements OrdersService{
         @Autowired
         OrdersDao ordersDao;
         
+        @Autowired
+        WishListService wishService;
+
         @Override
         @Transactional
         public void save(Orders order){
-                // TODO Auto-generated method stub
+                
                 ordersDao.save(order);
+                if(wishService.isPersonWishBook(order.getPerson(), order.getBook()))
+                    wishService.delete(wishService.getWishByPersonBook(order.getPerson(), order.getBook()));
         }
 
         @Override
@@ -116,6 +121,17 @@ public class OrdersServiceImpl implements OrdersService{
     public int getBookIdByPerson(Person person) {
         return ordersDao.getBookIdByPerson(person);
     }
+
+    @Override
+    @Transactional
+    public boolean isPersonOrderedBook(Person person, Book book) {
+        return ordersDao.isPersonOrderedBook(person, book);
+    }
+
+    
+    
+    
+    
 
         
         

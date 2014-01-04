@@ -27,5 +27,5 @@ public interface WishListDao {
         List<WishList> getWishByBook(Book book);
         WishList getWishByPersonBook(Person person, Book book);
         WishList getWishByID(int id);
-    
+        boolean isPersonWishBook(Person person, Book book);
 }

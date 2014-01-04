@@ -32,7 +32,7 @@
     <body>
         
         <div class="container">
-            <c:import url="/WEB-INF/views/mainheader.jsp" />
+            <c:import url="/WEB-INF/views/user/mainheader.jsp" />
             <div class="row">
                 
                 <div class="col-md-1" id="left_main">
@@ -85,7 +85,7 @@
                 
                 
             </div>
-            <c:import url="/WEB-INF/views/footer.jsp" />
+            <c:import url="/WEB-INF/views/user/footer.jsp" />
         </div>
     </body>
 </html>

@@ -1,3 +1,6 @@
+<%@page import="com.ch018.library.entity.Orders"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.ch018.library.entity.BooksInUse"%>
 <%@page import="java.util.Date"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -15,20 +18,23 @@
         <link rel="stylesheet" type="text/css" media="screen" href="${dateCSS}" /> 
         <c:url value="/resources/css/search.css" var="searchCSS" />  
         <link rel="stylesheet" type="text/css" media="screen" href="${searchCSS}" />
-        <c:url value="/resources/css/mybooks.css" var="mybooksCSS" />  
-        <link rel="stylesheet" type="text/css" media="screen" href="${mybooksCSS}" />
+        <c:url value="/resources/css/orders.css" var="ordersCSS" />  
+        <link rel="stylesheet" type="text/css" media="screen" href="${ordersCSS}" />
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
-        
-        <!--<script type="text/javascript" src="<c:url value="/resources/js/order.js" />"></script>-->
-        <script type="text/javascript" src="<c:url value="/resources/js/books.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/timeConvert.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/orders.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/books.js"></script>
+        
 
     </head>
     <body>
         
         <div class="container">
-            <c:import url="/WEB-INF/views/mainheader.jsp" />
+            <c:import url="/WEB-INF/views/user/mainheader.jsp" />
             <div class="row">
                 
                 <div class="col-md-1" id="left_main">
@@ -37,36 +43,36 @@
                 
                 <div class="col-md-11" id="center_main">
                     <ul class="list-unstyled">
-                        
-                        <c:forEach var="use" items="${uses}">
-                            <li class="list-group-item">
+                        <li class="list-group-item">
                                 <div class="row">
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         Title
                                     </div>
-                                    <div class="col-md-4">
-                                        Return Date
+                                    <div class="col-md-5">
+                                        Order Date
                                     </div>
                                     <div class="col-md-3">
-                                        Days To Return
+                                        Delete
                                     </div>
                                 </div>
                             </li>
-                            <li class="list-group-item">
+                        <c:forEach var="entry" items="${ordersMinDates}">
+                            
+                            <li class="list-group-item" id="order_li_${entry.key.getId()}">
                                 <div class="row">
-                                    <div class="col-md-5">
-                                        ${use.getBook().getTitle()}
-                                    </div>
                                     <div class="col-md-4">
-                                        ${use.getReturnDate()}
+                                        ${entry.key.getBook().getTitle()}
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="hidden" class="order_id" value="${entry.key.getId()}">
+                                        <input type="hidden" class="minDate" value="${entry.value}">
+                                        <input type="hidden" class="orderDate" value="${entry.key.getOrderDate().getTime()}">
+                                        <input type="text" class="calendar">
+                                        <button class="btn-info order_change_button">Change</button>
                                     </div>
                                     <div class="col-md-3">
-                                        <%
-                                            BooksInUse u = (BooksInUse) pageContext.getAttribute("use");
-                                            int days = (int) (u.getReturnDate().getTime() - new Date().getTime())/(1000 * 3600 * 24);
-                                            pageContext.setAttribute("days", days);
-                                        %>
-                                        ${days}
+                                        <input type="hidden" value="${entry.key.getId()}">
+                                        <button class="btn-danger order_delete_button">Delete</button>
                                     </div>
                                 </div>
                             </li>
@@ -79,7 +85,7 @@
                 
                 
             </div>
-            <c:import url="/WEB-INF/views/footer.jsp" />
+            <c:import url="/WEB-INF/views/user/footer.jsp" />
         </div>
     </body>
 </html>

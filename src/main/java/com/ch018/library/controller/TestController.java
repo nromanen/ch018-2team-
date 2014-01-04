@@ -4,9 +4,13 @@
  */
 package com.ch018.library.controller;
 
+import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.BookService;
+import com.ch018.library.service.GenreService;
+import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
-import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,20 +19,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
- * @author Edd Arazian
+ * @author Admin6
  */
 @Controller
-@RequestMapping(value = "/account")
-public class AccountController {
+@RequestMapping(value = "/test")
+public class TestController {
     
     @Autowired
+    BookService bookService;
+    @Autowired
+    GenreService genreService;
+    @Autowired
     PersonService personService;
+    @Autowired
+    BookInUseService useService;
+    @Autowired
+    OrdersService ordersService;
+    
     
     @RequestMapping(method = RequestMethod.GET)
-    public String accountG(Model model, Principal principal){
-        Person person = personService.getByEmail(principal.getName());
+    public String test(Model model){
+        Person person = personService.getById(6);
         model.addAttribute("person", person);
-        return "user/account";
+        Book book = bookService.getBookById(4);
+        
+        return "test";
     }
     
 }
