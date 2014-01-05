@@ -37,7 +37,7 @@ public interface BookDao {
     List<Book> simpleSearch(String query);
 
 
-        List<Book> getBooksComplexByParams(String query, Map<String, String> params);
+        List<Book> getBooksComplexByParams(Integer genreId, String title, String authors, String publisher);
         //List<Book> getBooksComplex(Comparator<Book> comparator, String... query);
 
 }
