@@ -30,6 +30,6 @@ public interface OrdersService {
          int getBookIdByPerson(Person person);
          
          boolean isPersonOrderedBook(Person person, Book book);
-         
+         boolean isLimitReached(Person person);
 
 }

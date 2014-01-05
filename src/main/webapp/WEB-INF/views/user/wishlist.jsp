@@ -23,7 +23,8 @@
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/wishlist.js" />"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timeConvert.js"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/wish.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/books.js"></script>
         
@@ -64,10 +65,11 @@
                                     <div class="col-md-5">
                                         
                                         
-                                        <!--<input type="hidden" value="${entry.value}">-->
+                                        
                                         <input type="hidden" value="${entry.key.getId()}">
                                         <input type="hidden" value="${entry.key.getBook().getbId()}">
-                                        <input type="text" class="calendar" value="${entry.value}">
+                                        <input type="hidden" value="${entry.value}">
+                                        <input type="text" class="calendar">
                                         <button class="btn-info wish_confirm_button">Confirm</button>
                                     </div>
                                     <div class="col-md-3">

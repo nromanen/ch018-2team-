@@ -23,7 +23,7 @@
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/wishlist.js" />"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/account.js"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/books.js"></script>
         
@@ -41,45 +41,59 @@
                 
                 <div class="col-md-11" id="center_main">
                     <div class="row">
-                        <div class="col-md-5" id="acc_img_graph_wrapper">
+                        <div class="col-md-3" id="acc_img_graph_wrapper">
                             <div class="row" id="acc_img_wrapper">
-                                <img class="img-responsive" src="${pageContext.request.contextPath}/resources/img/freebsd.jpg">
-                                <button class="btn-sm" id="acc_img_button">Change</button>
+                                <img class="img-thumbnail" src="${pageContext.request.contextPath}/resources/img/freebsd.jpg">
+                            </div>
+                            <div class="row">
+                                <button class="btn-xs" id="acc_img_button">Change</button>
                             </div>
                             <div class="row" id="acc_graph_wrapper">
                                 Area For Ratio Graph
                             </div>
                         </div>
-                        <div class="col-md-7" id="acc_user_info_wrapper">
-                            <ul class="list-unstyled">
+                        <div class="col-md-9" id="acc_user_info_wrapper">
+                             <ul class="list-unstyled">
                                 <li class="list-group-item">
                                     <div class="row">
-                                    <div class="col-md-7">${person.getEmail()}</div>
-                                    <div class="col-md-5"><button class="btn-sm" id="acc_email_button">Change</button></div>
+                                        <div class="col-md-3">Email</div>   
+                                        <div class="col-md-6">
+                                            <input id="email_edit" type="text" class="form-control hide" placeholder="${person.getEmail()}">
+                                            <div id="email_text" class="text-info">${person.getEmail()}</div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            
+                                            <button class="btn-xs" id="acc_email_button">Change</button>
+                                            <button class="btn-xs hide" id="acc_email_button_confirm">Confirm</button>
+                                        </div>
                                     </div>
                                 </li>
                                 <li class="list-group-item">
                                     <div class="row">
-                                    <div class="col-md-7">${person.getName()}</div>
-                                    <div class="col-md-5"><button class="btn-sm" id="acc_name_button">Change</button></div>
+                                        <div class="col-md-3">Name</div>   
+                                        <div class="col-md-6">${person.getName()}</div>
+                                        <div class="col-md-3"><button class="btn-xs" id="acc_name_button">Change</button></div>
                                     </div>
                                 </li>
                                 <li class="list-group-item">
                                     <div class="row">
-                                    <div class="col-md-7">${person.getSurname()}</div>
-                                    <div class="col-md-5"><button class="btn-sm" id="acc_surname_button">Change</button></div>
+                                        <div class="col-md-3">Surname</div>   
+                                        <div class="col-md-6">${person.getSurname()}</div>
+                                        <div class="col-md-3"><button class="btn-xs" id="acc_surname_button">Change</button></div>
                                     </div>
                                 </li>
                                 
                                 <li class="list-group-item">
                                     <div class="row">
-                                    <div class="col-md-7">${person.getCellphone()}</div>
-                                    <div class="col-md-5"><button class="btn-sm" id="acc_phone_button">Change</button></div>
+                                        <div class="col-md-3">Phone</div>   
+                                        <div class="col-md-6">${person.getCellphone()}</div>
+                                        <div class="col-md-3"><button class="btn-xs" id="acc_phone_button">Change</button></div>
                                     </div>
                                 </li>
                                 <li class="list-group-item">
                                     <div class="row">
-                                    <div class="col-md-12"><button class="btn-sm" id="acc_password_button">Change Password</button></div>
+                                        <div class="col-md-3">Password</div>   
+                                        <div class="col-md-9"><button class="btn-xs" id="acc_password_button">Change Password</button></div>
                                     </div>
                                 </li>
                             </ul>

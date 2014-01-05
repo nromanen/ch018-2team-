@@ -28,6 +28,9 @@
                     <div class="form-group">
                         <input class="form-control" type="password" name="j_password" placeholder="Enter Password">
                     </div>
+                    <div class="form-group">
+                        <input type="checkbox" name="_spring_security_remember_me">
+                    </div>
                     <button type="submit" class="btn btn-primary">Sing In</button>
                 </form>
             </div>

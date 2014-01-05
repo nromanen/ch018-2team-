@@ -89,6 +89,9 @@ public class PersonServiceImpl implements PersonService {
     public List<Person> getSmsEnabled() {
         return pDao.getConfirmed();
     }
+
+    
+    
     
 }
 

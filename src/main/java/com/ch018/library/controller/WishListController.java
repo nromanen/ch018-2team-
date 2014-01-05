@@ -70,9 +70,9 @@ public class WishListController {
     public String myG(Model model, Principal principal){
         Person person = personService.getByEmail(principal.getName());
         List<WishList> wishes = wishService.getWishByPerson(person);
-        Map<WishList, String> wishesWithDates = new HashMap<>();
+        Map<WishList, Long> wishesWithDates = new HashMap<>();
         for(WishList wish : wishes){
-            wishesWithDates.put(wish, calculateMinDate(wish.getBook()));
+            wishesWithDates.put(wish, useService.getMinOrderDate(wish.getBook()).getTime());
         }
         model.addAttribute("map", wishesWithDates);
         return "user/wishlist";

@@ -20,7 +20,8 @@
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
         
-        <!--<script type="text/javascript" src="<c:url value="/resources/js/order.js" />"></script>-->
+        <script type="text/javascript" src="<c:url value="/resources/js/timeConvert.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/mybooks.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/books.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
 
@@ -37,8 +38,8 @@
                 
                 <div class="col-md-11" id="center_main">
                     <ul class="list-unstyled">
+                       
                         
-                        <c:forEach var="use" items="${uses}">
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-md-5">
@@ -52,21 +53,19 @@
                                     </div>
                                 </div>
                             </li>
+                            <c:forEach var="use" items="${uses}">
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-md-5">
                                         ${use.getBook().getTitle()}
                                     </div>
                                     <div class="col-md-4">
-                                        ${use.getReturnDate()}
+                                        <input class="mybooks_date" type="hidden" value="${use.getReturnDate().getTime()}">
+                                        
                                     </div>
                                     <div class="col-md-3">
-                                        <%
-                                            BooksInUse u = (BooksInUse) pageContext.getAttribute("use");
-                                            int days = (int) (u.getReturnDate().getTime() - new Date().getTime())/(1000 * 3600 * 24);
-                                            pageContext.setAttribute("days", days);
-                                        %>
-                                        ${days}
+                                        
+                                        
                                     </div>
                                 </div>
                             </li>

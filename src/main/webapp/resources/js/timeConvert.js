@@ -2,7 +2,11 @@ function getDateInFormat(tmpDate){
     
     var date = new Date(Number(tmpDate));
     
-    return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours();
+    var month = date.getMonth().toString().length === 1 ? "0" + (date.getMonth() + 1) : date.getMonth();
+    var day = date.getDate().toString().length === 1 ? "0" + date.getDate() : date.getDate();
+    var hours = date.getHours().toString().length === 1 ? "0" + date.getHours() : date.getHours();
+    
+    return date.getFullYear() + "/" + month + "/" + day + " " + hours + ":" + "00";
     
 }
 function getLongFromFormatTime(formatTime){

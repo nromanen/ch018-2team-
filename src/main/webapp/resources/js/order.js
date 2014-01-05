@@ -1,6 +1,11 @@
 
 
 $(document).ready(function(){
+    
+    var isLimitReacher = $('#book_limit').val();
+    if(isLimitReacher === 'true')
+        $('#book_limit_modal').modal('show');
+    
     tmpDate = $('#minDate').val();
     
     minDate = getDateInFormat(tmpDate).split(" ");

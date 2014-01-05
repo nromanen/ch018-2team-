@@ -3,11 +3,13 @@ $(document).ready(function(){
     
     $(".calendar").each(function(){
         
-        var minD = $(this).val().split(" ");
+        var minDate = getDateInFormat($(this).prev().val()).split(" ");
+        
         $(this).datetimepicker({
                     format: 'Y/m/d H:m',
-                    minDate: minD[0],
-                    minTime: minD[1]
+                    value: minDate[0] + " " + minDate[1],
+                    minDate: minDate[0],
+                    minTime: minDate[1]
                });
         
     });
@@ -17,9 +19,9 @@ $(document).ready(function(){
         deleteWish(wishId);
     });
     $('.wish_confirm_button').click(function(){
-        var date = $(this).prev().val();
-        var bookId = $(this).prev().prev().val();
-        var wishId = $(this).prev().prev().prev().val();
+        var date = getLongFromFormatTime($(this).prev().val());
+        var wishId = $(this).parent().children().val();
+        var bookId = $(this).prev().prev().prev().val();
         
         confirmWish(wishId, bookId, date);
     });
@@ -40,25 +42,25 @@ function deleteWish(wishId){
             
             //myOrders();
             
-            $('#wishes_li_' + wishId).remove(); 
+            $('#wish_li_' + wishId).remove(); 
             }
         });
     
 }
 
-function confirmWish(wishId, date){
+function confirmWish(wishId, bookId, date){
     
     $.ajax({
-            url: "confirm",
+            url: "/library/books/order/add",
             type: "POST",
-            data: {'wishId' : wishId, 'date' : date},
+            data: {'bookId' : bookId, 'time' : date},
             dataType: "json",
             contentType: 'application/x-www-form-urlencoded',
             mimeType: 'application/json',
             
          success: function () {
             
-                $('#wishes_li_' + wishId).remove(); 
+                $('#wish_li_' + wishId).remove(); 
  
              }
          });

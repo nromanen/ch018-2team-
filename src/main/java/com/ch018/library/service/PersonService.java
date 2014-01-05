@@ -28,4 +28,5 @@ public interface PersonService {
     List<Person> getConfirmed();
     List<Person> getSmsEnabled();
     
+    
 }

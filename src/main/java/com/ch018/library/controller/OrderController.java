@@ -58,8 +58,14 @@ public class OrderController {
     public String orderGet(@RequestParam("id") Integer bookId , Model model, Principal principal){
         Person person = personService.getByEmail(principal.getName());
         Book book = bookService.getBookById(bookId);
-        model.addAttribute("book", book);
+        boolean limit = ordersService.isLimitReached(person);
+        model.addAttribute("isBookLimitReached", limit);
+        if(limit){
+           model.addAttribute("inUse", true);
+           return "user/order";
+        }
         
+        model.addAttribute("book", book);
         model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
         model.addAttribute("inOrders", ordersService.isPersonOrderedBook(person, book));
         model.addAttribute("inWishList", wishService.isPersonWishBook(person, book));
