@@ -71,29 +71,46 @@
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-md-3">Name</div>   
-                                        <div class="col-md-6">${person.getName()}</div>
+                                        <div class="col-md-6">
+                                            <input id="name_edit" type="text" class="form-control hide" placeholder="${person.getName()}">
+                                            <div id="name_text" class="text-info">${person.getName()}</div>
+                                        </div>
                                         <div class="col-md-3"><button class="btn-xs" id="acc_name_button">Change</button></div>
                                     </div>
                                 </li>
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-md-3">Surname</div>   
-                                        <div class="col-md-6">${person.getSurname()}</div>
+                                        <div class="col-md-6">
+                                            <input id="surname_edit" type="text" class="form-control hide" placeholder="${person.getSurname()}">
+                                            <div id="surname_text" class="text-info">${person.getSurname()}</div>
+                                        </div>
                                         <div class="col-md-3"><button class="btn-xs" id="acc_surname_button">Change</button></div>
                                     </div>
                                 </li>
                                 
                                 <li class="list-group-item">
                                     <div class="row">
-                                        <div class="col-md-3">Phone</div>   
-                                        <div class="col-md-6">${person.getCellphone()}</div>
+                                        <div class="col-md-3">Phone</div> 
+                                        
+                                        <div class="col-md-6">
+                                            <input id="phone_edit" type="text" class="form-control hide" placeholder="${person.getCellphone()}">
+                                            <div id="phone_text" class="text-info">${person.getCellphone()}</div>
+                                        </div>
                                         <div class="col-md-3"><button class="btn-xs" id="acc_phone_button">Change</button></div>
                                     </div>
                                 </li>
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-md-3">Password</div>   
-                                        <div class="col-md-9"><button class="btn-xs" id="acc_password_button">Change Password</button></div>
+                                        <div class="col-md-9">
+                                            
+                                            <input id="old_pass" type="text" class="form-control hide" placeholder="Old Password">
+                                            <input id="new_pass" type="text" class="form-control hide" placeholder="New Password">
+                                            <input id="re_new_pass" type="text" class="form-control hide" placeholder="Re_enter New Password">
+                                            <div id="pass_changed" class="text-info hide">Password Changed</div>
+                                            <button class="btn-xs" id="acc_password_button">Change Password</button>
+                                        </div>
                                     </div>
                                 </li>
                             </ul>

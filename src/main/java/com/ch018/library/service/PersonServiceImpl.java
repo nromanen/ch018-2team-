@@ -3,8 +3,16 @@ package com.ch018.library.service;
 //import com.ch018.library.dao.PersonDao;
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.Person;
+import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +25,15 @@ public class PersonServiceImpl implements PersonService {
     
     @Autowired
     PersonDao pDao;
+    
+    @Autowired
+    BCryptPasswordEncoder encoder;
+    
+    @Autowired
+    MyUserDetailsService userDetails;
+    
+    
+    
 
     @Override
     @Transactional
@@ -90,6 +107,43 @@ public class PersonServiceImpl implements PersonService {
         return pDao.getConfirmed();
     }
 
+    @Override
+    @Transactional
+    public boolean updatePassword(String oldPass, String newPass, String reNewPass, Principal principal) {
+        Person person = pDao.getByEmail(principal.getName());
+        if(!encoder.matches(oldPass, person.getPassword()) || !newPass.equals(reNewPass))
+            return false;
+        Authentication auth = new PreAuthenticatedAuthenticationToken(person.getEmail(), encoder.encode(newPass));
+        person.setPassword(encoder.encode(newPass));
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public String updateField(String fieldName, String fieldValue) {
+        Person person = pDao.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        if(fieldName.equals("name")){
+            person.setName(fieldValue);
+            update(person);
+            return person.getName();
+        }else if(fieldName.equals("surname")){
+            person.setSurname(fieldValue);
+            update(person);
+            return person.getSurname();
+        }else if(fieldName.equals("phone")){
+            person.setCellphone(fieldValue);
+            update(person);
+            return person.getCellphone();
+        }else{
+            return null;
+        }
+        
+    }
+    
+    
+
+    
     
     
     

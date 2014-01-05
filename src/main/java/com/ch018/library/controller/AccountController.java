@@ -4,11 +4,13 @@
  */
 package com.ch018.library.controller;
 
+import com.ch018.library.controller.errors.IncorrectDate;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,7 +52,7 @@ public class AccountController {
         Person person = personService.getByEmail(principal.getName());
         person.setEmail(email);
         personService.update(person);
-        
+        person = personService.getByEmail(email);
         Authentication auth = new PreAuthenticatedAuthenticationToken(email, principal);
         
         Authentication auth1 = new RememberMeAuthenticationToken("secret", auth, SecurityContextHolder.getContext().getAuthentication().getAuthorities());
@@ -61,4 +63,29 @@ public class AccountController {
         return json.toString();
     }
     
+    @RequestMapping(value = "changePassword", method = RequestMethod.POST)
+    public @ResponseBody String changePassword(@RequestParam("oldPass") String oldPass,
+                                                    @RequestParam("newPass") String newPass,
+                                                    @RequestParam("reNewPass") String reNewPass,
+                                                    Principal principal, HttpServletResponse response) throws Exception{
+        if(personService.updatePassword(oldPass, newPass, reNewPass, principal))
+            return new JSONObject().toString();
+        else{
+            throw new IncorrectDate("error occured during pass");
+        }
+    }
+    
+    @RequestMapping(value = "changeField", method = RequestMethod.POST)
+    public @ResponseBody String changeField(@RequestParam("fieldName") String fieldName, 
+                                              @RequestParam("fieldValue") String fieldValue) throws Exception {
+        String field;
+        if((field = personService.updateField(fieldName, fieldValue)) != null){
+            JSONObject json = new JSONObject();
+            json.put("field", field);
+            return json.toString();
+        }
+            
+        else
+            throw new IncorrectDate("Incorrect " + fieldName);
+    }
 }
