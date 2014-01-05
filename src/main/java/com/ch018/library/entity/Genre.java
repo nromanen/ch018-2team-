@@ -75,7 +75,7 @@ public class Genre implements Serializable {
     
     @Override
     public String toString() {
-        return id + " " + description;
+        return description;
     }
     
     

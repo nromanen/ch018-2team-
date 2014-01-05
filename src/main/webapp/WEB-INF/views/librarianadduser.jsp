@@ -27,20 +27,22 @@
 			t.ex3 {margin:10px 70px}
 			t.ex2 {margin: 50px 30px 30px 500px}
 			
-			t.edit1 {margin: 0px 0px 0px 55px }
-			t.edit2 {margin: 0px 0px 0px 41px }
-			t.edit3 {margin: 0px 0px 0px 53px }
-			t.edit4 {margin: 0px 0px 0px 24px }
-			t.edit5 {margin: 0px 0px 0px 43px }
-			t.edit6 {margin: 0px 0px 0px 43px }
-			t.description {margin: 0px 0px 0px 12px }
-			t.img {margin: 0px 0px 0px 14px }
-			t.shelf {margin: 0px 0px 0px 51px }
-			t.term {margin: 0px 0px 0px 50px }
-			t.quantity {margin: 0px 0px 0px 30px }
+			t.id {margin: 0px 0px 0px 123px }
+			t.firstName {margin: 0px 0px 0px 69px }
+			t.lastName {margin: 0px 0px 0px 69px }
+			t.email {margin: 0px 0px 0px 97px }
+			t.password {margin: 0px 0px 0px 74px }
+			t.role {margin: 0px 0px 0px 107px }
+			t.cellphone {margin: 0px 0px 0px 70px }
+			t.confirmed {margin: 0px 0px 0px 72px }
+			t.sms {margin: 0px 0px 0px 105px }
+			t.returnedintime {margin: 0px 0px 0px 33px }
+			t.returnednotintime {margin: 0px 0px 0px 10px }
+			t.booksallowed {margin: 0px 0px 0px 44px }
+			t.rating {margin: 0px 0px 0px 94px }
 		</style>
 		
-		<title>Librarian Advanced Search</title>
+		<title>Librarian Add User</title>
 </head>
     <body>
     
@@ -60,70 +62,74 @@
 					</t>
 				</div>
 					<div class="col-md-7">
-				        <form:form method="POST" commandName="book" >
+				        <form:form method="POST" commandName="user" >
 				            
-				            <center> <h4> Add Book</h4> </center>
-				             
-				           <p> Title    	
-				                <t class="edit1"> <input type="text" name="title"> </t>
+				            <center> <h4> Add User</h4> </center>
+				            
+				            <p> ID    	
+				               <t class="id"> <input type="text" name="pid"/> </t>
 				           </p>
-				           
+				             
+				           <p> First Name    	
+				                <t class="firstName"> <input type="text" name="name"/> </t>
+				           </p>
+				            
 				           <p>     
-				            Author
-				                <t class="edit2"> <input type="text" name="authors"> </t>
+				            Last Name
+				                <t class="lastName"> <input type="text" name="surname"/> </t>
 				           </p> 
 				           
 				           <p>
-				            Year
-				                <t class="edit3"> <input type="text" name="year"> </t>
+				            E-mail
+				                <t class="email"> <input type="text" name="email"/> </t>
+				            </p>
+				            
+				            
+				            <p>
+				            Password
+				               	<t class="password"> <input type="text" name="password"/> </t>
+				            </p>
+				               	
+				            <p>
+				            Role
+				                <t class="role"> <input type="text" name="prole"/> </t>
 				            </p>
 				            
 				            <p>
-				            Publisher
-				                <t class="edit4"> <input type="text" name="publisher"> </t>
-				            </p>
-				            
-				            <p>
-				            Pages
-				                <t class="edit5"> <input type="text" name="pages"> </t>
+				            Cell phone
+				                <t class="cellphone"> <input type="text" name="cellphone"/> </t>
 				            </p>
 				            
 							<p>
-				            Description
-				                <t class="description"> <input type="text" name="description"> </t>
+				            Confirmed
+				                <t class="confirmed"> <input type="text" name="confirm"/> </t>
 				            </p>				            
 				            
 				            <p>
-				            Image URL
-				                <t class="img"> <input type="text" name="img"> </t>
+				            SMS
+				                <t class="sms"> <input type="text" name="sms"/> </t>
 				            </p>
 				            
 				            <p>
-				            Shelf
-				                <t class="shelf"> <input type="text" name="shelf"> </t>
+				            Returned in time
+				                <t class="returnedintime"> <input type="text" name="timelyReturn"/> </t>
 				            </p>
 				            
 				            <p>
-				            Term
-				                <t class="term"> <input type="text" name="term"> </t>
+				            Returned not in time
+				                <t class=returnednotintime> <input type="text" name="untimekyReturn"/> </t>
 				            </p>
 				            
 				            <p>
-				            Quantity
-				                <t class="quantity"> <input type="text" name="generalQuantity"> </t>
+				            Books Allowed
+				                <t class="booksallowed"> <input type="text" name="booksAllowed"/> </t>
 				            </p>
 				            
 				            <p>
-				            Genre
-								<t class="edit6">
-				                <select name="genreId" >
-				                    <c:forEach var="genre" items="${genre}">
-				                        <option value="${genre.getId()}">${genre.getDescription()}</option>
-				                    </c:forEach>
-				                </select>
-				                </t>
-				                <input type="submit" value="Add">
+							Rating
+				            <t class="rating"> <input type="text" name="generalRating"/> </t>
 				            </p>
+				          <input type="submit" value="Add">
 				        </form:form>
 				   </div>     
 		    </div>    	

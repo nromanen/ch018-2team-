@@ -13,7 +13,7 @@ public interface OrdersDao {
 
         void save(Orders order);
         void delete(Orders order);
-        void update(int id, Orders order);
+        void update(int id, Date newDate);
         List<Orders> getAll();
         List<Orders> getOrderByPerson(Person person);
         List<Orders> getOrderByBook(Book book);

@@ -25,9 +25,9 @@
 		<style>
 			t.ex1 {margin:300px 20px}
 			t.ex3 {margin:10px 70px}
-			t.ex2 {margin: 50px 30px 30px 500px}
+			t.ex2 {margin: 50px 30px 30px 550px}
 		</style>
-<title>Librarian Books</title>
+<title>Librarian Users</title>
 
 </head>
 <body>
@@ -38,7 +38,7 @@
 	
 		<div class="col-md-2">
 			<t class="ex3">
-			<a href="<c:url value="/librarian/users"/>"><h4>Users</h4></a>
+     		<a href="<c:url value="/librarian/users"/>"><h4>Users</h4></a>
 			<a href="<c:url value="/librarian/books"/>"><h4>Books</h4></a>
 			<a href="<c:url value="/librarian/orders"/>"><h4>Orders</h4></a>
 			<a href="<c:url value="/librarian/toreturn"/>"><h4>To Return</h4></a>
@@ -59,39 +59,43 @@
      			   <thead>
          		       <tr>
            	                <td> <b> ID </b> </td>
-           	   	            <td> <b> Title </b> </td>
-            	            <td> <b> Authors </b> </td> 
-                            <td> <b> Year </b> </td>
-                            <td> <b> Publisher </b> </td>
-                            <td> <b> Pages </b> </td>
-                            <td> <b> Genre </b> </td>
-                            <td> <b> Description </b> </td>    
-                            <td> <b> Shelf </b> </td>
-                            <td> <b> Term </b> </td> 
-                            <td> <b> Quantity</b> </td>
+           	   	            <td> <b> First Name </b> </td>
+            	            <td> <b> Last Name </b> </td> 
+                            <td> <b> E-mail </b> </td>
+                            <td> <b> Role</b> </td>
+                            <td> <b> Cell Phone </b> </td>
+                            <td> <b> Confirmed </b> </td>
+                            <td> <b> SMS  </b> </td>    
+                            <td> <b> Returned in time </b> </td>
+                            <td> <b> Returned not in time </b> </td> 
+                            <td> <b> Books Allowed</b> </td>
+                            <td> <b> Rating </b> </td>
                             <td> <b> Options </b> </td>
                	         
                		   </tr>
        			 </thead>
-				        <c:forEach items="${books}" var="book">
+				        <c:forEach items="${users}" var="user">
 				                <tr>
-				                        <td>${book.bId}</td>
-				                        <td>${book.title}</td>
-				                        <td>${book.authors}</td>
-				                        <td>${book.year}</td>
-				                        <td>${book.publisher}</td>
-				                        <td>${book.pages}</td>
-				                        <td>${book.genre}</td>
-				                        <td>${book.description}</td>
-				                        <td>${book.shelf}</td>
-				                        <td>${book.term}</td>
-				                        <td>${book.generalQuantity}</td>
-				                    <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>">Edit</a>
-				                    <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>">Delete</a></td>
+				                
+				                        <td>${user.pid}</td>
+				                        <td>${user.name}</td>
+				                        <td>${user.surname}</td>
+				                        <td>${user.email}</td>
+				                        <td>${user.prole}</td>
+				                        <td>${user.cellphone}</td>
+				                        <td>${user.confirm}</td>
+				                        <td>${user.sms}</td>
+				                        <td>${user.timelyReturn}</td>
+				                        <td>${user.untimekyReturn}</td>
+				                        <td>${user.booksAllowed}</td>
+				                        <td>${user.generalRating}</td>
+				                        
+				                    <td><a href="<c:url value="/librarian/users/edituser?id=${user.pid}"/>">Edit</a>
+				                    <a href="<c:url value="/librarian/users/deletebook?id=${book.bId}"/>">Delete</a></td>
 				                </tr>
 				        </c:forEach>
 			   </table>
-					<t class="ex2"><a href="<c:url value="/librarian/books/addbook"/>">Add Book</a></t>
+					<t class="ex2"><a href="<c:url value="/librarian/books/adduser"/>">Add User</a></t>
 				
 			</div>
 		

@@ -37,6 +37,7 @@
                             <li>
                                 <div class="book">
                                     <div class="book_img_wrapper">
+                                     
                                         <a href="${pageContext.request.contextPath}/books/order?id=${book.getbId()}">
                                             <img src="${book.getImg()}">
                                         </a>

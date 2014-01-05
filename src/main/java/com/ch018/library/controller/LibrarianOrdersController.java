@@ -66,13 +66,20 @@ public class LibrarianOrdersController {
 		Orders order = new Orders();
 		
 		book = bookService.getBookById(4);
-		person = personService.getById(1);
+		person = personService.getById(2);
 		
 		order.setBook(book);
 		order.setPerson(person);
 		order.setOrderDate(date);
 		System.out.println(date + "Date from controller ++++++++");
 		ordersService.save(order);*/
+		
+		/*Person person = new Person();
+		person.setName("John");
+		person.setSurname("Spark");
+		person.setEmail("email@mail.com");
+		person.setPassword("1234");
+		personService.save(person);*/
 		
 		model.addAttribute("orders", ordersService.getAll());
 		
@@ -97,6 +104,7 @@ public class LibrarianOrdersController {
 		bookInUse.setReturnDate(date);
 		
 		booksInUseService.save(bookInUse);
+		
 		return "redirect:/librarian/orders";
 	}
 	

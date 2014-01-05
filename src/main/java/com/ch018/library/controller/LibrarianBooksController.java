@@ -149,7 +149,7 @@ public class LibrarianBooksController {
 			Book book = new Book();
 			model.addAttribute("book", book);
 			model.addAttribute("genre", genreService.getAll());
-			return "librarianaddbook";
+			return "librarianadvancedsearch";
 	}
 	
 	@RequestMapping(value = "/advancedsearch", method = RequestMethod.POST)
@@ -161,9 +161,10 @@ public class LibrarianBooksController {
 		List<Book> books = bookService.advancedSearch(book);
 		
 		model.addAttribute("books", books);
+		
 
 		
-		return "librarianadvancedsearch";
+		return "librariansearchresult";
 	}
 	
 	@RequestMapping(value = "/holders", method = RequestMethod.GET)
@@ -209,6 +210,6 @@ public class LibrarianBooksController {
 		
 		model.addAttribute("books", books);
 		
-		return "librarianadvancedsearch";
+		return "librariansearchresult";
 	}
 }
