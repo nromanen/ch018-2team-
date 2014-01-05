@@ -28,5 +28,5 @@ public interface PersonDao {
     List<Person> getConfirmed();
     List<Person> getSmsEnabled();
     Person getPersonById(int id);
-    
+   
 }

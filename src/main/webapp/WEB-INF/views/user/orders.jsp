@@ -21,9 +21,11 @@
         <c:url value="/resources/css/orders.css" var="ordersCSS" />  
         <link rel="stylesheet" type="text/css" media="screen" href="${ordersCSS}" />
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/wishlist.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/timeConvert.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/orders.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/books.js"></script>
         
@@ -32,7 +34,7 @@
     <body>
         
         <div class="container">
-            <c:import url="/WEB-INF/views/mainheader.jsp" />
+            <c:import url="/WEB-INF/views/user/mainheader.jsp" />
             <div class="row">
                 
                 <div class="col-md-1" id="left_main">
@@ -47,32 +49,30 @@
                                         Title
                                     </div>
                                     <div class="col-md-5">
-                                        Free From
+                                        Order Date
                                     </div>
                                     <div class="col-md-3">
                                         Delete
                                     </div>
                                 </div>
                             </li>
-                        <c:forEach var="entry" items="${map}">
+                        <c:forEach var="entry" items="${ordersMinDates}">
                             
-                            <li class="list-group-item" id="wish_li_${entry.key.getId()}">
+                            <li class="list-group-item" id="order_li_${entry.key.getId()}">
                                 <div class="row">
                                     <div class="col-md-4">
                                         ${entry.key.getBook().getTitle()}
                                     </div>
                                     <div class="col-md-5">
-                                        
-                                        
-                                        <!--<input type="hidden" value="${entry.value}">-->
-                                        <input type="hidden" value="${entry.key.getId()}">
-                                        <input type="hidden" value="${entry.key.getBook().getbId()}">
-                                        <input type="text" class="calendar" value="${entry.value}">
-                                        <button class="btn-info wish_confirm_button">Confirm</button>
+                                        <input type="hidden" class="order_id" value="${entry.key.getId()}">
+                                        <input type="hidden" class="minDate" value="${entry.value}">
+                                        <input type="hidden" class="orderDate" value="${entry.key.getOrderDate().getTime()}">
+                                        <input type="text" class="calendar">
+                                        <button class="btn-info order_change_button">Change</button>
                                     </div>
                                     <div class="col-md-3">
                                         <input type="hidden" value="${entry.key.getId()}">
-                                        <button class="btn-danger wish_delete_button">Delete</button>
+                                        <button class="btn-danger order_delete_button">Delete</button>
                                     </div>
                                 </div>
                             </li>
@@ -85,7 +85,7 @@
                 
                 
             </div>
-            <c:import url="/WEB-INF/views/footer.jsp" />
+            <c:import url="/WEB-INF/views/user/footer.jsp" />
         </div>
     </body>
 </html>

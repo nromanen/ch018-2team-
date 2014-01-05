@@ -6,16 +6,7 @@
     z-index: 9999;
 }
 
-.container #books_header{
-  
-    
-}
 
-#inline-list li{
-    
-    display: inline-block;
-    
-}
 
 .book{
     float: left;

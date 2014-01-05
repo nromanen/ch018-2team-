@@ -12,6 +12,7 @@ import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,9 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     BookDao bookDAO;
+    
+    @Autowired
+    BookInUseService useService;
 
     @Override
     @Transactional
@@ -115,6 +119,9 @@ public class BookServiceImpl implements BookService {
         return bookDAO.getBooksComplexByParams(query, params);
     }
 
+    
+
+    
     
     
 

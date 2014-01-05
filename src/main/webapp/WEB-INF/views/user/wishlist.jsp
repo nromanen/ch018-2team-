@@ -23,7 +23,8 @@
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/orders.js" />"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/timeConvert.js"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/wish.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/books.js"></script>
         
@@ -32,7 +33,7 @@
     <body>
         
         <div class="container">
-            <c:import url="/WEB-INF/views/mainheader.jsp" />
+            <c:import url="/WEB-INF/views/user/mainheader.jsp" />
             <div class="row">
                 
                 <div class="col-md-1" id="left_main">
@@ -47,35 +48,33 @@
                                         Title
                                     </div>
                                     <div class="col-md-5">
-                                        Order Date
+                                        Free From
                                     </div>
                                     <div class="col-md-3">
                                         Delete
                                     </div>
                                 </div>
                             </li>
-                        <c:forEach var="entry" items="${ordersMinDates}">
+                        <c:forEach var="entry" items="${map}">
                             
-                            <li class="list-group-item" id="order_li_${entry.key.getId()}">
+                            <li class="list-group-item" id="wish_li_${entry.key.getId()}">
                                 <div class="row">
                                     <div class="col-md-4">
                                         ${entry.key.getBook().getTitle()}
                                     </div>
                                     <div class="col-md-5">
-                                        <%
-                                            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-                                            Map.Entry<Orders, String> entry = (Map.Entry<Orders, String>) pageContext.getAttribute("entry");
-                                            String orderDate = format.format(entry.getKey().getOrderDate());
-                                            pageContext.setAttribute("orderDate", orderDate);
-                                        %>
+                                        
+                                        
+                                        
                                         <input type="hidden" value="${entry.key.getId()}">
+                                        <input type="hidden" value="${entry.key.getBook().getbId()}">
                                         <input type="hidden" value="${entry.value}">
-                                        <input type="text" class="calendar" value="${orderDate}">
-                                        <button class="btn-info order_change_button">Change</button>
+                                        <input type="text" class="calendar">
+                                        <button class="btn-info wish_confirm_button">Confirm</button>
                                     </div>
                                     <div class="col-md-3">
                                         <input type="hidden" value="${entry.key.getId()}">
-                                        <button class="btn-danger order_delete_button">Delete</button>
+                                        <button class="btn-danger wish_delete_button">Delete</button>
                                     </div>
                                 </div>
                             </li>
@@ -88,7 +87,7 @@
                 
                 
             </div>
-            <c:import url="/WEB-INF/views/footer.jsp" />
+            <c:import url="/WEB-INF/views/user/footer.jsp" />
         </div>
     </body>
 </html>

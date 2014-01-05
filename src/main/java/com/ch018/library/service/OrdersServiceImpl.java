@@ -1,5 +1,6 @@
 package com.ch018.library.service;
 
+import com.ch018.library.DAO.BooksInUseDao;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -28,11 +29,19 @@ public class OrdersServiceImpl implements OrdersService{
         @Autowired
         OrdersDao ordersDao;
         
+        @Autowired
+        WishListService wishService;
+        
+        @Autowired
+        BooksInUseDao useDao;
+
         @Override
         @Transactional
         public void save(Orders order){
-                // TODO Auto-generated method stub
+                
                 ordersDao.save(order);
+                if(wishService.isPersonWishBook(order.getPerson(), order.getBook()))
+                    wishService.delete(wishService.getWishByPersonBook(order.getPerson(), order.getBook()));
         }
 
         @Override
@@ -116,6 +125,26 @@ public class OrdersServiceImpl implements OrdersService{
     public int getBookIdByPerson(Person person) {
         return ordersDao.getBookIdByPerson(person);
     }
+
+    @Override
+    @Transactional
+    public boolean isPersonOrderedBook(Person person, Book book) {
+        return ordersDao.isPersonOrderedBook(person, book);
+    }
+
+    @Override
+    @Transactional
+    public boolean isLimitReached(Person person){
+        int ordersCount = ordersDao.getOrderByPerson(person).size();
+        int useCount = useDao.getBooksInUseByPerson(person).size();
+        if(person.getMultiBook() > ordersCount + useCount)
+            return false;
+        else 
+            return true;
+    }
+    
+    
+    
 
         
         
