@@ -64,7 +64,7 @@
                                         <div class="col-md-3">
                                             
                                             <button class="btn-xs" id="acc_email_button">Change</button>
-                                            <button class="btn-xs hide" id="acc_email_button_confirm">Confirm</button>
+                                            
                                         </div>
                                     </div>
                                 </li>

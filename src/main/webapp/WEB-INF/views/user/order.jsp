@@ -86,7 +86,7 @@
                         <div class="col-md-5" id="order_order_wish_part">
                             <div class="row" id="order_order_button_part">
                                 <input type="hidden" id="minDate" value="${minDate}">
-                                <input class="form-control col-md-5" id="datetimepicker">
+                                <input class="form-control" id="datetimepicker">
                                 <input type="hidden" id="bookId" value="${book.getbId()}">
                                 
                                 <c:choose>

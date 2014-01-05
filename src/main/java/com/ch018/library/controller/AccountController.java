@@ -51,11 +51,11 @@ public class AccountController {
         person.setEmail(email);
         personService.update(person);
         
-        /*Authentication auth = new UsernamePasswordAuthenticationToken(email, principal);
-        Authentication result = am.authenticate(auth);
-        //Authentication auth1 = new RememberMeAuthenticationToken("secret", auth, SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(result);
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());*/
+        Authentication auth = new PreAuthenticatedAuthenticationToken(email, principal);
+        
+        Authentication auth1 = new RememberMeAuthenticationToken("secret", auth, SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         JSONObject json = new JSONObject();
         json.put("email", person.getEmail());
         return json.toString();
