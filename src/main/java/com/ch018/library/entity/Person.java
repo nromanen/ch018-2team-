@@ -59,7 +59,7 @@ public class Person implements Serializable {
     private boolean sms;
     
     @Column(name = "multi")
-    private int multiBook;
+    private Integer multiBook;
     
     @Column(name = "timelyreturn")
     private int timelyReturn;
