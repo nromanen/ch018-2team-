@@ -45,6 +45,8 @@ import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PersonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 /**
  * 
@@ -65,7 +67,7 @@ public class BooksController {
     @Autowired
     BookInUseService useService;
     
-
+    final Logger logger = LoggerFactory.getLogger(BooksController.class);
     
     @RequestMapping(method = RequestMethod.GET)
     public String booksG(Model model){
@@ -73,13 +75,14 @@ public class BooksController {
         List<Book> books = bookService.getAll();
         model.addAttribute("genres", genres);
         model.addAttribute("books", books);
+        
         return "user/books";
     }
     
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public  String books(@RequestParam(value = "query") String query){
-
+        
         return bookService.getBooksComplexAsJson(query).toString();    
     }
     
@@ -90,7 +93,7 @@ public class BooksController {
                                                 @RequestParam("publisher") String publisher,
                                                 @RequestParam("genreId") Integer genreId,
                                                 HttpServletRequest request){
-        
+        logger.info("advanced search called with {}, {}, {}, {}", title, authors, publisher, genreId);
         return bookService.getBooksComplexByParamsAsJson(genreId, title, authors, publisher).toString();
     }
     
@@ -106,7 +109,7 @@ public class BooksController {
 
         JSONObject json = new JSONObject();
         json.put("suggestions", titles);
-        
+        logger.info("autocomplete called with {}", query);
         return json.toString();
        
     }

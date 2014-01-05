@@ -8,7 +8,6 @@ import com.ch018.library.util.HibernateUtil;
 import com.ch018.library.entity.Person;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.logging.log4j.core.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;

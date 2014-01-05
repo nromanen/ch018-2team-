@@ -7,10 +7,11 @@ package com.ch018.library.controller;
 import com.ch018.library.DAO.BookDaoImpl;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,7 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class RegisterController {
     
-    static Logger log = LogManager.getLogger(RegisterController.class);
+    
     
     @Autowired
     PersonService personService;
@@ -36,6 +37,7 @@ public class RegisterController {
     @Autowired
     BCryptPasswordEncoder encoder;
     
+    final Logger logger = LoggerFactory.getLogger(RegisterController.class);
     
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @Secured({"ROLE_ANONYMOUS"})
@@ -51,6 +53,7 @@ public class RegisterController {
         
         personService.save(person);
         
+        logger.info("new user {} registered", person);
         
         return "redirect:/index";
     }

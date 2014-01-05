@@ -2,8 +2,6 @@ package com.ch018.library.DAO;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import org.springframework.stereotype.Repository;
 import com.ch018.library.entity.Book;
@@ -33,6 +31,8 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.SimpleExpression;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @Repository
@@ -40,7 +40,7 @@ public class BookDaoImpl implements BookDao {
 
 
         
-    static Logger log = LogManager.getLogger(BookDaoImpl.class);
+    final Logger logger = LoggerFactory.getLogger(BookDaoImpl.class);
 
         
     @Autowired
@@ -50,6 +50,7 @@ public class BookDaoImpl implements BookDao {
     public void save(Book book) {
 
             factory.getCurrentSession().save(book);
+          
 
     }
 

@@ -17,6 +17,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
@@ -32,6 +34,9 @@ public class BookServiceImpl implements BookService {
     @Autowired
     BookInUseService useService;
 
+    
+    final Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
+    
     @Override
     @Transactional
     public void save(Book book) {
