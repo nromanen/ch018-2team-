@@ -32,7 +32,7 @@ $(document).ready(function(){
 function deleteWish(wishId){
     
     $.ajax({
-        url: window.location.pathname + "wishlist/delete",
+        url: "/library/books/wishlist/delete",
         type: "POST",
         data: {'wishId' : wishId},
         dataType: "json",

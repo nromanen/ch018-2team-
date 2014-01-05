@@ -137,6 +137,7 @@ public class OrdersServiceImpl implements OrdersService{
     public boolean isLimitReached(Person person){
         int ordersCount = ordersDao.getOrderByPerson(person).size();
         int useCount = useDao.getBooksInUseByPerson(person).size();
+        
         if(person.getMultiBook() > ordersCount + useCount)
             return false;
         else 

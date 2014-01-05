@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import com.ch018.library.entity.Orders;
+import com.ch018.library.service.MailService;
 import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.WishListService;
 import java.security.Principal;
@@ -59,6 +60,8 @@ public class OrderController {
     WishListService wishService;
     @Autowired
     BookInUseService useService;
+    @Autowired
+    MailService mailService;
     
     final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
@@ -90,8 +93,10 @@ public class OrderController {
         Person person = personService.getByEmail(principal.getName());
         System.out.println(time);
         Date date = new Date(time);
-        ordersService.save(new Orders(person, book, date));
+        Orders order = new Orders(person, book, date);
+        ordersService.save(order);
         logger.info("person {} order book {} to date {}", person, book, date);
+        mailService.SendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
         return new JSONObject().toString();
     }
     
