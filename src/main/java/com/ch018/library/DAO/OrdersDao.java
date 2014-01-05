@@ -7,7 +7,8 @@ import java.util.List;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
-
+import org.springframework.stereotype.Repository;
+@Repository
 public interface OrdersDao {
 
 
@@ -23,9 +24,11 @@ public interface OrdersDao {
         List<Orders> search(String request);
         List<Orders> getOrdersToday();
         List<Orders> getOrdersInHour();
-
+        //boolean isPersonOrderedBook(Person person, Book book);
         
         int getBookIdByPerson(Person person);
+        
+        boolean isPersonOrderedBook(Person person, Book book);
 
         
 }

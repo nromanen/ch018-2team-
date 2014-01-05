@@ -3,12 +3,13 @@ package com.ch018.library.service;
 
 import java.util.Date;
 import java.util.List;
-import com.ch018.library.DAO.OrdersDao;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface OrdersService {
 
 
@@ -27,5 +28,8 @@ public interface OrdersService {
          List<Orders> getOrdersInHour();
 
          int getBookIdByPerson(Person person);
+         
+         boolean isPersonOrderedBook(Person person, Book book);
+         boolean isLimitReached(Person person);
 
 }

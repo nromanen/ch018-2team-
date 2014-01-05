@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import org.hibernate.Criteria;
 
 /**
  *
@@ -89,10 +90,18 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
     }
 
     @Override
-    public Date getBookWithLastDate(Book book){
+    public Date getMinOrderDate(Book book){
        
-        return (Date) factory.getCurrentSession().createSQLQuery("select min(return_date) from booksinuse where bid = :id")
-                .setString("id", String.valueOf(book.getbId())).list().get(0);
+        
+        
+            Query query = factory.getCurrentSession().createSQLQuery("select min(return_date) from booksinuse where bid = :id")
+                .setString("id", String.valueOf(book.getbId()));
+            Date minDate;
+            if((minDate = (Date)query.uniqueResult()) == null)
+                return new Date();
+            else
+                return minDate;
+        
  
      
     }
@@ -132,10 +141,13 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
     @Override
     public boolean isPersonHaveBook(Person person, Book book) {
         try{
+          
         BooksInUse use = (BooksInUse) factory.getCurrentSession().createQuery("from BooksInUse where person = :p AND book = :b")
                 .setParameter("p", person).setParameter("b", book).list().get(0);
+            
         return use == null ? false : true;
         }catch(Exception e){
+            
             return false;
         }
     }

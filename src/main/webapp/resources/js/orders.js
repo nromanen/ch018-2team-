@@ -3,29 +3,45 @@
 $(document).ready(function(){
 
     $(".calendar").each(function (){
-        var minD = $(this).prev().val().split(" ");
+        var orderDateLong = $(this).prev().val();
+        var minDateLong = $(this).prev().prev().val();
+        
+        if(orderDateLong > minDateLong){
+            var $btn = $(this).next();
+            $btn.attr('data-toggle', 'popover');
+            $btn.attr('data-content', 'can choose earlier date');
+            $btn.popover("show");
+        }
+        
+        var orderDate = getDateInFormat(orderDateLong);
+        var minDate = getDateInFormat(minDateLong).split(" ");
+        
         $(this).datetimepicker({
-            
             format: 'Y/m/d H:m',
-            minDate: minD[0],
-            minTime: minD[1]
+            value: orderDate,
+            minDate: minDate[0],
+            minTime: minDate[1]
         });
     });
 
+    
 
     $('.order_delete_button').click(function(){
-        deleteOrders($(this).prev().val());
+        
+        deleteOrder($(this).prev().val());
     });
     
     $('.order_change_button').click(function (){
-        var orderId = $(this).prev().prev().prev().val();
-        var date = $(this).prev().val();
+        var orderId = $(this).parent().children().val();
+        
+        var date = getLongFromFormatTime(($(this).prev().val()));
         editOrder(orderId, date);
+        
     });
 });
 
 
-function deleteOrders(orderId){
+function deleteOrder(orderId){
     $.ajax({
         url: "delete",
         type: "POST",
@@ -58,12 +74,21 @@ function editOrder(orderId, date){
         success: function(data) {
             
                 var $li = $('#order_li_' + orderId);
+                var $btn = $li.find('.order_change_button');
                 
+                if(data.date > (data.minDate + 6*60*60*1000)){
+                    $btn.attr('data-toggle', 'popover');
+                    $btn.attr('data-content', 'can choose earlier date');
+                    $btn.popover("show");
+                }
                 
                 var $edit_input = $li.find(".calendar");
-                var minD = data.minDate.split(" ");
+                var minD = getDateInFormat(data.minDate).split(" ");
+                var currentDate = getDateInFormat(data.date);
                  $edit_input.datetimepicker({
+                    
                     format: 'Y/m/d H:m',
+                    value: currentDate,
                     minDate: minD[0],
                     minTime: minD[1]
                });

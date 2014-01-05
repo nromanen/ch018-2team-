@@ -70,12 +70,12 @@ public class WishListController {
     public String myG(Model model, Principal principal){
         Person person = personService.getByEmail(principal.getName());
         List<WishList> wishes = wishService.getWishByPerson(person);
-        Map<WishList, String> wishesWithDates = new HashMap<>();
+        Map<WishList, Long> wishesWithDates = new HashMap<>();
         for(WishList wish : wishes){
-            wishesWithDates.put(wish, calculateMinDate(wish.getBook()));
+            wishesWithDates.put(wish, useService.getMinOrderDate(wish.getBook()).getTime());
         }
         model.addAttribute("map", wishesWithDates);
-        return "wishlist";
+        return "user/wishlist";
     }
     
     /*@RequestMapping(value = "/my", method = RequestMethod.POST)
@@ -129,13 +129,13 @@ public class WishListController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         Date minDate;
         int current = book.getCurrentQuantity();
-        Date dateFromUse = useService.getBookWithLastDate(book);
+       /* Date dateFromUse = useService.getBookWithLastDate(book);
         if(dateFromUse == null || current > 0)
             minDate = new Date();
         else{
             minDate = dateFromUse;
-        }
-        return format.format(minDate).toString();
+        }*/
+        return "";//format.format(minDate).toString();
              
     }
     

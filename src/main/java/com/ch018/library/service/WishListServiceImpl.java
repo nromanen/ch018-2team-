@@ -73,6 +73,12 @@ public class WishListServiceImpl implements WishListService{
         return wishDao.getWishByPersonBook(person, book);
     }
 
+    @Override
+    @Transactional
+    public boolean isPersonWishBook(Person person, Book book) {
+        return wishDao.isPersonWishBook(person, book);
+    }
+
     
     
     

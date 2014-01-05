@@ -76,9 +76,12 @@ public class BookInUseServiceImpl implements BookInUseService {
 
     @Override
     @Transactional
-    public Date getBookWithLastDate(Book book){
+    public Date getMinOrderDate(Book book){
         
-        return useDao.getBookWithLastDate(book);
+        if(book.getCurrentQuantity() > 0)
+            return new Date();
+        
+        return useDao.getMinOrderDate(book);
          
     }
 
