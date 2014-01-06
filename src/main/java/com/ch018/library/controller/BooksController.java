@@ -73,10 +73,10 @@ public class BooksController {
     public String booksG(Model model){
         List<Genre> genres = genreService.getAll();
         List<Book> books = bookService.getAll();
-        model.addAttribute("genres", genres);
+        //model.addAttribute("genres", genres);
         model.addAttribute("books", books);
         
-        return "user/books";
+        return "books";
     }
     
     @RequestMapping(method = RequestMethod.POST)

@@ -4,17 +4,25 @@
  
 <tiles-definitions>
 
+    <definition name="search" preparer="genres"  template="/WEB-INF/templates/user/search.jsp" ></definition>
+    
+    <definition name="user-header"   template="/WEB-INF/templates/user/user-header-template.jsp">
+        <put-attribute name="search"  value="search"/>
+        <put-attribute name="usermenu" value="/WEB-INF/templates/user/usermenu.jsp"/>
+    </definition>
+    
     <definition name="base-template" template="/WEB-INF/templates/base-template.jsp">
         
-        <put-attribute name="header" value="/WEB-INF/templates/mainheader.jsp" />
-        
-        <put-attribute name="content" value="" />
+        <put-attribute name="header" value="" />
         
         <put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
     </definition>
 
-    <definition name="books" extends="base-template">
-        <put-attribute name="title" value="View: info" />
+    <definition name="books"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        
         <put-attribute name="content" value="/WEB-INF/templates/layouts/books.jsp" />
+        
     </definition>
 </tiles-definitions>
