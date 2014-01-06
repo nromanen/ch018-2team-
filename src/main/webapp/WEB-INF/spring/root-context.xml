@@ -26,5 +26,6 @@
 	<import resource="data.xml" />
         <import resource="security.xml"/>
         <import resource="mail.xml"/>
+        <import resource="tiles.xml"/>
 
 </beans>
