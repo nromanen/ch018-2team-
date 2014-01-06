@@ -78,7 +78,7 @@ public class WishListController {
             wishesWithDates.put(wish, useService.getMinOrderDate(wish.getBook()).getTime());
         }
         model.addAttribute("map", wishesWithDates);
-        return "user/wishlist";
+        return "wishlist";
     }
 
     
@@ -88,41 +88,6 @@ public class WishListController {
         return new JSONObject().toString();
     }
     
-   /* @RequestMapping(value = "/confirm")
-    public @ResponseBody String add(@RequestParam("wishId") Integer wishId, @RequestParam("bookId") Integer bookId,
-        @RequestParam("date") String date, Principal principal) throws IncorrectDate{
-        Person person = personService.getByEmail(principal.getName());
-        Book book = bookService.getBookById(bookId);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-        Date d;
-        
-        try{
-            d = format.parse(date);
-            
-        }catch(Exception e){
-           
-            throw new IncorrectDate("incorrect date");
-        }
-        ordersService.save(new Orders(person, book, d));
-        wishService.delete(wishService.getWishByID(wishId));
-        return new JSONObject().toString();
-                
-        
-    }*/
-    
-    
-   /* private String calculateMinDate(Book book){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        Date minDate;
-        int current = book.getCurrentQuantity();
-       Date dateFromUse = useService.getBookWithLastDate(book);
-        if(dateFromUse == null || current > 0)
-            minDate = new Date();
-        else{
-            minDate = dateFromUse;
-        }
-        return "";
-             
-    }*/
+   
     
 }

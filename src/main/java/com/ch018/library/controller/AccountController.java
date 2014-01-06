@@ -47,7 +47,7 @@ public class AccountController {
     public String accountG(Model model, Principal principal){
         Person person = personService.getByEmail(principal.getName());
         model.addAttribute("person", person);
-        return "user/account";
+        return "account";
     }
     
     @RequestMapping(value = "changeEmail", method = RequestMethod.POST)

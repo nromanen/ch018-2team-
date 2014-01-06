@@ -73,7 +73,7 @@ public class OrderController {
         model.addAttribute("isBookLimitReached", limit);
         if(limit){
            model.addAttribute("inUse", true);
-           return "user/order";
+           return "order";
         }
         
         model.addAttribute("book", book);
@@ -83,7 +83,7 @@ public class OrderController {
         model.addAttribute("inWishList", wishService.isPersonWishBook(person, book));
         Date minDate = useService.getMinOrderDate(book);
         model.addAttribute("minDate", minDate.getTime());
-        return "user/order";
+        return "order";
        
     }
 
@@ -114,7 +114,7 @@ public class OrderController {
             
         }
         model.addAttribute("ordersMinDates", ordersMinDates);
-        return "user/orders";
+        return "orders";
         
     }
     

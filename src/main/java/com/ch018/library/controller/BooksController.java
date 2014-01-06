@@ -73,7 +73,7 @@ public class BooksController {
     public String booksG(Model model){
         List<Genre> genres = genreService.getAll();
         List<Book> books = bookService.getAll();
-        //model.addAttribute("genres", genres);
+        model.addAttribute("genres", genres);
         model.addAttribute("books", books);
         
         return "books";
@@ -119,7 +119,7 @@ public class BooksController {
         Person person = personService.getByEmail(principal.getName());
         List<BooksInUse> uses = useService.getBooksInUseByPerson(person);
         model.addAttribute("uses", uses);
-        return "user/myBooks";
+        return "mybooks";
     }
 
 }

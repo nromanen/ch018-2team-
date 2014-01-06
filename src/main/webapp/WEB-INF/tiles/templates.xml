@@ -4,25 +4,76 @@
  
 <tiles-definitions>
 
-    <definition name="search" preparer="genres"  template="/WEB-INF/templates/user/search.jsp" ></definition>
     
-    <definition name="user-header"   template="/WEB-INF/templates/user/user-header-template.jsp">
-        <put-attribute name="search"  value="search"/>
-        <put-attribute name="usermenu" value="/WEB-INF/templates/user/usermenu.jsp"/>
+    
+    <definition name="user-header"   template="/WEB-INF/templates/layouts/user/user-header-template.jsp">
+        <put-attribute name="search"  value="/WEB-INF/templates/layouts/user/search.jsp"/>
+        <put-attribute name="usermenu" value="/WEB-INF/templates/layouts/user/usermenu.jsp"/>
     </definition>
     
     <definition name="base-template" template="/WEB-INF/templates/base-template.jsp">
         
         <put-attribute name="header" value="" />
         
-        <put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
+        <put-attribute name="style-js" value="" />
+        
+        <put-attribute name="footer" value="/WEB-INF/templates/layouts/footer.jsp" />
     </definition>
 
     <definition name="books"  extends="base-template">
         
         <put-attribute name="header" value="user-header" />
         
-        <put-attribute name="content" value="/WEB-INF/templates/layouts/books.jsp" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/books_css_js.jsp" />
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/books.jsp" />
+        
+    </definition>
+    
+    <definition name="order"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/order_css_js.jsp" />
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/order.jsp" />
+        
+    </definition>
+    
+    <definition name="orders"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/orders_css_js.jsp" />
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/orders.jsp" />
+        
+    </definition>
+    
+    <definition name="wishlist"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/wishlist_css_js.jsp" />
+        
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/wishlist.jsp" />
+        
+    </definition>
+    
+    <definition name="mybooks"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/mybooks_css_js.jsp" />
+        
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/myBooks.jsp" />
+        
+    </definition>
+    
+    <definition name="account"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/account_css_js.jsp" />
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/account.jsp" />
         
     </definition>
 </tiles-definitions>
