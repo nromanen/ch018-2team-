@@ -77,6 +77,7 @@ public class OrderController {
         }
         
         model.addAttribute("book", book);
+        model.addAttribute("orders", ordersService.getOrderByBook(book));
         model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
         model.addAttribute("inOrders", ordersService.isPersonOrderedBook(person, book));
         model.addAttribute("inWishList", wishService.isPersonWishBook(person, book));

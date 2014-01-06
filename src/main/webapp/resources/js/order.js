@@ -11,7 +11,7 @@ $(document).ready(function(){
     minD = getDateInFormat(tmpDate);
     minDateSpl = minD.split(" ");
     $('#datetimepicker').datetimepicker({
-                format: 'Y/m/d H:m',
+                format: 'Y/m/d H:i',
                 value: minD,
                 minDate: minDateSpl[0],
                 minTime: minDateSpl[1],

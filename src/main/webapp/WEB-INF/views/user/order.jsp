@@ -130,7 +130,18 @@
                                     </c:otherwise>
                                         </c:choose>
                             </div>
-                               
+                                <div class="row" id="book_orders">
+                                    <ul class="list-group list-unstyled">
+                                        <li class="list-group-item-heading">Book already ordered for dates</li>
+                                        <c:forEach var="order" items="${orders}">
+                                            <li class="list-group-item">
+                                                <div class="tab-content">
+                                                    ${order.getOrderDate()}
+                                                </div>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
                             <div class="modal fade" id="wish_modal" tabindex="-1" role="dialog" aria-labelledby="wish_modal_label" aria-hidden="true">
                                         <div class="modal-dialog">
                                           <div class="modal-content">
