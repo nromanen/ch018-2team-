@@ -28,5 +28,7 @@ public interface PersonDao {
     List<Person> getConfirmed();
     List<Person> getSmsEnabled();
     Person getPersonById(int id);
+    List<Person> simpleSearch(String request);
+    List<Person> advancedSearch(Person person);
    
 }
