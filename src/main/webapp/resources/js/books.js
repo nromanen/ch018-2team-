@@ -7,14 +7,16 @@ $(document).ready(function () {
      
    $('body').on({
        mouseenter : function(){
-           $(this).next().css("display", "block");
+           
+           
+           $(this).next().delay(1600).removeClass('hide');
            $(this).next().hover(function(){
             
         }, function(){
-            $(this).css("display", "none");
+            $(this).addClass('hide');
         });
        }
-   }, '.book');  
+   }, '.book1');  
      
    /*$('body').on('hover', '.book', function() {
         

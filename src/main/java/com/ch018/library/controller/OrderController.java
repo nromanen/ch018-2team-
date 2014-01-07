@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,6 +49,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping(value = "/books/order")
+@Secured({"ROLE_USER"})
 public class OrderController {
     
     @Autowired
@@ -88,6 +90,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @Secured({"ROLE_USER"})
     public @ResponseBody String add(@RequestParam("bookId") Integer bookId, @RequestParam("time") Long time, 
                         Principal principal) throws IncorrectDate{
         Book book = bookService.getBookById(bookId);
@@ -103,6 +106,7 @@ public class OrderController {
     
    
     @RequestMapping(value = "/my", method = RequestMethod.GET)
+    @Secured({"ROLE_USER"})
     public String myG(Model model, Principal principal){
         Person person = personService.getByEmail(principal.getName());
         List<Orders> orders = ordersService.getOrderByPerson(person);
@@ -119,12 +123,14 @@ public class OrderController {
     }
     
     @RequestMapping(value = "/delete")
+    @Secured({"ROLE_USER"})
     public @ResponseBody String delete(@RequestParam("orderId") Integer orderId){
         ordersService.delete(ordersService.getOrderByID(orderId));
         return new JSONObject().toString();
     }
     
     @RequestMapping(value = "/edit")
+    @Secured({"ROLE_USER"})
     public @ResponseBody String edit(@RequestParam("orderId") Integer orderId,
                     @RequestParam("date") Long date, Principal principal) throws IncorrectDate{
         Orders order = ordersService.getOrderByID(orderId);

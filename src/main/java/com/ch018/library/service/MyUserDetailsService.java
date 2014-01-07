@@ -37,7 +37,7 @@ public class MyUserDetailsService implements UserDetailsService{
         if(person == null)
             throw new UsernameNotFoundException(username + "Not Found");
         
-        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_USER");
+        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(person.getProle());
         
         UserDetails user =  new User(person.getEmail(), person.getPassword(), true, true, true, true, authorities);
         System.out.println("userName = " + user.getUsername());

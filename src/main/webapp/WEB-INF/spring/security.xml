@@ -7,21 +7,24 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	<http use-expressions="true">
                 
-		<intercept-url pattern="/" access="permitAll()" />
-           
-                <intercept-url pattern="/books" access="permitAll()" />
-                <intercept-url pattern="/books/*" access="hasRole('ROLE_USER')" />
-                
 		
-                <intercept-url pattern="/account" access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" />
-              
+           
                 
+                <intercept-url pattern="/books/*" access="hasRole('ROLE_USER')" />
+                <intercept-url pattern="/account" access="hasRole('ROLE_USER')" />
+                <intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
+                <intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/librarian/*" access="hasRole('ROLE_LIBRARIAN')" />
+                <intercept-url pattern="/books" access="permitAll()" />
+                <intercept-url pattern="/" access="permitAll()" />
+              
+                <access-denied-handler error-page="/denied"/>
 		<form-login login-page="/login" default-target-url="/"
 			authentication-failure-url="/login?fail=true" />
 		<logout logout-success-url="/index" />
 		
 		<anonymous username="guest" granted-authority="ROLE_ANONYMOUS" />
-		<remember-me key="secret"/>
+		<remember-me key="secret" token-validity-seconds="604800"/>
 	</http>
 
         <global-method-security pre-post-annotations="enabled" secured-annotations="enabled"/> 

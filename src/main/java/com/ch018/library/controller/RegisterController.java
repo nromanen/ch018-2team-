@@ -66,7 +66,9 @@ public class RegisterController {
             return "unsuccessful";
 
         person.setPassword(encoder.encode(person.getPassword()));
-         
+        person.setProle("ROLE_USER");
+        person.setMultiBook(5);
+        
         personService.save(person);
         
         logger.info("new user {} registered", person);

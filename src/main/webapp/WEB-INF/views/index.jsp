@@ -16,32 +16,45 @@
 </head>
 <body>
     
-    <div class="container">
-        <div class="row">
+    
+        <div class="row"  id="index_head">
             <div class="col-md-7">
+                
             </div>
+            
             <div class="col-md-5">
-                <form class="form-inline" role="form" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
-                    <div class="form-group">
-                        <input  class="form-control" type="text" name="j_username" placeholder="Enter Email">
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" type="password" name="j_password" placeholder="Enter Password">
-                    </div>
-                    <div class="form-group">
-                        <input type="checkbox" name="_spring_security_remember_me">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Sing In</button>
-                </form>
+                <div class="row">
+                    <form class="form-inline" role="form" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
+                        <div class="form-group">
+                            <input  class="form-control" type="text" name="j_username" placeholder="Enter Email">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="password" name="j_password" placeholder="Enter Password">
+                        </div>
+
+
+                        <button  type="submit" class="btn btn-primary">Sing In</button>
+                    </form>
+                </div>
+                        <div class="row">
+                            
+                                <label class="text-left">
+                                    <input  type="checkbox" name="_spring_security_remember_me">
+                                    <span>remember-me
+                                    
+                                </label>
+                            
+                        </div>
             </div>
         </div>
-        <div class="row" >
+        <div class="row" id="index_body">
             <div class="col-md-8 row-padded">
+                
             </div>
             <div class="col-md-4">
                 <div class="row">
                     <form id="registration_form" class="form-horizontal" role="form" action="<c:url value="/register" />" method="post">
-                        <legend>Sign Up for our Library</legend>
+                        <legend>Sign Up for our Library </legend>
                         <div class="form-group col-lg-8">
                             <input id="reg_name" class="form-control" type="text" name="name" minlength="2" required placeholder="First Name">
                         </div>
@@ -67,11 +80,16 @@
                         <button class="btn btn-success" type="submit" >Sign Up</button>
                         </div>
                     </form>
+                        
+                      
                 </div>
+                        <div class="row">
+                            <button id="view_books" class="btn btn-success">View Books</button>
+                        </div>
                 </div>
                         
                 <div class="row">
-                    
+                     
                 </div>
             </div>
         </div>
@@ -79,7 +97,7 @@
             <div class="col-md-1">
             </div>
         </div>
-    </div>
+  
     
 </body>
 </html>

@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
@@ -44,6 +45,7 @@ public class AccountController {
     final Logger logger = LoggerFactory.getLogger(AccountController.class);
     
     @RequestMapping(method = RequestMethod.GET)
+    @Secured({"ROLE_USER"})
     public String accountG(Model model, Principal principal){
         Person person = personService.getByEmail(principal.getName());
         model.addAttribute("person", person);
@@ -51,6 +53,7 @@ public class AccountController {
     }
     
     @RequestMapping(value = "changeEmail", method = RequestMethod.POST)
+    @Secured({"ROLE_USER"})
     public @ResponseBody String changeEmail(@RequestParam("email") String email, Principal principal){
         Person person = personService.getByEmail(principal.getName());
         logger.info("person {} send request to email change to {}", person, email);
@@ -69,6 +72,7 @@ public class AccountController {
     }
     
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
+    @Secured({"ROLE_USER"})
     public @ResponseBody String changePassword(@RequestParam("oldPass") String oldPass,
                                                     @RequestParam("newPass") String newPass,
                                                     @RequestParam("reNewPass") String reNewPass,
@@ -85,6 +89,7 @@ public class AccountController {
     }
     
     @RequestMapping(value = "changeField", method = RequestMethod.POST)
+    @Secured({"ROLE_USER"})
     public @ResponseBody String changeField(@RequestParam("fieldName") String fieldName, 
                                               @RequestParam("fieldValue") String fieldValue) throws Exception {
         String field;

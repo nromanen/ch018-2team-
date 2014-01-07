@@ -12,6 +12,7 @@ import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -19,8 +20,10 @@ import java.util.Map;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -139,7 +142,7 @@ public class BookServiceImpl implements BookService {
     public JSONObject getBooksComplexAsJson(String query) {
     
         boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
-    
+
         List<Book> books;
         
         if(query.equals(""))

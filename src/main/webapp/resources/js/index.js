@@ -4,7 +4,13 @@ $.validator.addMethod('customphone', function (value, element) {
 
 $(document).ready(function () {
     
-   /* $('#registration_form').validate({
+    $('#view_books').click(function () {
+       
+        location.href = "books";
+        
+    });
+    
+    $('#registration_form').validate({
         
         rules: {
             name: {
@@ -34,6 +40,6 @@ $(document).ready(function () {
             }
         }
         
-    });*/
+    });
     
 });
