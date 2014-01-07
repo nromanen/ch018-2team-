@@ -59,7 +59,7 @@ public class Person implements Serializable {
     private boolean sms;
     
     @Column(name = "multi")
-    private int multiBook;
+    private Integer multiBook;
     
     @Column(name = "timelyreturn")
     private int timelyReturn;
@@ -262,11 +262,11 @@ public class Person implements Serializable {
         this.img = img;
     }
 
-    public int getMultiBook() {
+    public Integer getMultiBook() {
         return multiBook;
     }
 
-    public void setMultiBook(int multiBook) {
+    public void setMultiBook(Integer multiBook) {
         this.multiBook = multiBook;
     }
     

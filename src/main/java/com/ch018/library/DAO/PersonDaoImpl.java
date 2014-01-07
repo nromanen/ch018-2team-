@@ -5,10 +5,15 @@
 package com.ch018.library.DAO;
 
 import com.ch018.library.util.HibernateUtil;
+import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.logging.log4j.core.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
@@ -124,6 +129,66 @@ public class PersonDaoImpl implements PersonDao {
 	public Person getPersonById(int id) {
 			return (Person) factory.getCurrentSession().load(Person.class, id);
 		
+	}
+
+	@Override
+	public List<Person> simpleSearch(String request) {
+		// TODO Auto-generated method stub
+		if (!request.equals("")) {
+			
+			Session session = factory.openSession();
+			
+			Query q = session.createQuery("from Person where name like :parameter or"
+											+ " surname like :parameter");
+			q.setParameter("parameter", request + "%");		
+			
+			List<Person> users = q.list();
+			
+			return users;
+			
+		} else {
+			return null;
+		}
+		
+	}
+
+	@Override
+	public List<Person> advancedSearch(Person person) {
+		// TODO Auto-generated method stub
+		
+		Session session = factory.openSession();
+		
+		Criteria criteria = session.createCriteria(Person.class);
+		
+		if(!person.getName().equals("")) {
+			System.out.println(person.getName() + "++++++");
+		criteria.add(Restrictions.eq("name", person.getName()));
+		}
+		
+		if(!person.getSurname().equals("")) {
+			System.out.println(person.getSurname() + "++++++");
+		criteria.add(Restrictions.eq("surname", person.getSurname()));
+		}
+		
+		if(!person.getEmail().equals("")) {
+			System.out.println(person.getEmail() + "++++++");
+		criteria.add(Restrictions.eq("email", person.getEmail()));
+		}
+		
+		if(!person.getCellphone().equals("")) {
+			System.out.println(person.getCellphone() + "++++++");
+		criteria.add(Restrictions.eq("cellphone", person.getCellphone()));
+		}
+		
+		List<Person> users = criteria.list();
+		if (users.size() > 0) {
+			Person person2 = users.get(0);
+			
+			System.out.println(person2.getName() + "++++++");
+		}
+		
+		
+		return users;
 	}
 
     

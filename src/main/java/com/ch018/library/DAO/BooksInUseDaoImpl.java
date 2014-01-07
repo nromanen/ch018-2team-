@@ -119,7 +119,13 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 	@Override
 	public BooksInUse getBookInUseById(int id) {
 		Session session = factory.openSession();
-		return (BooksInUse) session.get(BooksInUse.class, id);//Session is still open???
+		BooksInUse bookInUse = (BooksInUse) session.get(BooksInUse.class, id);
+		
+		if (session.isOpen()) {
+			session.close();
+		}
+		
+		return bookInUse; 
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.ch018.library.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 
 @Controller
 @RequestMapping(value = "/librarian/users")
@@ -22,9 +25,28 @@ public class LibrarianUsersController {
 	@RequestMapping(value = "")
 	public String showAll(Model model) throws Exception {
 		
-		model.addAttribute("users", personService.getAll());
+		List<Person> person = personService.getAll();
 		
-		return "librarianusers"; 
+		int rit, rnit; 
+		float grade = 0;
+		
+		for (Person pers : person) {
+			
+			rit = pers.getTimelyReturn();
+			rnit = pers.getUntimekyReturn();
+			
+			if((rit > 0) || (rnit > 0) ){
+			grade = (float) rit/(rnit+rit);
+			grade *= 100;
+			}
+			
+			pers.setGeneralRating(grade);
+			
+		}
+		
+		model.addAttribute("users", person);
+		
+		return "librarian/users"; 
 	}
 	
 	@RequestMapping(value = "/adduser", method = RequestMethod.GET)
@@ -33,15 +55,15 @@ public class LibrarianUsersController {
 		Person user = new Person();
 		model.addAttribute("user", user);
 		
-		return "librarianadduser";
+		return "librarian/adduser";
 	}
 	
 	@RequestMapping(value = "/adduser",method = RequestMethod.POST)
-	public String addUser(@ModelAttribute("user") Person user, Model model) throws Exception {
-		
+	public String addUser(@ModelAttribute("user") Person user, BindingResult result) throws Exception {
+
 		personService.save(user);
 		
-		return "";
+		return "redirect:/librarian/users";
 	}
 	
 	@RequestMapping(value = "/edituser", method = RequestMethod.GET)
@@ -49,7 +71,7 @@ public class LibrarianUsersController {
 		
 		model.addAttribute("user", personService.getById(id));
 		
-		return "librarianedituser";
+		return "librarian/edituser";
 	}
 	
 	@RequestMapping(value = "/edituser", method = RequestMethod.POST) 
@@ -65,4 +87,46 @@ public class LibrarianUsersController {
 		return "redirect:/librarian/users";
 	}
 	
+	@RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
+	public String deleteUser(@RequestParam("id") int id, Model model) throws Exception {
+		
+		personService.delete(id);
+		
+		return "redirect:/librarian/users";
+	}
+	
+	@RequestMapping(value = "/advencedsearch", method = RequestMethod.GET)
+	public String advencedSearch(Model model) throws Exception {
+		
+		Person person = new Person();
+		model.addAttribute("user", person);
+		
+		return "librarian/usersadvencedsearch";
+	}
+	
+	@RequestMapping(value = "/advencedsearch", method = RequestMethod.POST)
+	public String advancedSearch(@ModelAttribute("user") Person user, BindingResult result, Model model) throws Exception {
+		
+		List<Person> person = personService.advancedSearch(user);
+		
+		model.addAttribute("users", person);
+		
+		return "librarian/users";
+	}
+	
+	@RequestMapping(value = "/simplesearch", method = RequestMethod.GET)
+	public String simpleSearch(Model model) throws Exception {
+		
+		return "librarian/users";
+	}
+	
+	@RequestMapping(value = "/simplesearch", method = RequestMethod.POST)
+	public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
+	
+		List<Person> person = personService.simpleSearch(request);
+		
+		model.addAttribute("users", person);
+		
+		return "librarian/users";
+	}
 }

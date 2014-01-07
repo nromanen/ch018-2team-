@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,19 +41,26 @@ public class LibrarianBooksController {
 	@RequestMapping(value = "")
 	public ModelAndView bookList () {
 		
-		return new ModelAndView("librarianbooks", "books", bookService.getAll());
+		
+		
+		return new ModelAndView("librarian/books", "books", bookService.getAll());
 	}
 	
 	@RequestMapping(value= "/addbook", method = RequestMethod.GET)
 	public String add(Model model) throws Exception {
+		
+		final int DEFAULT_TERM_OF_ISSUANCE = 14;
+		
 		Book book = new Book();
+		book.setTerm(DEFAULT_TERM_OF_ISSUANCE);
 		model.addAttribute("book", book);
 		model.addAttribute("genre", genreService.getAll());
-		return "librarianaddbook";
+		return "librarian/addbook";
 	}
 	
 	@RequestMapping(value= "/addbook", method = RequestMethod.POST)
 	public String add(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("genreId") Integer gid) throws Exception {
+		
 		Genre genre = genreService.getById(gid);
 		System.out.println("Genre Id = " + gid);
 		book.setGenre(genre);
@@ -74,7 +83,7 @@ public class LibrarianBooksController {
 		model.addAttribute("genre", genreService.getAll());
 		model.addAttribute("book", bookService.getBookById(bookId));
 		System.out.println("Book " + bookService.getBookById(bookId));
-		return "librarianeditbook";
+		return "librarian/editbook";
 	}
 	
 	@RequestMapping(value = "/editbook", method = RequestMethod.POST)
@@ -89,67 +98,12 @@ public class LibrarianBooksController {
 		return "redirect:/librarian/books";
 	}
 	
-	
-	
-	//ToReturn*all time*(Unfinished)
-	@RequestMapping(value = "/toreturn")
-	public String toReturn(Model model) throws SQLException {
-			
-		/*List<Date> result = bookInUseService.getBooksInUseToReturnDate();
-		List<BooksInUse> biu = new ArrayList<BooksInUse>();
-		ArrayList<Book> books = new ArrayList<Book>();
-		
-		for (Date date : result) {
-			biu = bookInUseService.getBooksInUseByReturnDate(date);
-			System.out.println("The date is: " + date);
-			for (BooksInUse booksInUse : biu) {
-				books.add(booksInUse.getBook());
-			}
-		}
-			
-		for (Book book : books) {
-			System.out.println("Book is: " + book.getAuthors() + " " +book.getTitle());
-		}*/
-		
-		//model.addAttribute("books", books);
-		model.addAttribute("booksInUse", bookInUseService.getAll());
-
-		return "librarianbookstoreturn";
-	}
-	//Is not finished, but date comparison works fine
-	@RequestMapping(value = "/toreturntoday")
-	public String toReturnToday(Model model) throws Exception {
-		
-		Date date = new Date();
-
-		List<Date> result = bookInUseService.getBooksInUseToReturnDate();
-		Date bookDate = result.get(0);
-		
-		Calendar c1 = Calendar.getInstance();
-		c1.add(Calendar.DAY_OF_MONTH, +30);
-		Calendar c2 = Calendar.getInstance();
-		date = c1.getTime();
-		c1.setTime(date);
-		c2.setTime(bookDate);
-		
-		
-		
-		System.out.println(date);
-		System.out.println(bookDate);
-		
-		if (c1.get(Calendar.DAY_OF_YEAR) == (c2.get(Calendar.DAY_OF_YEAR))) { System.out.println("MATCHES!!!!");}else {
-			System.out.println("SUCK!!!");
-		}
-		
-		return "redirect:/librarian/books";
-	}
-	
 	@RequestMapping(value = "/advancedsearch", method = RequestMethod.GET)
 	public String advancedSearch(Model model) throws Exception {
 			Book book = new Book();
 			model.addAttribute("book", book);
 			model.addAttribute("genre", genreService.getAll());
-			return "librarianadvancedsearch";
+			return "librarian/bookadvancedsearch";
 	}
 	
 	@RequestMapping(value = "/advancedsearch", method = RequestMethod.POST)
@@ -164,7 +118,7 @@ public class LibrarianBooksController {
 		
 
 		
-		return "librariansearchresult";
+		return "librarian/booksearchresult";
 	}
 	
 	@RequestMapping(value = "/holders", method = RequestMethod.GET)
@@ -173,7 +127,7 @@ public class LibrarianBooksController {
 			book = bookService.getBookById(id);
 			BooksInUse bookInUse = new BooksInUse();
 			List<BooksInUse> booksInUse = bookInUseService.getBooksInUseByBook(book);
-			List<BooksInUse> booksInUseEx = new ArrayList<BooksInUse>();
+			Map<BooksInUse, Integer> booksInUseEx = new HashMap<BooksInUse, Integer>();
 			
 			Date date = new Date();
 			Calendar currentDate = Calendar.getInstance();
@@ -185,9 +139,8 @@ public class LibrarianBooksController {
 				
 				endDate.setTime(booksInUse2.getReturnDate());
 				difference = endDate.get(Calendar.DAY_OF_YEAR) - currentDate.get(Calendar.DAY_OF_YEAR);
-				booksInUse2.setDaysToreturn(difference);
 				System.out.println("The difference is: " + difference);
-				booksInUseEx.add(booksInUse2);
+				booksInUseEx.put(booksInUse2, difference);
 			}
 			
 			model.addAttribute("book", book);
@@ -195,12 +148,12 @@ public class LibrarianBooksController {
 			
 			
 			
-		return "librarianbookholders";
+		return "librarian/bookholders";
 	}
 	
 	@RequestMapping(value = "/simplesearch", method=RequestMethod.GET)
 	public String simpleSearch(Model model) {
-		return "librarianbooks";
+		return "librarian/books";
 	}
 	
 	@RequestMapping(value = "/simplesearch", method=RequestMethod.POST)
@@ -210,6 +163,6 @@ public class LibrarianBooksController {
 		
 		model.addAttribute("books", books);
 		
-		return "librariansearchresult";
+		return "librarian/booksearchresult";
 	}
 }

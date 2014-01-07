@@ -5,8 +5,10 @@
 package com.ch018.library.service;
 
 import com.ch018.library.entity.Person;
+
 import java.security.Principal;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,6 +32,7 @@ public interface PersonService {
     List<Person> getSmsEnabled();
     boolean updatePassword(String oldPass, String newPass, String reNewPass, Principal principal);
     String updateField(String fieldName, String filedValue);
-    
+    List<Person> simpleSearch(String request);
+    List<Person> advancedSearch(Person person);
     
 }
