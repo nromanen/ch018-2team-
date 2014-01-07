@@ -61,7 +61,7 @@
                             <input id="reg_rpass" class="form-control" equalto="#reg_pass" type="password" name="rPassword" required placeholder="Re-enter Password">
                         </div>
                         <div class="form-group col-lg-8">
-                            <input id="reg_phone" class="form-control" type="text" name="cellphone" required placeholder="Phone Number">
+                            <input id="reg_phone" class="form-control" type="text" name="cellPhone" required placeholder="Phone Number">
                         </div>
                         <div class="form-group col-lg-8">
                         <button class="btn btn-success" type="submit" >Sign Up</button>
