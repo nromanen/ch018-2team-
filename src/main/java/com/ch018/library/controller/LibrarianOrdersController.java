@@ -83,7 +83,7 @@ public class LibrarianOrdersController {
 		
 		model.addAttribute("orders", ordersService.getAll());
 		
-		return "librarianorders";
+		return "librarian/orders";
 	}
 	
 	
@@ -116,7 +116,7 @@ public class LibrarianOrdersController {
 		
 		model.addAttribute("orders", orders);
 
-		return "librarianorders";
+		return "librarian/orders";
 	}
 		
 	@RequestMapping(value = "/toissuetoday")
@@ -125,7 +125,7 @@ public class LibrarianOrdersController {
 		List<Orders> orders = ordersService.getOrdersToday();
 		
 		model.addAttribute("orders", orders);
-		return "librarianorders";
+		return "librarian/orders";
 	}
 	
 	@RequestMapping (value = "/addOrder", method = RequestMethod.GET)
@@ -142,7 +142,7 @@ public class LibrarianOrdersController {
 	
 	@RequestMapping (value = "/search", method = RequestMethod.GET)
 	public String search(Model model) throws Exception {
-		return "librarianorders";
+		return "librarian/orders";
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.POST)

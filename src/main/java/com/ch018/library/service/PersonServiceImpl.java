@@ -3,8 +3,10 @@ package com.ch018.library.service;
 //import com.ch018.library.dao.PersonDao;
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.Person;
+
 import java.security.Principal;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -140,12 +142,18 @@ public class PersonServiceImpl implements PersonService {
         }
         
     }
-    
-    
 
-    
-    
-    
+	@Override
+	public List<Person> simpleSearch(String request) {
+		// TODO Auto-generated method stub
+		return pDao.simpleSearch(request);
+	}
+
+	@Override
+	public List<Person> advancedSearch(Person person) {
+		// TODO Auto-generated method stub
+		return pDao.advancedSearch(person);
+	}
     
 }
 
