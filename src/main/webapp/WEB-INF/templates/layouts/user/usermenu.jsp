@@ -10,4 +10,5 @@
         <li><a href="${pageContext.request.contextPath}/account" id="my_account">Hello <sec:authentication property="principal.username" /></a> <a href="<c:url value="/j_spring_security_logout" />">logout</a></li>
     </ul>
     </sec:authorize>
+    
 </div>

@@ -99,7 +99,7 @@ public class BooksController {
     
     
     @RequestMapping(value = "/autocomplete", method = RequestMethod.GET)
-    @Secured({"ROLE_USER"})
+    
     public @ResponseBody String autocomplete(@RequestParam("query") String query){
         List<String> titles = new ArrayList<>();
         
