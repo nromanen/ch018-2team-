@@ -49,7 +49,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping(value = "/books/order")
-@Secured({"ROLE_USER"})
+
 public class OrderController {
     
     @Autowired
