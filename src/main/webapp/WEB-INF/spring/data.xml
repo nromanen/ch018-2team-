@@ -29,8 +29,8 @@
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		p:driverClassName="${jdbc.driverClassName}" 
 		p:url="${jdbc.url}"
-		p:username="root" 
-		p:password="root" />
+		p:username="${jdbc.username}" 
+		p:password="${jdbc.password}" />
 
 	
 	<bean id="sessionFactory"

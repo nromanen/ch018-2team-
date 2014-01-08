@@ -10,7 +10,7 @@ $(document).ready(function () {
         
     });
     
-    /*$('#registration_form').validate({
+    $('#registration_form').validate({
         
         rules: {
             name: {
@@ -42,4 +42,4 @@ $(document).ready(function () {
         
     });
     
-});*/
+});

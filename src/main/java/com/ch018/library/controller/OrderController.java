@@ -98,10 +98,18 @@ public class OrderController {
         Person person = personService.getByEmail(principal.getName());
         System.out.println(time);
         Date date = new Date(time);
-        Orders order = new Orders(person, book, date);
+        final Orders order = new Orders(person, book, date);
         ordersService.save(order);
         logger.info("person {} order book {} to date {}", person, book, date);
-        mailService.SendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
+        Thread mailThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                mailService.SendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
+                
+            }
+        });
+        mailThread.start();
         
         return new JSONObject().toString();
     }
