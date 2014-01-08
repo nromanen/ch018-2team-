@@ -128,7 +128,7 @@ function buildMainBooksFromJson(data){
             });
 };
 
-function editOrder(orderId, date){
+/*function editOrder(orderId, date){
     $.ajax({
         url: window.location.pathname + "order/edit",
         type: "POST",
@@ -156,4 +156,4 @@ function editOrder(orderId, date){
 
         });
     
-}
+}*/
