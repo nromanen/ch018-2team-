@@ -1,9 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
             <div class="row">
                 
                 <div class="col-md-1" id="left_main">
                     <!--New Arrivals-->
+                    
                 </div>
                 
                 <div class="col-md-11 book1" id="center_main">
@@ -35,7 +38,7 @@
                                         </p>
                                         <sec:authorize access="isAuthenticated()">
                                         <p>
-                                            <a href="${pageContext.request.contextPath}/books/order?id=${book.getbId()}" class="btn btn-info">Order</a>
+                                            <a href="${pageContext.request.contextPath}/books/order?id=${book.getbId()}" class="btn btn-info"><spring:message code="message.order" /></a>
                                         </p>
                                         </sec:authorize>
                                     </div>

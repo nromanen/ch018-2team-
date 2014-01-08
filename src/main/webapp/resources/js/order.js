@@ -44,7 +44,7 @@ function makeOrder(bookId, time){
             mimeType: 'application/json',
             
          success: function () {
-                alert("AAAA")
+                alert("AAAA");
                 $('#order_modal').modal('show');
                 
              }

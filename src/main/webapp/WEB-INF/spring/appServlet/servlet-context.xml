@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+<beans:beans xmlns="http://www.springframework.org/schema/mvc" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:beans="http://www.springframework.org/schema/beans"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 	
 	<annotation-driven />
@@ -18,6 +19,37 @@
 		<beans:property name="suffix" value=".jsp" />
                 <beans:property name="order" value="2" />
 	</beans:bean>
+        
+        <!--i18n-->
+        <beans:bean id="messageSource"
+              class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+            <beans:property name="basename" value="classpath:messages" />
+            <beans:property name="defaultEncoding" value="UTF-8"/>
+        </beans:bean>
+ 
+        <beans:bean id="localeChangeInterceptor"
+      class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <beans:property name="paramName" value="lang" />
+        </beans:bean>
+ 
+        <beans:bean id="localeResolver"
+      class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+            <beans:property name="defaultLocale" value="en"/>
+        </beans:bean>
+ 
+        <beans:bean id="handlerMapping"
+      class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+            <beans:property name="interceptors">
+                <beans:ref bean="localeChangeInterceptor" />
+            </beans:property>
+        </beans:bean>
+ 
+       <mvc:interceptors>
+    <beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        <beans:property name="paramName" value="lang" />
+    </beans:bean>
+</mvc:interceptors>
+        <!--i18n-->
 	
 	
 	<beans:import resource="controllers.xml" />

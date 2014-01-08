@@ -69,6 +69,7 @@ public class OrderController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String orderGet(@RequestParam("id") Integer bookId , Model model, Principal principal){
+        
         Person person = personService.getByEmail(principal.getName());
         Book book = bookService.getBookById(bookId);
         boolean limit = ordersService.isLimitReached(person);
@@ -101,6 +102,7 @@ public class OrderController {
         ordersService.save(order);
         logger.info("person {} order book {} to date {}", person, book, date);
         mailService.SendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
+        
         return new JSONObject().toString();
     }
     
