@@ -9,10 +9,10 @@
                     
                 </div>
                 
-                <div class="col-md-11 book1" id="center_main">
+                <div class="col-md-10 book1" id="center_main">
                     <ul class="list-inline list-unstyled">
                         <c:forEach var="book" items="${books}">         
-                            <li class="col-md-3" >
+                            <li class="col-md-2" >
                                 
                                 <div class="thumbnail book1" style="height: 280px;" >
                                     <img src="${book.getImg()}" style="height: 180px;">
@@ -49,7 +49,10 @@
                         </c:forEach>
                     </ul>
                 </div>
-                
+                <div class="col-md-1" id="left_main">
+                    <!--New Arrivals-->
+                    
+                </div>
                 
             </div>
     
