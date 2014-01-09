@@ -3,9 +3,13 @@ package com.ch018.library.controller;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.jws.WebParam.Mode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,12 +40,23 @@ public class LibrarianReturnController {
 	}
 	
 	@RequestMapping(value = "/getback", method = RequestMethod.GET)
-	public String getBookBack(@RequestParam("id") int id) throws Exception {
+	public String getBookBack(@RequestParam("id") int id, Model model) throws Exception {
 		
 		BooksInUse  bookInUse = new BooksInUse();
 		bookInUse = booksInUseService.getBookInUseById(id);
 		
+		model.addAttribute("bookInUse", bookInUse);
+		
+		return "/librarian/getbookback";
+	}
+	
+	@RequestMapping(value = "/getback", method = RequestMethod.POST)
+	public String getBack(@RequestParam("id") int id, Model model) throws Exception {
+		
 		Date now = new Date();
+		
+		BooksInUse  bookInUse = new BooksInUse();
+		bookInUse = booksInUseService.getBookInUseById(id);
 		
 		Person person = bookInUse.getPerson();
 		int booksReturnedIntime = person.getTimelyReturn();
@@ -62,7 +77,9 @@ public class LibrarianReturnController {
 			personService.update(person);
 			System.out.println("BRNIT " + booksReturnedNotIntime);
 		}
-			
+		
+		System.out.println("Shelf: " + bookInUse.getBook().getShelf());
+		
 		Book book = bookInUse.getBook();
 		int quantity = book.getCurrentQuantity();
 		quantity += 1;
@@ -73,6 +90,7 @@ public class LibrarianReturnController {
 		
 		return "redirect:/librarian/toreturn";
 	}
+	
 	
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit(@RequestParam("id") int id, Model model) throws Exception {
