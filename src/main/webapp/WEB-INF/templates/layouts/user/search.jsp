@@ -1,20 +1,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles-extras" prefix="tilesx" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<div class="col-md-8" >
+<div class="col-md-6 col-md-offset-1" >
     <div class="row">
         <div class="col-md-10">
             <input class="form-control" id="search_field" type="text" name="search" onkeydown="if (window.event.keyCode==13) search($(this).val())"/>
         </div>
         <div class="col-md-2">
-            <button class="btn-info" onclick="search($('#search_field').val());">search</button>
+            <button class="btn-info" onclick="search($('#search_field').val());"><spring:message code="message.search" /></button>
         </div>
     </div>
     <div class="row" style="margin-top: 10px;">
         <div class="col-md-offset-8">
             <sec:authorize access="isAuthenticated()">
-                <a id="advanced_search_button">Advanced search</a> 
+                <a id="advanced_search_button"><spring:message code="message.advanced" /></a> 
                 
                 <div id="advanced_search_panel">
                     <div class="control-group col-md-12">

@@ -49,7 +49,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping(value = "/books/order")
-@Secured({"ROLE_USER"})
+
 public class OrderController {
     
     @Autowired
@@ -69,6 +69,7 @@ public class OrderController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String orderGet(@RequestParam("id") Integer bookId , Model model, Principal principal){
+        
         Person person = personService.getByEmail(principal.getName());
         Book book = bookService.getBookById(bookId);
         boolean limit = ordersService.isLimitReached(person);
@@ -97,10 +98,19 @@ public class OrderController {
         Person person = personService.getByEmail(principal.getName());
         System.out.println(time);
         Date date = new Date(time);
-        Orders order = new Orders(person, book, date);
+        final Orders order = new Orders(person, book, date);
         ordersService.save(order);
         logger.info("person {} order book {} to date {}", person, book, date);
-        mailService.SendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
+        Thread mailThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                mailService.SendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
+                
+            }
+        });
+        mailThread.start();
+        
         return new JSONObject().toString();
     }
     
