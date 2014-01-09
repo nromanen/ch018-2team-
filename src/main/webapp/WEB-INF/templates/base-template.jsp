@@ -15,7 +15,7 @@
 
     </head>
     <body>
-        <div class="container">
+        <div class="container-full">
             <div class="row">
                 <tiles:insertAttribute name="header" />
             </div>

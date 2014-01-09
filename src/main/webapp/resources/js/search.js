@@ -128,32 +128,4 @@ function buildMainBooksFromJson(data){
             });
 };
 
-function editOrder(orderId, date){
-    $.ajax({
-        url: window.location.pathname + "order/edit",
-        type: "POST",
-        data: {'orderId' : orderId, 'date' : date},
-        dataType: "json",
-        contentType: 'application/x-www-form-urlencoded',
-        mimeType: 'application/json',
-        success: function(data) {
-            
-                var $li = $('#orders_li_' + orderId);
-                
-                $li.find('.li_orderDate').text(date);
-                var $edit_input = $li.find(".edit_calendar");
-                var minD = data.minDate.split(" ");
-                 $edit_input.datetimepicker({
-                    format: 'Y/m/d H:m',
-                    minDate: minD[0],
-                    minTime: minD[1]
-               });
-               
-               
-            }
 
-
-
-        });
-    
-}

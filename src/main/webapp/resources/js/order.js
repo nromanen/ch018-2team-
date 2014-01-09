@@ -36,7 +36,7 @@ $(document).ready(function(){
     
 function makeOrder(bookId, time){
     $.ajax({
-            url: window.location.pathname + "/add",
+            url: "/library/books/order/add",
             type: "POST",
             data: {'bookId' : bookId, 'time' : time},
             dataType: "json",
@@ -44,7 +44,7 @@ function makeOrder(bookId, time){
             mimeType: 'application/json',
             
          success: function () {
-            
+                
                 $('#order_modal').modal('show');
                 
              }
@@ -73,25 +73,4 @@ function addToWishList(bookId){
         });
 }
 
-function deleteOrder(orderId){
-    $.ajax({
-        url: window.location.pathname + "order/delete",
-        type: "POST",
-        data: {'orderId' : orderId},
-        dataType: "json",
-        contentType: 'application/x-www-form-urlencoded',
-        mimeType: 'application/json',
-        success: function() {
-            
-            //myOrders();
-            $('#order_li_' + orderId).remove();
-               
-                
-            }
-
-
-
-        });
-    
-}
 

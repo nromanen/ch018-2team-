@@ -25,6 +25,7 @@ import com.ch018.library.entity.Genre;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
+import org.springframework.security.access.annotation.Secured;
 
 @Controller
 @RequestMapping(value = "/librarian/books")
@@ -46,7 +47,7 @@ public class LibrarianBooksController {
 	}
 	
 	@RequestMapping(value= "/addbook", method = RequestMethod.GET)
-	public String add(Model model) throws Exception {
+        public String add(Model model) throws Exception {
 		
 		final int DEFAULT_TERM_OF_ISSUANCE = 14;
 		
