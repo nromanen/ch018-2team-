@@ -56,7 +56,7 @@
             </div>
             <div class="col-md-4">
                 <div class="row">
-                    <form id="registration_form" class="form-horizontal" role="form" action="<c:url value="/register" />" method="post">
+                    <form id="registration_form" class="form-horizontal" role="form" >
                         <legend><spring:message code="message.registration" /></legend>
                         <div class="form-group col-lg-8">
                             <input id="reg_name" class="form-control" type="text" name="name" minlength="2" required placeholder="<spring:message code="message.name" />">
@@ -80,9 +80,14 @@
                             <input id="reg_phone" class="form-control" type="text" name="cellPhone" required placeholder="<spring:message code="message.phone" />">
                         </div>
                         <div class="form-group col-lg-8">
-                        <button class="btn btn-success" type="submit" ><spring:message code="message.registration" /></button>
+                        <button id="form_submit" class="btn btn-success" type="submit" ><spring:message code="message.registration" /></button>
+                        <div id="error_div" class="text-danger">
+                            
                         </div>
+                        </div>
+                        
                     </form>
+                        
                         
                       
                 </div>

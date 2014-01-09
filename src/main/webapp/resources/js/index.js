@@ -10,7 +10,7 @@ $(document).ready(function () {
         
     });
     
-    $('#registration_form').validate({
+   /* $('#registration_form').validate({
         
         rules: {
             name: {
@@ -40,6 +40,32 @@ $(document).ready(function () {
             }
         }
         
+    });*/
+    
+    $('#form_submit').click(function(event){
+        event.preventDefault();
+        var form_input = $('#registration_form').serialize();
+        
+        $.ajax({
+            url: "/library/register",
+            type: "POST",
+            data: form_input,
+            dataType: "json",
+            contentType: 'application/x-www-form-urlencoded',
+            mimeType: 'application/json',
+         success: function () {
+                
+              
+                
+             },
+         error: function(xhr, status, error){
+                 
+                $('#error_div').text(xhr.responseText);
+                
+         }
+         });
+        
     });
+    
     
 });

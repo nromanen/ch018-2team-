@@ -33,7 +33,6 @@ $(document).ready(function(){
     
     $('.order_change_button').click(function (){
 
-        alert("AAAA");
         var orderId = $(this).parent().children().val();
         
         var date = getLongFromFormatTime(($(this).prev().val()));
@@ -45,7 +44,7 @@ $(document).ready(function(){
 
 function deleteOrder(orderId){
     $.ajax({
-        url: "delete",
+        url: "/library/books/order/delete",
         type: "POST",
         data: {'orderId' : orderId},
         dataType: "json",
