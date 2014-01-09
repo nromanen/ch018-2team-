@@ -15,7 +15,7 @@ import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PersonService;
 
 import java.security.Principal;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,6 +45,9 @@ import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PersonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
 /**
  * 
  * @author Yurik Mikhaletskiy
@@ -64,7 +67,7 @@ public class BooksController {
     @Autowired
     BookInUseService useService;
     
-
+    final Logger logger = LoggerFactory.getLogger(BooksController.class);
     
     @RequestMapping(method = RequestMethod.GET)
     public String booksG(Model model){
@@ -72,130 +75,31 @@ public class BooksController {
         List<Book> books = bookService.getAll();
         model.addAttribute("genres", genres);
         model.addAttribute("books", books);
-        return "user/books";
+        
+        return "books";
     }
     
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public  String books(@RequestParam(value = "query") String query, HttpServletRequest request){
+    public  String books(@RequestParam(value = "query") String query){
         
-        List<Book> books;
-        
-        if(query.equals(""))
-            books = bookService.getAll();
-        else
-            books = bookService.getBooksComplex(query);
-        
-        List<JSONObject> jsons = new ArrayList<>();
-        
-        if(request.isUserInRole("ROLE_USER")){
-            
-            for(Book book : books){
-                JSONObject json = new JSONObject();
-                json.put("bId", book.getbId());
-                json.put("title", book.getTitle());
-                json.put("authors", book.getAuthors());
-                json.put("publisher", book.getPublisher());
-                json.put("description", book.getDescription());
-                json.put("generalQuantity", book.getGeneralQuantity());
-                json.put("currentQuantity", book.getCurrentQuantity());
-                json.put("img", book.getImg());
-                jsons.add(json);
-        }
-        }else{
-            for(Book book : books){
-                JSONObject json = new JSONObject();
-                
-                json.put("title", book.getTitle());
-                json.put("authors", book.getAuthors());
-                json.put("publisher", book.getPublisher());
-                json.put("description", book.getDescription());
-                json.put("generalQuantity", book.getGeneralQuantity());
-                json.put("currentQuantity", book.getCurrentQuantity());
-                json.put("img", book.getImg());
-                jsons.add(json);
-        }
-        }
-        
-        JSONObject finalJson = new JSONObject();
-        finalJson.put("auth", request.isUserInRole("ROLE_USER"));
-        finalJson.put("books", jsons);
-        
-        return finalJson.toString();
+        return bookService.getBooksComplexAsJson(query).toString();    
     }
     
     @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
+    @Secured({"ROLE_USER"})
     public @ResponseBody String advancedSearch(@RequestParam("title") String title,
                                                 @RequestParam("authors") String authors,
                                                 @RequestParam("publisher") String publisher,
                                                 @RequestParam("genreId") Integer genreId,
                                                 HttpServletRequest request){
-        
-        StringBuilder query = new StringBuilder("from Book where ");
-        Map<String, String> params = new HashMap<>();
-        if(genreId > 0){
-            query.append("genre.id = :g ");
-            params.put("g", genreId.toString());
-        }else if(genreId <= 0){
-            query.append("genre.id LIKE :gAll ");
-            params.put("gAll", "%");
-        }
-        if(!title.equals("")){
-            query.append("AND title LIKE :t ");
-            params.put("t", "%" + title + "%");
-        }
-        if(!authors.equals("")){
-            query.append("AND authors LIKE :a ");
-            params.put("a", "%" + authors + "%");
-        }
-        if(!publisher.equals("")){
-            query.append("AND publisher LIKE :p ");
-            params.put("p", "%" + publisher + "%");
-        }
-        
-        
-        System.out.println(query);
-        System.out.println(params);
-        List<Book> books = bookService.getBooksComplexByParams(query.toString(), params);
-        System.out.println(books);
-        List<JSONObject> jsons = new ArrayList<>();
-        
-        if(request.isUserInRole("ROLE_USER")){
-            
-            for(Book book : books){
-                JSONObject json = new JSONObject();
-                json.put("bId", book.getbId());
-                json.put("title", book.getTitle());
-                json.put("authors", book.getAuthors());
-                json.put("description", book.getDescription());
-                json.put("generalQuantity", book.getGeneralQuantity());
-                json.put("currentQuantity", book.getCurrentQuantity());
-                json.put("img", book.getImg());
-                jsons.add(json);
-        }
-        }else{
-            for(Book book : books){
-                JSONObject json = new JSONObject();
-                
-                json.put("title", book.getTitle());
-                json.put("authors", book.getAuthors());
-                json.put("description", book.getDescription());
-                json.put("generalQuantity", book.getGeneralQuantity());
-                json.put("currentQuantity", book.getCurrentQuantity());
-                json.put("img", book.getImg());
-                jsons.add(json);
-        }
-        }
-        
-        JSONObject finalJson = new JSONObject();
-        finalJson.put("auth", request.isUserInRole("ROLE_USER"));
-        finalJson.put("books", jsons);
-        
-        return finalJson.toString();
+        logger.info("advanced search called with {}, {}, {}, {}", title, authors, publisher, genreId);
+        return bookService.getBooksComplexByParamsAsJson(genreId, title, authors, publisher).toString();
     }
     
     
     @RequestMapping(value = "/autocomplete", method = RequestMethod.GET)
+    
     public @ResponseBody String autocomplete(@RequestParam("query") String query){
         List<String> titles = new ArrayList<>();
         
@@ -205,7 +109,7 @@ public class BooksController {
 
         JSONObject json = new JSONObject();
         json.put("suggestions", titles);
-        
+        logger.info("autocomplete called with {}", query);
         return json.toString();
        
     }
@@ -215,7 +119,7 @@ public class BooksController {
         Person person = personService.getByEmail(principal.getName());
         List<BooksInUse> uses = useService.getBooksInUseByPerson(person);
         model.addAttribute("uses", uses);
-        return "user/myBooks";
+        return "mybooks";
     }
 
 }

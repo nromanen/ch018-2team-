@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles-extras" prefix="tilesx" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div class="col-md-8" >
     <div class="row">
@@ -9,9 +11,11 @@
             <button class="btn-info" onclick="search($('#search_field').val());">search</button>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top: 10px;">
         <div class="col-md-offset-8">
+            <sec:authorize access="isAuthenticated()">
                 <a id="advanced_search_button">Advanced search</a> 
+                
                 <div id="advanced_search_panel">
                     <div class="control-group col-md-12">
                         <input class="form-control" id="advanced_search_title" type="text" placeholder="Title">
@@ -22,6 +26,7 @@
                     <div class="control-group col-md-12">
                         <input class="form-control" id="advanced_search_publisher" type="text" placeholder="Publisher">
                     </div>
+                    
                     <div class="control-group col-md-12">
                         <select class="form-control" id="advanced_search_select">
                             <option selected="selected" value="0">All Genres</option>
@@ -30,9 +35,11 @@
                             </c:forEach>
                         </select>    
                     </div>
-                 
-                    <button class="form-control btn-info" id="advanced_search_submit">search</button>    
+                    
+                    <button class="form-control btn-info" id="advanced_search_submit">search</button> 
+                    
                 </div>
+                    </sec:authorize>
         </div>  
 
             </div>

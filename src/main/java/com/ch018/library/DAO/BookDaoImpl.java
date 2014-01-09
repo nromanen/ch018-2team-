@@ -2,8 +2,6 @@ package com.ch018.library.DAO;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import org.springframework.stereotype.Repository;
 import com.ch018.library.entity.Book;
@@ -29,6 +27,12 @@ import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.SimpleExpression;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @Repository
@@ -36,7 +40,7 @@ public class BookDaoImpl implements BookDao {
 
 
         
-    static Logger log = LogManager.getLogger(BookDaoImpl.class);
+    final Logger logger = LoggerFactory.getLogger(BookDaoImpl.class);
 
         
     @Autowired
@@ -46,6 +50,7 @@ public class BookDaoImpl implements BookDao {
     public void save(Book book) {
 
             factory.getCurrentSession().save(book);
+          
 
     }
 
@@ -184,35 +189,34 @@ public class BookDaoImpl implements BookDao {
     public List<Book> getBooksComplex(String query) {
         
         query = "%" + query + "%";
-        return factory.getCurrentSession().createQuery("from Book b where b.title like :q"
-                + " OR b.authors like :q"
-                + " OR b.publisher like :q"
-                + " OR b.genre.description like :q").
-                setString("q", query).list();
+        Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
+        SimpleExpression tExp = Restrictions.like("title", query);
+        SimpleExpression aExp = Restrictions.like("authors", query);
+        SimpleExpression pExp = Restrictions.like("publisher", query);
+        criteria.add(Restrictions.or(tExp, aExp, pExp));
+        return criteria.list();
     }
     
     @Override
-    public List<Book> getBooksComplexByParams(String query, Map<String, String> params){
-        Query q = factory.getCurrentSession().createQuery(query);
-        for(Map.Entry<String, String> param : params.entrySet()){
-            if(param.getKey().equals("g"))
-                q.setInteger("g", Integer.valueOf(param.getValue()));
-            else
-                q.setString(param.getKey(), param.getValue());
+    public List<Book> getBooksComplexByParams(Integer genreId, String title, String authors, String publisher){
+        
+        Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
+
+        if(genreId > 0){
+            criteria.add(Restrictions.eq("genre.id", genreId));
         }
-        return q.list();
+        if(!title.equals(""))
+            criteria.add(Restrictions.like("title", "%" + title + "%"));
+        if(!authors.equals(""))
+            criteria.add(Restrictions.like("authors", "%" + authors + "%"));
+        if(!publisher.equals(""))
+            criteria.add(Restrictions.like("publisher", "%" + publisher + "%"));
+
+        return criteria.list();
+
+        
     }
-    
-   /*@Override
-    public List<Book> getBooksComplex(Comparator<Book> comparator, String... query) {
-        
-        Set<Book> books = new TreeSet<>(comparator);
-        for(int i = 0; i < query.length; i++){
-            books.addAll(getBooksComplex(query[i]));
-        }
-        
-        return new ArrayList<>(books);
-    }*/
+ 
 
 
         

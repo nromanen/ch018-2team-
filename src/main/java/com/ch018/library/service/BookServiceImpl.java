@@ -10,10 +10,21 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +37,9 @@ public class BookServiceImpl implements BookService {
     @Autowired
     BookInUseService useService;
 
+    
+    final Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
+    
     @Override
     @Transactional
     public void save(Book book) {
@@ -101,6 +115,8 @@ public class BookServiceImpl implements BookService {
     }
 
 
+    
+    
 	@Override
 	public List<Book> advancedSearch(Book book) {
 		// TODO Auto-generated method stub
@@ -115,12 +131,71 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public List<Book> getBooksComplexByParams(String query, Map<String, String> params) {
-        return bookDAO.getBooksComplexByParams(query, params);
+    public JSONObject getBooksComplexByParamsAsJson(Integer genreId, String Title, String Authors, String Publisher) {
+        List<Book> books = bookDAO.getBooksComplexByParams(genreId, Title, Authors, Publisher);
+        boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+        return formBooksJsonFromList(books,isUserAuth);
+    }
+
+    @Override
+    @Transactional
+    public JSONObject getBooksComplexAsJson(String query) {
+    
+        boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+
+        List<Book> books;
+        
+        if(query.equals(""))
+            books = getAll();
+        else
+            books = getBooksComplex(query);
+        
+        return formBooksJsonFromList(books, isUserAuth);
+        
+        
     }
 
     
-
+    private JSONObject formBooksJsonFromList(List<Book> books, boolean isUserAuth){
+    
+        List<JSONObject> jsons = new ArrayList<>();
+        
+        if(isUserAuth){
+            
+            for(Book book : books){
+                JSONObject json = new JSONObject();
+                json.put("bId", book.getbId());
+                json.put("title", book.getTitle());
+                json.put("authors", book.getAuthors());
+                json.put("publisher", book.getPublisher());
+                json.put("description", book.getDescription());
+                json.put("generalQuantity", book.getGeneralQuantity());
+                json.put("currentQuantity", book.getCurrentQuantity());
+                json.put("img", book.getImg());
+                jsons.add(json);
+        }
+        }else{
+            for(Book book : books){
+                JSONObject json = new JSONObject();
+                
+                json.put("title", book.getTitle());
+                json.put("authors", book.getAuthors());
+                json.put("publisher", book.getPublisher());
+                json.put("description", book.getDescription());
+                json.put("generalQuantity", book.getGeneralQuantity());
+                json.put("currentQuantity", book.getCurrentQuantity());
+                json.put("img", book.getImg());
+                jsons.add(json);
+        }
+        }
+        
+        JSONObject finalJson = new JSONObject();
+        finalJson.put("auth", isUserAuth);
+        finalJson.put("books", jsons);
+        
+        return finalJson;
+        
+    }
     
     
     

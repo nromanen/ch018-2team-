@@ -73,66 +73,48 @@ function advancedSearchPanel(){
 function buildMainBooksFromJson(data){
     
     $('#center_main').empty();
-           var $ul = $('<ul>', {class : 'list-inline'});
+           var $ul = $('<ul>', {class : 'list-inline list-unstyled'});
            $ul.appendTo($('#center_main'));
                $.each(data.books, function (indx, value){
                 
                 
-                var $li = $('<li>');
+                var $li = $('<li>', {class : 'col-md-3'});
                 $li.appendTo($ul);
-                var $book_quantity = $('<div>', {class : 'book_quantity'});
-                var $book_title = $('<div>', {class : 'book_title'});
-                var $book_img_wrapper = $('<div>', {class : 'book_img_wrapper'});
-                var $book = $('<div>', {class : 'book'});
                 
-                $('<span>').text("Quantity").appendTo($book_quantity);
-                $('<span>').text(value.generalQuantity).appendTo($book_quantity);
-                $('<span>').text(value.currentQuantity).appendTo($book_quantity);
+                var $thumbnail = $('<div>', {class : 'thumbnail book1'});
+                $thumbnail.appendTo($li);
+                var $img = $('<img>', {src : value.img, style : 'height: 180px;'});
+                $img.appendTo($thumbnail);
+                var $caption = $('<div>', {class : 'caption'});
+                $caption.appendTo($thumbnail);
+                var $h6 = $('<h6>').text(value.title);
+                var $p_quantity = $('<p>').text('Quantity:\n' + 'Current: ' + value.currentQuantity + '\n' + 'General: ' + value.generalQuantity);
+                $h6.appendTo($caption);
+                $p_quantity.appendTo($caption);
                 
+                var $thumbnail_ext = $('<div>', {class : 'thumbnail hide book1_ext', style : 'position: absolute; top: 0; z-index: 9999'});
+                $thumbnail_ext.appendTo($li);
+                var $img_ext = $('<img>', {src : value.img, style : 'width: 350px;'});
+                $img_ext.appendTo($thumbnail_ext);
+                var $caption_ext = $('<div>', {class : 'caption'});
+                $caption_ext.appendTo($thumbnail_ext);
+                var $h6_ext = $('<h6>').text(value.title);
+                var $p_quantity_ext = $('<p>').text('Quantity:\n' + 'Current: ' + value.currentQuantity + '\n' + 'General: ' + value.generalQuantity);
+                $h6_ext.appendTo($caption_ext);
+                $p_quantity_ext.appendTo($caption_ext);
                 
-                $book_title.text(value.title);
-           
-                var $order_a = $('<a>', {href : "order?id=" + value.bId});
-                $('<img>', {src : value.img}).appendTo($book_img_wrapper).appendTo($order_a);
-                $order_a.appendTo($book_img_wrapper);
+                if(data.auth === true){
+                    var $book_order = $('<div>', {class : 'book_order'});
+                    var $button = $('<a>', {class: 'btn btn-info', href: '/library/books/order?id=' + value.bId});
+                    $button.text("Order");
+                    $button.appendTo($thumbnail_ext);
+                    
+                }
                 
-                $book_img_wrapper.appendTo($book);
-                $book_title.appendTo($book);
-                $book_quantity.appendTo($book);
-                $book.appendTo($li);
                 
                 //------book_ext
                 
-                var $book_ext_quantity = $('<div>', {class : 'book_quantity'});
-                var $book_ext_title = $('<div>', {class : 'book_title'});
-                var $book_ext_authors = $('<div>', {class : 'book_title'});
-                var $book_ext_publisher = $('<div>', {class : 'book_title'});;
-                var $book_ext_back = $('<div>', {class : 'book_ext_back'});
-                $book_ext_back.css("background-color", "white");
-                var $book_ext = $('<div>', {class : 'book_ext'});
-                var $book_ext_img_wrapper = $('<div>', {class : 'book_ext_img_wrapper'});
                 
-                var $order_a_ext = $('<a>', {href : "/library/books/order?id=" + value.bId});
-                $('<img>', {src : value.img}).appendTo($book_ext_img_wrapper).appendTo($order_a_ext);
-                $order_a_ext.appendTo($book_ext_img_wrapper);
-                
-                $('<span>').text("Quantity").appendTo($book_ext_quantity);
-                $('<span>').text(value.generalQuantity).appendTo($book_ext_quantity);
-                $('<span>').text(value.currentQuantity).appendTo($book_ext_quantity);
-                
-                $book_ext_title.text(value.title);
-                
-                $book_ext_authors.text("Authors: " + value.authors);
-                
-                $book_ext_publisher.text("Publisher: " + value.publisher);
-                
-                $book_ext_img_wrapper.appendTo($book_ext_back);
-                $book_ext_title.appendTo($book_ext_back);
-                $book_ext_authors.appendTo($book_ext_back);
-                $book_ext_publisher.appendTo($book_ext_back);
-                $book_ext_quantity.appendTo($book_ext_back);
-                $book_ext_back.appendTo($book_ext);
-                $book_ext.appendTo($li);
                 
                 /*if(data.auth === true){
                     var $book_order = $('<div>', {class : 'book_order'});

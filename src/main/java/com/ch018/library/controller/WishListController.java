@@ -25,7 +25,10 @@ import java.util.List;
 import java.util.Map;
 import org.codehaus.jackson.annotate.JsonAnyGetter;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,8 +56,10 @@ public class WishListController {
     @Autowired
     OrdersService ordersService;
    
+    final Logger logger = LoggerFactory.getLogger(WishListController.class);
     
     @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @Secured({"ROLE_USER"})
     public @ResponseBody String add(@RequestParam("bookId") Integer bookId, 
             Principal principal){
         Person person = personService.getByEmail(principal.getName());
@@ -67,6 +72,7 @@ public class WishListController {
     }
     
     @RequestMapping(value="/my", method = RequestMethod.GET)
+    @Secured({"ROLE_USER"})
     public String myG(Model model, Principal principal){
         Person person = personService.getByEmail(principal.getName());
         List<WishList> wishes = wishService.getWishByPerson(person);
@@ -75,68 +81,17 @@ public class WishListController {
             wishesWithDates.put(wish, useService.getMinOrderDate(wish.getBook()).getTime());
         }
         model.addAttribute("map", wishesWithDates);
-        return "user/wishlist";
+        return "wishlist";
     }
-    
-    /*@RequestMapping(value = "/my", method = RequestMethod.POST)
-    public @ResponseBody String my(Principal principal){
-        Person person = personService.getByEmail(principal.getName());
-        List<WishList> wishes = wishService.getWishByPerson(person);
-        List<JSONObject> jsons = new ArrayList<>();
-        for(WishList wish : wishes){
-            JSONObject json = new JSONObject();
-            json.put("wishId", wish.getId());
-            json.put("title", wish.getBook().getTitle());
-            json.put("minDate", calculateMinDate(wish.getBook()));
-            jsons.add(json);
-        }
-        return jsons.toString();
-        
-    }*/
+
     
     @RequestMapping(value = "/delete")
+    @Secured({"ROLE_USER"})
     public @ResponseBody String delete(@RequestParam("wishId") Integer wishId){
         wishService.delete(wishService.getWishByID(wishId));
         return new JSONObject().toString();
     }
     
-    @RequestMapping(value = "/confirm")
-    public @ResponseBody String add(@RequestParam("wishId") Integer wishId, @RequestParam("bookId") Integer bookId,
-        @RequestParam("date") String date, Principal principal) throws IncorrectDate{
-        Person person = personService.getByEmail(principal.getName());
-        Book book = bookService.getBookById(bookId);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-        Date d;
-        
-        try{
-            d = format.parse(date);
-            
-        }catch(Exception e){
-           
-            throw new IncorrectDate("incorrect date");
-        }
-        ordersService.save(new Orders(person, book, d));
-        System.out.append("@@@@@@44444444444###########");
-        wishService.delete(wishService.getWishByID(wishId));
-        System.out.append("@@@@@@333333333###########");
-        return new JSONObject().toString();
-                
-        
-    }
-    
-    
-    private String calculateMinDate(Book book){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        Date minDate;
-        int current = book.getCurrentQuantity();
-       /* Date dateFromUse = useService.getBookWithLastDate(book);
-        if(dateFromUse == null || current > 0)
-            minDate = new Date();
-        else{
-            minDate = dateFromUse;
-        }*/
-        return "";//format.format(minDate).toString();
-             
-    }
+   
     
 }

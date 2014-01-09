@@ -8,12 +8,13 @@ $(document).ready(function(){
     
     tmpDate = $('#minDate').val();
     
-    minDate = getDateInFormat(tmpDate).split(" ");
-    
+    minD = getDateInFormat(tmpDate);
+    minDateSpl = minD.split(" ");
     $('#datetimepicker').datetimepicker({
-                format: 'Y/m/d H:m',
-                minDate: minDate[0],
-                minTime: minDate[1],
+                format: 'Y/m/d H:i',
+                value: minD,
+                minDate: minDateSpl[0],
+                minTime: minDateSpl[1],
                 validateOnBlur: true
             });
     $('#order_button').click(function() {
