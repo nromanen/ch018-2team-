@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib uri="http://www.springframework.org/tags/form"
+prefix="form"%>
 <html>
 <head>
  <title>Test</title>
@@ -59,7 +61,7 @@
                     <form id="registration_form" class="form-horizontal" role="form" >
                         <legend><spring:message code="message.registration" /></legend>
                         <div class="form-group col-lg-8">
-                            <input id="reg_name" class="form-control" type="text" name="name" minlength="2" required placeholder="<spring:message code="message.name" />">
+                            <input id="reg_name" class="form-control" type="text" name="name" minlength="2" placeholder="<spring:message code="message.name" />">
                         </div>
                         <div class="form-group col-lg-8">
                             <input id="reg_surname" class="form-control" type="text" name="surname"  placeholder="<spring:message code="message.surname" />">
@@ -81,14 +83,48 @@
                         </div>
                         <div class="form-group col-lg-8">
                         <button id="form_submit" class="btn btn-success" type="submit" ><spring:message code="message.registration" /></button>
-                        <div id="error_div" class="text-danger">
+                        <div id="error_div" class="alert alert-danger hide">
                             
                         </div>
                         </div>
                         
                     </form>
                         
-                        
+                     <!--Modal Books Limit-->
+                    <input id="book_limit" type="hidden" value="${isBookLimitReached}">
+                    <div class="modal fade" id="success_reg" tabindex="-1" role="dialog" aria-labelledby="succes_reg_label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                              <h4 class="modal-title" id="success_reg_label">Limit Notification</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                              <h1>Congratulation!</h1>
+                                              <h3>You successfully register!</h3>
+                                              <h6>Please login</h6>
+                                            </div>
+                                            <div class="modal-footer">
+                                           
+                                                <div class="row">
+                                                    <form class="form-inline" role="form" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
+                                                        <div class="form-group">
+                                                            <input  class="form-control" type="text" name="j_username" placeholder="Enter Email">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="form-control" type="password" name="j_password" placeholder="Enter Password">
+                                                        </div>
+                            
+                            
+                                                        <button  type="submit" class="btn btn-primary"><spring:message code="message.singin" /></button>
+                                                    </form>
+                                                </div>
+                                              
+                                            </div>
+                                          </div>
+                                        </div>
+                                </div>
+                    <!--Modal Books Limit-->   
                       
                 </div>
                         <div class="row">

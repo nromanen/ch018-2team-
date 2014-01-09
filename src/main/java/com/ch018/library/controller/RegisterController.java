@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
@@ -92,7 +93,9 @@ public class RegisterController {
     }
     
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String addUser(){
+    public String addUser(Model model){
+        
+        
         return "redirect:/index";
     }
     
