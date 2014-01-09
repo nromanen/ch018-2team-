@@ -45,86 +45,94 @@
     <body>
     
     	<div class="container">
-    	
-        	<div class="row">
-        	
-        		<div class="col-md-2">
-        		
-					<t class="ex3">
-					<a href="<c:url value="/librarian/users"/>"><h4>Users</h4></a>
-					<a href="<c:url value="/librarian/books"/>"><h4>Books</h4></a>
-					<a href="<c:url value="/librarian/orders"/>"><h4>Orders</h4></a>
-					<a href="<c:url value="/librarian/toreturn"/>"><h4>To Return</h4></a>
-						
-					<c:set var="highlight" value="books" scope="request"/>
-					</t>
+    	  
+			<div class="row" >
+				
+					<div class="col-md-1 col-md-offset-7">
+						<a href="<c:url value="/librarian/users"/>"><h5>Users</h5></a>
+					</div>
+					<div class="col-md-1">
+					<a href="<c:url value="/librarian/books"/>"><h5>Books</h5></a>
+					</div>
+					<div class="col-md-1">
+					<a href="<c:url value="/librarian/orders"/>"><h5>Orders</h5></a>
+					</div>
+					<div class="col-md-1">
+						<a href="<c:url value="/librarian/toreturn"/>"><h5>To Return</h5></a>
+					</div>
 				</div>
-					<div class="col-md-7">
+
+        	<div class="row">
+        		
+			
+					<div class="col-md-12">
+						
 				        <form:form method="POST" commandName="book" >
 				            
-				            <center> <h4> Add Book</h4> </center>
+				            <center> <h4> Add Book</h4> 
 				             
 				           <p> Title    	
-				                <t class="edit1"> <input type="text" name="title"> </t>
+				                <input type="text" name="title">
 				           </p>
 				           
 				           <p>     
 				            Author
-				                <t class="edit2"> <input type="text" name="authors"> </t>
+				               <input type="text" name="authors">
 				           </p> 
 				           
 				           <p>
 				            Year
-				                <t class="edit3"> <input type="text" name="year"> </t>
+				                <input type="text" name="year">
 				            </p>
 				            
 				            <p>
 				            Publisher
-				                <t class="edit4"> <input type="text" name="publisher"> </t>
+				                <input type="text" name="publisher"> 
 				            </p>
 				            
 				            <p>
 				            Pages
-				                <t class="edit5"> <input type="text" name="pages"> </t>
+				                <input type="text" name="pages"> 
 				            </p>
 				            
 							<p>
 				            Description
-				                <t class="description"> <input type="text" name="description"> </t>
+				                <input type="text" name="description">
 				            </p>				            
 				            
 				            <p>
 				            Image URL
-				                <t class="img"> <input type="text" name="img"> </t>
+				                <input type="text" name="img">
 				            </p>
 				            
 				            <p>
 				            Shelf
-				                <t class="shelf"> <input type="text" name="shelf"> </t>
+				               <input type="text" name="shelf">
 				            </p>
 				            
 				            <p>
 				            Term
-				                <t class="term"> <form:input path="term"/> </t>
+				                <form:input path="term"/>
 				            </p>
 				            
 				            <p>
 				            Quantity
-				                <t class="quantity"> <input type="text" name="generalQuantity"> </t>
+				              <input type="text" name="generalQuantity"> 
 				            </p>
 				            
 				            <p>
 				            Genre
-								<t class="edit6">
+								
 				                <select name="genreId" >
 				                    <c:forEach var="genre" items="${genre}">
 				                        <option value="${genre.getId()}">${genre.getDescription()}</option>
 				                    </c:forEach>
 				                </select>
-				                </t>
 				                <input type="submit" value="Add">
 				            </p>
+				            </center>
 				        </form:form>
+				        
 				   </div>     
 		    </div>    	
         </div>

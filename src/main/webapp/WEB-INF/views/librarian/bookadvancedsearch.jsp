@@ -41,19 +41,24 @@
     
     	<div class="container">
     	
+        		<div class="row" >
+				
+					<div class="col-md-1 col-md-offset-7">
+						<a href="<c:url value="/librarian/users"/>"><h5>Users</h5></a>
+					</div>
+					<div class="col-md-1">
+					<a href="<c:url value="/librarian/books"/>"><h5>Books</h5></a>
+					</div>
+					<div class="col-md-1">
+					<a href="<c:url value="/librarian/orders"/>"><h5>Orders</h5></a>
+					</div>
+					<div class="col-md-1">
+						<a href="<c:url value="/librarian/toreturn"/>"><h5>To Return</h5></a>
+					</div>
+				</div>
+
         	<div class="row">
         	
-        		<div class="col-md-2">
-        		
-					<t class="ex3">
-					<a href="<c:url value="/librarian/users"/>"><h4>Users</h4></a>
-					<a href="<c:url value="/librarian/books"/>"><h4>Books</h4></a>
-					<a href="<c:url value="/librarian/orders"/>"><h4>Orders</h4></a>
-					<a href="<c:url value="/librarian/toreturn"/>"><h4>To Return</h4></a>
-						
-					<c:set var="highlight" value="books" scope="request"/>
-					</t>
-				</div>
 					<div class="col-md-7">
 				        <form:form method="POST" commandName="book" >
 				            

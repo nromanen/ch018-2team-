@@ -1,14 +1,13 @@
 package com.ch018.library.controller;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,13 +58,19 @@ public class LibrarianBooksController {
 	}
 	
 	@RequestMapping(value= "/addbook", method = RequestMethod.POST)
-	public String add(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("genreId") Integer gid) throws Exception {
+	public String add(@ModelAttribute("book") @Valid Book book, BindingResult result, @RequestParam("genreId") Integer gid) throws Exception {
 		
 		Genre genre = genreService.getById(gid);
 		System.out.println("Genre Id = " + gid);
 		book.setGenre(genre);
 		System.out.println("Book title = " + book.getTitle());
-		bookService.save(book);
+		
+		if (result.hasErrors()) {
+			System.out.println("Errors Addind Book" + result.toString());
+		}else {
+			bookService.save(book);
+		}
+		
 		return "redirect:/librarian/books";
 	}
 	

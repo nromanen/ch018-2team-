@@ -48,23 +48,27 @@
     
     	<div class="container">
     	
-        	<div class="row">
-        	
-        		<div class="col-md-2">
-        		
-					<t class="ex3">
-					<a href="<c:url value="/librarian/users"/>"><h4>Users</h4></a>
-					<a href="<c:url value="/librarian/books"/>"><h4>Books</h4></a>
-					<a href="<c:url value="/librarian/orders"/>"><h4>Orders</h4></a>
-					<a href="<c:url value="/librarian/toreturn"/>"><h4>To Return</h4></a>
-						
-					<c:set var="highlight" value="users" scope="request"/>
-					</t>
+        		<div class="row" >
+				
+					<div class="col-md-1 col-md-offset-7">
+						<a href="<c:url value="/librarian/users"/>"><h5>Users</h5></a>
+					</div>
+					<div class="col-md-1">
+					<a href="<c:url value="/librarian/books"/>"><h5>Books</h5></a>
+					</div>
+					<div class="col-md-1">
+					<a href="<c:url value="/librarian/orders"/>"><h5>Orders</h5></a>
+					</div>
+					<div class="col-md-1">
+						<a href="<c:url value="/librarian/toreturn"/>"><h5>To Return</h5></a>
+					</div>
 				</div>
-					<div class="col-md-7">
+				
+					<div class="row">
+					<div class="col-md-12">
 				        <form:form method="POST" commandName="user" >
 				            
-				            <center> <h4> Add User</h4> </center>
+				            <center> <h4> Add User</h4> 
 				             
 				           <p> First Name    	
 				                <t class="firstName"> <input type="text" name="name"/> </t>
@@ -87,33 +91,8 @@
 				            </p>
 				               	
 				            <p>
-				            Role
-				                <t class="role"> <input type="text" name="prole"/> </t>
-				            </p>
-				            
-				            <p>
 				            Cell phone
 				                <t class="cellphone"> <input type="text" name="cellphone"/> </t>
-				            </p>
-				            
-							<p>
-				            Confirmed
-				                <t class="confirmed"> <input type="text" name="confirm"/> </t>
-				            </p>				            
-				            
-				            <p>
-				            SMS
-				                <t class="sms"> <input type="text" name="sms"/> </t>
-				            </p>
-				            
-				            <p>
-				            Returned in time
-				                <t class="returnedintime"> <input type="text" name="timelyReturn"/> </t>
-				            </p>
-				            
-				            <p>
-				            Returned not in time
-				                <t class=returnednotintime> <input type="text" name="untimekyReturn"/> </t>
 				            </p>
 				            
 				            <p>
@@ -121,11 +100,8 @@
 				                <t class="booksallowed"> <input type="text" name="booksAllowed"/> </t>
 				            </p>
 				            
-				            <p>
-							Rating
-				            <t class="rating"> <input type="text" name="generalRating"/> </t>
-				            </p>
 				          <input type="submit" value="Add">
+				          </center>
 				        </form:form>
 				   </div>     
 		    </div>    	

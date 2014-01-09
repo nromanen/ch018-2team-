@@ -2,6 +2,8 @@ package com.ch018.library.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.BookService;
 import com.ch018.library.service.PersonService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 
@@ -21,14 +27,18 @@ public class LibrarianUsersController {
 
 	@Autowired
 	PersonService personService;
+	@Autowired
+	BookInUseService bookInUseService;
 	
 	@RequestMapping(value = "")
 	public String showAll(Model model) throws Exception {
 		
 		List<Person> person = personService.getAll();
+		List<Person> users = bookInUseService.getAllUsers();
 		
 		int rit, rnit; 
-		float grade = 0;
+		double grade = 0;
+		int booksOnHands;
 		
 		for (Person pers : person) {
 			
@@ -36,15 +46,28 @@ public class LibrarianUsersController {
 			rnit = pers.getUntimekyReturn();
 			
 			if((rit > 0) || (rnit > 0) ){
-			grade = (float) rit/(rnit+rit);
+			grade = (double) rit/(rnit+rit);
 			grade *= 100;
 			}
 			
 			pers.setGeneralRating(grade);
 			
+			for (Person user : users) {
+				if(pers.equals(user)){
+					List<BooksInUse> books = bookInUseService.getBooksInUseByPerson(user);
+					
+					booksOnHands = books.size();
+					
+					pers.setBooksOnHands(booksOnHands);
+				}
+			}
+			
+			personService.update(pers);
 		}
 		
 		model.addAttribute("users", person);
+		
+		
 		
 		return "librarian/users"; 
 	}
@@ -59,9 +82,14 @@ public class LibrarianUsersController {
 	}
 	
 	@RequestMapping(value = "/adduser",method = RequestMethod.POST)
-	public String addUser(@ModelAttribute("user") Person user, BindingResult result) throws Exception {
+	public String addUser(@Valid @ModelAttribute("user") Person user, BindingResult result) throws Exception {
 
-		personService.save(user);
+		if (result.hasErrors()) {
+			System.out.println("Errors Adding User" + result.toString());
+		}else {
+			personService.save(user);	
+		}
+		
 		
 		return "redirect:/librarian/users";
 	}

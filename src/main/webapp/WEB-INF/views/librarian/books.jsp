@@ -23,39 +23,54 @@
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/books.js"></script>
 		<style>
-			t.ex1 {margin:300px 20px}
+			ex1 {margin:300px 20px}
 			t.ex3 {margin:10px 70px}
 			t.ex2 {margin: 50px 30px 30px 500px}
 		</style>
 <title>Librarian Books</title>
 
 </head>
-<body>
+<body bgcolor="#E5E5E5">
 
 <div class="container">
 
-	<div class="row">
+	<div class="row" >
 	
-		<div class="col-md-2">
+		<div class="col-md-1 col-md-offset-7">
 			<t class="ex3">
-			<a href="<c:url value="/librarian/users"/>"><h4>Users</h4></a>
-			<a href="<c:url value="/librarian/books"/>"><h4>Books</h4></a>
-			<a href="<c:url value="/librarian/orders"/>"><h4>Orders</h4></a>
-			<a href="<c:url value="/librarian/toreturn"/>"><h4>To Return</h4></a>
+			<a href="<c:url value="/librarian/users"/>"><h5>Users</h5></a>
+			
 				
 			<c:set var="highlight" value="books" scope="request"/>
 			</t>
 		</div>
-		<div class="col-md-7">
+		<div class="col-md-1">
+		<a href="<c:url value="/librarian/books"/>"><h5>Books</h5></a>
 			
-			<div class="col-md-7 col-md-offset-5">
+		</div>
+		<div class="col-md-1">
+		<a href="<c:url value="/librarian/orders"/>"><h5>Orders</h5></a>
+		</div>
+		<div class="col-md-1">
+			<a href="<c:url value="/librarian/toreturn"/>"><h5>To Return</h5></a>
+		</div>
+		
+	</div>
+	<div class="row">
+		<div class="col-md-12" style="margin-top:15px">
+				<center>
 					<form name="search" action="<c:url value="/librarian/books/simplesearch" />" method="POST" >
 						<input type="text"  name="request"/> <input type="submit" value="Search"/> 
 						<t class="ex1"><a href="<c:url value="/librarian/books/advancedsearch"/>">Advanced</a></t>
 					</form>
+				</center>
 			</div>
-			
-				<table border = "1">
+	<div class="row">
+			<div class="col-md-12" style="margin-top:30px">
+			<center>
+				<div class="col-md-12">
+				<table border = "2">
+				
      			   <thead>
          		       <tr>
            	                <td> <b> ID </b> </td>
@@ -93,12 +108,22 @@
 				                </tr>
 				        </c:forEach>
 			   </table>
-					<t class="ex2"><a href="<c:url value="/librarian/books/addbook"/>">Add Book</a></t>
+			   </div>
+			   
+					
 				
+				</div>
 			</div>
-		
-		</div>
+<div class="row">
+
+	<div class="col-md-1 col-md-offset-9" style="margin-top:10px">
+		<a href="<c:url value="/librarian/books/addbook"/>">Add Book</a>
 	</div>
+
+</div>			
+			
+		</div>
+		</div>
 	
 </body>
 </html>
