@@ -109,6 +109,12 @@ public class BookInUseServiceImpl implements BookInUseService {
     public boolean isPersonHaveBook(Person person, Book book) {
         return useDao.isPersonHaveBook(person, book);
     }
+
+	@Override
+	public List<Person> getAllUsers() {
+		// TODO Auto-generated method stub
+		return useDao.getAllUsers();
+	}
     
 
     

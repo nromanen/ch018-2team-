@@ -35,6 +35,8 @@ public interface BookInUseService {
     List<Date> getBooksInUseToIssueToday();
 
     boolean isPersonHaveBook(Person person, Book book);
-    
+
+    List<Person> getAllUsers();
+
 
 }

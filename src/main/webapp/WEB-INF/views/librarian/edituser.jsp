@@ -125,6 +125,11 @@
 				                <t class=returnednotintime> <form:input path="untimekyReturn"/> </t>
 				            </p>
 				            
+							<p>
+							Books on Hands
+				            <t class="rating"> <form:input path="booksOnHands"/> </t>
+				            </p>
+
 				            <p>
 				            Books Allowed
 				                <t class="booksallowed"> <form:input path="booksAllowed"/> </t>

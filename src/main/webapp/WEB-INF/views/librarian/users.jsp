@@ -36,44 +36,54 @@
 
 	<div class="row">
 	
-		<div class="col-md-2">
-			<t class="ex3">
-     		<a href="<c:url value="/librarian/users"/>"><h4>Users</h4></a>
-			<a href="<c:url value="/librarian/books"/>"><h4>Books</h4></a>
-			<a href="<c:url value="/librarian/orders"/>"><h4>Orders</h4></a>
-			<a href="<c:url value="/librarian/toreturn"/>"><h4>To Return</h4></a>
-				
-			<c:set var="highlight" value="books" scope="request"/>
-			</t>
+		<div class="col-md-1 col-md-offset-7">
+     		<a href="<c:url value="/librarian/users"/>"><h5>Users</h5></a>
 		</div>
-		<div class="col-md-7">
+		<div class="col-md-1">
+			<a href="<c:url value="/librarian/books"/>"><h5>Books</h5></a>
+		</div>
+		<div class="col-md-1">
+			<a href="<c:url value="/librarian/orders"/>"><h5>Orders</h5></a>
+		</div>
+		<div class="col-md-1">
+			<a href="<c:url value="/librarian/toreturn"/>"><h5>To Return</h5></a>
+		</div>
+	</div>
+	<div class=row>
 			
-			<div class="col-md-7 col-md-offset-5">
+			<div class="col-md-12" style="margin-top:15px">
+				<center>
 					<form name="search" action="<c:url value="/librarian/users/simplesearch" />" method="POST" >
 						<input type="text"  name="request"/> <input type="submit" value="Search"/> 
 						<t class="ex1"><a href="<c:url value="/librarian/users/advencedsearch"/>">Advanced</a></t>
 					</form>
+				</center>	
 			</div>
-			
-				<table border = "1">
-     			   <thead>
-         		       <tr>
-           	                <td> <b> ID </b> </td>
-           	   	            <td> <b> First Name </b> </td>
-            	            <td> <b> Last Name </b> </td> 
-                            <td> <b> E-mail </b> </td>
-                            <td> <b> Role</b> </td>
-                            <td> <b> Cell Phone </b> </td>
-                            <td> <b> Confirmed </b> </td>
-                            <td> <b> SMS  </b> </td>    
-                            <td> <b> Returned in time </b> </td>
-                            <td> <b> Returned not in time </b> </td> 
-                            <td> <b> Books Allowed</b> </td>
-                            <td> <b> Rating </b> </td>
-                            <td> <b> Options </b> </td>
-               	         
-               		   </tr>
-       			 </thead>
+	</div>
+	<div class="row">		
+			<div class="col-md-12">
+				<center>
+					<div class="col-md-12" style="margin-top:30px">
+					
+						<table border = "2">
+		     			   <thead>
+		         		       <tr>
+		           	                <td> <b> ID </b> </td>
+		           	   	            <td> <b> First Name </b> </td>
+		            	            <td> <b> Last Name </b> </td> 
+		                            <td> <b> E-mail </b> </td>
+		                            <td> <b> Role</b> </td>
+		                            <td> <b> Cell Phone </b> </td>
+		                            <td> <b> Confirmed </b> </td>
+		                            <td> <b> SMS  </b> </td>    
+		                            <td> <b> Returned in time </b> </td>
+		                            <td> <b> Returned not in time </b> </td> 
+		                            <td> <b> Books on Hands</b> </td>
+		                            <td> <b> Rating </b> </td>
+		                            <td> <b> Options </b> </td>
+		               	         
+		               		   </tr>
+		       			 </thead>
 				        <c:forEach items="${users}" var="user">
 				                <tr>
 				                
@@ -87,18 +97,26 @@
 				                        <td>${user.sms}</td>
 				                        <td>${user.timelyReturn}</td>
 				                        <td>${user.untimekyReturn}</td>
-				                        <td>${user.booksAllowed}</td>
+				                        <td>${user.booksOnHands} / ${user.booksAllowed}</td>
 				                        <td>${user.generalRating}/100</td>
 				                        
 				                    <td><a href="<c:url value="/librarian/users/edituser?id=${user.pid}"/>">Edit</a>
 				                        <a href="<c:url value="/librarian/users/deleteuser?id=${user.pid}"/>">Delete</a></td>
 				                </tr>
 				        </c:forEach>
-			   </table>
-					<t class="ex2"><a href="<c:url value="/librarian/users/adduser"/>">Add User</a></t>
+			   			</table>
+					</div>
+				</center>
+					
 				
 			</div>
-		
+		<div class="row">
+
+	<div class="col-md-1 col-md-offset-9" style="margin-top:10px">
+		<a href="<c:url value="/librarian/users/adduser"/>">Add User</a>
+	</div>
+
+</div>		
 		</div>
 	</div>
 	

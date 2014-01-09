@@ -12,8 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Proxy;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -31,15 +35,22 @@ public class Person implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pid;
     
+    @NotEmpty
+    @Size(max=255)
     @Column(name = "name")
     private String name;
     
+    @NotEmpty
+    @Size(max=255)
     @Column(name = "surname")
     private String surname;
     
+    @NotEmpty
+    @Email
     @Column(name = "email", unique = true, nullable = false)
     private String email;
     
+    @NotEmpty
     @Column(name = "password", nullable = false)
     private String password;
     
@@ -49,6 +60,7 @@ public class Person implements Serializable {
     @Column(name = "prole")
     private String prole;
     
+    @NotEmpty
     @Column(name = "cellphone")
     private String cellphone;
     
@@ -57,6 +69,7 @@ public class Person implements Serializable {
     
     @Column(name = "sms")
     private boolean sms;
+    
     
     @Column(name = "multi")
     private Integer multiBook;
@@ -67,17 +80,21 @@ public class Person implements Serializable {
     @Column(name = "untimelyreturn")
     private int untimekyReturn;
     
+    @NotNull
     @Column(name = "booksallowed")
     private int booksAllowed;
     
     @Column(name = "failedorders")
     private int failedOrders;
     
+    @NotNull
     @Column(name = "generalratio")
-    private float generalRating;
+    private double generalRating;
     
     @Column(name = "img")
     private String img;
+    
+    private int booksOnHands;
     
     @OneToMany(targetEntity = BooksInUse.class, mappedBy = "person")
     private Set<Book> booksInUse = new HashSet<Book>();
@@ -222,11 +239,11 @@ public class Person implements Serializable {
         this.failedOrders = failedOrders;
     }
 
-    public float getGeneralRating() {
+    public double getGeneralRating() {
         return generalRating;
     }
 
-    public void setGeneralRating(float generalRating) {
+    public void setGeneralRating(double generalRating) {
         this.generalRating = generalRating;
     }
 
@@ -270,7 +287,13 @@ public class Person implements Serializable {
         this.multiBook = multiBook;
     }
     
+    public int getBooksOnHands() {
+		return booksOnHands;
+	}
     
+    public void setBooksOnHands(int booksOnHands) {
+		this.booksOnHands = booksOnHands;
+	}
     
     
     

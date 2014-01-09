@@ -10,7 +10,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Repository;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+
 import org.hibernate.Criteria;
 
 /**
@@ -155,6 +159,39 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
             return false;
         }
     }
+
+	@Override
+	public List<Person> getAllUsers() {
+		// TODO Auto-generated method stub
+		
+		String groupByquery = "SELECT person from BooksInUse biu group by biu.person";
+		
+		Session session = factory.openSession();
+		
+		Query q = session.createQuery(groupByquery);
+		
+		List<Person> users = q.list();
+		
+		//Map<String, String> pers = new HashMap<String, String>();
+		
+		//pers.put(users.get(0).get(0), users.get(0).get(1));
+		//pers = users.get(0);
+		
+		/*for (Entry<String, String> p : pers.entrySet()) {
+			System.out.println(p.getValue() + "<Value\n" + p.getKey() + "<Key");
+			String pr = p.getKey();
+			System.out.println(pr + "person");
+			
+		}
+		
+		System.out.println(pers.get(0) + "+++");// + users.size() + "size");*/
+		
+		if(session.isOpen()){
+			session.close();
+		}
+
+		return users;
+	}
     
     
 
