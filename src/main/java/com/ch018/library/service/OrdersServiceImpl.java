@@ -174,9 +174,9 @@ public class OrdersServiceImpl implements OrdersService{
 		
 		Person person = order.getPerson();
 		
-		int booksOnHands = person.getBooksOnHands();
+		int booksOnHands = person.getMultiBook();
 		
-		person.setBooksOnHands(++booksOnHands);
+		person.setMultiBook(++booksOnHands);
 		
 		personService.update(person);
 		

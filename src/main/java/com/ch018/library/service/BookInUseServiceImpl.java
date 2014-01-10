@@ -143,9 +143,9 @@ public class BookInUseServiceImpl implements BookInUseService {
 			person.setUntimekyReturn(booksReturnedNotIntime);
 		}
 		
-		booksOnHands = person.getBooksOnHands();
+		booksOnHands = person.getMultiBook();
 		booksOnHands -=1;
-		person.setBooksOnHands(booksOnHands);
+		person.setMultiBook(booksOnHands);
 		personService.update(person);
 		
 		Book book = bookInUse.getBook();

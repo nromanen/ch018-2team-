@@ -33,33 +33,15 @@ public class LibrarianUsersController {
 	@RequestMapping(value = "")
 	public String showAll(Model model) throws Exception {
 		
-		List<Person> person = personService.getAll();
-		
-		for (Person pers : person) {
-			rit = pers.getTimelyReturn();
-			rnit = pers.getUntimekyReturn();
-			if((rit > 0) || (rnit > 0) ){
-			grade = (double) rit/(rnit+rit);
-			grade *= 100;
-			}
-			pers.setGeneralRating(grade);
-			
-			for (Person user : users) {
-				if(pers.equals(user)){
-					List<BooksInUse> books = bookInUseService.getBooksInUseByPerson(user);
-					
-					booksOnHands = books.size();
-					
-					pers.setMultiBook(booksOnHands);
-				}
-			}
-			pers = personService.countRating(pers);
-			personService.update(pers);
-		}
-		
-		model.addAttribute("users", person);
-		
-		return "librarian/users"; 
+		 List<Person> person = personService.getAll();
+                
+                for (Person pers : person) {
+                        pers = personService.countRating(pers);
+                }
+                
+                model.addAttribute("users", person);
+                
+                return "librarian/users"; 
 	}
 	
 	@RequestMapping(value = "/adduser", method = RequestMethod.GET)
