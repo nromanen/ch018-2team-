@@ -68,12 +68,17 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
                 return new Date();
             else
                 return minDate;
-    }
+	}
 	@Override
 	public List<Date> getBooksInUseToReturnDate() {
 		Session session = factory.openSession();
-		Query query = session.createQuery("SELECT returnDate FROM BooksInUse");//Session is still open???
+		Query query = session.createQuery("SELECT returnDate FROM BooksInUse");
 		List<Date> dates = query.list(); 
+		
+		if(session.isOpen()){
+			session.close();
+		}
+		
 		return dates;
 	}
 
@@ -98,8 +103,12 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 		
 		
 		Session session = factory.openSession();  
-		Query query = session.createQuery("FROM BooksInUse WHERE "); //Session is still open???
+		Query query = session.createQuery("FROM BooksInUse WHERE "); 
 		List<Date> dates = query.list(); 
+		
+		if (session.isOpen()) {
+			session.close();
+		}
 		
 		return dates;
 	}
@@ -131,29 +140,11 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 		
 		List<Person> users = q.list();
 		
-		//Map<String, String> pers = new HashMap<String, String>();
-		
-		//pers.put(users.get(0).get(0), users.get(0).get(1));
-		//pers = users.get(0);
-		
-		/*for (Entry<String, String> p : pers.entrySet()) {
-			System.out.println(p.getValue() + "<Value\n" + p.getKey() + "<Key");
-			String pr = p.getKey();
-			System.out.println(pr + "person");
-			
-		}
-		
-		System.out.println(pers.get(0) + "+++");// + users.size() + "size");*/
-		
 		if(session.isOpen()){
 			session.close();
 		}
 
 		return users;
 	}
-    
-    
-
-    
     
 }

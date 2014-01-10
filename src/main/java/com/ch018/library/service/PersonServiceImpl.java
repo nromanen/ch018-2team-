@@ -34,9 +34,6 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     MyUserDetailsService userDetails;
     
-    
-    
-
     @Override
     @Transactional
     public void save(Person person) {
@@ -153,6 +150,31 @@ public class PersonServiceImpl implements PersonService {
 	public List<Person> advancedSearch(Person person) {
 		// TODO Auto-generated method stub
 		return pDao.advancedSearch(person);
+	}
+
+	@Override
+	@Transactional
+	public Person countRating(Person person) {
+		// TODO Auto-generated method stub
+		
+		int returnedInTime, returnedNotInTime; 
+		double grade = 0;
+		int booksOnHands, gradeInt = 0;
+		
+		returnedInTime = person.getTimelyReturn();
+		returnedNotInTime = person.getUntimekyReturn();	
+		
+		if((returnedInTime > 0) || (returnedNotInTime > 0) ){
+			grade = (double) returnedInTime/(returnedNotInTime + returnedInTime);
+			grade *= 100;
+			gradeInt = (int) grade;
+			}
+		
+		person.setGeneralRating(gradeInt);
+		
+		update(person);
+		
+		return person;
 	}
     
 }

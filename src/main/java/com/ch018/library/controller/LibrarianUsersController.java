@@ -34,22 +34,14 @@ public class LibrarianUsersController {
 	public String showAll(Model model) throws Exception {
 		
 		List<Person> person = personService.getAll();
-		List<Person> users = bookInUseService.getAllUsers();
-		
-		int rit, rnit; 
-		double grade = 0;
-		int booksOnHands;
 		
 		for (Person pers : person) {
-			
 			rit = pers.getTimelyReturn();
 			rnit = pers.getUntimekyReturn();
-			
 			if((rit > 0) || (rnit > 0) ){
 			grade = (double) rit/(rnit+rit);
 			grade *= 100;
 			}
-			
 			pers.setGeneralRating(grade);
 			
 			for (Person user : users) {
@@ -61,13 +53,11 @@ public class LibrarianUsersController {
 					pers.setMultiBook(booksOnHands);
 				}
 			}
-			
+			pers = personService.countRating(pers);
 			personService.update(pers);
 		}
 		
 		model.addAttribute("users", person);
-		
-		
 		
 		return "librarian/users"; 
 	}
@@ -108,7 +98,6 @@ public class LibrarianUsersController {
 		Person person = personService.getById(pid);
 		String password = person.getPassword();
 		String salt = person.getSalt();
-		System.out.println("User ID = " + pid + "Password: " + password + "Salt: " + salt);
 		user.setPassword(password);
 		personService.update(user);
 		

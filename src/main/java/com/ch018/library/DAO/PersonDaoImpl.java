@@ -62,7 +62,6 @@ public class PersonDaoImpl implements PersonDao {
     public void update(Person person) {
         
             factory.getCurrentSession().update(person);
-            
     }
 
     @Override
@@ -163,32 +162,22 @@ public class PersonDaoImpl implements PersonDao {
 		Criteria criteria = session.createCriteria(Person.class);
 		
 		if(!person.getName().equals("")) {
-			System.out.println(person.getName() + "++++++");
 		criteria.add(Restrictions.eq("name", person.getName()));
 		}
 		
 		if(!person.getSurname().equals("")) {
-			System.out.println(person.getSurname() + "++++++");
 		criteria.add(Restrictions.eq("surname", person.getSurname()));
 		}
 		
 		if(!person.getEmail().equals("")) {
-			System.out.println(person.getEmail() + "++++++");
 		criteria.add(Restrictions.eq("email", person.getEmail()));
 		}
 		
 		if(!person.getCellphone().equals("")) {
-			System.out.println(person.getCellphone() + "++++++");
 		criteria.add(Restrictions.eq("cellphone", person.getCellphone()));
 		}
 		
 		List<Person> users = criteria.list();
-		if (users.size() > 0) {
-			Person person2 = users.get(0);
-			
-			System.out.println(person2.getName() + "++++++");
-		}
-		
 		
 		return users;
 	}

@@ -4,11 +4,9 @@
  */
 package com.ch018.library.controller;
 
-import com.ch018.library.controller.errors.IncorrectDate;
-import com.ch018.library.entity.Person;
-import com.ch018.library.service.PersonService;
 import java.security.Principal;
 import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ch018.library.controller.errors.IncorrectDate;
+import com.ch018.library.entity.Person;
+import com.ch018.library.service.PersonService;
 
 /**
  *

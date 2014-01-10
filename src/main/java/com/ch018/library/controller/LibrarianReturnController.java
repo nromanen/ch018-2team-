@@ -53,40 +53,12 @@ public class LibrarianReturnController {
 	@RequestMapping(value = "/getback", method = RequestMethod.POST)
 	public String getBack(@RequestParam("id") int id, Model model) throws Exception {
 		
-		Date now = new Date();
+		
 		
 		BooksInUse  bookInUse = new BooksInUse();
 		bookInUse = booksInUseService.getBookInUseById(id);
 		
-		Person person = bookInUse.getPerson();
-		int booksReturnedIntime = person.getTimelyReturn();
-		int booksReturnedNotIntime = person.getUntimekyReturn();
-		
-		if (now.before(bookInUse.getReturnDate())) {
-			System.out.println("BRIT " + booksReturnedIntime);
-			System.out.println("before well done");
-			booksReturnedIntime += 1;
-			person.setTimelyReturn(booksReturnedIntime);
-			personService.update(person);
-			System.out.println("BRIT " + booksReturnedIntime);
-		}else if (now.after(bookInUse.getReturnDate())) {
-			System.out.println("BRNIT " + booksReturnedNotIntime);
-			System.out.println("after means too late");
-			booksReturnedNotIntime += 1;
-			person.setUntimekyReturn(booksReturnedNotIntime);
-			personService.update(person);
-			System.out.println("BRNIT " + booksReturnedNotIntime);
-		}
-		
-		System.out.println("Shelf: " + bookInUse.getBook().getShelf());
-		
-		Book book = bookInUse.getBook();
-		int quantity = book.getCurrentQuantity();
-		quantity += 1;
-		book.setCurrentQuantity(quantity);
-		bookService.update(book);
-		
-		//booksInUseService.delete(bookInUse);
+		booksInUseService.getBookBack(booksInUseService.getBookInUseById(id));
 		
 		return "redirect:/librarian/toreturn";
 	}
@@ -103,19 +75,13 @@ public class LibrarianReturnController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public String edit(@RequestParam("id") int id, @RequestParam("days") int days) throws Exception {
 		
-		System.out.println("Days: " + days + "ID: " + id);
-		
 		BooksInUse bookInUse = booksInUseService.getBookInUseById(id);
 		Date date = bookInUse.getReturnDate();
-		System.out.println("Return date: " + date);
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.add(Calendar.DAY_OF_YEAR, days);
 		date = calendar.getTime();
-		
-		System.out.println("Increased date is: " + date);
-		
 		
 		bookInUse.setReturnDate(date);
 		

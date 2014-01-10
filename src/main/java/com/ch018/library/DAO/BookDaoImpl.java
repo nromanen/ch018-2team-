@@ -68,59 +68,62 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> advancedSearch(Book book) {
-        // TODO Auto-generated method stub
         Session session = factory.openSession();
 
-        String q = "from Book where 1=1 ";
+        
 
-        if (!book.getTitle().equals("")) {
-            q += " and title = :title";
-        }
-        if (!book.getAuthors().equals("")) {
-            q += q.endsWith("where") ? " authors = :authors" : " and authors = :authors";
-        }
-        if (!book.getGenre().equals("")) {
-            q += q.endsWith("where") ? " genre = :genre" : " and genre = :genre";
-        }
-        if (book.getYear() != 0) {
-            q += q.endsWith("where") ? " year = :year" : " and year = :year";
-        }
-        if (!book.getPublisher().equals("")) {
-            q += q.endsWith("where") ? " publisher = :publisher" : " and publisher = :publisher";
-        }
-        if (book.getPages() != 0) {
-            q += q.endsWith("where") ? " pages = :pages" : " and pages = :pages";
-        }
+	@Override
+	public List<Book> advancedSearch(Book book) {
+		// TODO Auto-generated method stub
+		Session session = factory.openSession();
+		
+		String q =  "from Book where 1=1 ";
+		
+		if(!book.getTitle().equals("")){
+			q += " and title = :title";
+		}
+		if(!book.getAuthors().equals("")) {
+			q += " and authors = :authors";
+		}
+		if(!book.getGenre().equals("")) {
+			q += " and genre = :genre";
+		}
+		if(book.getYear() != 0) {
+			q += " and year = :year";
+		}
+		if(!book.getPublisher().equals("")) {
+			q += " and publisher = :publisher";
+		}
+		if(book.getPages() != 0) {
+			q += " and pages = :pages";
+		}
+		
+		Query query = session.createQuery(q);
+		
+		if(!book.getTitle().equals("")){
+			query.setParameter("title", book.getTitle());
+		}
+		if(!book.getAuthors().equals("")) {
+			query.setParameter("authors", book.getAuthors());
+		}
+		if(!book.getGenre().equals("")) {
+			query.setParameter("genre", book.getGenre());
+		}
+		if(book.getYear() != 0) {
+			query.setParameter("year", book.getYear());
+		}
+		if(!book.getPublisher().equals("")) {
+			query.setParameter("publisher", book.getPublisher());
+		}
+		if(book.getPages() != 0) {
+			query.setParameter("pages", book.getPages());
+		}
+		
+		List<Book> books = query.list();
 
-        Query query = session.createQuery(q);
+		return books;
+	}
 
-        if (!book.getTitle().equals("")) {
-            query.setParameter("title", book.getTitle());
-        }
-        if (!book.getAuthors().equals("")) {
-            query.setParameter("authors", book.getAuthors());
-        }
-        if (!book.getGenre().equals("")) {
-            query.setParameter("genre", book.getGenre());
-        }
-        if (book.getYear() != 0) {
-            query.setParameter("year", book.getYear());
-        }
-        if (!book.getPublisher().equals("")) {
-            query.setParameter("publisher", book.getPublisher());
-        }
-        if (book.getPages() != 0) {
-            query.setParameter("pages", book.getPages());
-        }
-
-        List<Book> books = query.list();
-
-        /*Book book1 = new Book();
-         book1 = books.get(0);
-         System.out.println(book1.getTitle() + " " + book1.getAuthors() 
-         + " " + book1.getYear() + "~~~~~~~~~~~~~~");*/
-        return books;
-    }
     @Override
     public List<Book> simpleSearch(String query) {
         // TODO Auto-generated method stub
