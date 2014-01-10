@@ -118,12 +118,6 @@ public class BookInUseServiceImpl implements BookInUseService {
     }
 
 	@Override
-	public List<Person> getAllUsers() {
-		// TODO Auto-generated method stub
-		return useDao.getAllUsers();
-	}
-
-	@Override
 	@Transactional
 	public void getBookBack(BooksInUse bookInUse) {
 		// TODO Auto-generated method stub
@@ -154,7 +148,7 @@ public class BookInUseServiceImpl implements BookInUseService {
 		book.setCurrentQuantity(quantity);
 		bookService.update(book);
 		
-		//booksInUseService.delete(bookInUse);
+		delete(bookInUse);
 		
 	}
     

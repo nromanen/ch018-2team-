@@ -36,8 +36,6 @@ public interface BookInUseService {
 
     boolean isPersonHaveBook(Person person, Book book);
 
-    List<Person> getAllUsers();
-
     void getBookBack(BooksInUse bookInUse);
 
 }
