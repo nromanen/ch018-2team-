@@ -4,7 +4,6 @@
  */
 package com.ch018.library.DAO;
 
-import com.ch018.library.util.HibernateUtil;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
 
@@ -36,7 +35,7 @@ public class PersonDaoImpl implements PersonDao {
  
 
     @Autowired
-    SessionFactory factory;
+    private SessionFactory factory;
 
     
     @Override
@@ -73,10 +72,11 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public Person getByEmail(String email) {
-        try{
-           return (Person) factory.getCurrentSession().createCriteria(Person.class).add(Restrictions.eq("email", email)).
-                    list().get(0);
-        }catch(Exception e){
+        try {
+           return (Person) factory.getCurrentSession().createCriteria(Person.class)
+                   .add(Restrictions.eq("email", email)).uniqueResult();
+        } catch (Exception e) {
+            
             return null;
         }
        

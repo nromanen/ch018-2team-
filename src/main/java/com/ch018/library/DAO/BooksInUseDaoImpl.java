@@ -1,23 +1,23 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.DAO;
+
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import org.hibernate.Query;
+
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.Projections;
+import org.hibernate.Query;
+
 /**
  *
  * @author Edd Arazian
@@ -25,7 +25,7 @@ import org.hibernate.criterion.Projections;
 @Repository
 public class BooksInUseDaoImpl implements BooksInUseDao {
     @Autowired
-    SessionFactory factory;   
+    private SessionFactory factory;   
     @Override
     public void save(BooksInUse booksInUse) {
             factory.getCurrentSession().save(booksInUse);
@@ -61,7 +61,7 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
             return  factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("returnDate", returnDate)).list();       
     }
     @Override
-    public Date getMinOrderDate(Book book){ 
+    public Date getMinOrderDate(Book book) { 
             Date minDate = (Date) factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("book", book))
                     .setProjection(Projections.projectionList().add(Projections.min("returnDate"))).uniqueResult();
             if(minDate == null)
@@ -71,14 +71,9 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 	}
 	@Override
 	public List<Date> getBooksInUseToReturnDate() {
-		Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
 		Query query = session.createQuery("SELECT returnDate FROM BooksInUse");
 		List<Date> dates = query.list(); 
-		
-		if(session.isOpen()){
-			session.close();
-		}
-		
 		return dates;
 	}
 
@@ -86,11 +81,9 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 	public BooksInUse getBookInUseById(int id) {
 		Session session = factory.openSession();
 		BooksInUse bookInUse = (BooksInUse) session.get(BooksInUse.class, id);
-		
 		if (session.isOpen()) {
 			session.close();
 		}
-		
 		return bookInUse; 
 	}
 
@@ -116,26 +109,19 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
     
     @Override
     public boolean isPersonHaveBook(Person person, Book book) {
-        try{
-          
-        BooksInUse use = (BooksInUse) factory.getCurrentSession().createQuery("from BooksInUse where person = :p AND book = :b")
-                .setParameter("p", person).setParameter("b", book).list().get(0);
-            
-        return use == null ? false : true;
-        }catch(Exception e){
-            
+        try {
+            BooksInUse use = (BooksInUse) factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("person", person))
+                    .add(Restrictions.eq("book", book)).uniqueResult();
+            return use == null ? false : true;
+        } catch (Exception e) {
             return false;
         }
     }
 
 	@Override
 	public List<Person> getAllUsers() {
-		// TODO Auto-generated method stub
-		
 		String groupByquery = "SELECT person from BooksInUse biu group by biu.person";
-		
-		Session session = factory.openSession();
-		
+		Session session = factory.getCurrentSession();
 		Query q = session.createQuery(groupByquery);
 		
 		List<Person> users = q.list();

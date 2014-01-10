@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.tiles.preparer;
 
 import com.ch018.library.service.GenreService;
@@ -11,25 +7,18 @@ import org.apache.tiles.preparer.ViewPreparer;
 import org.apache.tiles.request.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 /**
  *
  * @author Edd Arazian
  */
 @Component(value = "genres")
-public class GenrePreparer implements ViewPreparer{
+public class GenrePreparer implements ViewPreparer {
 
     @Autowired
-    GenreService genreService;
+    private GenreService genreService;
     
     @Override
     public void execute(Request rqst, AttributeContext ac) {
-    
         ac.putAttribute("genres", new Attribute(genreService.getAll()));
-    
     }
-    
-    
-    
-    
 }

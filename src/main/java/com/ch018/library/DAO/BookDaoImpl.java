@@ -1,25 +1,30 @@
 package com.ch018.library.DAO;
 
 import java.util.List;
-import org.hibernate.Session;
+
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Genre;
-import org.hibernate.Criteria;
 import org.hibernate.criterion.SimpleExpression;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Genre;
+
+
 
 @Repository
 public class BookDaoImpl implements BookDao {
 
-    final Logger logger = LoggerFactory.getLogger(BookDaoImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(BookDaoImpl.class);
     @Autowired
-    SessionFactory factory;
+    private SessionFactory factory;
 
     @Override
     public void save(Book book) {
@@ -78,7 +83,6 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> advancedSearch(Book book) {
-        // TODO Auto-generated method stub
         Session session = factory.openSession();
 
         String q = "from Book where 1=1 ";

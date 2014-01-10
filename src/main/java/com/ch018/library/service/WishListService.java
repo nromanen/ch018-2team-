@@ -3,20 +3,16 @@ package com.ch018.library.service;
 
 
 import com.ch018.library.entity.Book;
-import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
 import com.ch018.library.entity.WishList;
-import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
-
 /**
  *
  * @author Edd Arazian
  */
 @Service
 public interface WishListService {
-    
         void save(WishList wish);
         void delete(WishList wish);
         void update(WishList wish);
@@ -25,8 +21,5 @@ public interface WishListService {
         List<WishList> getWishByBook(Book book);
         WishList getWishByPersonBook(Person person, Book book);
         WishList getWishByID(int id);
-        boolean isPersonWishBook(Person person, Book book);
-        
-        
-    
+        boolean isPersonWishBook(Person person, Book book); 
 }

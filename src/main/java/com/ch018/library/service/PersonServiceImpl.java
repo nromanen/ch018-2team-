@@ -3,21 +3,17 @@ package com.ch018.library.service;
 //import com.ch018.library.dao.PersonDao;
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.Person;
-
 import java.security.Principal;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 /**
  *
  * @author Edd Arazian
@@ -25,116 +21,118 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PersonServiceImpl implements PersonService {
     
-    @Autowired
-    PersonDao pDao;
+    private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
     
     @Autowired
-    BCryptPasswordEncoder encoder;
+    private PersonDao personDao;
     
     @Autowired
-    MyUserDetailsService userDetails;
+    private BCryptPasswordEncoder encoder;
     
     @Override
     @Transactional
     public void save(Person person) {
-        pDao.save(person);
+        personDao.save(person);
     }
 
     @Override
     @Transactional
     public void delete(int id) {
-        pDao.delete(id);
+        personDao.delete(id);
     }
 
     @Override
     @Transactional
     public void update(Person person) {
-        pDao.update(person);
+        personDao.update(person);
     }
 
     @Override
     @Transactional
     public List<Person> getAll() {
-        return pDao.getAll();
+        return personDao.getAll();
     }
 
     @Override
     @Transactional
     public Person getById(int id) {
-        return pDao.getById(id);
+        return personDao.getById(id);
     }
 
     @Override
     @Transactional
     public Person getByEmail(String email) {
-        return pDao.getByEmail(email);
+        return personDao.getByEmail(email);
     }
 
     @Override
     @Transactional
     public List<Person> getByName(String name) {
-        return pDao.getByName(name);
+        return personDao.getByName(name);
     }
 
     @Override
     @Transactional
     public List<Person> getBySurname(String surname) {
-        return pDao.getBySurname(surname);
+        return personDao.getBySurname(surname);
     }
 
     @Override
     @Transactional
     public Person getByCellPhone(String cellphone) {
-        return pDao.getByCellPhone(cellphone);
+        return personDao.getByCellPhone(cellphone);
     }
 
     @Override
     @Transactional
     public List<Person> getByRole(String role) {
-        return pDao.getByRole(role);
+        return personDao.getByRole(role);
     }
 
     @Override
     @Transactional
     public List<Person> getConfirmed() {
-        return pDao.getConfirmed();
+        return personDao.getConfirmed();
     }
 
     @Override
     @Transactional
     public List<Person> getSmsEnabled() {
-        return pDao.getConfirmed();
+        return personDao.getConfirmed();
     }
 
     @Override
     @Transactional
     public boolean updatePassword(String oldPass, String newPass, String reNewPass, Principal principal) {
-        Person person = pDao.getByEmail(principal.getName());
-        if(!encoder.matches(oldPass, person.getPassword()) || !newPass.equals(reNewPass))
+        Person person = personDao.getByEmail(principal.getName());
+        if (!encoder.matches(oldPass, person.getPassword()) || !newPass.equals(reNewPass)) {
+            logger.error("passwords don't match during update");
             return false;
+        }
         Authentication auth = new PreAuthenticatedAuthenticationToken(person.getEmail(), encoder.encode(newPass));
         person.setPassword(encoder.encode(newPass));
         SecurityContextHolder.getContext().setAuthentication(auth);
+        logger.error("passwords for {} changed", person.getEmail());
         return true;
     }
 
     @Override
     @Transactional
     public String updateField(String fieldName, String fieldValue) {
-        Person person = pDao.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        if(fieldName.equals("name")){
+        Person person = personDao.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (fieldName.equals("name")) {
             person.setName(fieldValue);
             update(person);
             return person.getName();
-        }else if(fieldName.equals("surname")){
+        } else if (fieldName.equals("surname")) {
             person.setSurname(fieldValue);
             update(person);
             return person.getSurname();
-        }else if(fieldName.equals("phone")){
+        } else if (fieldName.equals("phone")) {
             person.setCellphone(fieldValue);
             update(person);
             return person.getCellphone();
-        }else{
+        } else {
             return null;
         }
         
@@ -142,40 +140,30 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	public List<Person> simpleSearch(String request) {
-		// TODO Auto-generated method stub
-		return pDao.simpleSearch(request);
+		return personDao.simpleSearch(request);
 	}
 
 	@Override
 	public List<Person> advancedSearch(Person person) {
-		// TODO Auto-generated method stub
-		return pDao.advancedSearch(person);
+		return personDao.advancedSearch(person);
 	}
 
 	@Override
 	@Transactional
 	public Person countRating(Person person) {
-		// TODO Auto-generated method stub
-		
 		int returnedInTime, returnedNotInTime; 
 		double grade = 0;
 		int booksOnHands, gradeInt = 0;
-		
 		returnedInTime = person.getTimelyReturn();
-		returnedNotInTime = person.getUntimekyReturn();	
-		
+		returnedNotInTime = person.getUntimekyReturn();
 		if((returnedInTime > 0) || (returnedNotInTime > 0) ){
 			grade = (double) returnedInTime/(returnedNotInTime + returnedInTime);
 			grade *= 100;
 			gradeInt = (int) grade;
 			}
-		
 		person.setGeneralRating(gradeInt);
-		
 		update(person);
-		
 		return person;
 	}
-    
 }
 
