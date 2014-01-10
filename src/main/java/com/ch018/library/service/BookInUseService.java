@@ -28,6 +28,5 @@ public interface BookInUseService {
         BooksInUse getBookInUseById(int id);
         List<Date> getBooksInUseToIssueToday();
         boolean isPersonHaveBook(Person person, Book book);
-        List<Person> getAllUsers();
         void getBookBack(BooksInUse bookInUse);
 }

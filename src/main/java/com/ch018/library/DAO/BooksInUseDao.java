@@ -28,5 +28,4 @@ public interface BooksInUseDao {
         List<Date> getBooksInUseToReturnDate();
         List<Date> getBooksInUseToIssueToday();
         boolean isPersonHaveBook(Person person, Book book); 
-        List<Person> getAllUsers();
 }
