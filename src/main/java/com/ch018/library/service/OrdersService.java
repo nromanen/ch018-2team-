@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface OrdersService {
-
-
          void save(Orders order);
          void delete(Orders order);
          void update(int id, Date newDate);
@@ -21,17 +19,11 @@ public interface OrdersService {
          List<Orders> getOrderByBook(Book book);
          List<Orders> getOrderByDate(Date date);
          Orders getOrderByID(int id); 
-         
-
          List<Orders> getOrdersToday();
          List<Orders> getOrdersInHour();
-
-         int getBookIdByPerson(Person person);
-         
+         int getBookIdByPerson(Person person);   
          boolean isPersonOrderedBook(Person person, Book book);
          boolean isLimitReached(Person person);
          void checkPersonOrders(Book book, Date returnDate);
          void issue(Orders order);
-
-
 }

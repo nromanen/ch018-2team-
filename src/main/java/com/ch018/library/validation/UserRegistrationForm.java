@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.validation;
 
 import javax.validation.constraints.Pattern;
@@ -15,12 +11,18 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 public class UserRegistrationForm {
     
+    public static final int MIN_NAME = 2;
+    public static final int MAX_NAME = 30;
+    public static final int MIN_PASS = 2;
+    public static final int MAX_PASS = 16;
+    
+    
     @NotEmpty
-    @Size(min = 2, max = 20)
+    @Size(min = MIN_NAME, max = MAX_NAME)
     private String name;
     
     @NotEmpty
-    @Size(min = 2, max = 20)
+    @Size(min = MIN_NAME, max = MAX_NAME)
     private String surname;
     
     @NotEmpty
@@ -32,11 +34,11 @@ public class UserRegistrationForm {
     private String rEmail;
     
     @NotEmpty
-    @Size(min = 6, max = 20)
+    @Size(min = MIN_PASS, max = MAX_PASS)
     private String password;
     
     @NotEmpty
-    @Size(min = 6, max = 20)
+    @Size(min = MIN_PASS, max = MAX_PASS)
     private String rPassword;
     
     @NotEmpty

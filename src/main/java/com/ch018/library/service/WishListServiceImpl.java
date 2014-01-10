@@ -6,23 +6,21 @@ package com.ch018.library.service;
 
 import com.ch018.library.DAO.WishListDao;
 import com.ch018.library.entity.Book;
-import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
 import com.ch018.library.entity.WishList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 /**
  *
  * @author Admin
  */
 @Service
-public class WishListServiceImpl implements WishListService{
+public class WishListServiceImpl implements WishListService {
  
     @Autowired
-    WishListDao wishDao;
+    private WishListDao wishDao;
 
     @Override
     @Transactional
@@ -51,8 +49,7 @@ public class WishListServiceImpl implements WishListService{
     @Override
     @Transactional(readOnly = true)
     public List<WishList> getWishByPerson(Person person) {
-        return wishDao.getWishByPerson(person);
-        
+        return wishDao.getWishByPerson(person);    
     }
 
     @Override
@@ -78,10 +75,4 @@ public class WishListServiceImpl implements WishListService{
     public boolean isPersonWishBook(Person person, Book book) {
         return wishDao.isPersonWishBook(person, book);
     }
-
-    
-    
-    
-    
-    
 }

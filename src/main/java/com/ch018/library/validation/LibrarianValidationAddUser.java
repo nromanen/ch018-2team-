@@ -8,11 +8,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class LibrarianValidationAddUser {
 
 	@NotEmpty
-	@Size(min=2, max=20)
+	@Size(min = 2, max = 20)
 	private String name;
 	
 	@NotEmpty
-	@Size(min=2, max=20)
+	@Size(min = 2, max = 20)
 	private String surname;
 	
 	@NotEmpty
@@ -20,15 +20,15 @@ public class LibrarianValidationAddUser {
 	private String email;
 	
 	@NotEmpty
-	@Size(min=6, max=20)
+	@Size(min = 6, max = 20)
 	private String password;
 	
 	@NotEmpty
-	@Size(min=5, max=20)
+	@Size(min = 5, max = 20)
 	private String cellphone;
 	
 	@NotEmpty
-	@Size(min=1, max=2)
+	@Size(min = 1, max = 2)
 	private Integer multiBook;
 	
 	public String getName() {

@@ -1,11 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.service;
 
-import com.ch018.library.entity.Orders;
 import java.util.Date;
+
+import com.ch018.library.entity.Orders;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +18,11 @@ import org.springframework.stereotype.Service;
 public class MailService {
     
         @Autowired
-        MailSender mailSender;
+        private MailSender mailSender;
         
-        final Logger logger = LoggerFactory.getLogger(MailService.class);
+        private final Logger logger = LoggerFactory.getLogger(MailService.class);
         
-        public void sendMail(String from, String to, String subject, String body){
+        public void sendMail(String from, String to, String subject, String body) {
             logger.info("start mail forming");
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(from);
@@ -36,7 +34,7 @@ public class MailService {
             logger.info("mail sended");
         }
         
-        public void sendMailWithOrder(String from, String to, String subject, Orders order){
+        public void sendMailWithOrder(String from, String to, String subject, Orders order) {
             StringBuilder body = new StringBuilder("Congratulations! ");
             body.append(order.getPerson().getName());
             body.append(" you succesfully ordered book: ");
@@ -47,7 +45,7 @@ public class MailService {
           
         }
         
-        public void sendMailOrderChange(String from, String to, String subject, Orders order){
+        public void sendMailOrderChange(String from, String to, String subject, Orders order) {
             StringBuilder body = new StringBuilder("Book: ");
             body.append(order.getBook().getTitle());
             body.append(" which you order on: ");
@@ -57,9 +55,9 @@ public class MailService {
             sendMessage(from, to, subject, body.toString());
         }
         
-        private void sendMessage(final String from, final String to, final String subject, final String body){
+        private void sendMessage(final String from, final String to, final String subject, final String body) {
+            
             Runnable send = new Runnable() {
-
                 @Override
                 public void run() {
                     SimpleMailMessage message = new SimpleMailMessage();
@@ -72,9 +70,6 @@ public class MailService {
             };
             
             Thread sendThread = new Thread(send);
-            sendThread.start();
-            
+            sendThread.start();   
         }
- 
-    
 }
