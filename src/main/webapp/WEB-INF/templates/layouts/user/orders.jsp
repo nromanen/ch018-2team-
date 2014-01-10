@@ -5,7 +5,7 @@
                     <!--New Arrivals-->
                 </div>
                 
-                <div class="col-md-11" id="center_main">
+                <div class="col-md-10" id="center_main">
                     <ul class="list-unstyled">
                         <li class="list-group-item">
                                 <div class="row">
@@ -28,11 +28,14 @@
                                         ${entry.key.getBook().getTitle()}
                                     </div>
                                     <div class="col-md-5">
+                                        
                                         <input type="hidden" class="order_id" value="${entry.key.getId()}">
                                         <input type="hidden" class="minDate" value="${entry.value}">
                                         <input type="hidden" class="orderDate" value="${entry.key.getOrderDate().getTime()}">
                                         <input type="text" class="calendar">
                                         <button class="btn-info order_change_button">Change</button>
+                                        <input class="changed" type="hidden" value="${entry.key.getChanged()}">
+                                        
                                     </div>
                                     <div class="col-md-3">
                                         <input type="hidden" value="${entry.key.getId()}">

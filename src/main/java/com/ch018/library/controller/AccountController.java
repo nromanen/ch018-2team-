@@ -5,7 +5,6 @@
 package com.ch018.library.controller;
 
 import java.security.Principal;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
@@ -48,7 +47,6 @@ public class AccountController {
         model.addAttribute("person", person);
         return "account";
     }
-    
     @RequestMapping(value = "changeEmail", method = RequestMethod.POST)
     @Secured({"ROLE_USER"})
     public @ResponseBody String changeEmail(@RequestParam("email") String email, Principal principal){
@@ -67,7 +65,6 @@ public class AccountController {
         logger.info("person {} email changed to ", person, person.getEmail());
         return json.toString();
     }
-    
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     @Secured({"ROLE_USER"})
     public @ResponseBody String changePassword(@RequestParam("oldPass") String oldPass,
@@ -84,7 +81,6 @@ public class AccountController {
             throw new IncorrectDate("error occured during pass");
         }
     }
-    
     @RequestMapping(value = "changeField", method = RequestMethod.POST)
     @Secured({"ROLE_USER"})
     public @ResponseBody String changeField(@RequestParam("fieldName") String fieldName, 
@@ -94,8 +90,7 @@ public class AccountController {
             JSONObject json = new JSONObject();
             json.put("field", field);
             return json.toString();
-        }
-            
+        }     
         else
             throw new IncorrectDate("Incorrect " + fieldName);
     }

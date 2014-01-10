@@ -21,7 +21,7 @@ public interface OrdersService {
          List<Orders> getOrderByBook(Book book);
          List<Orders> getOrderByDate(Date date);
          Orders getOrderByID(int id); 
-         Orders getOrderIdByPersonIdBookId(int pId, int bId);
+         
 
          List<Orders> getOrdersToday();
          List<Orders> getOrdersInHour();
@@ -30,7 +30,8 @@ public interface OrdersService {
          
          boolean isPersonOrderedBook(Person person, Book book);
          boolean isLimitReached(Person person);
-         
+         void checkPersonOrders(Book book, Date returnDate);
          void issue(Orders order);
+
 
 }

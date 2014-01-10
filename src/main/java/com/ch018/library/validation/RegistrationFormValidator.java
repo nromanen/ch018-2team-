@@ -26,9 +26,9 @@ public class RegistrationFormValidator implements Validator{
          UserRegistrationForm form = (UserRegistrationForm) target;
          
          if(!form.getPassword().equals(form.getrPassword()))
-             errors.rejectValue("password", "password's don't same");
+             errors.rejectValue("password", "password's don't match");
          if(!form.getEmail().equals(form.getrEmail()))
-             errors.rejectValue("email", "emails's don't same");
+             errors.rejectValue("email", "emails's don't match");
     
     }
     

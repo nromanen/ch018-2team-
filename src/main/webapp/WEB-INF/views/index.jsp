@@ -58,6 +58,11 @@ prefix="form"%>
             </div>
             <div class="col-md-4">
                 <div class="row">
+                    
+                  
+                    
+                    
+                    
                     <form id="registration_form" class="form-horizontal" role="form" >
                         <legend><spring:message code="message.registration" /></legend>
                         <div class="form-group col-lg-8">

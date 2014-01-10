@@ -2,11 +2,13 @@
 $(document).ready(function(){
     
     $(".calendar").each(function(){
-        
-        var minDate = getDateInFormat($(this).prev().val()).split(" ");
+        var minDateLong = $(this).prev().val();
+        if(minDateLong < new Date().getTime())
+            minDateLong = new Date().getTime();
+        var minDate = getDateInFormat(minDateLong).split(" ");
         
         $(this).datetimepicker({
-                    format: 'Y/m/d H:m',
+                    format: 'Y/m/d H:i',
                     value: minDate[0] + " " + minDate[1],
                     minDate: minDate[0],
                     minTime: minDate[1]

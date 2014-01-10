@@ -85,7 +85,10 @@ public class BookInUseServiceImpl implements BookInUseService {
         if(book.getCurrentQuantity() > 0)
             return new Date();
         
-        return useDao.getMinOrderDate(book);
+        Date minDate = useDao.getMinOrderDate(book);
+        if(minDate.getTime() < new Date().getTime())
+            minDate = new Date();
+        return minDate;
          
     }
 
@@ -140,9 +143,9 @@ public class BookInUseServiceImpl implements BookInUseService {
 			person.setUntimekyReturn(booksReturnedNotIntime);
 		}
 		
-		booksOnHands = person.getBooksOnHands();
+		booksOnHands = person.getMultiBook();
 		booksOnHands -=1;
-		person.setBooksOnHands(booksOnHands);
+		person.setMultiBook(booksOnHands);
 		personService.update(person);
 		
 		Book book = bookInUse.getBook();

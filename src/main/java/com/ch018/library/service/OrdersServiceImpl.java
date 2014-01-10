@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import java.util.ArrayList;
 
 @Service
 public class OrdersServiceImpl implements OrdersService{
@@ -40,6 +41,9 @@ public class OrdersServiceImpl implements OrdersService{
         BooksInUseDao useDao;
         
         @Autowired
+        MailService mailService;
+       
+		@Autowired
         PersonService personService;
         
         @Autowired
@@ -108,11 +112,7 @@ public class OrdersServiceImpl implements OrdersService{
 
 
 
-        @Override
-        @Transactional
-        public Orders getOrderIdByPersonIdBookId(int pId, int bId) {
-                return ordersDao.getOrderIdByPersonIdBookId(pId, bId);
-        }
+       
 
 		@Override
 		public List<Orders> getOrdersToday() {
@@ -150,6 +150,23 @@ public class OrdersServiceImpl implements OrdersService{
             return true;
     }
 
+    @Override
+    @Transactional
+    public void checkPersonOrders(Book book, Date returnDate) {
+        List<Orders> orders;
+        if(book.getCurrentQuantity() <= 0){
+            orders = ordersDao.getOrdersForChanging(book, returnDate);
+            if(orders != null){
+                for(Orders order : orders){
+                    order.setChanged(Boolean.TRUE);
+                    ordersDao.update(order);
+                    mailService.sendMailOrderChange("springytest@gmail.com", "etenzor@gmail.com", "order changed", order); 
+                }
+            }
+        }
+    }
+
+
 	@Override
 	@Transactional
 	public void issue(Orders order) {
@@ -157,9 +174,9 @@ public class OrdersServiceImpl implements OrdersService{
 		
 		Person person = order.getPerson();
 		
-		int booksOnHands = person.getBooksOnHands();
+		int booksOnHands = person.getMultiBook();
 		
-		person.setBooksOnHands(++booksOnHands);
+		person.setMultiBook(++booksOnHands);
 		
 		personService.update(person);
 		

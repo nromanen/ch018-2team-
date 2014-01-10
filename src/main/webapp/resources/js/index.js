@@ -54,7 +54,6 @@ $(document).ready(function () {
             contentType: 'application/x-www-form-urlencoded',
             mimeType: 'application/json',
          success: function () {
-                alert("AA");
                 $('#success_reg').modal('show');
                 
              },

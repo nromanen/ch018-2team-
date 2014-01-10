@@ -5,15 +5,18 @@
 <tiles-definitions>
 
     
+    <definition name="search" preparer="genres" template="/WEB-INF/templates/layouts/user/search.jsp"></definition>
     
-    <definition name="user-header"   template="/WEB-INF/templates/layouts/user/user-header-template.jsp">
-        <put-attribute name="search"  value="/WEB-INF/templates/layouts/user/search.jsp"/>
+    <definition name="user-header" template="/WEB-INF/templates/layouts/user/user-header-template.jsp">
+        <put-attribute name="search"   value="search"/>
         <put-attribute name="usermenu" value="/WEB-INF/templates/layouts/user/usermenu.jsp"/>
     </definition>
     
     <definition name="base-template" template="/WEB-INF/templates/base-template.jsp">
         
         <put-attribute name="header" value="" />
+        
+        <put-attribute name="style-js-main" value="/WEB-INF/templates/layouts/user/main_css_js.jsp" />
         
         <put-attribute name="style-js" value="" />
         
