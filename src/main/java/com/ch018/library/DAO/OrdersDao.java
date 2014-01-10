@@ -21,7 +21,6 @@ public interface OrdersDao {
         List<Orders> getOrderByDate(Date date);
         Orders getOrderIdByPersonIdBookId(int pId, int bId);
         Orders getOrderByID(int id);
-        List<Orders> search(String request);
         List<Orders> getOrdersToday();
         List<Orders> getOrdersInHour();
         //boolean isPersonOrderedBook(Person person, Book book);

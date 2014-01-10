@@ -38,49 +38,6 @@ public class LibrarianOrdersController {
 	@RequestMapping(value = "")
 	public String showAll (Model model) throws Exception {
 		
-		/*Calendar calen = Calendar.getInstance();
-		calen.add(Calendar.DAY_OF_YEAR, +3);
-		Date date = new Date();
-		date = calen.getTime();
-		
-		Book book = new Book();
-		Person person = new Person();
-		Orders order = new Orders();
-		
-		book = bookService.getBookById(3);
-		person = personService.getById(1);
-		
-		order.setBook(book);
-		order.setPerson(person);
-		order.setOrderDate(date);
-		
-		ordersService.save(order);*/
-		
-		/*Calendar calen = Calendar.getInstance();
-		calen.add(Calendar.DAY_OF_YEAR, 0);
-		Date date = new Date();
-		date = calen.getTime();
-		
-		Book book = new Book();
-		Person person = new Person();
-		Orders order = new Orders();
-		
-		book = bookService.getBookById(4);
-		person = personService.getById(2);
-		
-		order.setBook(book);
-		order.setPerson(person);
-		order.setOrderDate(date);
-		System.out.println(date + "Date from controller ++++++++");
-		ordersService.save(order);*/
-		
-		/*Person person = new Person();
-		person.setName("John");
-		person.setSurname("Spark");
-		person.setEmail("email@mail.com");
-		person.setPassword("1234");
-		personService.save(person);*/
-		
 		model.addAttribute("orders", ordersService.getAll());
 		
 		return "librarian/orders";
@@ -90,25 +47,13 @@ public class LibrarianOrdersController {
 	@RequestMapping(value = "/issue", method = RequestMethod.GET)
 	public String issue(@RequestParam("id") int id) throws Exception {
 		
-		Orders order = new Orders();
-		order = ordersService.getOrderByID(id);
-		ordersService.delete(order);
+		ordersService.issue(ordersService.getOrderByID(id));
 		
-		BooksInUse  bookInUse = new BooksInUse();
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, +14);
-		Date date = calendar.getTime();
-		
-		bookInUse.setBook(order.getBook());
-		bookInUse.setPerson(order.getPerson());
-		bookInUse.setReturnDate(date);
-		
-		booksInUseService.save(bookInUse);
-		
+		//ordersService.delete(order);
+
 		return "redirect:/librarian/orders";
 	}
 	
-	//Add book is not finished. But Dates work pretty good
 	@RequestMapping(value = "/toissueinhour")
 	public String toIssueInHour(Model model) throws SQLException {
 			
@@ -128,33 +73,4 @@ public class LibrarianOrdersController {
 		return "librarian/orders";
 	}
 	
-	@RequestMapping (value = "/addOrder", method = RequestMethod.GET)
-	public String addOrder (Model model) throws Exception {
-		
-		return "librarianaddOrder";
-	}
-	
-	@RequestMapping (value = "/addOrder", method = RequestMethod.POST)
-	public String addOrder () throws Exception {
-		
-		return "librarianaddOrder";
-	}
-	
-	@RequestMapping (value = "/search", method = RequestMethod.GET)
-	public String search(Model model) throws Exception {
-		return "librarian/orders";
-	}
-	
-	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public String search(@RequestParam("request") String request) throws Exception {
-		
-		List<Orders> orders = ordersService.search(request);
-		
-		Orders order = new Orders();
-		order = orders.get(0);
-		
-		System.out.println(order.getOrderDate() + "~~~~~~~~~~~~~~~~~");
-		
-		return "redirct:/librarian/orders";
-	} 
 }

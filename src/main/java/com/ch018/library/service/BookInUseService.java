@@ -38,5 +38,6 @@ public interface BookInUseService {
 
     List<Person> getAllUsers();
 
+    void getBookBack(BooksInUse bookInUse);
 
 }

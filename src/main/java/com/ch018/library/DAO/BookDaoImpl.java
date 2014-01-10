@@ -120,19 +120,19 @@ public class BookDaoImpl implements BookDao {
 			q += " and title = :title";
 		}
 		if(!book.getAuthors().equals("")) {
-			q += q.endsWith("where") ? " authors = :authors" : " and authors = :authors";
+			q += " and authors = :authors";
 		}
 		if(!book.getGenre().equals("")) {
-			q += q.endsWith("where") ? " genre = :genre" : " and genre = :genre";
+			q += " and genre = :genre";
 		}
 		if(book.getYear() != 0) {
-			q += q.endsWith("where") ? " year = :year" : " and year = :year";
+			q += " and year = :year";
 		}
 		if(!book.getPublisher().equals("")) {
-			q += q.endsWith("where") ? " publisher = :publisher" : " and publisher = :publisher";
+			q += " and publisher = :publisher";
 		}
 		if(book.getPages() != 0) {
-			q += q.endsWith("where") ? " pages = :pages" : " and pages = :pages";
+			q += " and pages = :pages";
 		}
 		
 		Query query = session.createQuery(q);
@@ -157,11 +157,7 @@ public class BookDaoImpl implements BookDao {
 		}
 		
 		List<Book> books = query.list();
-		
-		/*Book book1 = new Book();
-		book1 = books.get(0);
-		System.out.println(book1.getTitle() + " " + book1.getAuthors() 
-				+ " " + book1.getYear() + "~~~~~~~~~~~~~~");*/
+
 		return books;
 	}
 

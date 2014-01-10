@@ -41,8 +41,6 @@ public class LibrarianBooksController {
 	@RequestMapping(value = "")
 	public ModelAndView bookList () {
 		
-		
-		
 		return new ModelAndView("librarian/books", "books", bookService.getAll());
 	}
 	
@@ -62,9 +60,7 @@ public class LibrarianBooksController {
 	public String add(@ModelAttribute("book") @Valid Book book, BindingResult result, @RequestParam("genreId") Integer gid) throws Exception {
 		
 		Genre genre = genreService.getById(gid);
-		System.out.println("Genre Id = " + gid);
 		book.setGenre(genre);
-		System.out.println("Book title = " + book.getTitle());
 		
 		if (result.hasErrors()) {
 			System.out.println("Errors Addind Book" + result.toString());
@@ -88,7 +84,6 @@ public class LibrarianBooksController {
 		
 		model.addAttribute("genre", genreService.getAll());
 		model.addAttribute("book", bookService.getBookById(bookId));
-		System.out.println("Book " + bookService.getBookById(bookId));
 		return "librarian/editbook";
 	}
 	
@@ -96,8 +91,6 @@ public class LibrarianBooksController {
 	public String edit(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("id") int bookId,
 					   @RequestParam("genreId") Integer gid, Model model) throws Exception {
 		
-		System.out.println("Book ID = " + bookId + "++++++");
-		System.out.println("Genre ID = " + gid + " " + genreService.getById(gid));
 		book.setGenre(genreService.getById(gid));
 		bookService.update(book);
 		
@@ -121,50 +114,33 @@ public class LibrarianBooksController {
 		List<Book> books = bookService.advancedSearch(book);
 		
 		model.addAttribute("books", books);
-		
 
-		
 		return "librarian/booksearchresult";
 	}
 	
 	@RequestMapping(value = "/holders", method = RequestMethod.GET)
 	public String showBookHolders(@RequestParam("id") int id, Model model) throws Exception {
+			
 			Book book = new Book();
 			book = bookService.getBookById(id);
-			BooksInUse bookInUse = new BooksInUse();
-			List<BooksInUse> booksInUse = bookInUseService.getBooksInUseByBook(book);
-			Map<BooksInUse, Integer> booksInUseEx = new HashMap<BooksInUse, Integer>();
 			
-			Date date = new Date();
-			Calendar currentDate = Calendar.getInstance();
-			Calendar endDate = Calendar.getInstance();
-			currentDate.setTime(date);
-			int difference;
-			
-			for (BooksInUse booksInUse2 : booksInUse) {
-				
-				endDate.setTime(booksInUse2.getReturnDate());
-				difference = endDate.get(Calendar.DAY_OF_YEAR) - currentDate.get(Calendar.DAY_OF_YEAR);
-				System.out.println("The difference is: " + difference);
-				booksInUseEx.put(booksInUse2, difference);
-			}
+			Map<BooksInUse, Integer> booksInUse = bookService.getHolders(bookService.getBookById(id));
 			
 			model.addAttribute("book", book);
-			model.addAttribute("booksInUse", booksInUseEx);
-			
-			
+			model.addAttribute("booksInUse", booksInUse);
 			
 		return "librarian/bookholders";
 	}
 	
 	@RequestMapping(value = "/simplesearch", method=RequestMethod.GET)
 	public String simpleSearch(Model model) {
+		
 		return "librarian/books";
 	}
 	
 	@RequestMapping(value = "/simplesearch", method=RequestMethod.POST)
 	public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
-		System.out.println("Search request: " + request);
+
 		List<Book> books = bookService.simpleSearch(request);
 		
 		model.addAttribute("books", books);

@@ -65,7 +65,7 @@
 				<center>
 					<div class="col-md-12" style="margin-top:30px">
 					
-						<table border = "2">
+						<table class="table table-hover table-striped table-bordered table-condensed">
 		     			   <thead>
 		         		       <tr>
 		           	                <td> <b> ID </b> </td>

@@ -84,27 +84,6 @@ public class OrdersDaoImpl implements OrdersDao{
             return (Orders) factory.getCurrentSession().load(Orders.class, oid);
         }
 
-
-		@Override
-		public List<Orders> search(String request) {
-			// TODO Auto-generated method stub
-			if (!request.equals("")){
-				
-				Session session = factory.openSession();
-				
-				Query query = session.createQuery("from Orders where book like :book or"
-												+ " person like :person");
-				query.setParameter("book", request + "%");
-				query.setParameter("person", request + "%");
-				
-				List<Orders> orders = query.list();
-				
-				return orders;
-				}else {
-					return null;
-				}
-		}
-
 		  @Override
     public List<Orders> getOrdersToday() {
         // TODO Auto-generated method stub
@@ -117,27 +96,17 @@ public class OrdersDaoImpl implements OrdersDao{
         start.set(Calendar.SECOND, 0);
         start.set(Calendar.MILLISECOND, 0);
 
-        System.out.println(start.getTime());
-
         end.add(Calendar.DAY_OF_YEAR, 1);
         end.set(Calendar.HOUR_OF_DAY, 0);
         end.set(Calendar.MINUTE, 0);
         end.set(Calendar.SECOND, 0);
         end.set(Calendar.MILLISECOND, 0);
 
-        System.out.println(end.getTime());
-
         Session session = factory.openSession();
         Query query = session.createQuery("from Orders where orderDate BETWEEN :start and :end");
         query.setCalendar("start", start);
         query.setCalendar("end", end);
         List<Orders> orders = query.list();
-
-        /*Orders order = new Orders();
-         order = orders.get(0);
-					
-         System.out.println(order.getOrderDate() + " gsdkjvbasldj akhfsadkhsn cnhfls");
-         */
 
         return orders;
     }
@@ -149,25 +118,13 @@ public class OrdersDaoImpl implements OrdersDao{
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
 
-        System.out.println(start.getTime() + "Start");
-
         end.add(Calendar.HOUR_OF_DAY, 1);
-
-        System.out.println(end.getTime() + "end");
 
         Session session = factory.openSession();
         Query query = session.createQuery("from Orders where orderDate BETWEEN :start AND :end");
         query.setCalendar("start", start);
         query.setCalendar("end", end);
         List<Orders> orders = query.list();
-
-        /*Orders order = new Orders();
-         order = orders.get(0);
-						
-         System.out.println(order.getOrderDate() + " Order 1");
-			
-         order = orders.get(1);
-         System.out.println(order.getOrderDate() + " Order 2");*/
 
         return orders;
     }
