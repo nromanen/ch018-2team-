@@ -12,11 +12,12 @@ import java.util.List;
 
 
 
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,11 +140,17 @@ public class PersonDaoImpl implements PersonDao {
 			
 			Session session = factory.openSession();
 			
-			Query q = session.createQuery("from Person where name like :parameter or"
-											+ " surname like :parameter");
-			q.setParameter("parameter", request + "%");		
+			Criteria criteria = session.createCriteria(Person.class);
 			
-			List<Person> users = q.list();
+			Disjunction or = Restrictions.disjunction();
+			
+			or.add(Restrictions.like("name", request));
+			
+			or.add(Restrictions.like("surname", request));
+			
+			criteria.add(or);
+			
+			List<Person> users = criteria.list();
 			
 			return users;
 			

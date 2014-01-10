@@ -61,13 +61,16 @@
 		
 	</div>
 	<div class="row">
-		<div class="col-md-12" style="margin-top:15px">
-				<center>
+		<div class="col-md-2 col-md-offset-5" style="margin-top:30px">
+				
 					<form name="search" action="<c:url value="/librarian/books/simplesearch" />" method="POST" >
-						<input type="text"  name="request"/>  <!--  <input type="submit" value="Search" /> -->
-						<t class="ex1"><a href="<c:url value="/librarian/books/advancedsearch"/>"  class="btn btn-default btn-xs" role="button" style="margin-left: 13px">Advanced</a></t>
+						<input type="text" class="form-control" id="" name="request"/>  <!--  <input type="submit" value="Search" /> -->
+						
 					</form>
-				</center>
+				
+			</div>
+			<div class="col-md-2"  style="margin-top:35px" >
+				<t class="ex1"><a href="<c:url value="/librarian/books/advancedsearch"/>"  class="btn btn-default btn-xs" role="button" style="margin-left: 7px">Advanced</a></t>
 			</div>
 	<div class="row">
 			<div class="col-md-12" style="margin-top:30px">
@@ -123,7 +126,7 @@
 	<div class="col-md-1 col-md-offset-9" style="margin-top:10px">
 		<a href="<c:url value="/librarian/books/addbook"/>" class="btn btn-default btn-sm" role="button">Add Book</a>
 	</div>
-
+   
 </div>			
 			
 		</div>
