@@ -69,13 +69,6 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
             else
                 return minDate;
 	}
-	@Override
-	public List<Date> getBooksInUseToReturnDate() {
-		Session session = factory.getCurrentSession();
-		Query query = session.createQuery("SELECT returnDate FROM BooksInUse");
-		List<Date> dates = query.list(); 
-		return dates;
-	}
 
 	@Override
 	public BooksInUse getBookInUseById(int id) {
@@ -87,26 +80,6 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 		return bookInUse; 
 	}
 
-	@Override
-	public List<Date> getBooksInUseToIssueToday() {
-		
-		Calendar begin = Calendar.getInstance();
-		Calendar end = Calendar.getInstance();
-		begin.set(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH);
-		
-		
-		Session session = factory.openSession();  
-		Query query = session.createQuery("FROM BooksInUse WHERE "); 
-		List<Date> dates = query.list(); 
-		
-		if (session.isOpen()) {
-			session.close();
-		}
-		
-		return dates;
-	}
-
-    
     @Override
     public boolean isPersonHaveBook(Person person, Book book) {
         try {
