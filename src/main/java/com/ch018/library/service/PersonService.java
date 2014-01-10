@@ -34,5 +34,6 @@ public interface PersonService {
     String updateField(String fieldName, String filedValue);
     List<Person> simpleSearch(String request);
     List<Person> advancedSearch(Person person);
+    Person countRating(Person person);
     
 }

@@ -1,7 +1,9 @@
 package com.ch018.library.service;
 
 import com.ch018.library.DAO.BooksInUseDao;
+
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -9,9 +11,11 @@ import org.springframework.stereotype.Service;
 
 
 
+
 import com.ch018.library.DAO.OrdersDao;
 import com.ch018.library.DAO.OrdersDaoImpl;
 import com.ch018.library.entity.Book;
+import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 
@@ -34,7 +38,16 @@ public class OrdersServiceImpl implements OrdersService{
         
         @Autowired
         BooksInUseDao useDao;
-
+        
+        @Autowired
+        PersonService personService;
+        
+        @Autowired
+        BookService bookService;
+        
+        @Autowired
+        BookInUseService booksInUseService;
+        
         @Override
         @Transactional
         public void save(Orders order){
@@ -101,13 +114,6 @@ public class OrdersServiceImpl implements OrdersService{
                 return ordersDao.getOrderIdByPersonIdBookId(pId, bId);
         }
 
-
-		@Override
-		public List<Orders> search(String request) {
-			// TODO Auto-generated method stub
-			return ordersDao.search(request);
-		}
-
 		@Override
 		public List<Orders> getOrdersToday() {
 			// TODO Auto-generated method stub
@@ -143,11 +149,40 @@ public class OrdersServiceImpl implements OrdersService{
         else 
             return true;
     }
-    
-    
-    
 
-        
-        
-
+	@Override
+	@Transactional
+	public void issue(Orders order) {
+		// TODO Auto-generated method stub
+		
+		Person person = order.getPerson();
+		
+		int booksOnHands = person.getBooksOnHands();
+		
+		person.setBooksOnHands(++booksOnHands);
+		
+		personService.update(person);
+		
+		Book book = order.getBook();
+		
+		int currentQuantity = book.getCurrentQuantity();
+		
+		currentQuantity -=1;
+		
+		book.setCurrentQuantity(currentQuantity);
+		
+		bookService.update(book);
+		
+		BooksInUse  bookInUse = new BooksInUse();
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, +14);
+		Date date = calendar.getTime();
+		
+		bookInUse.setBook(order.getBook());
+		bookInUse.setPerson(order.getPerson());
+		bookInUse.setReturnDate(date);
+		
+		booksInUseService.save(bookInUse);
+	}
+    
 }

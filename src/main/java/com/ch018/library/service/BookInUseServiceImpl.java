@@ -25,6 +25,10 @@ public class BookInUseServiceImpl implements BookInUseService {
 
     @Autowired
     BooksInUseDao useDao;
+    @Autowired
+    PersonService personService;
+    @Autowired
+    BookService bookService;
     
     @Override
     @Transactional
@@ -114,6 +118,41 @@ public class BookInUseServiceImpl implements BookInUseService {
 	public List<Person> getAllUsers() {
 		// TODO Auto-generated method stub
 		return useDao.getAllUsers();
+	}
+
+	@Override
+	@Transactional
+	public void getBookBack(BooksInUse bookInUse) {
+		// TODO Auto-generated method stub
+		
+		Date now = new Date();
+		
+		Person person = bookInUse.getPerson();
+		int booksReturnedIntime = person.getTimelyReturn();
+		int booksReturnedNotIntime = person.getUntimekyReturn();
+		int booksOnHands = 0;
+		
+		if (now.before(bookInUse.getReturnDate())) {
+			booksReturnedIntime += 1;
+			person.setTimelyReturn(booksReturnedIntime);
+		}else if (now.after(bookInUse.getReturnDate())) {
+			booksReturnedNotIntime += 1;
+			person.setUntimekyReturn(booksReturnedNotIntime);
+		}
+		
+		booksOnHands = person.getBooksOnHands();
+		booksOnHands -=1;
+		person.setBooksOnHands(booksOnHands);
+		personService.update(person);
+		
+		Book book = bookInUse.getBook();
+		int quantity = book.getCurrentQuantity();
+		quantity += 1;
+		book.setCurrentQuantity(quantity);
+		bookService.update(book);
+		
+		//booksInUseService.delete(bookInUse);
+		
 	}
     
 
