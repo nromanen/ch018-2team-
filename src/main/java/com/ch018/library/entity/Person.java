@@ -94,7 +94,7 @@ public class Person implements Serializable {
     @Column(name = "img")
     private String img;
     
-    private int booksOnHands;
+    
     
     @OneToMany(targetEntity = BooksInUse.class, mappedBy = "person")
     private Set<Book> booksInUse = new HashSet<Book>();
@@ -287,13 +287,6 @@ public class Person implements Serializable {
         this.multiBook = multiBook;
     }
     
-    public int getBooksOnHands() {
-		return booksOnHands;
-	}
-    
-    public void setBooksOnHands(int booksOnHands) {
-		this.booksOnHands = booksOnHands;
-	}
     
     
     

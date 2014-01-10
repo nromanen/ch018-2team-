@@ -1,5 +1,6 @@
 package com.ch018.library.DAO;
 
+import com.ch018.library.controller.OrderController;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,11 +20,15 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.entity.WishList;
+import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Repository
 public class OrdersDaoImpl implements OrdersDao{
 
  
+        final Logger logger = LoggerFactory.getLogger(OrdersDaoImpl.class);
     
         @Autowired
         SessionFactory factory;
@@ -194,8 +199,29 @@ public class OrdersDaoImpl implements OrdersDao{
      }
         
     }
-       
+
+    @Override
+    public List<Orders> getOrdersForChanging(Book book, Date returnDate) {
+        List<Orders> orders = new ArrayList<>();
+        try{
+            System.out.println("Book " + book + "return date " + returnDate);
+            orders = factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("book", book))
+                    .add(Restrictions.lt("orderDate", returnDate)).list();
+        }catch(Exception e){
+            logger.error("Error while getting orders to change {}", e.getMessage());
+        }
+        return orders;
+    }
+
+    @Override
+    public void update(Orders order) {
     
+        try{
+           factory.getCurrentSession().update(order);
+        }catch(Exception e){
+            logger.error("error during update order {}", e.getMessage());
+        }
         
-        
+    }
+    
 }

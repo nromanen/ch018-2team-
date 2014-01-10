@@ -31,5 +31,6 @@ public interface OrdersService {
          
          boolean isPersonOrderedBook(Person person, Book book);
          boolean isLimitReached(Person person);
+         void checkPersonOrders(Book book, Date returnDate);
 
 }

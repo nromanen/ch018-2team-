@@ -32,6 +32,7 @@ public class Orders implements Serializable {
         private Person person;
         private Book book;
         private Date orderDate;
+        private boolean changed;
         
         public Orders(){
                 
@@ -41,6 +42,7 @@ public class Orders implements Serializable {
                 this.person = person;
                 this.book = book;
                 this.orderDate = date;
+                this.changed = false;
         }
         
         @Id
@@ -79,6 +81,17 @@ public class Orders implements Serializable {
         public Date getOrderDate() {
             return orderDate;
         }
+
+        @Column(name = "changed")
+        public Boolean getChanged() {
+            return changed;
+        }
+
+        public void setChanged(Boolean changed) {
+            this.changed = changed;
+        }
+        
+        
 
         public void setOrderDate(Date orderDate) {
             this.orderDate = orderDate;

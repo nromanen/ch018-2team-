@@ -15,6 +15,7 @@ public interface OrdersDao {
         void save(Orders order);
         void delete(Orders order);
         void update(int id, Date newDate);
+        void update(Orders order);
         List<Orders> getAll();
         List<Orders> getOrderByPerson(Person person);
         List<Orders> getOrderByBook(Book book);
@@ -24,11 +25,10 @@ public interface OrdersDao {
         List<Orders> search(String request);
         List<Orders> getOrdersToday();
         List<Orders> getOrdersInHour();
-        //boolean isPersonOrderedBook(Person person, Book book);
-        
         int getBookIdByPerson(Person person);
-        
         boolean isPersonOrderedBook(Person person, Book book);
+        List<Orders> getOrdersForChanging(Book book, Date returnDate); 
+        
 
         
 }

@@ -3,24 +3,35 @@
 $(document).ready(function(){
 
     $(".calendar").each(function (){
+        var changed = $(this).parent().find(".changed").val();
         var orderDateLong = $(this).prev().val();
         var minDateLong = $(this).prev().prev().val();
+        var orderDate = getDateInFormat(orderDateLong);
+        var rawMinDate = getDateInFormat(minDateLong);
+        var minDate = rawMinDate.split(" ");
         
-        if(orderDateLong > minDateLong){
+        if(changed === 'true'){
+            
+            var $btn = $(this).next();
+            $btn.attr('data-toggle', 'popover');
+            $btn.attr('data-content', 'choose another date');
+            $btn.popover("show");
+        }else if(orderDateLong > minDateLong + (12*3600*1000)){
+            
             var $btn = $(this).next();
             $btn.attr('data-toggle', 'popover');
             $btn.attr('data-content', 'can choose earlier date');
             $btn.popover("show");
+            
         }
         
-        var orderDate = getDateInFormat(orderDateLong);
-        var minDate = getDateInFormat(minDateLong).split(" ");
         
         $(this).datetimepicker({
-            format: 'Y/m/d H:m',
+            format: 'Y/m/d H:i',
             value: orderDate,
             minDate: minDate[0],
-            minTime: minDate[1]
+            minTime: minDate[1],
+            validateOnBlur: true
         });
     });
 
@@ -32,10 +43,11 @@ $(document).ready(function(){
     });
     
     $('.order_change_button').click(function (){
-
+        alert("edit");
         var orderId = $(this).parent().children().val();
         
         var date = getLongFromFormatTime(($(this).prev().val()));
+        alert(orderId, date);
         editOrder(orderId, date);
         
     });
@@ -78,7 +90,7 @@ function editOrder(orderId, date){
                 var $li = $('#order_li_' + orderId);
                 var $btn = $li.find('.order_change_button');
                 
-                if(data.date > (data.minDate + 6*60*60*1000)){
+                if(data.date > (data.minDate + 12*3600*1000)){
                     $btn.attr('data-toggle', 'popover');
                     $btn.attr('data-content', 'can choose earlier date');
                     $btn.popover("show");

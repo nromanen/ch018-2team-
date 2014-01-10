@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import java.util.ArrayList;
 
 @Service
 public class OrdersServiceImpl implements OrdersService{
@@ -34,6 +35,10 @@ public class OrdersServiceImpl implements OrdersService{
         
         @Autowired
         BooksInUseDao useDao;
+        
+        @Autowired
+        MailService mailService;
+        
 
         @Override
         @Transactional
@@ -142,6 +147,22 @@ public class OrdersServiceImpl implements OrdersService{
             return false;
         else 
             return true;
+    }
+
+    @Override
+    @Transactional
+    public void checkPersonOrders(Book book, Date returnDate) {
+        List<Orders> orders;
+        if(book.getCurrentQuantity() <= 0){
+            orders = ordersDao.getOrdersForChanging(book, returnDate);
+            if(orders != null){
+                for(Orders order : orders){
+                    order.setChanged(Boolean.TRUE);
+                    ordersDao.update(order);
+                    mailService.sendMailOrderChange("springytest@gmail.com", "etenzor@gmail.com", "order changed", order); 
+                }
+            }
+        }
     }
     
     

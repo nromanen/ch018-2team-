@@ -58,7 +58,7 @@ public class LibrarianUsersController {
 					
 					booksOnHands = books.size();
 					
-					pers.setBooksOnHands(booksOnHands);
+					pers.setMultiBook(booksOnHands);
 				}
 			}
 			

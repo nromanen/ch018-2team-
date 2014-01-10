@@ -78,7 +78,6 @@ public class OrderController {
            model.addAttribute("inUse", true);
            return "order";
         }
-        
         model.addAttribute("book", book);
         model.addAttribute("orders", ordersService.getOrderByBook(book));
         model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
@@ -105,7 +104,7 @@ public class OrderController {
 
             @Override
             public void run() {
-                mailService.SendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
+                mailService.sendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
                 
             }
         });
@@ -121,11 +120,8 @@ public class OrderController {
         Person person = personService.getByEmail(principal.getName());
         List<Orders> orders = ordersService.getOrderByPerson(person);
         Map<Orders, Long> ordersMinDates = new HashMap<>();
-        
         for(Orders order : orders){
-            
-           ordersMinDates.put(order, useService.getMinOrderDate(order.getBook()).getTime());
-            
+           ordersMinDates.put(order, useService.getMinOrderDate(order.getBook()).getTime());  
         }
         model.addAttribute("ordersMinDates", ordersMinDates);
         return "orders";

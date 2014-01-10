@@ -19,6 +19,7 @@ import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
+import com.ch018.library.service.MailService;
 import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
 
@@ -34,6 +35,11 @@ public class LibrarianOrdersController {
 	BookService bookService;
 	@Autowired
 	PersonService personService;
+        
+        //-------
+        @Autowired
+        MailService mailService;
+        //-------
 	
 	@RequestMapping(value = "")
 	public String showAll (Model model) throws Exception {
@@ -102,8 +108,16 @@ public class LibrarianOrdersController {
 		bookInUse.setBook(order.getBook());
 		bookInUse.setPerson(order.getPerson());
 		bookInUse.setReturnDate(date);
+                
 		
 		booksInUseService.save(bookInUse);
+                //------
+                Book book = order.getBook();
+                book.setCurrentQuantity(book.getCurrentQuantity() - 1);
+                bookService.update(book);
+                Date minDate = booksInUseService.getMinOrderDate(book);
+                ordersService.checkPersonOrders(book, minDate);
+                //------
 		
 		return "redirect:/librarian/orders";
 	}

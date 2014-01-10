@@ -81,7 +81,10 @@ public class BookInUseServiceImpl implements BookInUseService {
         if(book.getCurrentQuantity() > 0)
             return new Date();
         
-        return useDao.getMinOrderDate(book);
+        Date minDate = useDao.getMinOrderDate(book);
+        if(minDate.getTime() < new Date().getTime())
+            minDate = new Date();
+        return minDate;
          
     }
 
