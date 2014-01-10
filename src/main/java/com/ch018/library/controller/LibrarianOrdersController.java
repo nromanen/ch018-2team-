@@ -51,7 +51,7 @@ public class LibrarianOrdersController {
 
 		ordersService.issue(ordersService.getOrderByID(id));
 		
-		//ordersService.delete(order);
+		ordersService.delete(ordersService.getOrderByID(id));
 
 		return "redirect:/librarian/orders";
 	}

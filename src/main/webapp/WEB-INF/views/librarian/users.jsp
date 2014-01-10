@@ -97,7 +97,7 @@
 				                        <td>${user.sms}</td>
 				                        <td>${user.timelyReturn}</td>
 				                        <td>${user.untimekyReturn}</td>
-				                        <td>${user.booksOnHands} / ${user.booksAllowed}</td>
+				                        <td>${user.multiBook} / ${user.booksAllowed}</td>
 				                        <td>${user.generalRating}/100</td>
 				                        
 				                    <td><a href="<c:url value="/librarian/users/edituser?id=${user.pid}"/>">Edit</a>

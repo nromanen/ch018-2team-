@@ -118,19 +118,5 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
         }
     }
 
-	@Override
-	public List<Person> getAllUsers() {
-		String groupByquery = "SELECT person from BooksInUse biu group by biu.person";
-		Session session = factory.getCurrentSession();
-		Query q = session.createQuery(groupByquery);
-		
-		List<Person> users = q.list();
-		
-		if(session.isOpen()){
-			session.close();
-		}
-
-		return users;
-	}
     
 }

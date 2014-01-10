@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.DAO;
 
 import java.util.Date;
@@ -13,15 +9,12 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
 
-
-
 /**
  *
  * @author Edd Arazian
  */
 @Repository
 public interface BooksInUseDao {
-    
         void save(BooksInUse booksInUse);
         void delete(BooksInUse booksInUse);
         void update(BooksInUse booksInUse);
@@ -35,5 +28,4 @@ public interface BooksInUseDao {
         List<Date> getBooksInUseToReturnDate();
         List<Date> getBooksInUseToIssueToday();
         boolean isPersonHaveBook(Person person, Book book); 
-        List<Person> getAllUsers();
 }

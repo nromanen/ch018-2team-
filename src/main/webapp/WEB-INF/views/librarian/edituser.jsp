@@ -127,7 +127,7 @@
 				            
 							<p>
 							Books on Hands
-				            <t class="rating"> <form:input path="booksOnHands"/> </t>
+				            <t class="rating"> <form:input path="multiBook"/> </t>
 				            </p>
 
 				            <p>
