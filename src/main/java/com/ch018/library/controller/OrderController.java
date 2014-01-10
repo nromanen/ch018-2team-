@@ -2,24 +2,15 @@ package com.ch018.library.controller;
 
 import com.ch018.library.controller.errors.IncorrectDate;
 import com.ch018.library.entity.Book;
-import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
-import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,17 +21,13 @@ import com.ch018.library.service.MailService;
 import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.WishListService;
 import java.security.Principal;
-import java.text.SimpleDateFormat;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * 
@@ -97,23 +84,13 @@ public class OrderController {
         Person person = personService.getByEmail(principal.getName());
         System.out.println(time);
         Date date = new Date(time);
-        final Orders order = new Orders(person, book, date);
+        Orders order = new Orders(person, book, date);
         ordersService.save(order);
         logger.info("person {} order book {} to date {}", person, book, date);
-        Thread mailThread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                mailService.sendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
-                
-            }
-        });
-        mailThread.start();
-        
+        mailService.sendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
         return new JSONObject().toString();
     }
     
-   
     @RequestMapping(value = "/my", method = RequestMethod.GET)
     @Secured({"ROLE_USER"})
     public String myG(Model model, Principal principal){
@@ -143,14 +120,11 @@ public class OrderController {
         Book book = order.getBook();
         Date newDate = new Date(date);
         ordersService.update(orderId, newDate);
-        
         Date minDate = useService.getMinOrderDate(book);
-        
         JSONObject json = new JSONObject();
         json.put("orderId", orderId);
         json.put("date", date);
         json.put("minDate", minDate.getTime());
-        
         return json.toString();
     }
     

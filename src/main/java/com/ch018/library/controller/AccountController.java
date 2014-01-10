@@ -8,20 +8,14 @@ import com.ch018.library.controller.errors.IncorrectDate;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
 import java.security.Principal;
-import java.util.Collection;
-import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -51,7 +45,6 @@ public class AccountController {
         model.addAttribute("person", person);
         return "account";
     }
-    
     @RequestMapping(value = "changeEmail", method = RequestMethod.POST)
     @Secured({"ROLE_USER"})
     public @ResponseBody String changeEmail(@RequestParam("email") String email, Principal principal){
@@ -70,7 +63,6 @@ public class AccountController {
         logger.info("person {} email changed to ", person, person.getEmail());
         return json.toString();
     }
-    
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     @Secured({"ROLE_USER"})
     public @ResponseBody String changePassword(@RequestParam("oldPass") String oldPass,
@@ -87,7 +79,6 @@ public class AccountController {
             throw new IncorrectDate("error occured during pass");
         }
     }
-    
     @RequestMapping(value = "changeField", method = RequestMethod.POST)
     @Secured({"ROLE_USER"})
     public @ResponseBody String changeField(@RequestParam("fieldName") String fieldName, 
@@ -97,8 +88,7 @@ public class AccountController {
             JSONObject json = new JSONObject();
             json.put("field", field);
             return json.toString();
-        }
-            
+        }     
         else
             throw new IncorrectDate("Incorrect " + fieldName);
     }

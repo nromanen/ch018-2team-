@@ -4,15 +4,11 @@
  */
 package com.ch018.library.controller;
 
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Person;
+
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.PersonService;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 /**
  *
  * @author Edd Arazian
@@ -69,7 +64,6 @@ public class LoginController {
     public ModelAndView loginProcess(){
         return new ModelAndView("index");
     }
-    
     
     @RequestMapping(value = "/denied")
     public String denied(){

@@ -37,10 +37,8 @@ public class AdminController {
         model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_LIBRARIAN"));
         return "admin";
     }
-    
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public @ResponseBody String delete(@RequestParam("id") Integer id) throws IncorrectDate{
-        
         try{
             personService.delete(id);
             return new JSONObject().toString();
@@ -49,7 +47,6 @@ public class AdminController {
         }
         
     }
-    
     @RequestMapping(value = "change", method = RequestMethod.POST)
     public @ResponseBody String changeRole(@RequestParam("id") Integer id, @RequestParam("role") String role) throws IncorrectDate{
         try{

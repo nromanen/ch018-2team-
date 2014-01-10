@@ -20,15 +20,11 @@ public interface OrdersDao {
         List<Orders> getOrderByPerson(Person person);
         List<Orders> getOrderByBook(Book book);
         List<Orders> getOrderByDate(Date date);
-        Orders getOrderIdByPersonIdBookId(int pId, int bId);
         Orders getOrderByID(int id);
         List<Orders> search(String request);
         List<Orders> getOrdersToday();
         List<Orders> getOrdersInHour();
         int getBookIdByPerson(Person person);
         boolean isPersonOrderedBook(Person person, Book book);
-        List<Orders> getOrdersForChanging(Book book, Date returnDate); 
-        
-
-        
+        List<Orders> getOrdersForChanging(Book book, Date returnDate);       
 }

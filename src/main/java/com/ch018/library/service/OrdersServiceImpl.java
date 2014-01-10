@@ -100,11 +100,7 @@ public class OrdersServiceImpl implements OrdersService{
 
 
 
-        @Override
-        @Transactional
-        public Orders getOrderIdByPersonIdBookId(int pId, int bId) {
-                return ordersDao.getOrderIdByPersonIdBookId(pId, bId);
-        }
+       
 
 
 		@Override
