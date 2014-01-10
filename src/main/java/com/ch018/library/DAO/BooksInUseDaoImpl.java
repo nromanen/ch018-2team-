@@ -71,27 +71,28 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
                 return new Date();
             } else {
                 return minDate;
+
             }
         }
 
-        @Override
-        public BooksInUse getBookInUseById(int id) {
-            Session session = factory.openSession();
-            BooksInUse bookInUse = (BooksInUse) session.get(BooksInUse.class, id);
-            if (session.isOpen()) {
-                session.close();
-            }
-            return bookInUse;
-        }
+		@Override
+		public BooksInUse getBookInUseById(int id) {
+			Session session = factory.openSession();
+			BooksInUse bookInUse = (BooksInUse) session.get(BooksInUse.class, id);
+			if (session.isOpen()) {
+				session.close();
+			}
+			return bookInUse;
+		}
 
-        @Override
-        public boolean isPersonHaveBook(Person person, Book book) {
-            try {
-                BooksInUse use = (BooksInUse) factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("person", person))
-                        .add(Restrictions.eq("book", book)).uniqueResult();
-                return use == null ? false : true;
-            } catch (Exception e) {
-                return false;
-            }
+
+		@Override
+		public boolean isPersonHaveBook(Person person, Book book) {
+			try {
+				BooksInUse use = (BooksInUse) factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("person", person))
+                    .add(Restrictions.eq("book", book)).uniqueResult();
+				return use == null ? false : true;
+			} catch (Exception e) {
+				return false;
         }
 }
