@@ -12,7 +12,7 @@
                 <div class="col-md-10 book1" id="center_main">
                     <ul class="list-inline list-unstyled">
                         <c:forEach var="book" items="${books}">         
-                            <li class="col-md-2" >
+                            <li class="col-md-3" >
                                 
                                 <div class="thumbnail book1" style="height: 280px;" >
                                     <img src="${book.getImg()}" style="height: 180px;">
@@ -35,6 +35,12 @@
                                                 Quantity:
                                                 Current: ${book.getCurrentQuantity()}
                                                 General: ${book.getGeneralQuantity()}
+                                        </p>
+                                        <p>
+                                            Authors: ${book.getAuthors()}
+                                        </p>
+                                        <p>
+                                            Publisher: ${book.getPublisher()}
                                         </p>
                                         <sec:authorize access="isAuthenticated()">
                                         <p>
