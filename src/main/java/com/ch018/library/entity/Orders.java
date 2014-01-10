@@ -28,10 +28,20 @@ import org.hibernate.annotations.Proxy;
         uniqueConstraints = { @UniqueConstraint( columnNames = { "pid", "bid" } ) })
 public class Orders implements Serializable {
         
+        @Id
+        @GeneratedValue
+        @Column(name = "id")
         private int id;
+        @ManyToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "pid", referencedColumnName = "pid")
         private Person person;
+        @ManyToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "bid", referencedColumnName = "bid")
         private Book book;
+        @Column(name = "order_date")
+        @Temporal(TemporalType.TIMESTAMP)
         private Date orderDate;
+        @Column(name = "changed")
         private boolean changed;
         
         public Orders(){
@@ -45,9 +55,7 @@ public class Orders implements Serializable {
                 this.changed = false;
         }
         
-        @Id
-        @GeneratedValue
-        @Column(name = "id")
+        
         public int getId() {
                 return id;
         }
@@ -56,8 +64,7 @@ public class Orders implements Serializable {
                 this.id = id;
         }
         
-        @ManyToOne(fetch = FetchType.EAGER)
-        @JoinColumn(name = "bid", referencedColumnName = "bid")
+        
         public Book getBook() {
                 return book;
         }
@@ -66,8 +73,7 @@ public class Orders implements Serializable {
                 this.book = book;
         }
         
-        @ManyToOne(fetch = FetchType.EAGER)
-        @JoinColumn(name = "pid", referencedColumnName = "pid")
+        
         public Person getPerson() {
                 return person;
         }
@@ -76,13 +82,12 @@ public class Orders implements Serializable {
                 this.person = person;
         }
         
-        @Column(name = "order_date")
-        @Temporal(TemporalType.TIMESTAMP)
+        
         public Date getOrderDate() {
             return orderDate;
         }
 
-        @Column(name = "changed")
+        
         public Boolean getChanged() {
             return changed;
         }
