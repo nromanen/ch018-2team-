@@ -60,7 +60,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> getBooksByAuthors(String authors) {
-        return factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.like("author", authors)).list();
+        return factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.like("author", "%" + authors + "%")).list();
     }
 
     @Override

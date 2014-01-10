@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.controller;
 
 
@@ -32,39 +28,42 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class RegisterController {
-    @Autowired
-    PersonService personService;
-    @Autowired
-    BCryptPasswordEncoder encoder;
-    @Autowired(required = true)
-    @Qualifier("registrationformvalidator")
-    Validator validator;
-    final Logger logger = LoggerFactory.getLogger(RegisterController.class);
-    
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    @Secured({"ROLE_ANONYMOUS"})
-    public ResponseEntity<String> addUser(@Valid @ModelAttribute UserRegistrationForm form, BindingResult result){
-        validator.validate(form, result);
-        if(result.hasErrors()){
-            FieldError fieldError = result.getFieldError();
-            logger.info("incorrect {} entered", fieldError);
-            return new ResponseEntity<>(fieldError.getField(), HttpStatus.BAD_REQUEST);
+        @Autowired
+        PersonService personService;
+        
+        @Autowired
+        BCryptPasswordEncoder encoder;
+        
+        @Autowired(required = true)
+        @Qualifier("registrationformvalidator")
+        Validator validator;
+        
+        final Logger logger = LoggerFactory.getLogger(RegisterController.class);
+
+        @RequestMapping(value = "/register", method = RequestMethod.POST)
+        @Secured({"ROLE_ANONYMOUS"})
+        public ResponseEntity<String> addUser(@Valid @ModelAttribute UserRegistrationForm form, BindingResult result){
+            validator.validate(form, result);
+            if(result.hasErrors()){
+                FieldError fieldError = result.getFieldError();
+                logger.info("incorrect {} entered", fieldError);
+                return new ResponseEntity<>(fieldError.getField(), HttpStatus.BAD_REQUEST);
+            }
+            Person person = new Person(form.getName(), form.getSurname(), form.getEmail(), form.getPassword(), form.getCellPhone());
+            if(personService.getByEmail(person.getEmail()) != null){
+                return new ResponseEntity<>("user exists", HttpStatus.BAD_REQUEST);
+            }
+            person.setPassword(encoder.encode(person.getPassword()));
+            person.setProle("ROLE_USER");
+            person.setMultiBook(5);
+            personService.save(person);
+            logger.info("new user {} registered", person);
+            return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
         }
-        Person person = new Person(form.getName(), form.getSurname(), form.getEmail(), form.getPassword(), form.getCellPhone());
-        if(personService.getByEmail(person.getEmail()) != null){
-            return new ResponseEntity<>("user exists", HttpStatus.BAD_REQUEST);
+
+        @RequestMapping(value = "/register", method = RequestMethod.GET)
+        public String addUser(Model model){
+            return "redirect:/index";
         }
-        person.setPassword(encoder.encode(person.getPassword()));
-        person.setProle("ROLE_USER");
-        person.setMultiBook(5);
-        personService.save(person);
-        logger.info("new user {} registered", person);
-        return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
-    }
-    
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String addUser(Model model){
-        return "redirect:/index";
-    }
-    
+
 }

@@ -1,5 +1,11 @@
 $(document).ready(function (){
     
+    $('body').click(function () {
+       
+        $('#error_div').addClass('hide');
+        
+    });
+    
     $('#acc_email_button').click(function (){
         if($('#acc_email_button').text() === 'Change'){
             $('#email_text').addClass('hide');
@@ -22,9 +28,15 @@ $(document).ready(function (){
                     $('#email_edit').addClass('hide');
                     $('#email_text').removeClass('hide');
                     $('#acc_email_button').text('Change');
-                    $('#email_text').text(data.field);
+                    $('#email_text').text(data.email);
 
-             }
+             },
+               error: function(xhr, status, error){
+                 
+                    $('#error_div').text(xhr.responseText);
+                    $('#error_div').removeClass('hide');
+               
+               }
          });
             
             

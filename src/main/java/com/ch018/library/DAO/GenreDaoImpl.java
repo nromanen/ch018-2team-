@@ -19,54 +19,54 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class GenreDaoImpl implements GenreDao {
 
-    @Autowired
-    private SessionFactory factory;
-    private final Logger logger = LoggerFactory.getLogger(GenreDaoImpl.class);
+        @Autowired
+        private SessionFactory factory;
+        private final Logger logger = LoggerFactory.getLogger(GenreDaoImpl.class);
 
-    @Override
-    public void save(Genre genre) {
-        try {
-            factory.getCurrentSession().save(genre);
-        } catch (Exception e) {
-            logger.error("error during save genre {}", e.getMessage());
+        @Override
+        public void save(Genre genre) {
+            try {
+                factory.getCurrentSession().save(genre);
+            } catch (Exception e) {
+                logger.error("error during save genre {}", e.getMessage());
+            }
         }
-    }
 
-    @Override
-    public void update(Genre genre) {
-        try {
-            factory.getCurrentSession().update(genre);
-        } catch (Exception e) {
-            logger.error("error during update genre {}", e.getMessage());
+        @Override
+        public void update(Genre genre) {
+            try {
+                factory.getCurrentSession().update(genre);
+            } catch (Exception e) {
+                logger.error("error during update genre {}", e.getMessage());
+            }
         }
-    }
 
-    @Override
-    public void update(int id, Genre genre) {
-        Genre tmp;
-        tmp = (Genre) factory.getCurrentSession().get(Genre.class, id);
-        tmp.setDescription(genre.getDescription());
-        factory.getCurrentSession().update(tmp);
-    }
+        @Override
+        public void update(int id, Genre genre) {
+            Genre tmp;
+            tmp = (Genre) factory.getCurrentSession().get(Genre.class, id);
+            tmp.setDescription(genre.getDescription());
+            factory.getCurrentSession().update(tmp);
+        }
 
-    @Override
-    public void delete(Genre genre) {
-        factory.getCurrentSession().delete(genre);
-    }
+        @Override
+        public void delete(Genre genre) {
+            factory.getCurrentSession().delete(genre);
+        }
 
-    @Override
-    public List<Genre> getAll() {
-        return factory.getCurrentSession().createCriteria(Genre.class).list();
-    }
+        @Override
+        public List<Genre> getAll() {
+            return factory.getCurrentSession().createCriteria(Genre.class).list();
+        }
 
-    @Override
-    public Genre getById(int id) {
-        return (Genre) factory.getCurrentSession().get(Genre.class, id);
-    }
+        @Override
+        public Genre getById(int id) {
+            return (Genre) factory.getCurrentSession().get(Genre.class, id);
+        }
 
-    @Override
-    public Genre getByDescription(String description) {
-        return (Genre) factory.getCurrentSession().createQuery("from Genre where description = :d").
-                setString("d", description).list().get(0);
-    }
+        @Override
+        public Genre getByDescription(String description) {
+            return (Genre) factory.getCurrentSession().createQuery("from Genre where description = :d").
+                    setString("d", description).list().get(0);
+        }
 }

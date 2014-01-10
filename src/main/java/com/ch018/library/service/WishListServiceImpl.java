@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /**
  *
- * @author Admin
+ * @author Edd Arazian
  */
 @Service
 public class WishListServiceImpl implements WishListService {

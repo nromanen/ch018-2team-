@@ -90,17 +90,6 @@ public class BookInUseServiceImpl implements BookInUseService {
 		return useDao.getBookInUseById(id);
 	}
 
-	@Override
-	public List<Date> getBooksInUseToReturnDate() {
-		return useDao.getBooksInUseToReturnDate();
-	}
-
-	@Override
-	public List<Date> getBooksInUseToIssueToday() {
-		return useDao.getBooksInUseToIssueToday();
-	}
-
-
         @Override
         @Transactional
         public boolean isPersonHaveBook(Person person, Book book) {
