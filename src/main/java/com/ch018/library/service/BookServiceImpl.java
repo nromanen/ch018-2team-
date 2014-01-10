@@ -10,13 +10,16 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
+
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
-
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +28,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
-
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -196,10 +198,32 @@ public class BookServiceImpl implements BookService {
         return finalJson;
         
     }
-    
-    
-    
 
-
+	@Override
+	@Transactional
+	public Map<BooksInUse, Integer> getHolders(Book book) {
+		// TODO Auto-generated method stub
+		
+		
+		List<BooksInUse> booksInUse = useService.getBooksInUseByBook(book);
+		Map<BooksInUse, Integer> booksInUseEx = new HashMap<BooksInUse, Integer>();
+		
+		Date date = new Date();
+		Calendar currentDate = Calendar.getInstance();
+		Calendar endDate = Calendar.getInstance();
+		currentDate.setTime(date);
+		int difference;
+		
+		for (BooksInUse booksInUse2 : booksInUse) {
+			
+			endDate.setTime(booksInUse2.getReturnDate());
+			difference = endDate.get(Calendar.DAY_OF_YEAR) - currentDate.get(Calendar.DAY_OF_YEAR);
+			booksInUseEx.put(booksInUse2, difference);
+		}
+		
+		
+		return booksInUseEx;
+	}
+    
 }
 

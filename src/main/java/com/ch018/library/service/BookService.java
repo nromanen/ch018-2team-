@@ -8,9 +8,11 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
+
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
+
 import org.json.JSONObject;
 
 @Service
@@ -46,6 +48,8 @@ public interface BookService {
              JSONObject getBooksComplexByParamsAsJson(Integer genreId, String Title, String Authors, String Publisher);
              
              JSONObject getBooksComplexAsJson(String query);
+             
+             Map<BooksInUse, Integer> getHolders(Book book);
 
         
 }

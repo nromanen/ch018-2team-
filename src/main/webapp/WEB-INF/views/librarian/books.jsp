@@ -23,36 +23,40 @@
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/books.js"></script>
 		<style>
-			ex1 {margin:300px 20px}
-			t.ex3 {margin:10px 70px}
-			t.ex2 {margin: 50px 30px 30px 500px}
+			html{
+					background-color: ;
+				}
+			body{
+					background-color: #FFFFFF;
+				}
+				
 		</style>
 <title>Librarian Books</title>
 
 </head>
-<body bgcolor="#E5E5E5">
+<body>
 
 <div class="container">
 
-	<div class="row" >
+	<div class="row" style="background-color: #A1A1A1" >
 	
 		<div class="col-md-1 col-md-offset-7">
 			<t class="ex3">
-			<a href="<c:url value="/librarian/users"/>"><h5>Users</h5></a>
+			<a href="<c:url value="/librarian/users"/>" style="color: #FFFFFF"><h5>Users</h5></a>
 			
 				
 			<c:set var="highlight" value="books" scope="request"/>
 			</t>
 		</div>
 		<div class="col-md-1">
-		<a href="<c:url value="/librarian/books"/>"><h5>Books</h5></a>
+		<a href="<c:url value="/librarian/books"/>" style="color: #FFFFFF"><h5>Books</h5></a>
 			
 		</div>
 		<div class="col-md-1">
-		<a href="<c:url value="/librarian/orders"/>"><h5>Orders</h5></a>
+		<a href="<c:url value="/librarian/orders"/>" style="color: #FFFFFF"><h5>Orders</h5></a>
 		</div>
 		<div class="col-md-1">
-			<a href="<c:url value="/librarian/toreturn"/>"><h5>To Return</h5></a>
+			<a href="<c:url value="/librarian/toreturn"/>" style="color: #FFFFFF"><h5>To Return</h5></a>
 		</div>
 		
 	</div>
@@ -60,8 +64,8 @@
 		<div class="col-md-12" style="margin-top:15px">
 				<center>
 					<form name="search" action="<c:url value="/librarian/books/simplesearch" />" method="POST" >
-						<input type="text"  name="request"/> <input type="submit" value="Search"/> 
-						<t class="ex1"><a href="<c:url value="/librarian/books/advancedsearch"/>">Advanced</a></t>
+						<input type="text"  name="request"/>  <!--  <input type="submit" value="Search" /> -->
+						<t class="ex1"><a href="<c:url value="/librarian/books/advancedsearch"/>"  class="btn btn-default btn-xs" role="button" style="margin-left: 13px">Advanced</a></t>
 					</form>
 				</center>
 			</div>
@@ -69,7 +73,7 @@
 			<div class="col-md-12" style="margin-top:30px">
 			<center>
 				<div class="col-md-12">
-				<table border = "2">
+				<table class="table table-hover table-striped table-bordered table-condensed">
 				
      			   <thead>
          		       <tr>
@@ -103,8 +107,8 @@
 				                        <td>${book.term}</td>
 				                        <td>${book.currentQuantity}</td>
 				                        <td>${book.generalQuantity}</td>
-				                    <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>">Edit</a>
-				                    <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>">Delete</a></td>
+				                    <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>" style="color: #757575">Edit</a>
+				                    <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>" style="color: #757575">Delete</a></td>
 				                </tr>
 				        </c:forEach>
 			   </table>
@@ -117,7 +121,7 @@
 <div class="row">
 
 	<div class="col-md-1 col-md-offset-9" style="margin-top:10px">
-		<a href="<c:url value="/librarian/books/addbook"/>">Add Book</a>
+		<a href="<c:url value="/librarian/books/addbook"/>" class="btn btn-default btn-sm" role="button">Add Book</a>
 	</div>
 
 </div>			

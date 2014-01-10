@@ -23,7 +23,6 @@ public interface OrdersService {
          Orders getOrderByID(int id); 
          
 
-         List<Orders> search(String request);
          List<Orders> getOrdersToday();
          List<Orders> getOrdersInHour();
 
@@ -32,5 +31,7 @@ public interface OrdersService {
          boolean isPersonOrderedBook(Person person, Book book);
          boolean isLimitReached(Person person);
          void checkPersonOrders(Book book, Date returnDate);
+         void issue(Orders order);
+
 
 }
