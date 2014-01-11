@@ -7,10 +7,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,26 +70,6 @@ public class OrdersDaoImpl implements OrdersDao {
         return (Orders) factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("id", id)).list().get(0);
     }
 
-    @Override
-    public List<Orders> search(String request) {
-        if (!request.equals("")) {
-
-            Session session = factory.openSession();
-
-            Query query = session.createQuery("from Orders where book like :book or"
-                    + " person like :person");
-            query.setParameter("book", request + "%");
-            query.setParameter("person", request + "%");
-
-            List<Orders> orders = query.list();
-
-            return orders;
-        } else {
-            return null;
-        }
-    }
-
-
 	@Override
     public List<Orders> getOrdersToday() {
         Calendar start = Calendar.getInstance();
@@ -94,18 +79,23 @@ public class OrdersDaoImpl implements OrdersDao {
         start.set(Calendar.MINUTE, 0);
         start.set(Calendar.SECOND, 0);
         start.set(Calendar.MILLISECOND, 0);
-
+        
+        Date startDate = start.getTime();
+        
         end.add(Calendar.DAY_OF_YEAR, 1);
         end.set(Calendar.HOUR_OF_DAY, 0);
         end.set(Calendar.MINUTE, 0);
         end.set(Calendar.SECOND, 0);
         end.set(Calendar.MILLISECOND, 0);
+        
+        Date endDate = end.getTime();
 
         Session session = factory.openSession();
-        Query query = session.createQuery("from Orders where orderDate BETWEEN :start and :end");
-        query.setCalendar("start", start);
-        query.setCalendar("end", end);
-        List<Orders> orders = query.list();
+       
+        Criteria criteria = session.createCriteria(Orders.class);
+        criteria.add(Restrictions.between("orderDate", startDate , endDate));
+        
+        List<Orders> orders = criteria.list();
 
         return orders;
     }
@@ -117,11 +107,15 @@ public class OrdersDaoImpl implements OrdersDao {
 
         end.add(Calendar.HOUR_OF_DAY, 1);
 
+        Date startDate = start.getTime();
+        Date endDate = end.getTime();
+        
         Session session = factory.openSession();
-        Query query = session.createQuery("from Orders where orderDate BETWEEN :start AND :end");
-        query.setCalendar("start", start);
-        query.setCalendar("end", end);
-        List<Orders> orders = query.list();
+        
+        Criteria criteria = session.createCriteria(Orders.class);
+        criteria.add(Restrictions.between("orderDate", startDate , endDate));
+        
+        List<Orders> orders = criteria.list();
 
         return orders;
     }

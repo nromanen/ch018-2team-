@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.controller;
 
 import com.ch018.library.controller.errors.IncorrectInput;
@@ -27,35 +23,35 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Secured({"ROLE_ADMIN"})
 public class AdminController {
     
-    @Autowired
-    PersonService personService;
-    
-    @RequestMapping(method = RequestMethod.GET)
-    
-    public String admin(Model model){
-        model.addAttribute("persons", personService.getAll());
-        model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_LIBRARIAN"));
-        return "admin";
-    }
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public @ResponseBody String delete(@RequestParam("id") Integer id) throws IncorrectInput{
-        try{
-            personService.delete(id);
-            return new JSONObject().toString();
-        }catch(Exception e){
-            throw new IncorrectInput("problem during user deleting");
+        @Autowired
+        PersonService personService;
+
+        @RequestMapping(method = RequestMethod.GET)
+
+        public String admin(Model model){
+            model.addAttribute("persons", personService.getAll());
+            model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_LIBRARIAN"));
+            return "admin";
         }
-        
-    }
-    @RequestMapping(value = "change", method = RequestMethod.POST)
-    public @ResponseBody String changeRole(@RequestParam("id") Integer id, @RequestParam("role") String role) throws IncorrectInput{
-        try{
-            Person person = personService.getById(id);
-            person.setProle(role);
-            personService.update(person);
-            return new JSONObject().toString();
-        }catch(Exception e){
-            throw new IncorrectInput("problems during changing role");
+        @RequestMapping(value = "/delete", method = RequestMethod.POST)
+        public @ResponseBody String delete(@RequestParam("id") Integer id) throws IncorrectInput{
+            try{
+                personService.delete(id);
+                return new JSONObject().toString();
+            }catch(Exception e){
+                throw new IncorrectInput("problem during user deleting");
+            }
+
         }
-    }
+        @RequestMapping(value = "change", method = RequestMethod.POST)
+        public @ResponseBody String changeRole(@RequestParam("id") Integer id, @RequestParam("role") String role) throws IncorrectInput{
+            try{
+                Person person = personService.getById(id);
+                person.setProle(role);
+                personService.update(person);
+                return new JSONObject().toString();
+            }catch(Exception e){
+                throw new IncorrectInput("problems during changing role");
+            }
+        }
 }

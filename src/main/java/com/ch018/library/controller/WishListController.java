@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.controller;
 
 
@@ -37,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/books/wishlist")
 public class WishListController {
     
+
         @Autowired
         WishListService wishService;
         @Autowired
@@ -61,6 +58,7 @@ public class WishListController {
             JSONObject json = new JSONObject();
             json.put("title", book.getTitle());
             return json.toString();
+
         }
 
         @RequestMapping(value="/my", method = RequestMethod.GET)

@@ -85,10 +85,10 @@ public class BookInUseServiceImpl implements BookInUseService {
             return minDate;
         }
 
-	@Override
-	public BooksInUse getBookInUseById(int id) {
-		return useDao.getBookInUseById(id);
-	}
+		@Override
+		public BooksInUse getBookInUseById(int id) {
+			return useDao.getBookInUseById(id);
+		}
 
         @Override
         @Transactional
@@ -96,30 +96,38 @@ public class BookInUseServiceImpl implements BookInUseService {
             return useDao.isPersonHaveBook(person, book);
         }
 
-        @Override
-        @Transactional
-        public void getBookBack(BooksInUse bookInUse) {
-            Date now = new Date();
-            Person person = bookInUse.getPerson();
-            int booksReturnedIntime = person.getTimelyReturn();
-            int booksReturnedNotIntime = person.getUntimekyReturn();
-            int booksOnHands = 0;
-            if (now.before(bookInUse.getReturnDate())) {
-                booksReturnedIntime += 1;
-                person.setTimelyReturn(booksReturnedIntime);
-            } else if (now.after(bookInUse.getReturnDate())) {
-                booksReturnedNotIntime += 1;
-                person.setUntimekyReturn(booksReturnedNotIntime);
-            }
-            booksOnHands = person.getMultiBook();
-            booksOnHands -= 1;
-            person.setMultiBook(booksOnHands);
-            personService.update(person);
+		@Override
+		@Transactional
+		public void getBookBack(BooksInUse bookInUse) {
 
-            Book book = bookInUse.getBook();
-            int quantity = book.getCurrentQuantity();
-            quantity += 1;
-            book.setCurrentQuantity(quantity);
-            bookService.update(book);
-        }
+			Date now = new Date();
+		
+			Person person = bookInUse.getPerson();
+			int booksReturnedIntime = person.getTimelyReturn();
+			int booksReturnedNotIntime = person.getUntimekyReturn();
+			int booksOnHands = 0;
+		
+			if (now.before(bookInUse.getReturnDate())) {
+				booksReturnedIntime += 1;
+				person.setTimelyReturn(booksReturnedIntime);
+			}else if (now.after(bookInUse.getReturnDate())) {
+				booksReturnedNotIntime += 1;
+				person.setUntimekyReturn(booksReturnedNotIntime);
+			}
+			
+			booksOnHands = person.getMultiBook();
+			booksOnHands -=1;
+			person.setMultiBook(booksOnHands);
+			personService.update(person);
+			
+			Book book = bookInUse.getBook();
+			int quantity = book.getCurrentQuantity();
+			quantity += 1;
+			book.setCurrentQuantity(quantity);
+			bookService.update(book);
+			
+			delete(bookInUse);
+		
+		}
+
 }

@@ -1,9 +1,6 @@
 package com.ch018.library.controller;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Orders;
-import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
-import com.ch018.library.service.MailService;
 import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
 
@@ -39,38 +32,28 @@ public class LibrarianOrdersController {
 	
 	@RequestMapping(value = "")
 	public String showAll (Model model) throws Exception {
-		
 		model.addAttribute("orders", ordersService.getAll());
-		
 		return "librarian/orders";
 	}
 	
 	
 	@RequestMapping(value = "/issue", method = RequestMethod.GET)
 	public String issue(@RequestParam("id") int id) throws Exception {
-
 		ordersService.issue(ordersService.getOrderByID(id));
-		
-		//ordersService.delete(order);
-
+		ordersService.delete(ordersService.getOrderByID(id));
 		return "redirect:/librarian/orders";
 	}
 	
 	@RequestMapping(value = "/toissueinhour")
 	public String toIssueInHour(Model model) throws SQLException {
-			
 		List<Orders> orders = ordersService.getOrdersInHour();
-		
 		model.addAttribute("orders", orders);
-
 		return "librarian/orders";
 	}
 		
 	@RequestMapping(value = "/toissuetoday")
 	public String toIssueToday(Model model) throws Exception {
-		
 		List<Orders> orders = ordersService.getOrdersToday();
-		
 		model.addAttribute("orders", orders);
 		return "librarian/orders";
 	}

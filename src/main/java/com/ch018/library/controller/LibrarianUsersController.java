@@ -13,13 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
-import com.ch018.library.service.BookService;
 import com.ch018.library.service.PersonService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 
 @Controller
 @RequestMapping(value = "/librarian/users")
@@ -68,7 +64,6 @@ public class LibrarianUsersController {
 			Model model) throws Exception {
 		Person person = personService.getById(pid);
 		String password = person.getPassword();
-		String salt = person.getSalt();
 		user.setPassword(password);
 		personService.update(user);
 		return "redirect:/librarian/users";

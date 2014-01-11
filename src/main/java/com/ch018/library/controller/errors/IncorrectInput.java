@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Edd Arazian
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Incorrect date")
-public class IncorrectInput extends Exception{
+public class IncorrectInput extends Exception {
     
-    public IncorrectInput(String msg){
+    public IncorrectInput(String msg) {
         super(msg);
     }
 }

@@ -23,52 +23,49 @@ import javax.persistence.UniqueConstraint;
         uniqueConstraints = { @UniqueConstraint( columnNames = { "pid", "bid" } ) })
 public class WishList implements Serializable {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    
-    @ManyToOne()//targetEntity = Person.class)
-    @JoinColumn(name = "pid", referencedColumnName = "pid")
-    private Person person;
-    
-    @ManyToOne()//targetEntity = Book.class)
-    @JoinColumn(name = "bid", referencedColumnName = "bid")
-    private Book book;
-    
-    public WishList() {
-        
-    }
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private int id;
 
-    public WishList(Person person, Book book) {
-        this.person = person;
-        this.book = book;
-    }
+        @ManyToOne()//targetEntity = Person.class)
+        @JoinColumn(name = "pid", referencedColumnName = "pid")
+        private Person person;
 
-    public int getId() {
-        return id;
-    }
+        @ManyToOne()//targetEntity = Book.class)
+        @JoinColumn(name = "bid", referencedColumnName = "bid")
+        private Book book;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+        public WishList() {
 
-    public Person getPerson() {
-        return person;
-    }
+        }
 
-    public void setPerson(Person person) {
-        this.person = person;
-    }
+        public WishList(Person person, Book book) {
+            this.person = person;
+            this.book = book;
+        }
 
-    public Book getBook() {
-        return book;
-    }
+        public int getId() {
+            return id;
+        }
 
-    public void setBook(Book book) {
-        this.book = book;
-    }
-    
-    
-    
-    
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public Person getPerson() {
+            return person;
+        }
+
+        public void setPerson(Person person) {
+            this.person = person;
+        }
+
+        public Book getBook() {
+            return book;
+        }
+
+        public void setBook(Book book) {
+            this.book = book;
+        }
+
 }
