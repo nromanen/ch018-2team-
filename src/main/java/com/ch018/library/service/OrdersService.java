@@ -8,7 +8,10 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import org.springframework.stereotype.Service;
-
+/**
+ *
+ * @author Edd Arazain
+ */
 @Service
 public interface OrdersService {
          void save(Orders order);

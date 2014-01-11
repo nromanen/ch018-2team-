@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.controller;
 
 
@@ -39,12 +35,16 @@ public class WishListController {
     
     @Autowired
     WishListService wishService;
+    
     @Autowired
     PersonService personService;
+    
     @Autowired
     BookService bookService;
+    
     @Autowired
     BookInUseService useService;
+    
     @Autowired
     OrdersService ordersService;
    

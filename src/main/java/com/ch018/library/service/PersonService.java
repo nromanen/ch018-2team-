@@ -24,6 +24,7 @@ public interface PersonService {
         List<Person> getByRole(String role);
         List<Person> getConfirmed();
         List<Person> getSmsEnabled();
+        boolean changeEmail(String email, Person person);
         boolean updatePassword(String oldPass, String newPass, String reNewPass, Principal principal);
         String updateField(String fieldName, String filedValue);
         List<Person> simpleSearch(String request);

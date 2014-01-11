@@ -2,9 +2,7 @@ package com.ch018.library.entity;
 
 
 import java.io.Serializable;
-
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,12 +14,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
-import org.springframework.context.annotation.Lazy;
-
-
-
-import org.hibernate.annotations.Proxy;
-
 
 @Entity
 @Table(name = "orders", 
