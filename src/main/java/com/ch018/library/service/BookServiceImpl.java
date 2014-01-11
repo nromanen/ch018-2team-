@@ -112,13 +112,11 @@ public class BookServiceImpl implements BookService {
     
 	@Override
 	public List<Book> advancedSearch(Book book) {
-		// TODO Auto-generated method stub
 		return bookDAO.advancedSearch(book);
 	}
 
 	@Override
 	public List<Book> simpleSearch(String query) {
-		// TODO Auto-generated method stub
 		return bookDAO.simpleSearch(query);
 	}
 
@@ -144,8 +142,6 @@ public class BookServiceImpl implements BookService {
                 books = getBooksComplex(query);
 
             return formBooksJsonFromList(books, isUserAuth);
-
-
         }
 
 

@@ -1,11 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-            <div class="row">
+            <div class="row" style="background-color: #F0F0F0;">
                 
-                <div class="col-md-1" id="left_main">
+                <div class="col-md-2" id="left_main">
                     <!--New Arrivals-->
                 </div>
                 
-                <div class="col-md-10" id="center_main">
+                <div class="col-md-8" id="center_main">
                     <ul class="list-unstyled">
                         <li class="list-group-item">
                                 <div class="row">
@@ -49,7 +49,9 @@
                     </ul>
                     
                 </div>
-                
+                <div class="col-md-2" id="left_main">
+                    <!--New Arrivals-->
+                </div>
                 
             </div>
             

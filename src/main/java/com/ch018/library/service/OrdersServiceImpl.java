@@ -146,8 +146,6 @@ public class OrdersServiceImpl implements OrdersService{
 	@Override
 	@Transactional
 	public void issue(Orders order) {
-		// TODO Auto-generated method stub
-		
 		Person person = order.getPerson();
 		
 		int booksOnHands = person.getMultiBook();
