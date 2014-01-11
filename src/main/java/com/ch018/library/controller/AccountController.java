@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ch018.library.controller.errors.IncorrectDate;
+import com.ch018.library.controller.errors.IncorrectInput;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
 
@@ -78,7 +78,7 @@ public class AccountController {
         }
         else{
             logger.error("person {} password doesn't changed", SecurityContextHolder.getContext().getAuthentication().getName());
-            throw new IncorrectDate("error occured during pass");
+            throw new IncorrectInput("error occured during pass");
         }
     }
     @RequestMapping(value = "changeField", method = RequestMethod.POST)
@@ -92,6 +92,6 @@ public class AccountController {
             return json.toString();
         }     
         else
-            throw new IncorrectDate("Incorrect " + fieldName);
+            throw new IncorrectInput("Incorrect " + fieldName);
     }
 }

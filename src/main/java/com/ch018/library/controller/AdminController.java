@@ -4,7 +4,7 @@
  */
 package com.ch018.library.controller;
 
-import com.ch018.library.controller.errors.IncorrectDate;
+import com.ch018.library.controller.errors.IncorrectInput;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
 import java.util.Arrays;
@@ -38,24 +38,24 @@ public class AdminController {
         return "admin";
     }
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public @ResponseBody String delete(@RequestParam("id") Integer id) throws IncorrectDate{
+    public @ResponseBody String delete(@RequestParam("id") Integer id) throws IncorrectInput{
         try{
             personService.delete(id);
             return new JSONObject().toString();
         }catch(Exception e){
-            throw new IncorrectDate("problem during user deleting");
+            throw new IncorrectInput("problem during user deleting");
         }
         
     }
     @RequestMapping(value = "change", method = RequestMethod.POST)
-    public @ResponseBody String changeRole(@RequestParam("id") Integer id, @RequestParam("role") String role) throws IncorrectDate{
+    public @ResponseBody String changeRole(@RequestParam("id") Integer id, @RequestParam("role") String role) throws IncorrectInput{
         try{
             Person person = personService.getById(id);
             person.setProle(role);
             personService.update(person);
             return new JSONObject().toString();
         }catch(Exception e){
-            throw new IncorrectDate("problems during changing role");
+            throw new IncorrectInput("problems during changing role");
         }
     }
 }

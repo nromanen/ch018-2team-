@@ -42,12 +42,7 @@ public class LoginController {
         }
         return "redirect:/login";
     }
-    
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String home(Model model){
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-        return "home";
-    }
+
     
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(HttpServletRequest req, Authentication auth){

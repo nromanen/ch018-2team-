@@ -24,58 +24,51 @@ import org.hibernate.Query;
  */
 @Repository
 public class BooksInUseDaoImpl implements BooksInUseDao {
-    @Autowired
-    private SessionFactory factory;   
-    @Override
-    public void save(BooksInUse booksInUse) {
-            factory.getCurrentSession().save(booksInUse);
-    }
-    @Override
-    public void delete(BooksInUse booksInUse) {      
-            factory.getCurrentSession().delete(booksInUse);
-    }
-    @Override
-    public void update(BooksInUse booksInUse) {
-            factory.getCurrentSession().update(booksInUse);
-    }
-    @Override
-    public List<BooksInUse> getAll() {
-            return  factory.getCurrentSession().createCriteria(BooksInUse.class).list();
-          
-    }
-    @Override
-    public List<BooksInUse> getBooksInUseByPerson(Person person) {
-            return  factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("person", person)).list();
-    }
-    @Override
-    public List<BooksInUse> getBooksInUseByBook(Book book) {
-            return  factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("book", book)).list();
-    }
+        @Autowired
+        private SessionFactory factory;   
+        @Override
+        public void save(BooksInUse booksInUse) {
+                factory.getCurrentSession().save(booksInUse);
+        }
+        @Override
+        public void delete(BooksInUse booksInUse) {      
+                factory.getCurrentSession().delete(booksInUse);
+        }
+        @Override
+        public void update(BooksInUse booksInUse) {
+                factory.getCurrentSession().update(booksInUse);
+        }
+        @Override
+        public List<BooksInUse> getAll() {
+                return  factory.getCurrentSession().createCriteria(BooksInUse.class).list();
 
-    @Override
-    public List<BooksInUse> getBooksInUseByIssueDate(Date issue) {
-            return factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("issueDate", issue)).list();
-    }
-    @Override
-    public List<BooksInUse> getBooksInUseByReturnDate(Date returnDate) {	
-            return  factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("returnDate", returnDate)).list();       
-    }
-    @Override
-    public Date getMinOrderDate(Book book) { 
-            Date minDate = (Date) factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("book", book))
-                    .setProjection(Projections.projectionList().add(Projections.min("returnDate"))).uniqueResult();
-            if(minDate == null)
-                return new Date();
-            else
-                return minDate;
-	}
-	@Override
-	public List<Date> getBooksInUseToReturnDate() {
-		Session session = factory.getCurrentSession();
-		Query query = session.createQuery("SELECT returnDate FROM BooksInUse");
-		List<Date> dates = query.list(); 
-		return dates;
-	}
+        }
+        @Override
+        public List<BooksInUse> getBooksInUseByPerson(Person person) {
+                return  factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("person", person)).list();
+        }
+        @Override
+        public List<BooksInUse> getBooksInUseByBook(Book book) {
+                return  factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("book", book)).list();
+        }
+
+        @Override
+        public List<BooksInUse> getBooksInUseByIssueDate(Date issue) {
+                return factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("issueDate", issue)).list();
+        }
+        @Override
+        public List<BooksInUse> getBooksInUseByReturnDate(Date returnDate) {	
+                return  factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("returnDate", returnDate)).list();       
+        }
+        @Override
+        public Date getMinOrderDate(Book book) { 
+                Date minDate = (Date) factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("book", book))
+                        .setProjection(Projections.projectionList().add(Projections.min("returnDate"))).uniqueResult();
+                if(minDate == null)
+                    return new Date();
+                else
+                    return minDate;
+            }   
 
 	@Override
 	public BooksInUse getBookInUseById(int id) {
@@ -87,50 +80,14 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 		return bookInUse; 
 	}
 
-	@Override
-	public List<Date> getBooksInUseToIssueToday() {
-		
-		Calendar begin = Calendar.getInstance();
-		Calendar end = Calendar.getInstance();
-		begin.set(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH);
-		
-		
-		Session session = factory.openSession();  
-		Query query = session.createQuery("FROM BooksInUse WHERE "); 
-		List<Date> dates = query.list(); 
-		
-		if (session.isOpen()) {
-			session.close();
-		}
-		
-		return dates;
-	}
-
-    
-    @Override
-    public boolean isPersonHaveBook(Person person, Book book) {
-        try {
-            BooksInUse use = (BooksInUse) factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("person", person))
-                    .add(Restrictions.eq("book", book)).uniqueResult();
-            return use == null ? false : true;
-        } catch (Exception e) {
-            return false;
+        @Override
+        public boolean isPersonHaveBook(Person person, Book book) {
+            try {
+                BooksInUse use = (BooksInUse) factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("person", person))
+                        .add(Restrictions.eq("book", book)).uniqueResult();
+                return use == null ? false : true;
+            } catch (Exception e) {
+                return false;
+            }
         }
-    }
-
-	@Override
-	public List<Person> getAllUsers() {
-		String groupByquery = "SELECT person from BooksInUse biu group by biu.person";
-		Session session = factory.getCurrentSession();
-		Query q = session.createQuery(groupByquery);
-		
-		List<Person> users = q.list();
-		
-		if(session.isOpen()){
-			session.close();
-		}
-
-		return users;
-	}
-    
 }

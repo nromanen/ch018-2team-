@@ -1,6 +1,6 @@
 package com.ch018.library.controller;
 
-import com.ch018.library.controller.errors.IncorrectDate;
+import com.ch018.library.controller.errors.IncorrectInput;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
@@ -79,7 +79,7 @@ public class OrderController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @Secured({"ROLE_USER"})
     public @ResponseBody String add(@RequestParam("bookId") Integer bookId, @RequestParam("time") Long time, 
-                        Principal principal) throws IncorrectDate{
+                        Principal principal) throws IncorrectInput{
         Book book = bookService.getBookById(bookId);
         Person person = personService.getByEmail(principal.getName());
         System.out.println(time);
@@ -115,7 +115,7 @@ public class OrderController {
     @RequestMapping(value = "/edit")
     @Secured({"ROLE_USER"})
     public @ResponseBody String edit(@RequestParam("orderId") Integer orderId,
-                    @RequestParam("date") Long date, Principal principal) throws IncorrectDate{
+                    @RequestParam("date") Long date, Principal principal) throws IncorrectInput{
         Orders order = ordersService.getOrderByID(orderId);
         Book book = order.getBook();
         Date newDate = new Date(date);

@@ -73,3 +73,10 @@
     height: 150px;
     
 }
+
+li a{
+    color : white;
+}
+#center_main{
+    margin-top: 10px;
+}
