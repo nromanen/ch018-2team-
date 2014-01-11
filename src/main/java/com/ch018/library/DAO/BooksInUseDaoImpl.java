@@ -4,8 +4,10 @@ package com.ch018.library.DAO;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
@@ -59,7 +61,7 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
         }
         
         @Override
-        public List<BooksInUse> getBooksInUseByReturnDate(Date returnDate) {	
+        public List<BooksInUse> getBooksInUseByReturnDate(Date returnDate) {        
                 return  factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("returnDate", returnDate)).list();       
         }
         
@@ -75,24 +77,24 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
             }
         }
 
-		@Override
-		public BooksInUse getBookInUseById(int id) {
-			Session session = factory.openSession();
-			BooksInUse bookInUse = (BooksInUse) session.get(BooksInUse.class, id);
-			if (session.isOpen()) {
-				session.close();
-			}
-			return bookInUse;
-		}
-
-
-		@Override
-		public boolean isPersonHaveBook(Person person, Book book) {
-			try {
-				BooksInUse use = (BooksInUse) factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("person", person))
-                    .add(Restrictions.eq("book", book)).uniqueResult();
-				return use == null ? false : true;
-			} catch (Exception e) {
-				return false;
+        @Override
+        public BooksInUse getBookInUseById(int id) {
+            Session session = factory.openSession();
+            BooksInUse bookInUse = (BooksInUse) session.get(BooksInUse.class, id);
+            if (session.isOpen()) {
+                session.close();
+            }
+            return bookInUse;
         }
-}
+
+        @Override
+        public boolean isPersonHaveBook(Person person, Book book) {
+            try {
+                BooksInUse use = (BooksInUse) factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("person", person))
+                        .add(Restrictions.eq("book", book)).uniqueResult();
+                return use == null ? false : true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+    }

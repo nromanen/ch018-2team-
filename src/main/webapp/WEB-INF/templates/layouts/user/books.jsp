@@ -2,20 +2,20 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-            <div class="row">
+<div class="row" style="background-color: #F0F0F0;">
                 
-                <div class="col-md-1" id="left_main">
+                <div class="col-md-2" id="left_main">
                     <!--New Arrivals-->
                     
                 </div>
                 
-                <div class="col-md-10 book1" id="center_main">
+                <div class="col-md-8 book1" id="center_main">
                     <ul class="list-inline list-unstyled">
                         <c:forEach var="book" items="${books}">         
                             <li class="col-md-3" >
                                 
                                 <div class="thumbnail book1" style="height: 280px;" >
-                                    <img src="${book.getImg()}" style="height: 180px;">
+                                    <img src="${book.getImg()}" style="height:  180px;">
                                     <div class="caption">
                                         <h6>${book.getTitle()}</h6>
                                         <p>
@@ -28,7 +28,7 @@
                                 
                                        
                                     <div class="thumbnail hide book1_ext" style="position: absolute; top: 0; z-index: 9999 ">
-                                    <img data-src="${book.getImg()}" src="${book.getImg()}" style="width: 350px;">
+                                    <img data-src="${book.getImg()}" src="${book.getImg()}" style="width: 280px;">
                                     <div class="caption">
                                         <h6>${book.getTitle()}</h6>
                                         <p>
@@ -55,7 +55,7 @@
                         </c:forEach>
                     </ul>
                 </div>
-                <div class="col-md-1" id="left_main">
+                <div class="col-md-2" id="left_main">
                     <!--New Arrivals-->
                     
                 </div>
