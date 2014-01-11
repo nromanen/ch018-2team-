@@ -16,7 +16,7 @@ $(document).ready(function(){
             $btn.attr('data-toggle', 'popover');
             $btn.attr('data-content', 'choose another date');
             $btn.popover("show");
-        }else if(orderDateLong > minDateLong + (12*3600*1000)){
+        }else if(orderDateLong > (minDateLong + (24*3600*1000))){
             
             var $btn = $(this).next();
             $btn.attr('data-toggle', 'popover');

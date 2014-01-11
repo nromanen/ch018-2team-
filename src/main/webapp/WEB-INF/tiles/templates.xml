@@ -5,6 +5,8 @@
 <tiles-definitions>
 
     
+    
+    
     <definition name="search" preparer="genres" template="/WEB-INF/templates/layouts/user/search.jsp"></definition>
     
     <definition name="user-header" template="/WEB-INF/templates/layouts/user/user-header-template.jsp">

@@ -9,7 +9,6 @@
         
         <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/search.css" />
         
-        <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/orders.css" />
 
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.datetimepicker.js" />"></script>

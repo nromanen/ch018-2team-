@@ -19,8 +19,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ch018.library.controller.errors.IncorrectInput;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
+import com.ch018.library.validation.Password;
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
  *
@@ -32,6 +38,10 @@ public class AccountController {
 
         @Autowired
         private PersonService personService;
+        
+        @Autowired(required = true)
+        @Qualifier("passwordvalidator")
+        private Validator validator;
 
         final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
@@ -59,18 +69,21 @@ public class AccountController {
 
         @RequestMapping(value = "changePassword", method = RequestMethod.POST)
         @Secured({"ROLE_USER"})
-        public @ResponseBody String changePassword(@RequestParam("oldPass") String oldPass,
-                                                        @RequestParam("newPass") String newPass,
-                                                        @RequestParam("reNewPass") String reNewPass,
+        public ResponseEntity<String> changePassword(@Valid @ModelAttribute() Password password, BindingResult result,
                                                         Principal principal, HttpServletResponse response) throws Exception{
+            
             logger.info("person {} send request to password change", SecurityContextHolder.getContext().getAuthentication().getName());
-            if(personService.updatePassword(oldPass, newPass, reNewPass, principal)){
+            validator.validate(password, result);
+            if(result.hasErrors()) {
+                return new ResponseEntity<>(result.getFieldError().getDefaultMessage(), HttpStatus.BAD_REQUEST);
+            }
+            if(personService.updatePassword(password, principal)){
                 logger.info("person {} password succesfully changed", SecurityContextHolder.getContext().getAuthentication().getName());
-                return new JSONObject().toString();
+                return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
             }
             else{
                 logger.error("person {} password doesn't changed", SecurityContextHolder.getContext().getAuthentication().getName());
-                throw new IncorrectInput("error occured during pass");
+                return new ResponseEntity<>("password doesn't changed", HttpStatus.OK);
             }
         }
 

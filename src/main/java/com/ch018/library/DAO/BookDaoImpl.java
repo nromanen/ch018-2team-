@@ -157,8 +157,6 @@ public class BookDaoImpl implements BookDao {
         Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
         if (genreId > 0) {
             criteria.add(Restrictions.eq("genre.id", genreId));
-        } else {
-            criteria.add(Restrictions.eq("genre.id", "%"));
         }
         if (!title.equals("")) {
             criteria.add(Restrictions.like("title", "%" + title + "%"));

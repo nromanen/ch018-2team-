@@ -13,7 +13,7 @@ public class UserRegistrationForm {
 
         public static final int MIN_NAME = 2;
         public static final int MAX_NAME = 30;
-        public static final int MIN_PASS = 2;
+        public static final int MIN_PASS = 6;
         public static final int MAX_PASS = 16;
 
 

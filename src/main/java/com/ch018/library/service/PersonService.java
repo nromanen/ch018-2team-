@@ -1,6 +1,7 @@
 package com.ch018.library.service;
 
 import com.ch018.library.entity.Person;
+import com.ch018.library.validation.Password;
 
 import java.security.Principal;
 import java.util.List;
@@ -25,7 +26,7 @@ public interface PersonService {
         List<Person> getConfirmed();
         List<Person> getSmsEnabled();
         boolean changeEmail(String email, Person person);
-        boolean updatePassword(String oldPass, String newPass, String reNewPass, Principal principal);
+        boolean updatePassword(Password password, Principal principal);
         String updateField(String fieldName, String filedValue);
         List<Person> simpleSearch(String request);
         List<Person> advancedSearch(Person person);

@@ -9,6 +9,7 @@ import com.ch018.library.DAO.BookDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,7 +19,9 @@ import java.util.Map;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -132,10 +135,9 @@ public class BookServiceImpl implements BookService {
         @Transactional
         public JSONObject getBooksComplexAsJson(String query) {
 
-            boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
-
+            boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
+            System.out.println("AAAAAAA " + isUserAuth);
             List<Book> books;
-
             if(query.equals(""))
                 books = getAll();
             else

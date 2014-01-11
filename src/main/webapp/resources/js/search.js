@@ -81,7 +81,7 @@ function buildMainBooksFromJson(data){
                 var $li = $('<li>', {class : 'col-md-3'});
                 $li.appendTo($ul);
                 
-                var $thumbnail = $('<div>', {class : 'thumbnail book1'});
+                var $thumbnail = $('<div>', {class : 'thumbnail book1', style : 'height: 280px;'});
                 $thumbnail.appendTo($li);
                 var $img = $('<img>', {src : value.img, style : 'height: 180px;'});
                 $img.appendTo($thumbnail);
@@ -100,30 +100,23 @@ function buildMainBooksFromJson(data){
                 $caption_ext.appendTo($thumbnail_ext);
                 var $h6_ext = $('<h6>').text(value.title);
                 var $p_quantity_ext = $('<p>').text('Quantity:\n' + 'Current: ' + value.currentQuantity + '\n' + 'General: ' + value.generalQuantity);
+                var $p_authors_ext = $('<p>').text('Authors: ' + value.authors);
+                var $p_publisher_ext = $('<p>').text('Publisher: ' + value.publisher);
+                
                 $h6_ext.appendTo($caption_ext);
                 $p_quantity_ext.appendTo($caption_ext);
+                $p_authors_ext.appendTo($caption_ext);
+                $p_publisher_ext.appendTo($caption_ext);
                 
                 if(data.auth === true){
-                    var $book_order = $('<div>', {class : 'book_order'});
+                    var $book_order = $('<p>');
                     var $button = $('<a>', {class: 'btn btn-info', href: '/library/books/order?id=' + value.bId});
                     $button.text("Order");
-                    $button.appendTo($thumbnail_ext);
+                    $button.appendTo($book_order);
+                    $book_order.appendTo($thumbnail_ext);
                     
                 }
-                
-                
-                //------book_ext
-                
-                
-                
-                /*if(data.auth === true){
-                    var $book_order = $('<div>', {class : 'book_order'});
-                    var $button = $('<button>', {class: 'order_button', value: value.bId});
-                    $button.text("Order");
-                    $button.appendTo($book_order);
-                    $book_order.appendTo($book);
-                }*/
-                
+            
                
             });
 };

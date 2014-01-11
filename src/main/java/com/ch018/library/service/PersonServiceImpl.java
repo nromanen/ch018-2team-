@@ -3,6 +3,7 @@ package com.ch018.library.service;
 //import com.ch018.library.dao.PersonDao;
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.Person;
+import com.ch018.library.validation.Password;
 import java.security.Principal;
 import java.util.List;
 import org.slf4j.Logger;
@@ -103,14 +104,14 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     @Transactional
-    public boolean updatePassword(String oldPass, String newPass, String reNewPass, Principal principal) {
+    public boolean updatePassword(Password password, Principal principal) {
         Person person = personDao.getByEmail(principal.getName());
-        if (!encoder.matches(oldPass, person.getPassword()) || !newPass.equals(reNewPass)) {
+        if (!encoder.matches(password.getOldPass(), person.getPassword())) {
             logger.error("passwords don't match during update");
             return false;
         }
-        Authentication auth = new PreAuthenticatedAuthenticationToken(person.getEmail(), encoder.encode(newPass));
-        person.setPassword(encoder.encode(newPass));
+        Authentication auth = new PreAuthenticatedAuthenticationToken(person.getEmail(), encoder.encode(password.getNewPass()));
+        person.setPassword(encoder.encode(password.getNewPass()));
         SecurityContextHolder.getContext().setAuthentication(auth);
         logger.error("passwords for {} changed", person.getEmail());
         return true;
@@ -174,6 +175,9 @@ public class PersonServiceImpl implements PersonService {
             try {
                 person.setEmail(email);
                 update(person);
+                Authentication auth = new PreAuthenticatedAuthenticationToken(email,
+                        SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+                SecurityContextHolder.getContext().setAuthentication(auth);
                 return true;
             } catch (Exception e) {
                 logger.error("error during email: {} change {}", email, e.getMessage());

@@ -2,7 +2,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<div class="row" style="background-color: #F0F0F0;">
+<div class="row" id="content_bg">
                 
                 <div class="col-md-2" id="left_main">
                     <!--New Arrivals-->
