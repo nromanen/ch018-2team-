@@ -174,6 +174,9 @@ public class OrdersServiceImpl implements OrdersService{
 		bookInUse.setReturnDate(date);
 		
 		booksInUseService.save(bookInUse);
+                
+                Date minDate = booksInUseService.getMinOrderDate(book);
+                checkPersonOrders(book, minDate);
 	}
     
 }

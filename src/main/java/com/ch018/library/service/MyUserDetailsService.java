@@ -33,7 +33,7 @@ public class MyUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(username + "Not Found");
         }
         Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(person.getProle());   
-        UserDetails user =  new User(person.getEmail(), person.getPassword(), true, true, true, true, authorities);
+        UserDetails user =  new User(person.getEmail(), person.getPassword(), person.isMailConfirm(), true, true, true, authorities);
         logger.info("user {} registered", username);
         return user;  
     } 

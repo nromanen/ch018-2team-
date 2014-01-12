@@ -16,7 +16,7 @@ $(document).ready(function(){
             $btn.attr('data-toggle', 'popover');
             $btn.attr('data-content', 'choose another date');
             $btn.popover("show");
-        }else if(orderDateLong > minDateLong + (12*3600*1000)){
+        }else if(orderDateLong > (minDateLong + (24*3600*1000))){
             
             var $btn = $(this).next();
             $btn.attr('data-toggle', 'popover');
@@ -30,7 +30,10 @@ $(document).ready(function(){
             format: 'Y/m/d H:i',
             value: orderDate,
             minDate: minDate[0],
-            minTime: minDate[1],
+            allowTimes:[
+                    '09:00', '10:00', '11:00', '12:00', '14:00',
+                    '15:00', '16:00'
+                ],
             validateOnBlur: true
         });
     });

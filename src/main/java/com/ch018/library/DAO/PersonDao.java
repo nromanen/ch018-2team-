@@ -29,4 +29,5 @@ public interface PersonDao {
     Person getPersonById(int id);
     List<Person> simpleSearch(String request);
     List<Person> advancedSearch(Person person); 
+    Person getPersonByKey(String key);
 }
