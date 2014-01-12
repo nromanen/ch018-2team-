@@ -33,14 +33,14 @@ public class LibrarianUsersController {
         	 personService.countRating(pers);
          }
          model.addAttribute("users", person);
-         return "librarian/users"; 
+         return "librarian_users"; 
 	}
 	
 	@RequestMapping(value = "/adduser", method = RequestMethod.GET)
 	public String addUser(Model model) throws Exception{
 		Person user = new Person();
 		model.addAttribute("user", user);
-		return "librarian/adduser";
+		return "librarian_add_user";
 	}
 	
 	@RequestMapping(value = "/adduser",method = RequestMethod.POST)
@@ -48,6 +48,8 @@ public class LibrarianUsersController {
 		if (result.hasErrors()) {
 			System.out.println("Errors Adding User" + result.toString());
 		}else {
+			Person person = new Person();
+			person.setMultiBook(0);
 			personService.save(user);	
 		}
 		return "redirect:/librarian/users";
@@ -56,7 +58,7 @@ public class LibrarianUsersController {
 	@RequestMapping(value = "/edituser", method = RequestMethod.GET)
 	public String editUser(@RequestParam("id") int id, Model model) throws Exception {
 		model.addAttribute("user", personService.getById(id));
-		return "librarian/edituser";
+		return "librarian_edit_user";
 	}
 	
 	@RequestMapping(value = "/edituser", method = RequestMethod.POST) 
@@ -81,25 +83,25 @@ public class LibrarianUsersController {
 	public String advencedSearch(Model model) throws Exception {
 		Person person = new Person();
 		model.addAttribute("user", person);
-		return "librarian/usersadvencedsearch";
+		return "librarian_user_advanced_search";
 	}
 	
 	@RequestMapping(value = "/advencedsearch", method = RequestMethod.POST)
 	public String advancedSearch(@ModelAttribute("user") Person user, BindingResult result, Model model) throws Exception {
 		List<Person> person = personService.advancedSearch(user);
 		model.addAttribute("users", person);
-		return "librarian/users";
+		return "librarian_users";
 	}
 	
 	@RequestMapping(value = "/simplesearch", method = RequestMethod.GET)
 	public String simpleSearch(Model model) throws Exception {
-		return "librarian/users";
+		return "librarian_users";
 	}
 	
 	@RequestMapping(value = "/simplesearch", method = RequestMethod.POST)
 	public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
 		List<Person> person = personService.simpleSearch(request);
 		model.addAttribute("users", person);
-		return "librarian/users";
+		return "librarian_users";
 	}
 }
