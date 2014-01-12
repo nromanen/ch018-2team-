@@ -42,12 +42,21 @@ prefix="form"%>
                     </form>
                 </div>
                         <div class="row">
-                            
+                            <div class="col-lg-3">
                                 <label class="text-left">
                                     <input  type="checkbox" name="_spring_security_remember_me">
                                     <span><spring:message code="message.remember" />
                                     
                                 </label>
+                            </div>
+                                    <div class="col-lg-4">
+                                        <label class="text-center" >
+                                        <span><a id="restore" style="color: black"><spring:message code="message.forgot"/></a>
+                                    
+                                </label>
+                            </div>
+                                    
+                                    
                             
                         </div>
             </div>
@@ -95,8 +104,8 @@ prefix="form"%>
                         
                     </form>
                         
-                     <!--Modal Books Limit-->
-                    <input id="book_limit" type="hidden" value="${isBookLimitReached}">
+                     <!--Modal Success Reg-->
+                    
                     <div class="modal fade" id="success_reg" tabindex="-1" role="dialog" aria-labelledby="succes_reg_label" aria-hidden="true">
                                         <div class="modal-dialog">
                                           <div class="modal-content">
@@ -107,29 +116,60 @@ prefix="form"%>
                                             <div class="modal-body">
                                               <h1>Congratulation!</h1>
                                               <h3>You successfully register!</h3>
-                                              <h6>Please login</h6>
+                                              <h3>Check your email for confirmation</h3>
                                             </div>
-                                            <div class="modal-footer">
-                                           
-                                                <div class="row">
-                                                    <form class="form-inline" role="form" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
-                                                        <div class="form-group">
-                                                            <input  class="form-control" type="text" name="j_username" placeholder="Enter Email">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input class="form-control" type="password" name="j_password" placeholder="Enter Password">
-                                                        </div>
-                            
-                            
-                                                        <button  type="submit" class="btn btn-primary"><spring:message code="message.singin" /></button>
-                                                    </form>
-                                                </div>
-                                              
+                                            
                                             </div>
                                           </div>
                                         </div>
                                 </div>
-                    <!--Modal Books Limit-->   
+                    <!--Modal Success Reg-->  
+                    
+                    <!--Modal Forgot pass-->
+                    <div class="modal fade" id="forgot_pass" tabindex="-1" role="dialog" aria-labelledby="forgot_pass_label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                              <h4 class="modal-title" id="forgot_pass_label">Notification</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                              <h1>For Restoring password input your email</h1>
+                                            </div>
+                                              <div class="modal-footer">
+                                                  <form id="restore_mail_form" action="${pageContext.request.contextPath}/restore" method="post">
+                                                      <input type="email" class="form-control" name="email" placeholder="Email">
+                                                      <p>
+                                                      <input id="restore_mail_form_submit" type="submit" class="form-control btn btn-warning" value="Restore">
+                                                      <div id="forgot_error_mail_div" class="alert alert-danger hide">
+                                                      </div>
+                                                  </form>
+                                            </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                </div>
+                    <!--Modal Forgot pass-->
+                    
+                    <!--Modal forgot_mail_send-->
+                    
+                    <div class="modal fade" id="forgot_mail_send" tabindex="-1" role="dialog" aria-labelledby="forgot_mail_send_label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                              <h4 class="modal-title" id="forgot_mail_send_label">Limit Notification</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                              <h2>Check your email for password restore details</h2>
+                                              
+                                            </div>
+                                            
+                                            </div>
+                                          </div>
+                                        </div>
+                                </div>
+                    <!--Modal forgot_mail_send-->  
                       
                 </div>
                         <div class="row">

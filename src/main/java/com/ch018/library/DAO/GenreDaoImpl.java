@@ -7,6 +7,7 @@ package com.ch018.library.DAO;
 import com.ch018.library.entity.Genre;
 import java.util.List;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,6 @@ public class GenreDaoImpl implements GenreDao {
 
         @Override
         public Genre getByDescription(String description) {
-            return (Genre) factory.getCurrentSession().createQuery("from Genre where description = :d").
-                    setString("d", description).list().get(0);
+            return (Genre) factory.getCurrentSession().createCriteria(Genre.class).add(Restrictions.eq("description", description)).uniqueResult();
         }
 }

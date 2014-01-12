@@ -25,10 +25,7 @@ $(document).ready(function (){
 
                 success: function (data) {
 
-                    $('#email_edit').addClass('hide');
-                    $('#email_text').removeClass('hide');
-                    $('#acc_email_button').text('Change');
-                    $('#email_text').text(data.email);
+                    window.location.href = "/library";
 
              },
                error: function(xhr, status, error){
@@ -92,23 +89,20 @@ $(document).ready(function (){
             $.ajax({
                 url: "/library/account/changePassword",
                 type: "POST",
-                data: {'oldPass' : old_pass, 'newPass' : new_pass, 'reNewPass' : re_new_pass},
+                data: {'oldPass' : old_pass, 'newPass' : new_pass, 'rNewPass' : re_new_pass},
                 dataType: "json",
                 contentType: 'application/x-www-form-urlencoded',
                 mimeType: 'application/json',
 
-                success: function (data) {
+                success: function () {
 
-                    $('#old_pass').addClass('hide');
-                    $('#new_pass').addClass('hide');
-                    $('#re_new_pass').addClass('hide');
-                    $('#pass_changed').removeClass('hide')
-                    $('#acc_name_button').text('Change Password');
+                    window.location.href = "/library";
 
              },
-              error: function(){
-          
-                    alert('error');
+              error: function(xhr, status, error){
+                 alert(xhr.responseText);
+                $('#error_pass_div').text(xhr.responseText);
+                $('#error_pass_div').removeClass('hide');
               }
          });
             

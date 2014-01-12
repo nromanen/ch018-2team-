@@ -67,6 +67,12 @@ public class Person implements Serializable {
 
         @Column(name = "sms")
         private boolean sms;
+        
+        @Column(name = "mailconfirm")
+        private boolean mailConfirm;
+        
+        @Column(name = "mailkey")
+        private String mailKey;
 
 
         @Column(name = "multi")
@@ -285,6 +291,25 @@ public class Person implements Serializable {
             this.multiBook = multiBook;
         }
 
+        public boolean isMailConfirm() {
+            return mailConfirm;
+        }
+
+        public void setMailConfirm(boolean mailConfirm) {
+            this.mailConfirm = mailConfirm;
+        }
+
+        public String getMailKey() {
+            return mailKey;
+        }
+
+        public void setMailKey(String mailKey) {
+            this.mailKey = mailKey;
+        }
+
+        
+
+        
 
 
 

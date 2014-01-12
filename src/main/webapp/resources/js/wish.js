@@ -11,7 +11,10 @@ $(document).ready(function(){
                     format: 'Y/m/d H:i',
                     value: minDate[0] + " " + minDate[1],
                     minDate: minDate[0],
-                    minTime: minDate[1]
+                    allowTimes:[
+                    '09:00', '10:00', '11:00', '12:00', '14:00',
+                    '15:00', '16:00'
+                    ]
                });
         
     });
