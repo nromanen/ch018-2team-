@@ -79,4 +79,61 @@
         <put-attribute name="content" value="/WEB-INF/templates/layouts/user/account.jsp" />
         
     </definition>
+    
+    <!-- /Librarian -->
+    
+    <definition name="librarian_header" template="/WEB-INF/templates/layouts/librarian/header.jsp" />
+    
+    <definition name="librarian_books" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/books.jsp" />
+    </definition>
+    
+    <definition name="librarian_books_advanced_search" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/bookadvancedsearch.jsp" />
+    </definition>
+    
+    <definition name="librarian_books_search_result" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/booksearchresult.jsp" />
+    </definition>
+    
+    <definition name="librarian_books_add_book" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/addbook.jsp" />
+    </definition>
+    
+    <definition name="librarian_books_edit_book" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/editbook.jsp" />
+    </definition>
+    
+    <definition name="librarian_books_holders" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/bookholders.jsp" />
+    </definition>
+    
+    <definition name="librarian_users" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/users.jsp" />
+    </definition>
+    
+    <definition name="librarian_add_user" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/adduser.jsp" />
+    </definition>
+    
+    <definition name="librarian_edit_user" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/edituser.jsp" />
+    </definition>
+    
+     <definition name="librarian_user_advanced_search" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/usersadvencedsearch.jsp" />
+    </definition>
+    
+    
+    <!-- Librarian/ -->
 </tiles-definitions>
