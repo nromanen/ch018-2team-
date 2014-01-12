@@ -36,7 +36,7 @@ public class LibrarianBooksController {
 	
 	@RequestMapping(value = "")
 	public ModelAndView bookList () {
-		return new ModelAndView("librarian/books", "books", bookService.getAll());
+		return new ModelAndView("librarian_books", "books", bookService.getAll());
 	}
 	
 	@RequestMapping(value= "/addbook", method = RequestMethod.GET)
@@ -46,7 +46,7 @@ public class LibrarianBooksController {
 		book.setTerm(DEFAULT_TERM_OF_ISSUANCE);
 		model.addAttribute("book", book);
 		model.addAttribute("genre", genreService.getAll());
-		return "librarian/addbook";
+		return "librarian_books_add_book";
 	}
 	
 	@RequestMapping(value= "/addbook", method = RequestMethod.POST)
@@ -73,7 +73,7 @@ public class LibrarianBooksController {
 	public String edit(@RequestParam("id") int bookId, Model model) throws SQLException {
 		model.addAttribute("genre", genreService.getAll());
 		model.addAttribute("book", bookService.getBookById(bookId));
-		return "librarian/editbook";
+		return "librarian_books_edit_book";
 	}
 	
 	@RequestMapping(value = "/editbook", method = RequestMethod.POST)
@@ -89,7 +89,7 @@ public class LibrarianBooksController {
 		Book book = new Book();
 		model.addAttribute("book", book);
 		model.addAttribute("genre", genreService.getAll());
-		return "librarian/bookadvancedsearch";
+		return "librarian_books_advanced_search";
 	}
 	
 	@RequestMapping(value = "/advancedsearch", method = RequestMethod.POST)
@@ -98,7 +98,7 @@ public class LibrarianBooksController {
 		book.setGenre(genre);
 		List<Book> books = bookService.advancedSearch(book);
 		model.addAttribute("books", books);
-		return "librarian/booksearchresult";
+		return "librarian_books_search_result";
 	}
 	
 	@RequestMapping(value = "/holders", method = RequestMethod.GET)
@@ -108,7 +108,7 @@ public class LibrarianBooksController {
 		Map<BooksInUse, Integer> booksInUse = bookService.getHolders(bookService.getBookById(id));
 		model.addAttribute("book", book);
 		model.addAttribute("booksInUse", booksInUse);
-		return "librarian/bookholders";
+		return "librarian_books_holders";
 	}
 	
 	@RequestMapping(value = "/simplesearch", method=RequestMethod.GET)
@@ -120,6 +120,6 @@ public class LibrarianBooksController {
 	public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
 		List<Book> books = bookService.simpleSearch(request);
 		model.addAttribute("books", books);
-		return "librarian/booksearchresult";
+		return "librarian_books_search_result";
 	}
 }
