@@ -12,79 +12,93 @@ import com.ch018.library.entity.Book;
  */
 public class BookSearch extends Book {
 
-        private int yearStart;
-        private int yearEnd;
-        private int bookPageStart;
-        private int bookPageEnd;
-        private int genreId;
-        private int viewPageNum;
-        private int lowBorder;
-        private int highBorder;
-        private int booksOnPage;
+        private Integer yearStart;
+        private Integer yearEnd;
+        private Integer bookPageStart;
+        private Integer bookPageEnd;
+        private Integer genreId;
+        private Integer viewPageNum = 1;
+        private Integer lowBorder;
+        private Integer highBorder;
+        private Integer booksOnPage = 20;
         private String query;
         private String sort = "title";
-        private boolean order;
+        private Boolean order = false;
         
         public void setBorders() {
             highBorder = viewPageNum * booksOnPage;
             lowBorder = highBorder - booksOnPage;
         }
 
-        public int getYearStart() {
+        public Integer getYearStart() {
             return yearStart;
         }
 
-        public void setYearStart(int yearStart) {
+        public void setYearStart(Integer yearStart) {
             this.yearStart = yearStart;
         }
 
-        public int getYearEnd() {
+        public Integer getYearEnd() {
             return yearEnd;
         }
 
-        public void setYearEnd(int yearEnd) {
+        public void setYearEnd(Integer yearEnd) {
             this.yearEnd = yearEnd;
         }
 
-        public int getBookPageStart() {
+        public Integer getBookPageStart() {
             return bookPageStart;
         }
 
-        public void setBookPageStart(int bookPageStart) {
+        public void setBookPageStart(Integer bookPageStart) {
             this.bookPageStart = bookPageStart;
         }
 
-        public int getBookPageEnd() {
+        public Integer getBookPageEnd() {
             return bookPageEnd;
         }
 
-        public void setBookPageEnd(int bookPageEnd) {
+        public void setBookPageEnd(Integer bookPageEnd) {
             this.bookPageEnd = bookPageEnd;
         }
 
-        public int getGenreId() {
+        public Integer getGenreId() {
             return genreId;
         }
 
-        public void setGenreId(int genreId) {
+        public void setGenreId(Integer genreId) {
             this.genreId = genreId;
         }
 
-
-
-        public int getViewPageNum() {
+        public Integer getViewPageNum() {
             return viewPageNum;
         }
 
-        public void setViewPageNum(int viewPageNum) {
+        public void setViewPageNum(Integer viewPageNum) {
             this.viewPageNum = viewPageNum;
         }
 
-        public int getBooksOnPage() {
+        public Integer getLowBorder() {
+            return lowBorder;
+        }
+
+        public void setLowBorder(Integer lowBorder) {
+            this.lowBorder = lowBorder;
+        }
+
+        public Integer getHighBorder() {
+            return highBorder;
+        }
+
+        public void setHighBorder(Integer highBorder) {
+            this.highBorder = highBorder;
+        }
+
+        public Integer getBooksOnPage() {
             return booksOnPage;
         }
 
-        public void setBooksOnPage(int booksOnPage) {
+        public void setBooksOnPage(Integer booksOnPage) {
             this.booksOnPage = booksOnPage;
         }
 
@@ -104,34 +118,19 @@ public class BookSearch extends Book {
             this.sort = sort;
         }
 
-        public boolean isOrder() {
+        public Boolean getOrder() {
             return order;
         }
 
-        public void setOrder(boolean order) {
+        public void setOrder(Boolean order) {
             this.order = order;
         }
 
-        public int getLowBorder() {
-            return lowBorder;
-        }
 
-        public void setLowBorder(int lowBorder) {
-            this.lowBorder = lowBorder;
+        @Override
+        public String toString() {
+            return "BookSearch{"  + "yearStart=" + yearStart + ", yearEnd=" + yearEnd + ", bookPageStart=" + bookPageStart + ", bookPageEnd=" + bookPageEnd + ", genreId=" + genreId + ", viewPageNum=" + viewPageNum + ", lowBorder=" + lowBorder + ", highBorder=" + highBorder + ", booksOnPage=" + booksOnPage + ", query=" + query + ", sort=" + sort + ", order=" + order + '}';
         }
-
-        public int getHighBorder() {
-            return highBorder;
-        }
-
-        public void setHighBorder(int highBorder) {
-            this.highBorder = highBorder;
-        }
-
-    @Override
-    public String toString() {
-        return super.toString() +  " BookSearch{"  + "yearStart=" + yearStart + ", yearEnd=" + yearEnd + ", bookPageStart=" + bookPageStart + ", bookPageEnd=" + bookPageEnd + ", genreId=" + genreId + ", viewPageNum=" + viewPageNum + ", lowBorder=" + lowBorder + ", highBorder=" + highBorder + ", booksOnPage=" + booksOnPage + ", query=" + query + ", sort=" + sort + ", order=" + order + '}';
-    }
 
         
 }

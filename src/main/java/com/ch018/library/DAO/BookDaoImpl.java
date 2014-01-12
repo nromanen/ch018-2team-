@@ -21,6 +21,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 import com.ch018.library.helper.BookSearch;
+import com.ch018.library.helper.Page;
 import org.hibernate.criterion.Order;
 import org.hibernate.transform.ResultTransformer;
 
@@ -144,7 +145,9 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> getBooksComplex(BookSearch bookSearch) {
+    public Page getBooksComplex(BookSearch bookSearch) {
+        Page page = new Page();
+        page.setCurrentPageNum(bookSearch.getViewPageNum());
         bookSearch.setBorders();
         String query = "%" + bookSearch.getQuery() + "%";
         Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
@@ -152,17 +155,22 @@ public class BookDaoImpl implements BookDao {
         SimpleExpression aExp = Restrictions.like("authors", query);
         SimpleExpression pExp = Restrictions.like("publisher", query);
         criteria.add(Restrictions.or(tExp, aExp, pExp));
-        if (bookSearch.isOrder())
+        page.setGeneralItemsQuantity(criteria.list().size());
+        page.setGeneralPagesQuantity(page.getGeneralItemsQuantity()/bookSearch.getBooksOnPage());
+        if (bookSearch.getOrder())
             criteria.addOrder(Order.desc(bookSearch.getSort()));
         else
             criteria.addOrder(Order.asc(bookSearch.getSort()));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).setFirstResult(bookSearch.getLowBorder()).setMaxResults(bookSearch.getHighBorder());
-        return criteria.list();
+        page.setBooks(criteria.list());
+        return page;
     }
 
     @Override
-    public List<Book> getBooksComplexByParams(BookSearch bookSearch) {
+    public Page getBooksComplexByParams(BookSearch bookSearch) {
         bookSearch.setBorders();
+        Page page = new Page();
+        page.setCurrentPageNum(bookSearch.getViewPageNum());
         Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
         if (bookSearch.getGenreId()> 0) {
             criteria.add(Restrictions.eq("genre.id", bookSearch.getGenreId()));
@@ -176,12 +184,16 @@ public class BookDaoImpl implements BookDao {
         if (!bookSearch.getPublisher().equals("")) {
             criteria.add(Restrictions.like("publisher", "%" + bookSearch.getPublisher() + "%"));
         }
-        criteria.add(Restrictions.between("pages", bookSearch.getBookPageStart(), bookSearch.getBookPageEnd()));
-        if (bookSearch.isOrder())
+        /*if (bookSearch.getBookPageStart() != null && bookSearch.getBookPageEnd() != null)
+            criteria.add(Restrictions.between("pages", bookSearch.getBookPageStart(), bookSearch.getBookPageEnd()));*/
+        page.setGeneralItemsQuantity(criteria.list().size());
+        if (bookSearch.getOrder())
             criteria.addOrder(Order.desc(bookSearch.getSort()));
         else
             criteria.addOrder(Order.asc(bookSearch.getSort()));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).setFirstResult(bookSearch.getLowBorder()).setMaxResults(bookSearch.getHighBorder());
-        return criteria.list();
+        page.setBooks(criteria.list());
+        
+        return page;
     }
 }

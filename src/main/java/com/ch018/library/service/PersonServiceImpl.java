@@ -4,11 +4,16 @@ package com.ch018.library.service;
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.Person;
 import com.ch018.library.validation.Password;
+import com.ch018.library.validation.UserRegistrationForm;
+import java.security.MessageDigest;
 import java.security.Principal;
 import java.util.List;
+import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,6 +34,9 @@ public class PersonServiceImpl implements PersonService {
     
     @Autowired
     private BCryptPasswordEncoder encoder;
+    
+    @Autowired
+    private MailService mailService;
     
     @Override
     @Transactional
@@ -184,6 +192,81 @@ public class PersonServiceImpl implements PersonService {
                 return false;
             }
         }
+
+        @Override
+        @Transactional
+        public boolean register(UserRegistrationForm form) {
+            Person person = new Person(form.getName(), form.getSurname(), form.getEmail(), form.getPassword(), form.getCellPhone());
+            if(getByEmail(person.getEmail()) != null){
+                return false;
+            }
+            person.setPassword(encoder.encode(person.getPassword()));
+            person.setProle("ROLE_USER");
+            person.setMultiBook(5);
+            String mailKey = encoder.encode(person.getEmail().concat(String.valueOf(new Random().nextLong())));
+            person.setMailKey(mailKey);
+            mailService.sendConfirmationMail("springytest@gmail.com", "etenzor@gmail.com", "confirmation mail", person.getMailKey());
+            save(person);
+            logger.info("new user {} registered", person);
+            return true;
+        }
+
+        @Override
+        @Transactional
+        public boolean confirmMail(String key) {
+            Person person = personDao.getPersonByKey(key);
+            if (person == null)
+                return false;
+            person.setMailConfirm(Boolean.TRUE);
+            person.setMailKey(null);
+            save(person);
+            logger.info("person {} successfully confirm mail", person);
+            return true;
+        }
+
+        @Override
+        @Transactional
+        public boolean restoreSendEmail(String email) {
+            Person person;
+            if((person = getByEmail(email)) != null){
+                
+                String mailKey = encoder.encode(person.getEmail().concat(String.valueOf(new Random().nextLong())));
+                person.setMailKey(mailKey);
+                mailService.sendRestoreMail("springytest@gmail.com", "etenzor@gmail.com", person.getMailKey());
+                save(person);
+                logger.info("user {} restore pass mail send", person);
+                return true;
+            }
+            return false;
+        
+        }
+        
+        @Override
+        @Transactional
+        public boolean restorePass(String key, Password password) {
+            Person person;
+            if((person = personDao.getPersonByKey(key)) != null){
+                person.setPassword(encoder.encode(password.getNewPass()));
+                person.setMailKey(null);
+                save(person);
+                logger.info("person {} password changed", person);
+                return true;
+            }
+            logger.info("person {} password don't changed", person);
+            return false;
+                
+        }
+        
+
+        @Override
+        @Transactional
+        public boolean isKeyValid(String key) {
+            if(personDao.getPersonByKey(key) != null)
+                return true;
+            return false;
+        }
+
+        
         
         
 }

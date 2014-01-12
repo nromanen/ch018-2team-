@@ -20,6 +20,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -33,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class PersonDaoImpl implements PersonDao {
 
- 
+    private final Logger logger = LoggerFactory.getLogger(PersonDaoImpl.class);
 
     @Autowired
     private SessionFactory factory;
@@ -76,6 +78,7 @@ public class PersonDaoImpl implements PersonDao {
         try {
            return (Person) factory.getCurrentSession().createCriteria(Person.class)
                    .add(Restrictions.eq("email", email)).uniqueResult();
+           
         } catch (Exception e) {
             
             return null;
@@ -189,7 +192,20 @@ public class PersonDaoImpl implements PersonDao {
 		return users;
 	}
 
-    
+        @Override
+        public Person getPersonByKey(String key) {
+            try {
+                return (Person) factory.getCurrentSession().createCriteria(Person.class)
+                        .add(Restrictions.eq("mailKey", key)).uniqueResult();
+            } catch(Exception e) {
+                logger.error("error during mailkey {} search", key);
+                return null;
+            }
+            
+        }
+
+        
+        
         
     
     

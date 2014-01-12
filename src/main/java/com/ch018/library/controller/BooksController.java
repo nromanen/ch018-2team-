@@ -55,7 +55,6 @@ public class BooksController {
 
         @RequestMapping(method = RequestMethod.GET)
         public String booksG(Model model){
-            List<Genre> genres = genreService.getAll();
             List<Book> books = bookService.getAll();
             model.addAttribute("books", books);
 
@@ -63,8 +62,7 @@ public class BooksController {
         }
 
         @RequestMapping(method = RequestMethod.POST)
-        @ResponseBody
-        public  String books(@ModelAttribute BookSearch bookSearch){
+        public @ResponseBody String books(@ModelAttribute BookSearch bookSearch){
 
             return bookService.getBooksComplexAsJson(bookSearch).toString();    
         }

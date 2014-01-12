@@ -10,6 +10,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.helper.BookSearch;
+import com.ch018.library.helper.Page;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -107,7 +108,7 @@ public class BookServiceImpl implements BookService {
 
         @Override
         @Transactional
-        public List<Book> getBooksComplex(BookSearch bookSearch) {
+        public Page getBooksComplex(BookSearch bookSearch) {
             return bookDAO.getBooksComplex(bookSearch);
         }
 
@@ -127,8 +128,8 @@ public class BookServiceImpl implements BookService {
         @Override
         @Transactional
         public JSONObject getBooksComplexByParamsAsJson(BookSearch bookSearch) {
-            List<Book> books = bookDAO.getBooksComplexByParams(bookSearch);
-            boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+            Page books = bookDAO.getBooksComplexByParams(bookSearch);
+            boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
             return formBooksJsonFromList(books,isUserAuth);
         }
 
@@ -136,23 +137,20 @@ public class BookServiceImpl implements BookService {
         @Transactional
         public JSONObject getBooksComplexAsJson(BookSearch bookSearch) {
             boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
-            List<Book> books;
-            if(bookSearch.getQuery().equals(""))
-                books = getAll();
-            else
-                books = getBooksComplex(bookSearch);
+            Page page;
+            page = getBooksComplex(bookSearch);
 
-            return formBooksJsonFromList(books, isUserAuth);
+            return formBooksJsonFromList(page, isUserAuth);
         }
 
 
-        private JSONObject formBooksJsonFromList(List<Book> books, boolean isUserAuth){
+        private JSONObject formBooksJsonFromList(Page page, boolean isUserAuth){
 
             List<JSONObject> jsons = new ArrayList<>();
 
             if(isUserAuth){
 
-                for(Book book : books){
+                for(Book book : page.getBooks()){
                     JSONObject json = new JSONObject();
                     json.put("bId", book.getbId());
                     json.put("title", book.getTitle());
@@ -165,7 +163,7 @@ public class BookServiceImpl implements BookService {
                     jsons.add(json);
             }
             }else{
-                for(Book book : books){
+                for(Book book : page.getBooks()){
                     JSONObject json = new JSONObject();
 
                     json.put("title", book.getTitle());
@@ -181,6 +179,8 @@ public class BookServiceImpl implements BookService {
 
             JSONObject finalJson = new JSONObject();
             finalJson.put("auth", isUserAuth);
+            finalJson.put("generalPages", page.getGeneralPagesQuantity());
+            finalJson.put("currentPage", page.getCurrentPageNum());
             finalJson.put("books", jsons);
 
             return finalJson;

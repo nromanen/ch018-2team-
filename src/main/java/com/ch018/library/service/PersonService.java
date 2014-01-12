@@ -2,6 +2,7 @@ package com.ch018.library.service;
 
 import com.ch018.library.entity.Person;
 import com.ch018.library.validation.Password;
+import com.ch018.library.validation.UserRegistrationForm;
 
 import java.security.Principal;
 import java.util.List;
@@ -31,4 +32,9 @@ public interface PersonService {
         List<Person> simpleSearch(String request);
         List<Person> advancedSearch(Person person);
         Person countRating(Person person); 
+        boolean register(UserRegistrationForm form);
+        boolean confirmMail(String key);
+        boolean restoreSendEmail(String email);
+        boolean isKeyValid(String key);
+        boolean restorePass(String key, Password password);
 }

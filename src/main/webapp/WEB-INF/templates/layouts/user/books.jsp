@@ -21,8 +21,37 @@
                                 <option value="40">40</option>
                                 <option value="50">50</option>
                             </select> 
+                            <div class="row">
+                            <div class="text-center">Year</div>
+                            <div class="col-md-6">
+                            <select class="form-control"  name="items">
+                                <option selected="selected" value="0">start</option>
+                                <c:forEach var="i" begin="1950" end="2013">
+                                <option value="${i}">${i}</option>
+                                </c:forEach>
+                            </select> 
+                            </div>
+                            <div class="col-md-6">
+                            <select class="form-control"  name="items">
+                                <option selected="selected" value="0">end</option>
+                                <c:forEach var="i" begin="1950" end="2013">
+                                <option value="${i}">${i}</option>
+                                </c:forEach>
+                            </select> 
+                            </div>
+                            </div>
                             <button class="form-control btn btn-info" id="show_button" style="margin-top: 10px;">Show</button>
+                           
                         </form>
+                        <div id="ajax_info" class="hide">
+                            <div id="query"></div>
+                            <div id="booksOnPage" value="20"></div>
+                            <div id="orderBy" value="title"></div>
+                            <div id="order" value="false"></div>
+                            <div id="currentPage" value="1"></div>
+                            <div id="bookPages"></div>
+                            <div id="bookYears"></div>
+                        </div>
                     </div>
                     
                     

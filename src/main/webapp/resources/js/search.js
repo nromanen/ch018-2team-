@@ -1,9 +1,13 @@
 function search(query){
     //var query = $('#search_field').val();
+    /*var booksOnPage = $('#booksOnPage').attr('value');
+    var viewPageNum = $('#currentPage').attr('value');
+    var sort = $('#orderBy').attr('value');
+    var order = $('#order').attr('value');*/
     $.ajax({
             url: "/library/books",
             type: "POST",
-            data: {'query' : query},
+            data: {'query' : query}, //'booksOnPage' : booksOnPage, 'viewPageNum' : viewPageNum, 'sort' : sort, 'order' : 'order'},
             dataType: "json",
             contentType: 'application/x-www-form-urlencoded',
             mimeType: 'application/json',
@@ -26,6 +30,7 @@ function advancedSearch(){
         var authors = $('#advanced_search_authors').val();
         var publisher = $('#advanced_search_publisher').val();
         var genreId = $('#advanced_search_select').val();
+        
         
         $.ajax({
             url: "/library/books/advancedSearch",
@@ -73,8 +78,10 @@ function advancedSearchPanel(){
 function buildMainBooksFromJson(data){
     
     $('#center_main').empty();
+           var $books_row = $('<div>', {class : 'row'});
            var $ul = $('<ul>', {class : 'list-inline list-unstyled'});
-           $ul.appendTo($('#center_main'));
+           $ul.appendTo($books_row);
+           $books_row.appendTo($('#center_main'));
                $.each(data.books, function (indx, value){
                 
                 
@@ -119,6 +126,28 @@ function buildMainBooksFromJson(data){
             
                
             });
+            
+            
+            var $page_row = $('<div>', {class : 'row'});
+            var $ul_page = $('<ul>', {class : 'pager'});
+            if(data.currentPage > 1){
+                var previous = data.currentPage - 1;
+                var next = data.currentPage + 1;
+                var $li_page_prev = $('<li>').append($('<a>', {id : 'previous', value : previous, style: 'color : black'}).text('Previous'));
+                var $li_page_next = $('<li>').append($('<a>', {id : 'next', value : next, style: 'color : black'}).text('Next'));
+                $li_page_prev.appendTo($ul_page);
+                $li_page_next.appendTo($ul_page);
+            }else{
+                
+                var next = data.currentPage + 1;
+                var $li_page_next = $li_page_next = $('<li>').append($('<a>', {id : next, value : next, style: 'color : black'}).text('Next'));
+                $li_page_next.appendTo($ul_page);
+            }
+            $ul_page.appendTo($page_row);
+            $page_row.appendTo($('#center_main'));
+            
+            
+            
 };
 
 
