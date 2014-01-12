@@ -3,13 +3,33 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="row" id="content_bg">
-                
+              <input type="hidden" id="search_key" value="">  
                 <div class="col-md-2" id="left_main">
-                    <!--New Arrivals-->
+                    <div class="col-md-10">
+                        <form>
+                            <div class="text-center">Sort by</div>
+                            <select class="form-control" name="sort">
+                                <option selected="selected" value="title">Title</option>
+                                <option value="authors">Authors</option>
+                                <option value="year">Year</option>
+                                <option value="publisher">Publisher</option>
+                            </select> 
+                            <div class="text-center">Books on page</div>
+                            <select class="form-control"  name="items">
+                                <option selected="selected" value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                            </select> 
+                            <button class="form-control btn btn-info" id="show_button" style="margin-top: 10px;">Show</button>
+                        </form>
+                    </div>
+                    
                     
                 </div>
                 
                 <div class="col-md-8 book1" id="center_main">
+                    
                     <ul class="list-inline list-unstyled">
                         <c:forEach var="book" items="${books}">         
                             <li class="col-md-3" >
@@ -28,7 +48,7 @@
                                 
                                        
                                     <div class="thumbnail hide book1_ext" style="position: absolute; top: 0; z-index: 9999 ">
-                                    <img data-src="${book.getImg()}" src="${book.getImg()}" style="width: 280px;">
+                                    <img data-src="${book.getImg()}" src="${book.getImg()}" style="width: 300px;">
                                     <div class="caption">
                                         <h6>${book.getTitle()}</h6>
                                         <p>

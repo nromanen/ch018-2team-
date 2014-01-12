@@ -9,6 +9,7 @@ import com.ch018.library.DAO.BookDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.helper.BookSearch;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -106,8 +107,8 @@ public class BookServiceImpl implements BookService {
 
         @Override
         @Transactional
-        public List<Book> getBooksComplex(String query) {
-            return bookDAO.getBooksComplex(query);
+        public List<Book> getBooksComplex(BookSearch bookSearch) {
+            return bookDAO.getBooksComplex(bookSearch);
         }
 
 
@@ -125,23 +126,21 @@ public class BookServiceImpl implements BookService {
 
         @Override
         @Transactional
-        public JSONObject getBooksComplexByParamsAsJson(Integer genreId, String Title, String Authors, String Publisher) {
-            List<Book> books = bookDAO.getBooksComplexByParams(genreId, Title, Authors, Publisher);
+        public JSONObject getBooksComplexByParamsAsJson(BookSearch bookSearch) {
+            List<Book> books = bookDAO.getBooksComplexByParams(bookSearch);
             boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
             return formBooksJsonFromList(books,isUserAuth);
         }
 
         @Override
         @Transactional
-        public JSONObject getBooksComplexAsJson(String query) {
-
+        public JSONObject getBooksComplexAsJson(BookSearch bookSearch) {
             boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
-            System.out.println("AAAAAAA " + isUserAuth);
             List<Book> books;
-            if(query.equals(""))
+            if(bookSearch.getQuery().equals(""))
                 books = getAll();
             else
-                books = getBooksComplex(query);
+                books = getBooksComplex(bookSearch);
 
             return formBooksJsonFromList(books, isUserAuth);
         }

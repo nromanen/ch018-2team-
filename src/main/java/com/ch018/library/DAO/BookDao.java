@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.helper.BookSearch;
 
 
 
@@ -19,11 +20,11 @@ public interface BookDao {
         List<Book> getBooksByTitle(String title);
         List<Book> getBooksByAuthors(String authors);
         List<Book> getBooksByYear(int year);
-        List<Book> getBooksComplex(String query);
+        List<Book> getBooksComplex(BookSearch bookSearch);
         List<Book> getBooksByPublisher(String publisher);
         List<Book> getBooksByPagesEq(int pages);
         List<Book> getBooksByGenre(Genre genre);
         List<Book> advancedSearch(Book book);
         List<Book> simpleSearch(String query);
-        List<Book> getBooksComplexByParams(Integer genreId, String title, String authors, String publisher);
+        List<Book> getBooksComplexByParams(BookSearch bookSearch);
 }

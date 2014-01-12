@@ -20,6 +20,9 @@ import org.springframework.stereotype.Repository;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
+import com.ch018.library.helper.BookSearch;
+import org.hibernate.criterion.Order;
+import org.hibernate.transform.ResultTransformer;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -60,7 +63,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> getBooksByAuthors(String authors) {
-        return factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.like("author", "%" + authors + "%")).list();
+        return factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.like("authors", "%" + authors + "%")).list();
     }
 
     @Override
@@ -141,32 +144,44 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> getBooksComplex(String query) {
-
-        query = "%" + query + "%";
+    public List<Book> getBooksComplex(BookSearch bookSearch) {
+        bookSearch.setBorders();
+        String query = "%" + bookSearch.getQuery() + "%";
         Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
         SimpleExpression tExp = Restrictions.like("title", query);
         SimpleExpression aExp = Restrictions.like("authors", query);
         SimpleExpression pExp = Restrictions.like("publisher", query);
         criteria.add(Restrictions.or(tExp, aExp, pExp));
+        if (bookSearch.isOrder())
+            criteria.addOrder(Order.desc(bookSearch.getSort()));
+        else
+            criteria.addOrder(Order.asc(bookSearch.getSort()));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).setFirstResult(bookSearch.getLowBorder()).setMaxResults(bookSearch.getHighBorder());
         return criteria.list();
     }
 
     @Override
-    public List<Book> getBooksComplexByParams(Integer genreId, String title, String authors, String publisher) {
+    public List<Book> getBooksComplexByParams(BookSearch bookSearch) {
+        bookSearch.setBorders();
         Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
-        if (genreId > 0) {
-            criteria.add(Restrictions.eq("genre.id", genreId));
+        if (bookSearch.getGenreId()> 0) {
+            criteria.add(Restrictions.eq("genre.id", bookSearch.getGenreId()));
         }
-        if (!title.equals("")) {
-            criteria.add(Restrictions.like("title", "%" + title + "%"));
+        if (!bookSearch.getTitle().equals("")) {
+            criteria.add(Restrictions.like("title", "%" + bookSearch.getTitle() + "%"));
         }
-        if (!authors.equals("")) {
-            criteria.add(Restrictions.like("authors", "%" + authors + "%"));
+        if (!bookSearch.getAuthors().equals("")) {
+            criteria.add(Restrictions.like("authors", "%" + bookSearch.getAuthors() + "%"));
         }
-        if (!publisher.equals("")) {
-            criteria.add(Restrictions.like("publisher", "%" + publisher + "%"));
+        if (!bookSearch.getPublisher().equals("")) {
+            criteria.add(Restrictions.like("publisher", "%" + bookSearch.getPublisher() + "%"));
         }
+        criteria.add(Restrictions.between("pages", bookSearch.getBookPageStart(), bookSearch.getBookPageEnd()));
+        if (bookSearch.isOrder())
+            criteria.addOrder(Order.desc(bookSearch.getSort()));
+        else
+            criteria.addOrder(Order.asc(bookSearch.getSort()));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).setFirstResult(bookSearch.getLowBorder()).setMaxResults(bookSearch.getHighBorder());
         return criteria.list();
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.helper.BookSearch;
 
 
 
@@ -25,12 +26,12 @@ public interface BookService {
              List<Book> getBooksByAuthors(String authors);
              List<Book> getBooksByYear(int year);
              List<Book> getBooksByGenre(Genre genre);
-             List<Book> getBooksComplex(String query);
+             List<Book> getBooksComplex(BookSearch bookSearch);
              List<Book> getBooksByPublisher(String publisher);
              List<Book> getBooksByPagesEq(int pages);
              List<Book> advancedSearch(Book book);
              List<Book> simpleSearch(String query);
-             JSONObject getBooksComplexByParamsAsJson(Integer genreId, String Title, String Authors, String Publisher);           
-             JSONObject getBooksComplexAsJson(String query);       
+             JSONObject getBooksComplexByParamsAsJson(BookSearch bookSearch);           
+             JSONObject getBooksComplexAsJson(BookSearch bookSearch);       
              Map<BooksInUse, Integer> getHolders(Book book);
 }

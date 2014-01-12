@@ -40,7 +40,7 @@ public class LibrarianBooksController {
 	}
 	
 	@RequestMapping(value= "/addbook", method = RequestMethod.GET)
-    public String add(Model model) throws Exception {
+        public String add(Model model) throws Exception {
 		final int DEFAULT_TERM_OF_ISSUANCE = 14;
 		Book book = new Book();
 		book.setTerm(DEFAULT_TERM_OF_ISSUANCE);

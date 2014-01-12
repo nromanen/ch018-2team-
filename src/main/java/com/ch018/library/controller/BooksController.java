@@ -17,6 +17,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
+import com.ch018.library.helper.BookSearch;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
@@ -24,6 +25,7 @@ import com.ch018.library.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.ModelAttribute;
 /**
  * 
  * @author Edd Arazian
@@ -33,6 +35,12 @@ import org.springframework.security.access.annotation.Secured;
 @Controller
 @RequestMapping(value = "/books")
 public class BooksController {
+    
+        private final static String SORT = "authors";
+        private final static Boolean ORDER = false;
+        private final static Integer PAGE_NUM = 1;
+        private final static Integer AMOUNT = 10;
+        
 
         @Autowired
         BookService bookService;
@@ -49,7 +57,6 @@ public class BooksController {
         public String booksG(Model model){
             List<Genre> genres = genreService.getAll();
             List<Book> books = bookService.getAll();
-            model.addAttribute("genres", genres);
             model.addAttribute("books", books);
 
             return "books";
@@ -57,20 +64,17 @@ public class BooksController {
 
         @RequestMapping(method = RequestMethod.POST)
         @ResponseBody
-        public  String books(@RequestParam(value = "query") String query){
+        public  String books(@ModelAttribute BookSearch bookSearch){
 
-            return bookService.getBooksComplexAsJson(query).toString();    
+            return bookService.getBooksComplexAsJson(bookSearch).toString();    
         }
 
         @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
         @Secured({"ROLE_USER"})
-        public @ResponseBody String advancedSearch(@RequestParam("title") String title,
-                                                    @RequestParam("authors") String authors,
-                                                    @RequestParam("publisher") String publisher,
-                                                    @RequestParam("genreId") Integer genreId,
-                                                    HttpServletRequest request){
-            logger.info("advanced search called with {}, {}, {}, {}", title, authors, publisher, genreId);
-            return bookService.getBooksComplexByParamsAsJson(genreId, title, authors, publisher).toString();
+        public @ResponseBody String advancedSearch(@ModelAttribute BookSearch bookSearch){
+            System.out.println(bookSearch);
+            logger.info("advanced search called with {}, {}, {}, {}", bookSearch);
+            return bookService.getBooksComplexByParamsAsJson(bookSearch).toString();
         }
 
 
