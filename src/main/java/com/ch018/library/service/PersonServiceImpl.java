@@ -139,11 +139,13 @@ public class PersonServiceImpl implements PersonService {
     }
 
 	@Override
+        @Transactional
 	public List<Person> simpleSearch(String request) {
 		return personDao.simpleSearch(request);
 	}
 
 	@Override
+        @Transactional
 	public List<Person> advancedSearch(Person person) {
 		return personDao.advancedSearch(person);
 	}
@@ -165,5 +167,20 @@ public class PersonServiceImpl implements PersonService {
 		update(person);
 		return person;
 	}
+
+        @Override
+        @Transactional
+        public boolean changeEmail(String email, Person person) {
+            try {
+                person.setEmail(email);
+                update(person);
+                return true;
+            } catch (Exception e) {
+                logger.error("error during email: {} change {}", email, e.getMessage());
+                return false;
+            }
+        }
+        
+        
 }
 

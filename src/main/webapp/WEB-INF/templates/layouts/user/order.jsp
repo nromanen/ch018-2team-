@@ -1,11 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-            <div class="row">
+            <div class="row" style="background-color: #F0F0F0;">
                 
-                <div class="col-md-1" id="left_main">
+                <div class="col-md-2" id="left_main">
                     <!--New Arrivals-->
                 </div>
                 
-                <div class="col-md-11" id="center_main">
+                <div class="col-md-8" id="center_main">
                     
                     <!--Modal Books Limit-->
                     <input id="book_limit" type="hidden" value="${isBookLimitReached}">
@@ -101,10 +101,10 @@
                             </div>
                                 <div class="row" id="book_orders">
                                     <ul class="list-group list-unstyled">
-                                        <li class="list-group-item-heading">Book already ordered for dates</li>
+                                        <li class="list-group-item-heading dropdown">Book already ordered for dates</li>
                                         <c:forEach var="order" items="${orders}">
                                             <li class="list-group-item">
-                                                <div class="tab-content">
+                                                <div class="tab-content text-warning">
                                                     ${order.getOrderDate()}
                                                 </div>
                                             </li>
@@ -132,6 +132,9 @@
                     </div>
                         
                     
+                </div>
+                                <div class="col-md-2" id="left_main">
+                    <!--New Arrivals-->
                 </div>
                 
                 

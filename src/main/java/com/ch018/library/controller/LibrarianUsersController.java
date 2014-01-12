@@ -22,11 +22,12 @@ import com.ch018.library.service.PersonService;
 public class LibrarianUsersController {
 
 	@Autowired
-	PersonService personService;
+	private PersonService personService;
 	@Autowired
-	BookInUseService bookInUseService;
+	private BookInUseService bookInUseService;
 	
 	@RequestMapping(value = "")
+
 	public String showAll(Model model) throws Exception {
 		 List<Person> person = personService.getAll();
          for (Person pers : person) {
@@ -34,7 +35,7 @@ public class LibrarianUsersController {
          }
          model.addAttribute("users", person);
          return "librarian_users"; 
-	}
+
 	
 	@RequestMapping(value = "/adduser", method = RequestMethod.GET)
 	public String addUser(Model model) throws Exception{
@@ -47,11 +48,14 @@ public class LibrarianUsersController {
 	public String addUser(@Valid @ModelAttribute("user") Person user, BindingResult result) throws Exception {
 		if (result.hasErrors()) {
 			System.out.println("Errors Adding User" + result.toString());
+
 		}else {
 			Person person = new Person();
 			person.setMultiBook(0);
-			personService.save(user);	
-		}
+			personService.save(user);
+
+		}	
+		
 		return "redirect:/librarian/users";
 	}
 	
@@ -73,9 +77,7 @@ public class LibrarianUsersController {
 	
 	@RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
 	public String deleteUser(@RequestParam("id") int id, Model model) throws Exception {
-		
 		personService.delete(id);
-		
 		return "redirect:/librarian/users";
 	}
 	

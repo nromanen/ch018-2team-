@@ -19,56 +19,52 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class WishListDaoImpl implements WishListDao {
     
-    @Autowired
-    SessionFactory factory;
+        @Autowired
+        SessionFactory factory;
 
-    @Override
-    public void save(WishList wish) {
-        factory.getCurrentSession().save(wish);
-    }
-    @Override
-    public void delete(WishList wish) {
-        factory.getCurrentSession().delete(wish);
-    }
-    @Override
-    public void update(WishList wish) {
-        factory.getCurrentSession().update(wish);
-    }
-    @Override
-    public List<WishList> getAll() {
-        return factory.getCurrentSession().createCriteria(WishList.class).list();
-    }
-    @Override
-    public List<WishList> getWishByPerson(Person person) {
-        return factory.getCurrentSession().createCriteria(WishList.class).add(Restrictions.eq("person", person)).list();
-    }
-    @Override
-    public List<WishList> getWishByBook(Book book) {
-        return factory.getCurrentSession().createCriteria(WishList.class).add(Restrictions.eq("book", book)).list();
-    }
-    @Override
-    public WishList getWishByID(int id) {
-        return (WishList) factory.getCurrentSession().get(WishList.class, id);
-    }
-    @Override
-    public WishList getWishByPersonBook(Person person, Book book) {
-         return (WishList) factory.getCurrentSession().createCriteria(WishList.class).add(Restrictions.eq("person", person))
-                 .add(Restrictions.eq("book", book)).uniqueResult();
-    }
-    @Override
-    public boolean isPersonWishBook(Person person, Book book) {
-        try{   
-            WishList wish = (WishList) factory.getCurrentSession().createCriteria(WishList.class)
-                        .add(Restrictions.eq("person", person))
-                            .add(Restrictions.eq("book", book)).list().get(0);
-            return wish == null ? false : true;
-        }catch(Exception e){
-            return false;
+        @Override
+        public void save(WishList wish) {
+            factory.getCurrentSession().save(wish);
         }
-        
-    }
-    
-    
-    
-    
+        @Override
+        public void delete(WishList wish) {
+            factory.getCurrentSession().delete(wish);
+        }
+        @Override
+        public void update(WishList wish) {
+            factory.getCurrentSession().update(wish);
+        }
+        @Override
+        public List<WishList> getAll() {
+            return factory.getCurrentSession().createCriteria(WishList.class).list();
+        }
+        @Override
+        public List<WishList> getWishByPerson(Person person) {
+            return factory.getCurrentSession().createCriteria(WishList.class).add(Restrictions.eq("person", person)).list();
+        }
+        @Override
+        public List<WishList> getWishByBook(Book book) {
+            return factory.getCurrentSession().createCriteria(WishList.class).add(Restrictions.eq("book", book)).list();
+        }
+        @Override
+        public WishList getWishByID(int id) {
+            return (WishList) factory.getCurrentSession().get(WishList.class, id);
+        }
+        @Override
+        public WishList getWishByPersonBook(Person person, Book book) {
+             return (WishList) factory.getCurrentSession().createCriteria(WishList.class).add(Restrictions.eq("person", person))
+                     .add(Restrictions.eq("book", book)).uniqueResult();
+        }
+        @Override
+        public boolean isPersonWishBook(Person person, Book book) {
+            try{   
+                WishList wish = (WishList) factory.getCurrentSession().createCriteria(WishList.class)
+                            .add(Restrictions.eq("person", person))
+                                .add(Restrictions.eq("book", book)).list().get(0);
+                return wish == null ? false : true;
+            }catch(Exception e){
+                return false;
+            }
+
+        } 
 }

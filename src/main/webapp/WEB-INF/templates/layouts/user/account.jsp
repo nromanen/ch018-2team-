@@ -26,6 +26,9 @@
                                         <div class="col-md-6">
                                             <input id="email_edit" type="text" class="form-control hide" placeholder="${person.getEmail()}">
                                             <div id="email_text" class="text-info">${person.getEmail()}</div>
+                                            <div id="error_div" class="alert alert-danger hide">
+                            
+                                            </div>
                                         </div>
                                         <div class="col-md-3">
                                             

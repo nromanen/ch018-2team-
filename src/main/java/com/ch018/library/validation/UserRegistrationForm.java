@@ -10,98 +10,95 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Edd Arazian
  */
 public class UserRegistrationForm {
-    
-    public static final int MIN_NAME = 2;
-    public static final int MAX_NAME = 30;
-    public static final int MIN_PASS = 2;
-    public static final int MAX_PASS = 16;
-    
-    
-    @NotEmpty
-    @Size(min = MIN_NAME, max = MAX_NAME)
-    private String name;
-    
-    @NotEmpty
-    @Size(min = MIN_NAME, max = MAX_NAME)
-    private String surname;
-    
-    @NotEmpty
-    @Email
-    private String email;
-    
-    @NotEmpty
-    @Email
-    private String rEmail;
-    
-    @NotEmpty
-    @Size(min = MIN_PASS, max = MAX_PASS)
-    private String password;
-    
-    @NotEmpty
-    @Size(min = MIN_PASS, max = MAX_PASS)
-    private String rPassword;
-    
-    @NotEmpty
-    @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}")
-    private String cellPhone;
 
-    public String getName() {
-        return name;
-    }
+        public static final int MIN_NAME = 2;
+        public static final int MAX_NAME = 30;
+        public static final int MIN_PASS = 2;
+        public static final int MAX_PASS = 16;
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
-    public String getSurname() {
-        return surname;
-    }
+        @NotEmpty
+        @Size(min = MIN_NAME, max = MAX_NAME)
+        private String name;
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
+        @NotEmpty
+        @Size(min = MIN_NAME, max = MAX_NAME)
+        private String surname;
 
-    public String getEmail() {
-        return email;
-    }
+        @NotEmpty
+        @Email
+        private String email;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+        @NotEmpty
+        @Email
+        private String rEmail;
 
-    public String getrEmail() {
-        return rEmail;
-    }
+        @NotEmpty
+        @Size(min = MIN_PASS, max = MAX_PASS)
+        private String password;
 
-    public void setrEmail(String rEmail) {
-        this.rEmail = rEmail;
-    }
+        @NotEmpty
+        @Size(min = MIN_PASS, max = MAX_PASS)
+        private String rPassword;
 
-    public String getPassword() {
-        return password;
-    }
+        @NotEmpty
+        @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}")
+        private String cellPhone;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+        public String getName() {
+            return name;
+        }
 
-    public String getrPassword() {
-        return rPassword;
-    }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-    public void setrPassword(String rPassword) {
-        this.rPassword = rPassword;
-    }
+        public String getSurname() {
+            return surname;
+        }
 
-    public String getCellPhone() {
-        return cellPhone;
-    }
+        public void setSurname(String surname) {
+            this.surname = surname;
+        }
 
-    public void setCellPhone(String cellPhone) {
-        this.cellPhone = cellPhone;
-    }
-    
-    
-    
-    
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getrEmail() {
+            return rEmail;
+        }
+
+        public void setrEmail(String rEmail) {
+            this.rEmail = rEmail;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getrPassword() {
+            return rPassword;
+        }
+
+        public void setrPassword(String rPassword) {
+            this.rPassword = rPassword;
+        }
+
+        public String getCellPhone() {
+            return cellPhone;
+        }
+
+        public void setCellPhone(String cellPhone) {
+            this.cellPhone = cellPhone;
+        }
+
 }

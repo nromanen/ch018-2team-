@@ -12,7 +12,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 /**
  *
- * @author Admin
+ * @author Edd Arazian
  */
 @Service
 public class MailService {
