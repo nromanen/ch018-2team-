@@ -35,7 +35,7 @@ public class LibrarianUsersController {
          }
          model.addAttribute("users", person);
          return "librarian_users"; 
-
+	}
 	
 	@RequestMapping(value = "/adduser", method = RequestMethod.GET)
 	public String addUser(Model model) throws Exception{

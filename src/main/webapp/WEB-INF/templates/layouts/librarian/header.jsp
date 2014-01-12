@@ -42,16 +42,13 @@
 		</div>	
 		<div class="col-md-1 col-md-offset-5">
 			<a href="<c:url value="/librarian/users"/>" style="color: #FFFFFF"><h5><spring:message code="message.libUsers"/></h5></a>
-			
-				
 			<c:set var="highlight" value="books" scope="request"/>
 		</div>
 		<div class="col-md-1">
-		<a href="<c:url value="/librarian/books"/>" style="color: #FFFFFF"><h5><spring:message code="message.libBooks"/></h5></a>
-			
+			<a href="<c:url value="/librarian/books"/>" style="color: #FFFFFF"><h5><spring:message code="message.libBooks"/></h5></a>
 		</div>
 		<div class="col-md-1">
-		<a href="<c:url value="/librarian/orders"/>" style="color: #FFFFFF"><h5><spring:message code="message.libOrders"/></h5></a>
+			<a href="<c:url value="/librarian/orders"/>" style="color: #FFFFFF"><h5><spring:message code="message.libOrders"/></h5></a>
 		</div>
 		<div class="col-md-1">
 			<a href="<c:url value="/librarian/toreturn"/>" style="color: #FFFFFF"><h5><spring:message code="message.libToReturn"/></h5></a>
