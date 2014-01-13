@@ -3,7 +3,7 @@
     Created on : Jan 6, 2014, 4:24:48 PM
     Author     : Admin
 --%>
-
+<!-- TODO: remove unnecessary files -->
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

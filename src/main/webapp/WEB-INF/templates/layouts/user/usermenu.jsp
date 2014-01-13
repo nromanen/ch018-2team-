@@ -25,7 +25,7 @@
                         </div>
                     </li>
                     
-                    
+<!-- TODO: unnecessary code should be removed -->
                     <!--<li><a href="${pageContext.request.contextPath}/account" id="my_account"><spring:message code="message.hello" /> <sec:authentication property="principal.username" /></a> </li>
                     <li><a href="<c:url value="/j_spring_security_logout" />"><spring:message code="message.logout" /></a></li>-->
                 </ul>

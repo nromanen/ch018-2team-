@@ -22,6 +22,7 @@
         <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/books.js"></script>
         
+<!-- TODO: move to css -->
 		<style>
 			t.ex1 {margin:300px 20px}
 			t.ex3 {margin:10px 70px}

@@ -54,7 +54,7 @@ public class BooksController {
         final Logger logger = LoggerFactory.getLogger(BooksController.class);
 
         @RequestMapping(method = RequestMethod.GET)
-        public String booksG(Model model){
+        public String booksG(Model model){ // TODO: rename or explain what G means in comment
             List<Book> books = bookService.getAll();
             model.addAttribute("books", books);
 
