@@ -12,6 +12,8 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
 import java.util.Calendar;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  *
  * @author Edd Arazian
@@ -25,6 +27,8 @@ public class BookInUseServiceImpl implements BookInUseService {
         private PersonService personService;
         @Autowired
         private BookService bookService;
+        
+        private final Logger logger = LoggerFactory.getLogger(BookInUseServiceImpl.class);
 
         @Override
         @Transactional
@@ -134,5 +138,15 @@ public class BookInUseServiceImpl implements BookInUseService {
 		delete(bookInUse);
 		
 	}
+
+        @Override
+        @Transactional
+        public List<BooksInUse> getBooksInUseByReturnDateLe(Date date) {
+            logger.info("in service");
+             return useDao.getBooksInUseByReturnDateLe(date);
+        
+        }
+        
+        
 
 }

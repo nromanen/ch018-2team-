@@ -4,6 +4,7 @@ package com.ch018.library.DAO;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import java.util.Calendar;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +24,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class BooksInUseDaoImpl implements BooksInUseDao {
+        
+        private final static int DAY_END_HOUR = 23;
+        private final static int DAY_END_MINUTES = 59;
+        private final static int DAY_END_SECONDS = 59;
+    
+        Logger logger = LoggerFactory.getLogger(BooksInUseDaoImpl.class);
     
         @Autowired
         private SessionFactory factory;   
@@ -62,7 +71,9 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
         
         @Override
         public List<BooksInUse> getBooksInUseByReturnDate(Date returnDate) {        
-                return  factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("returnDate", returnDate)).list();       
+                return  factory.getCurrentSession().createCriteria(BooksInUse.class)
+                        .add(Restrictions.ge("returnDate", returnDate))
+                        .list();       
         }
         
         @Override
@@ -96,5 +107,40 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
             } catch (Exception e) {
                 return false;
             }
+        }
+
+        @Override
+        public List<BooksInUse> getBooksInUseByReturnDateLe(Date date) {
+        
+            try {
+                return factory.getCurrentSession().createCriteria(BooksInUse.class)
+                        .add(Restrictions.le("returnDate", getDateToWithoutTime(date)))
+                        .list();
+            } catch (Exception e) {
+                logger.error("error {} during getBooksInUseByReturnDateLe with date{}", e.getMessage(), date);
+                return null;
+            }
+            
+        
+        }
+        
+        private Date getDateFromWithoutTime(Date date) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            return calendar.getTime();
+        }
+        
+        private Date getDateToWithoutTime(Date date) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.set(Calendar.HOUR_OF_DAY, DAY_END_HOUR);
+            calendar.set(Calendar.MINUTE, DAY_END_MINUTES);
+            calendar.set(Calendar.SECOND, DAY_END_SECONDS);
+            calendar.set(Calendar.MILLISECOND, 0);
+            return calendar.getTime();
         }
     }
