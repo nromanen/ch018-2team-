@@ -15,10 +15,11 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sun.security.util.Password;
+
 
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.Person;
+import com.ch018.library.validation.Password;
 import com.ch018.library.validation.UserRegistrationForm;
 /**
  *
