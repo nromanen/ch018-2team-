@@ -1,51 +1,53 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 
         	<div class="row">
 				
 					<div class="col-md-7">
-				        <form:form method="POST" commandName="user" class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">
+				        <form:form method="POST" commandName="user" class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:100px">
 				            
 					          <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label">ID</label>
 								    <div class="col-sm-10">
-								    	 <form:input path="pid" class="form-control" placeholder="ID"/> 
+								    	 <form:input path="pid" class="form-control"/> 
 								    </div>
 							 </div>
 				            
 				             <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libFirstName"/></label>
 								    <div class="col-sm-10">
-								    	 <form:input path="name" class="form-control" placeholder="<spring:message code="message.libFirstName"/>"/>
+								    	 <form:input path="name" class="form-control"/>
 								    </div>
 							 </div>
 				           
 				           	 <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libLastName"/></label>
 								    <div class="col-sm-10">
-								    	  <form:input path="surname" class="form-control" placeholder="<spring:message code="message.libLastName"/>"/> 
+								    	  <form:input path="surname" class="form-control"/> 
 								    </div>
 							 </div>	
 				         
 				             <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libEMail"/></label>
 								    <div class="col-sm-10">
-								    	  <form:input path="email" class="form-control" placeholder="<spring:message code="message.libEMail"/>"/>
+								    	  <form:input path="email" class="form-control"/>
 								    </div>
 							 </div>	
 				           
 				             <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libRole"/></label>
 								    <div class="col-sm-10">
-								    	  <form:input path="prole" class="form-control" placeholder="<spring:message code="message.libRole"/>"/>
+								    	  <form:input path="prole" class="form-control"/>
 								    </div>
 							 </div>
 				            
 				             <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libCellPhone"/></label>
 								    <div class="col-sm-10">
-								    	  <form:input path="cellphone" class="form-control" placeholder="<spring:message code="message.libCellPhone"/>"/>
+								    	  <form:input path="cellphone" class="form-control"/>
 								    </div>
 							 </div>
 				           	 
@@ -72,28 +74,28 @@
 				            <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libReturnedOnTime"/></label>
 								    <div class="col-sm-10">
-								    	  <form:input path="timelyReturn" class="form-control" placeholder="<spring:message code="message.libReturnedOnTime"/>"/>
+								    	  <form:input path="timelyReturn" class="form-control"/>
 								    </div>
 							</div>    	
 				            
 				            <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libReturnedLate"/></label>
 								    <div class="col-sm-10">
-								    	  <form:input path="untimekyReturn" class="form-control" placeholder="<spring:message code="message.libReturnedLate"/>"/>
+								    	  <form:input path="untimekyReturn" class="form-control"/>
 								    </div>
 							</div>
 				           
 				            <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libBooksOnHands"/></label>
 								    <div class="col-sm-10">
-								    	 <form:input path="multiBook" class="form-control" placeholder="<spring:message code="message.libBooksOnHands"/>"/>
+								    	 <form:input path="multiBook" class="form-control"/>
 								    </div>
 							</div>
 							
 							<div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libBooksAllowed"/></label>
 								    <div class="col-sm-10">
-								    	 <form:input path="booksAllowed" class="form-control" placeholder="<spring:message code="message.libBooksAllowed"/>"/>
+								    	 <form:input path="booksAllowed" class="form-control"/>
 								    </div>
 							</div>
 							

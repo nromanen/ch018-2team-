@@ -40,7 +40,10 @@
 		<div class="col-md-2 col-md-offset-1">
 			<h5 style="color: #FFFFFF"> <strong> <spring:message code="message.lib"/> </strong> </h5>
 		</div>	
-		<div class="col-md-1 col-md-offset-5">
+		<div class="col-md-1">
+			<a href="${pageContext.request.contextPath}/j_spring_security_logout" style="color: #FFFFFF"><h5> LogOut </h5></a>
+		</div>	
+		<div class="col-md-1 col-md-offset-4">
 			<a href="<c:url value="/librarian/users"/>" style="color: #FFFFFF"><h5><spring:message code="message.libUsers"/></h5></a>
 			<c:set var="highlight" value="books" scope="request"/>
 		</div>

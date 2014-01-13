@@ -86,6 +86,7 @@
     
     <definition name="librarian_header" template="/WEB-INF/templates/layouts/librarian/header.jsp" />
     
+    <!-- Books -->
     <definition name="librarian_books" extends="base-template">
         <put-attribute name="header" value="librarian_header" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/books.jsp" />
@@ -116,6 +117,7 @@
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/bookholders.jsp" />
     </definition>
     
+    <!-- Users -->
     <definition name="librarian_users" extends="base-template">
         <put-attribute name="header" value="librarian_header" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/users.jsp" />
@@ -131,11 +133,32 @@
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/edituser.jsp" />
     </definition>
     
-     <definition name="librarian_user_advanced_search" extends="base-template">
+    <definition name="librarian_user_advanced_search" extends="base-template">
         <put-attribute name="header" value="librarian_header" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/usersadvencedsearch.jsp" />
     </definition>
     
+    <!-- Orders -->
+    <definition name="librarian_orders" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/orders.jsp" />
+    </definition>
+    
+    <!-- BooksInUse -->
+    <definition name="librarian_toreturn" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/toreturn.jsp" />
+    </definition>
+    
+    <definition name="librarian_getbookback" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/getbookback.jsp" />
+    </definition>
+    
+    <definition name="librarian_edittoreturn" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/edittoreturn.jsp" />
+    </definition>
     
     <!-- Librarian/ -->
 </tiles-definitions>
