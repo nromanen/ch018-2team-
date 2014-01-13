@@ -1,25 +1,25 @@
 package com.ch018.library.service;
 
 //import com.ch018.library.dao.PersonDao;
-import com.ch018.library.DAO.PersonDao;
-import com.ch018.library.entity.Person;
-import com.ch018.library.validation.Password;
-import com.ch018.library.validation.UserRegistrationForm;
-import java.security.MessageDigest;
 import java.security.Principal;
 import java.util.List;
 import java.util.Random;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import sun.security.util.Password;
+
+import com.ch018.library.DAO.PersonDao;
+import com.ch018.library.entity.Person;
+import com.ch018.library.validation.UserRegistrationForm;
 /**
  *
  * @author Edd Arazian

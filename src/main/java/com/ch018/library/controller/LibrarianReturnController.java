@@ -29,7 +29,7 @@ public class LibrarianReturnController {
 		@RequestMapping(value = "")
 		public String showAll(Model model) throws Exception {
 			model.addAttribute("booksInUse", booksInUseService.getAll());
-			return "librarian/toreturn";
+			return "librarian_toreturn";
 		}
 		
 		@RequestMapping(value = "/getback", method = RequestMethod.GET)
@@ -37,7 +37,7 @@ public class LibrarianReturnController {
 			BooksInUse  bookInUse = new BooksInUse();
 			bookInUse = booksInUseService.getBookInUseById(id);
 			model.addAttribute("bookInUse", bookInUse);
-			return "/librarian/getbookback";
+			return "librarian_getbookback";
 		}
 		
 		@RequestMapping(value = "/getback", method = RequestMethod.POST)
@@ -52,7 +52,7 @@ public class LibrarianReturnController {
 		@RequestMapping(value = "/edit", method = RequestMethod.GET)
 		public String edit(@RequestParam("id") int id, Model model) throws Exception {
 			model.addAttribute("inuse", booksInUseService.getBookInUseById(id));
-			return "librarian/edittoreturn";
+			return "librarian_edittoreturn";
 		}
 		
 		@RequestMapping(value = "/edit", method = RequestMethod.POST)

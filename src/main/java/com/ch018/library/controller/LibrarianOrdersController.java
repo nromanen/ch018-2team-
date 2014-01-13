@@ -33,7 +33,7 @@ public class LibrarianOrdersController {
 	@RequestMapping(value = "")
 	public String showAll (Model model) throws Exception {
 		model.addAttribute("orders", ordersService.getAll());
-		return "librarian/orders";
+		return "librarian_orders";
 	}
 	
 	
@@ -48,14 +48,14 @@ public class LibrarianOrdersController {
 	public String toIssueInHour(Model model) throws SQLException {
 		List<Orders> orders = ordersService.getOrdersInHour();
 		model.addAttribute("orders", orders);
-		return "librarian/orders";
+		return "librarian_orders";
 	}
 		
 	@RequestMapping(value = "/toissuetoday")
 	public String toIssueToday(Model model) throws Exception {
 		List<Orders> orders = ordersService.getOrdersToday();
 		model.addAttribute("orders", orders);
-		return "librarian/orders";
+		return "librarian_orders";
 	}
 	
 }

@@ -4,28 +4,19 @@
  */
 package com.ch018.library.DAO;
 
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Person;
-
-import java.util.ArrayList;
 import java.util.List;
 
-
-
-
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
+import com.ch018.library.entity.Person;
 
 
 /**
@@ -76,11 +67,10 @@ public class PersonDaoImpl implements PersonDao {
     @Override
     public Person getByEmail(String email) {
         try {
-           return (Person) factory.getCurrentSession().createCriteria(Person.class)
-                   .add(Restrictions.eq("email", email)).uniqueResult();
-           
+          return (Person) factory.getCurrentSession().createCriteria(Person.class)
+                   .add(Restrictions.eq("email", email)).uniqueResult(); 
         } catch (Exception e) {
-            
+        	System.out.println("Catch" + e);
             return null;
         }
        
