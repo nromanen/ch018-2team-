@@ -113,7 +113,6 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
         public List<BooksInUse> getBooksInUseByReturnDateLe(Date date) {
         
             try {
-                logger.info("before factory");
                 return factory.getCurrentSession().createCriteria(BooksInUse.class)
                         .add(Restrictions.le("returnDate", getDateToWithoutTime(date)))
                         .list();
