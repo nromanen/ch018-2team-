@@ -7,6 +7,8 @@ import java.util.List;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import com.ch018.library.helper.OrderDays;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 /**
  *
@@ -29,4 +31,5 @@ public interface OrdersService {
          boolean isLimitReached(Person person);
          void checkPersonOrders(Book book, Date returnDate);
          void issue(Orders order);
+         OrderDays getMinOrderDate(Book book);
 }

@@ -40,17 +40,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class OrderController {
 
         @Autowired
-        BookService bookService;
+        private BookService bookService;
         @Autowired
-        PersonService personService;
+        private PersonService personService;
         @Autowired
-        OrdersService ordersService;
+        private OrdersService ordersService;
         @Autowired
-        WishListService wishService;
+        private WishListService wishService;
         @Autowired
-        BookInUseService useService;
+        private BookInUseService useService;
         @Autowired
-        MailService mailService;
+        private MailService mailService;
 
         final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
@@ -70,7 +70,7 @@ public class OrderController {
             model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
             model.addAttribute("inOrders", ordersService.isPersonOrderedBook(person, book));
             model.addAttribute("inWishList", wishService.isPersonWishBook(person, book));
-            Date minDate = useService.getMinOrderDate(book);
+            Date minDate = ordersService.getMinOrderDate(book).getMinOrderDate();
             model.addAttribute("minDate", minDate.getTime());
             return "order";
 
@@ -97,7 +97,7 @@ public class OrderController {
             List<Orders> orders = ordersService.getOrderByPerson(person);
             Map<Orders, Long> ordersMinDates = new HashMap<>();
             for(Orders order : orders){
-               ordersMinDates.put(order, useService.getMinOrderDate(order.getBook()).getTime());  
+               ordersMinDates.put(order, ordersService.getMinOrderDate(order.getBook()).getMinOrderDate().getTime());  
             }
             model.addAttribute("ordersMinDates", ordersMinDates);
             return "orders";
@@ -119,7 +119,7 @@ public class OrderController {
             Book book = order.getBook();
             Date newDate = new Date(date);
             ordersService.update(orderId, newDate);
-            Date minDate = useService.getMinOrderDate(book);
+            Date minDate = ordersService.getMinOrderDate(book).getMinOrderDate();
             JSONObject json = new JSONObject();
             json.put("orderId", orderId);
             json.put("date", date);

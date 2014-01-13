@@ -1,6 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             <div class="row" style="background-color: #F0F0F0;">
                 
+                <div id="picker_date">
+                    <div id="min_date" value="${minDate}"></div>
+                    <div id="disabled_dates" value="${disabled}"></div>
+                    <div id="allow_times"></div>
+                </div>
+                
                 <div class="col-md-2" id="left_main">
                     <!--New Arrivals-->
                 </div>

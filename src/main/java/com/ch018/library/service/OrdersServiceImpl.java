@@ -6,6 +6,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import com.ch018.library.helper.OrderDays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OrdersServiceImpl implements OrdersService{
 
+        private static final int MAX_DAYS = 14;
+        private static final long MILLIS_IN_DAY = 24*3600*1000;
+    
         @Autowired
         private OrdersDao ordersDao;
         
@@ -174,9 +178,37 @@ public class OrdersServiceImpl implements OrdersService{
 		bookInUse.setReturnDate(date);
 		
 		booksInUseService.save(bookInUse);
-                
-                Date minDate = booksInUseService.getMinOrderDate(book);
-                checkPersonOrders(book, minDate);
+               
 	}
-    
+
+        @Override
+        @Transactional
+        public OrderDays getMinOrderDate(Book book) {
+            
+            int currentQuantity = book.getCurrentQuantity();
+            long days = MAX_DAYS;
+            Date minDate = new Date();
+            Calendar calendar = Calendar.getInstance();
+            List<Orders> orders = ordersDao.getOrderByBook(book);
+            
+            if(currentQuantity > 0 && orders.size() == 0) {
+                calendar.setTime(minDate);
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                return new OrderDays(calendar.getTime(), MAX_DAYS);
+            } else if (currentQuantity <= 0) {
+                minDate = booksInUseService.getMinReturnDate(book);
+            }
+            
+            for(Orders order : orders) {
+                days =  (order.getOrderDate().getTime() - minDate.getTime())/MILLIS_IN_DAY;
+                if (days < 3) {
+                    minDate = new Date(order.getOrderDate().getTime() + order.getDaysAmount()*MILLIS_IN_DAY);
+                }
+            }
+            
+            return new OrderDays(minDate, days);
+            
+        }
+
+
 }

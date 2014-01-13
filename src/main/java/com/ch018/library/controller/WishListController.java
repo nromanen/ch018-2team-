@@ -68,7 +68,7 @@ public class WishListController {
             List<WishList> wishes = wishService.getWishByPerson(person);
             Map<WishList, Long> wishesWithDates = new HashMap<>();
             for(WishList wish : wishes) {
-                wishesWithDates.put(wish, useService.getMinOrderDate(wish.getBook()).getTime());
+                wishesWithDates.put(wish, ordersService.getMinOrderDate(wish.getBook()).getMinOrderDate().getTime());
             }
             model.addAttribute("map", wishesWithDates);
             return "wishlist";

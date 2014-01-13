@@ -11,6 +11,10 @@ $(document).ready(function(){
     minD = getDateInFormat(tmpDate);
     minDateSpl = minD.split(" ");
     $('#datetimepicker').datetimepicker({
+                onGenerate:function( ct ){
+                    $(this).find('.xdsoft_date.xdsoft_weekend')
+                            .addClass('xdsoft_disabled');
+                },
                 format: 'Y/m/d H:i',
                 value: minD,
                 minDate: minDateSpl[0],

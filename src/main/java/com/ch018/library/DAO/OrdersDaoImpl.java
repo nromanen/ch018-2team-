@@ -12,6 +12,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -57,7 +58,14 @@ public class OrdersDaoImpl implements OrdersDao {
 
     @Override
     public List<Orders> getOrderByBook(Book book) {
-        return factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("book", book)).list();
+        try {
+                List<Orders> orders = factory.getCurrentSession().createCriteria(Orders.class)
+                                            .add(Restrictions.eq("book", book)).addOrder(Order.asc("orderDate")).list();
+                return orders == null ? new ArrayList<Orders>() : orders;
+        } catch (Exception e) {
+            logger.error("error in getOrderByBook {}", e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
     @Override

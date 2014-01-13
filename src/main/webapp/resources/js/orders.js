@@ -27,6 +27,10 @@ $(document).ready(function(){
         
         
         $(this).datetimepicker({
+            onGenerate:function( ct ){
+		$(this).find('.xdsoft_date.xdsoft_weekend')
+			.addClass('xdsoft_disabled');
+            },
             format: 'Y/m/d H:i',
             value: orderDate,
             minDate: minDate[0],
@@ -34,7 +38,7 @@ $(document).ready(function(){
                     '09:00', '10:00', '11:00', '12:00', '14:00',
                     '15:00', '16:00'
                 ],
-            validateOnBlur: true
+            weekends:['15.10.2014', '16.10.2014', '18.10.2014']
         });
     });
 

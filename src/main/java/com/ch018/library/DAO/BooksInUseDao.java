@@ -24,7 +24,7 @@ public interface BooksInUseDao {
         List<BooksInUse> getBooksInUseByBook(Book book);
         List<BooksInUse> getBooksInUseByIssueDate(Date issue);
         List<BooksInUse> getBooksInUseByReturnDate(Date returnDateFrom);
-        Date getMinOrderDate(Book book);
+        Date getMinReturnDate(Book book);
         boolean isPersonHaveBook(Person person, Book book); 
         List<BooksInUse> getBooksInUseByReturnDateLe(Date date);
 }
