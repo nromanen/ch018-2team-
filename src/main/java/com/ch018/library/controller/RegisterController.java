@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class RegisterController {
+// TODO: too much indentation, remove trailing spaces and unnecessary double carriage returns in all files
+// TODO: decide tabs or spaces and format them everywhere
         @Autowired
         PersonService personService;
         

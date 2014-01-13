@@ -96,7 +96,8 @@ public class Orders implements Serializable {
 
         @Override
         public String toString() {
-           return person.getPid() + " " + book.getbId() + " " + orderDate;
+            // TODO: toString should describe entity, its class and details. Here description
+            return person.getPid() + " " + book.getbId() + " " + orderDate;
         }
         
 }

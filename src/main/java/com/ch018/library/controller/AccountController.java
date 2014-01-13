@@ -28,6 +28,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+// TODO: sort imports
 /**
  *
  * @author Edd Arazian
@@ -46,7 +47,7 @@ public class AccountController {
         final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
         @RequestMapping(method = RequestMethod.GET)
-        @Secured({"ROLE_USER"})
+        @Secured({"ROLE_USER"}) // TODO: extract as constants somewhere
         public String accountG(Model model, Principal principal){
             Person person = personService.getByEmail(principal.getName());
             model.addAttribute("person", person);
@@ -64,7 +65,7 @@ public class AccountController {
                 logger.info("person {} email changed to ", person, person.getEmail());
                 return new ResponseEntity<>(json.toString(), HttpStatus.OK);
             } else 
-                return new ResponseEntity<>("can't change email", HttpStatus.BAD_REQUEST); 
+                return new ResponseEntity<>("can't change email", HttpStatus.BAD_REQUEST); // TODO: extract as property
         }
 
         @RequestMapping(value = "changePassword", method = RequestMethod.POST)

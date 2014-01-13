@@ -4,6 +4,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+// TODO: if possible, merge with Book entity?
 public class Book {
 
 	@NotEmpty

@@ -84,7 +84,7 @@
 			        <c:forEach items="${orders}" var="order">
 			                <tr>
 			                        <td>${order.id}</td>
-			                        <td>${order.person.getName()}</td>
+			                        <td>${order.person.getName()}</td> <!-- TODO: ${order.person.name} -->
 			                        <td>${order.book.getTitle()}</td>
 			                        <td>${order.getOrderDate()}</td>
 			                        <td><a href="<c:url value="/librarian/orders/issue?id=${order.id}"/>">Issue</a>

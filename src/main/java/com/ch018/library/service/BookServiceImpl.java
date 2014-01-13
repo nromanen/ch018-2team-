@@ -125,6 +125,7 @@ public class BookServiceImpl implements BookService {
 		return bookDAO.simpleSearch(query);
 	}
 
+        // TODO: return map and convert to JSON on Controller layer
         @Override
         @Transactional
         public JSONObject getBooksComplexByParamsAsJson(BookSearch bookSearch) {

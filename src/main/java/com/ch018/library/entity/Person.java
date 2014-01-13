@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Edd Arazian
  */
-
+// TODO: extract as separate enum class
 enum Roles{ROLE_ADMIN, ROLE_LIBRARIAN, ROLE_USER}
 
 @Entity
