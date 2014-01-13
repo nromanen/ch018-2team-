@@ -1,6 +1,7 @@
 package com.ch018.library.validation;
 
 import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**

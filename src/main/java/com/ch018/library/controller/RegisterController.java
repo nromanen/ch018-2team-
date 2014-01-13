@@ -1,11 +1,8 @@
 package com.ch018.library.controller;
 
 
-import com.ch018.library.entity.Person;
-import com.ch018.library.service.PersonService;
-import com.ch018.library.validation.Password;
-import com.ch018.library.validation.UserRegistrationForm;
 import javax.validation.Valid;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +18,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import sun.security.util.Password;
+
+import com.ch018.library.service.PersonService;
+import com.ch018.library.validation.UserRegistrationForm;
 /**
  *
  * @author Edd Arazian
