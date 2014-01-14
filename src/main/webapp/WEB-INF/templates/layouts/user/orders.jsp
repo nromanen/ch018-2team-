@@ -30,11 +30,11 @@
                                     <div class="col-md-5">
                                         
                                         <input type="hidden" class="order_id" value="${entry.key.getId()}">
-                                        <input type="hidden" class="minDate" value="${entry.value.minOrderDate}">
-                                        <input type="hidden" class="orderDate" value="${entry.key.getOrderDate().getTime()}">
-                                        <input  class="calendar">
+                                        <input type="hidden" class="minDate" value="${entry.value.minOrderDate.time}">
+                                        <input type="hidden" class="orderDate" value="${entry.key.orderDate.time}">                                       <input  class="calendar">
                                         <button class="btn-info order_change_button">Change</button>
                                         <input class="changed" type="hidden" value="${entry.key.getChanged()}">
+                                        <div class="alert alert-danger order_date_err hide"></div>
                                         <div class="picker_info">
                                             <c:forEach var="order" items="${entry.value.orders}">
                                                 <div class="order" start="${order.orderDate.time}" days="${order.daysAmount}"></div>

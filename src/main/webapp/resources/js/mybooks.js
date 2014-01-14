@@ -10,7 +10,7 @@ $(document).ready(function(){
         if(diff*(-1) > 0){
             //alert("AA");
             $parent.parent().parent().css("background-color", "#FF6633");
-        }else if(diff < 2){
+        }else if(diff < 5){
             $parent.parent().parent().css("background-color", "#FFFF66");
         }else{
             $parent.parent().parent().css("background-color", "#99FF66");

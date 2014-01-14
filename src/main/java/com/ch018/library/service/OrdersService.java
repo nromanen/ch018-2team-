@@ -33,5 +33,7 @@ public interface OrdersService {
          void checkPersonOrders(Book book, Date returnDate);
          void issue(Orders order);
          OrderDays getMinOrderDate(Book book);
-         OrderDays checkOrderDate(Book book, Date orderDate) throws Exception ;
+         int getCorrectAmountOfOrderDays(Book book, Date orderDate) throws Exception;
+         void addOrder(Person person, int bookId, Date orderDate) throws Exception;
+         Orders editOrder(Person person, int orderId, Date orderDate) throws Exception;
 }

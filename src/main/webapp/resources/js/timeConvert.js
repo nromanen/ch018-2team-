@@ -35,8 +35,8 @@ function getAvailableDays(current_time, $order) {
             return false;
         }
    });
-   /*if(days > 14)
-       days = 14;*/
+   if(days > 14)
+       days = 14;
    return Math.floor(days);
  
 }

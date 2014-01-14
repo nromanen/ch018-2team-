@@ -10,7 +10,11 @@ import com.ch018.library.helper.OrderDays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /**
@@ -20,8 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OrdersServiceImpl implements OrdersService{
 
-        private static final int MAX_DAYS = 14;
-        private static final long MILLIS_IN_DAY = 24*3600*1000;
+        private final static int MAX_DAYS = 14;
+        private final static long MILLIS_IN_DAY = 24*3600*1000;
+        private final static long DIFF_TIME_IN_MILLIS = 10*60*1000; 
+        private final static int ADDITIONAL_DAY_IF_SAT = 2;
+                
+        private final Logger logger = LoggerFactory.getLogger(OrdersServiceImpl.class);
     
         @Autowired
         private OrdersDao ordersDao;
@@ -213,22 +221,24 @@ public class OrdersServiceImpl implements OrdersService{
 
         @Override
         @Transactional
-        public OrderDays checkOrderDate(Book book, Date orderDate) throws Exception {
+        public int getCorrectAmountOfOrderDays(Book book, Date orderDate) throws Exception {
+            if (orderDate.getTime() < (new Date().getTime() - DIFF_TIME_IN_MILLIS))
+                throw new Exception("Incorrect Date Choosen");
             List<Orders> orders = ordersDao.getOrderByBook(book);
-            long days = 14;
+            int days = MAX_DAYS;
             long currentOrderDateInMillis = orderDate.getTime();
             for (Orders order : orders) {
                 long orderDateInMillis = order.getOrderDate().getTime();
                 if (currentOrderDateInMillis < orderDateInMillis) {
-                    days = (orderDateInMillis - currentOrderDateInMillis) / MILLIS_IN_DAY;
+                    Long daysRes = (orderDateInMillis - currentOrderDateInMillis) / MILLIS_IN_DAY;
+                    days = daysRes.intValue();
                     if (days <= 0)
                         throw new Exception("Incorrect Date Choosen");
-                    else if (days > 14)
-                        days = 14;
-                    return new OrderDays(orderDate, days);
+                    else if (days > MAX_DAYS)
+                        days = MAX_DAYS;
                 }
             }
-            return new OrderDays(orderDate, days);
+            return checkForWeekend(orderDate, days);
         }
 
         @Override
@@ -237,6 +247,52 @@ public class OrdersServiceImpl implements OrdersService{
             ordersDao.update(order);
         }
 
-        
+        @Override
+        @Transactional
+        public void addOrder(Person person, int bookId, Date orderDate) throws Exception {
+            Book book = bookService.getBookById(bookId);
+            int days;
+            try {
+                days = getCorrectAmountOfOrderDays(book, orderDate);
+            } catch (Exception e) {
+                throw new Exception(e.getMessage());
+            }
+            Orders order = new Orders(person, book, orderDate, days);
+            save(order);
+            logger.info("person {} order book {} to date {} for {} days", person, book, orderDate, days);
+            mailService.sendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
+        }
 
+        @Override
+        @Transactional
+        public Orders editOrder(Person person, int orderId, Date orderDate) throws Exception {
+            
+            Orders order = getOrderByID(orderId);
+            Book book = order.getBook();
+            int orderDays;
+            try {
+                orderDays = getCorrectAmountOfOrderDays(book, orderDate);
+            } catch (Exception e) {
+               throw new Exception(e.getMessage());
+            }
+            order.setOrderDate(orderDate);
+            order.setDaysAmount(orderDays);
+            update(order);
+            logger.info("person {} edit order for book {} to date {} for {} days", person, book, orderDate, orderDays);
+            return order;
+            
+        }
+
+        private int checkForWeekend(Date orderDate, int days) {
+        
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(orderDate);
+            calendar.add(Calendar.DAY_OF_YEAR, days);
+            if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+                days += ADDITIONAL_DAY_IF_SAT;
+            } else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                days++;
+            }
+            return days;
+        }
 }

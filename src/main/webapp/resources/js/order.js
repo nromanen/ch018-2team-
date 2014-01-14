@@ -22,7 +22,7 @@ $(document).ready(function(){
                     var days = getAvailableDays(current_time, $('.order'));
                     
                     if($(this).find($('#picker_notify')).attr('id') === undefined){
-                        console.log($(this))
+                        console.log($(this));
                         var $div = $('<div>', {id: 'picker_notify', style : 'position : absolute; left: 100%; width:100px; height:100px; border : 2px solid black'}).text(days);
                         $div.appendTo($(this));
                     

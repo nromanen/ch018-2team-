@@ -43,6 +43,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 public class OrderController {
 
+        final Logger logger = LoggerFactory.getLogger(OrderController.class);
+    
         @Autowired
         private BookService bookService;
         @Autowired
@@ -53,13 +55,7 @@ public class OrderController {
         private WishListService wishService;
         @Autowired
         private BookInUseService useService;
-        @Autowired
-        private MailService mailService;
-        
-        @Autowired
-        private BookDao bookdao;
 
-        final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
         @RequestMapping(method = RequestMethod.GET)
         public String orderGet(@RequestParam("id") Integer bookId , Model model, Principal principal){
@@ -85,27 +81,21 @@ public class OrderController {
 
         @RequestMapping(value = "/add", method = RequestMethod.POST)
         @Secured({"ROLE_USER"})
-        public ResponseEntity<String> add(@RequestParam("bookId") Integer bookId, @RequestParam("time") Long time, 
+        public ResponseEntity<String> addOrder(@RequestParam("bookId") Integer bookId, @RequestParam("time") Long time, 
                             Principal principal) throws IncorrectInput{
-            Book book = bookService.getBookById(bookId);
             Person person = personService.getByEmail(principal.getName());
             Date date = new Date(time);
-            OrderDays orderDays;
             try {
-                orderDays = ordersService.checkOrderDate(book, date);
+            ordersService.addOrder(person, bookId, date);
             } catch (Exception e) {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
-            Orders order = new Orders(person, book, date, orderDays.getDaysAvailable());
-            ordersService.save(order);
-            logger.info("person {} order book {} to date {} for {} days", person, book, date, orderDays.getDaysAvailable());
-            mailService.sendMailWithOrder("springytest@gmail.com", "etenzor@gmail.com", "order", order);
             return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
         }
 
         @RequestMapping(value = "/my", method = RequestMethod.GET)
         @Secured({"ROLE_USER"})
-        public String myG(Model model, Principal principal){
+        public String myOrders(Model model, Principal principal){
             Person person = personService.getByEmail(principal.getName());
             List<Orders> orders = ordersService.getOrderByPerson(person);
             Map<Orders, OrderDays> ordersMinDates = new HashMap<>();
@@ -119,29 +109,24 @@ public class OrderController {
 
         @RequestMapping(value = "/delete")
         @Secured({"ROLE_USER"})
-        public @ResponseBody String delete(@RequestParam("orderId") Integer orderId){
+        public @ResponseBody String deleteOrder(@RequestParam("orderId") Integer orderId){
             ordersService.delete(ordersService.getOrderByID(orderId));
             return new JSONObject().toString();
         }
 
         @RequestMapping(value = "/edit")
         @Secured({"ROLE_USER"})
-        public ResponseEntity<String> edit(@RequestParam("orderId") Integer orderId,
+        public ResponseEntity<String> editOrder(@RequestParam("orderId") Integer orderId,
                         @RequestParam("date") Long date, Principal principal) throws IncorrectInput{
-            Orders order = ordersService.getOrderByID(orderId);
-            Book book = order.getBook();
-            Date newDate = new Date(date);
-            OrderDays orderDays;
+            Person person = personService.getByEmail(principal.getName());
+            Orders order;
             try {
-                orderDays = ordersService.checkOrderDate(book, newDate);
+                    order = ordersService.editOrder(person, orderId, new Date(date));
             } catch (Exception e) {
-                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
             }
-            order.setOrderDate(newDate);
-            order.setDaysAmount(orderDays.getDaysAvailable());
-            ordersService.update(order);
-            OrderDays minDate = ordersService.getMinOrderDate(book);
             JSONObject json = new JSONObject();
+            OrderDays minDate = ordersService.getMinOrderDate(order.getBook());
             json.put("orderId", orderId);
             json.put("date", date);
             json.put("minDate", minDate.getMinOrderDate().getTime());
