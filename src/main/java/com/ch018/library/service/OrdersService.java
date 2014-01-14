@@ -19,6 +19,7 @@ public interface OrdersService {
          void save(Orders order);
          void delete(Orders order);
          void update(int id, Date newDate);
+         void update(Orders order);
          List<Orders> getAll();
          List<Orders> getOrderByPerson(Person person);
          List<Orders> getOrderByBook(Book book);
@@ -32,4 +33,5 @@ public interface OrdersService {
          void checkPersonOrders(Book book, Date returnDate);
          void issue(Orders order);
          OrderDays getMinOrderDate(Book book);
+         OrderDays checkOrderDate(Book book, Date orderDate) throws Exception ;
 }

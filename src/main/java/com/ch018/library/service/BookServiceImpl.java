@@ -209,5 +209,15 @@ public class BookServiceImpl implements BookService {
 
             return booksInUseEx;
         }
+
+    @Override
+    @Transactional
+    public Book getBookWith(int id) {
+        
+        return bookDAO.getBookWith(id);
+        
+    }
+        
+        
 }
 

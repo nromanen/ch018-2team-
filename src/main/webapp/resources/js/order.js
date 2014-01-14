@@ -10,14 +10,31 @@ $(document).ready(function(){
     
     minD = getDateInFormat(tmpDate);
     minDateSpl = minD.split(" ");
+    
     $('#datetimepicker').datetimepicker({
-                onGenerate:function( ct ){
+                onGenerate:function( ct , $input ){
                     $(this).find('.xdsoft_date.xdsoft_weekend')
                             .addClass('xdsoft_disabled');
+                    
+                    
+                },
+                onSelectDate:function(current_time,$input){
+                    var days = getAvailableDays(current_time, $('.order'));
+                    
+                    if($(this).find($('#picker_notify')).attr('id') === undefined){
+                        console.log($(this))
+                        var $div = $('<div>', {id: 'picker_notify', style : 'position : absolute; left: 100%; width:100px; height:100px; border : 2px solid black'}).text(days);
+                        $div.appendTo($(this));
+                    
+                    }else{
+                        $('#picker_notify').text(days);
+                    }
+                    
                 },
                 format: 'Y/m/d H:i',
                 value: minD,
                 minDate: minDateSpl[0],
+                weekends: getWeekEnds($('.order')),
                 allowTimes:[
                     '09:00', '10:00', '11:00', '12:00', '14:00',
                     '15:00', '16:00'
@@ -36,6 +53,7 @@ $(document).ready(function(){
        bookId = $(this).prev().val();
         addToWishList(bookId);
     });
+    
     
 
 });
@@ -79,5 +97,6 @@ function addToWishList(bookId){
 
         });
 }
+
 
 

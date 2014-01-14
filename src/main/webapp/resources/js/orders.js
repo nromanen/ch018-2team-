@@ -9,7 +9,8 @@ $(document).ready(function(){
         var orderDate = getDateInFormat(orderDateLong);
         var rawMinDate = getDateInFormat(minDateLong);
         var minDate = rawMinDate.split(" ");
-        
+        var $orders = $(this).parent().find('.order');
+
         if(changed === 'true'){
             
             var $btn = $(this).next();
@@ -27,18 +28,33 @@ $(document).ready(function(){
         
         
         $(this).datetimepicker({
-            onGenerate:function( ct ){
-		$(this).find('.xdsoft_date.xdsoft_weekend')
-			.addClass('xdsoft_disabled');
+            onGenerate: function(ct, $input) {
+                $(this).find('.xdsoft_date.xdsoft_weekend')
+                        .addClass('xdsoft_disabled');
+
+
+            },
+            onSelectDate: function(current_time, $input) {
+                var days = getAvailableDays(current_time, $orders);
+                
+                if ($(this).find($('.picker_notify')).attr('class') === undefined) {
+                    console.log($(this))
+                    var $div = $('<div>', {class: 'picker_notify', style: 'position : absolute; left: 100%; width:100px; height:100px; border : 2px solid black'}).text(days);
+                    $div.appendTo($(this));
+
+                } else {
+                    $('#picker_notify').text(days);
+                }
+
             },
             format: 'Y/m/d H:i',
             value: orderDate,
             minDate: minDate[0],
-            allowTimes:[
-                    '09:00', '10:00', '11:00', '12:00', '14:00',
-                    '15:00', '16:00'
-                ],
-            weekends:['15.10.2014', '16.10.2014', '18.10.2014']
+            allowTimes: [
+                '09:00', '10:00', '11:00', '12:00', '14:00',
+                '15:00', '16:00'
+            ],
+            weekends: getWeekEnds($orders)
         });
     });
 
@@ -97,7 +113,7 @@ function editOrder(orderId, date){
                 var $li = $('#order_li_' + orderId);
                 var $btn = $li.find('.order_change_button');
                 
-                if(data.date > (data.minDate + 12*3600*1000)){
+                if(data.date > (data.minDate + (12*3600*1000))){
                     $btn.attr('data-toggle', 'popover');
                     $btn.attr('data-content', 'can choose earlier date');
                     $btn.popover("show");

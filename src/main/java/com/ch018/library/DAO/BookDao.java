@@ -28,4 +28,5 @@ public interface BookDao {
         List<Book> advancedSearch(Book book);
         List<Book> simpleSearch(String query);
         Page getBooksComplexByParams(BookSearch bookSearch);
+        Book getBookWith(int id);
 }

@@ -36,7 +36,7 @@ public class Orders implements Serializable {
         @Column(name = "changed")
         private boolean changed;
         @Column(name = "daysamount")
-        private int daysAmount;
+        private long daysAmount;
         
         public Orders() {
                 
@@ -49,7 +49,7 @@ public class Orders implements Serializable {
                 this.changed = false;
         }
 
-        public Orders(Person person, Book book, Date orderDate, int daysAmount) {
+        public Orders(Person person, Book book, Date orderDate, long daysAmount) {
             this.person = person;
             this.book = book;
             this.orderDate = orderDate;
@@ -110,11 +110,11 @@ public class Orders implements Serializable {
             this.changed = changed;
         }
 
-        public int getDaysAmount() {
+        public long getDaysAmount() {
             return daysAmount;
         }
 
-        public void setDaysAmount(int daysAmount) {
+        public void setDaysAmount(long daysAmount) {
             this.daysAmount = daysAmount;
         }
 

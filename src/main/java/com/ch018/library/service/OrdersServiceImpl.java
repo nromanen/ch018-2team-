@@ -200,15 +200,43 @@ public class OrdersServiceImpl implements OrdersService{
             }
             
             for(Orders order : orders) {
-                days =  (order.getOrderDate().getTime() - minDate.getTime())/MILLIS_IN_DAY;
+                days =  (order.getOrderDate().getTime() - minDate.getTime()) / MILLIS_IN_DAY;
                 if (days < 3) {
-                    minDate = new Date(order.getOrderDate().getTime() + order.getDaysAmount()*MILLIS_IN_DAY);
+                    minDate = new Date(order.getOrderDate().getTime() + order.getDaysAmount() * MILLIS_IN_DAY);
                 }
             }
-            
-            return new OrderDays(minDate, days);
+            calendar.setTime(minDate);
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            return new OrderDays(minDate, days, orders);
             
         }
 
+        @Override
+        @Transactional
+        public OrderDays checkOrderDate(Book book, Date orderDate) throws Exception {
+            List<Orders> orders = ordersDao.getOrderByBook(book);
+            long days = 14;
+            long currentOrderDateInMillis = orderDate.getTime();
+            for (Orders order : orders) {
+                long orderDateInMillis = order.getOrderDate().getTime();
+                if (currentOrderDateInMillis < orderDateInMillis) {
+                    days = (orderDateInMillis - currentOrderDateInMillis) / MILLIS_IN_DAY;
+                    if (days <= 0)
+                        throw new Exception("Incorrect Date Choosen");
+                    else if (days > 14)
+                        days = 14;
+                    return new OrderDays(orderDate, days);
+                }
+            }
+            return new OrderDays(orderDate, days);
+        }
+
+        @Override
+        @Transactional
+        public void update(Orders order) {
+            ordersDao.update(order);
+        }
+
+        
 
 }

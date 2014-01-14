@@ -5,6 +5,10 @@
                     <div id="min_date" value="${minDate}"></div>
                     <div id="disabled_dates" value="${disabled}"></div>
                     <div id="allow_times"></div>
+                    <c:forEach var="order" items="${orders}">
+                        <div class="order" start="${order.orderDate.getTime()}" days="${order.daysAmount}"></div>
+                    </c:forEach>
+                    
                 </div>
                 
                 <div class="col-md-2" id="left_main">

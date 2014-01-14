@@ -35,4 +35,5 @@ public interface BookService {
              JSONObject getBooksComplexByParamsAsJson(BookSearch bookSearch);           
              JSONObject getBooksComplexAsJson(BookSearch bookSearch);       
              Map<BooksInUse, Integer> getHolders(Book book);
+             Book getBookWith(int id);
 }
