@@ -32,8 +32,6 @@ public interface BookService {
              List<Book> getBooksByPagesEq(int pages);
              List<Book> advancedSearch(Book book);
              List<Book> simpleSearch(String query);
-             JSONObject getBooksComplexByParamsAsJson(BookSearch bookSearch);           
-             JSONObject getBooksComplexAsJson(BookSearch bookSearch);       
+             Page getBooksComplexByParams(BookSearch bookSearch);       
              Map<BooksInUse, Integer> getHolders(Book book);
-             Book getBookWith(int id);
 }

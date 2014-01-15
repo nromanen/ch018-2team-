@@ -58,7 +58,11 @@
                 </div>
                 
                 <div class="col-md-8 book1" id="center_main">
-                    
+                    <c:choose>
+                        <c:when test="${nothing}">
+                            <h3><spring:message code="message.nothing" />  ${query}</h3> 
+                        </c:when>
+                    </c:choose>
                     <ul class="list-inline list-unstyled">
                         <c:forEach var="book" items="${books}">         
                             <li class="col-md-3" >

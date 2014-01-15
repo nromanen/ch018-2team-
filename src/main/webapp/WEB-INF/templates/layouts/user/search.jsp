@@ -14,10 +14,10 @@
     <div class="col-md-5 col-md-offset-2" style="margin-top: 15px;">
     <div class="row">
         <div class="col-md-10">
-            <input class="form-control" id="search_field" type="text" name="search" onkeydown="if (window.event.keyCode==13) search($(this).val())"/>
+            <input maxlength="50" class="form-control" id="search_field" type="text" name="search" onkeydown="if (window.event.keyCode==13) search($(this).val(), $('#search_button').attr('url'))"/>
         </div>
         <div class="col-md-2">
-            <button class="form-control btn-info" onclick="search($('#search_field').val());"><spring:message code="message.search" /></button>
+            <button class="form-control btn-info" id="search_button" url="${pageContext.request.contextPath}/books/search" onclick="search($('#search_field').val(), $(this).attr('url'));"><spring:message code="message.search" /></button>
         </div>
     </div>
     <div class="row" style="margin-top: 10px;">
@@ -28,13 +28,13 @@
 
                 <div id="advanced_search_panel">
                     <div class="control-group col-md-12">
-                        <input class="form-control" id="advanced_search_title" type="text" placeholder="Title">
+                        <input maxlength="25" class="form-control" id="advanced_search_title" type="text" placeholder="Title">
                     </div>
                     <div class="control-group col-md-12">
-                        <input class="form-control" id="advanced_search_authors" type="text" placeholder="Author">
+                        <input maxlength="25" class="form-control" id="advanced_search_authors" type="text" placeholder="Author">
                     </div>
                     <div class="control-group col-md-12">
-                        <input class="form-control" id="advanced_search_publisher" type="text" placeholder="Publisher">
+                        <input maxlength="25" class="form-control" id="advanced_search_publisher" type="text" placeholder="Publisher">
                     </div>
 
                     <div class="control-group col-md-12">
@@ -46,7 +46,7 @@
                         </select>    
                     </div>
 
-                    <button class="form-control btn-info" id="advanced_search_submit">search</button> 
+                    <button class="form-control btn-info" id="advanced_search_submit" url="${pageContext.request.contextPath}/books/advancedSearch">search</button> 
 
                 </div>
             </sec:authorize>

@@ -109,7 +109,8 @@ public class BookServiceImpl implements BookService {
         @Override
         @Transactional
         public Page getBooksComplex(BookSearch bookSearch) {
-            return bookDAO.getBooksComplex(bookSearch);
+            Page books = bookDAO.getBooksComplex(bookSearch);
+            return books;
         }
 
 
@@ -127,24 +128,13 @@ public class BookServiceImpl implements BookService {
 
         @Override
         @Transactional
-        public JSONObject getBooksComplexByParamsAsJson(BookSearch bookSearch) {
+        public Page getBooksComplexByParams(BookSearch bookSearch) {
             Page books = bookDAO.getBooksComplexByParams(bookSearch);
-            boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
-            return formBooksJsonFromList(books,isUserAuth);
-        }
-
-        @Override
-        @Transactional
-        public JSONObject getBooksComplexAsJson(BookSearch bookSearch) {
-            boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
-            Page page;
-            page = getBooksComplex(bookSearch);
-
-            return formBooksJsonFromList(page, isUserAuth);
+            return books;
         }
 
 
-        private JSONObject formBooksJsonFromList(Page page, boolean isUserAuth){
+        /*private JSONObject formBooksJsonFromList(Page page, boolean isUserAuth){
 
             List<JSONObject> jsons = new ArrayList<>();
 
@@ -185,7 +175,7 @@ public class BookServiceImpl implements BookService {
 
             return finalJson;
 
-        }
+        }*/
 
         @Override
         @Transactional
@@ -210,13 +200,6 @@ public class BookServiceImpl implements BookService {
             return booksInUseEx;
         }
 
-    @Override
-    @Transactional
-    public Book getBookWith(int id) {
-        
-        return bookDAO.getBookWith(id);
-        
-    }
         
         
 }

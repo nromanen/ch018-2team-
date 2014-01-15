@@ -1,3 +1,4 @@
+
 $(document).ready(function (){
     
     $('body').click(function () {
@@ -5,6 +6,9 @@ $(document).ready(function (){
         $('#error_div').addClass('hide');
         
     });
+   
+    
+    
     
     $('#acc_email_button').click(function (){
         if($('#acc_email_button').text() === 'Change'){

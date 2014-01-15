@@ -22,6 +22,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
 import com.ch018.library.helper.BookSearch;
+import com.ch018.library.helper.Page;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
@@ -35,12 +36,7 @@ import com.ch018.library.service.PersonService;
 @Controller
 @RequestMapping(value = "/books")
 public class BooksController {
-    
-        private final static String SORT = "authors";
-        private final static Boolean ORDER = false;
-        private final static Integer PAGE_NUM = 1;
-        private final static Integer AMOUNT = 10;
-        
+
 
         @Autowired
         BookService bookService;
@@ -54,25 +50,33 @@ public class BooksController {
         final Logger logger = LoggerFactory.getLogger(BooksController.class);
 
         @RequestMapping(method = RequestMethod.GET)
-        public String booksG(Model model){
+        public String booksGeneral(Model model){
             List<Book> books = bookService.getAll();
             model.addAttribute("books", books);
 
             return "books";
         }
 
-        @RequestMapping(method = RequestMethod.POST)
-        public @ResponseBody String books(@ModelAttribute BookSearch bookSearch){
+        @RequestMapping(value = "/search", method = RequestMethod.POST)
+        public String booksSearch(@ModelAttribute BookSearch bookSearch, Model model){
 
-            return bookService.getBooksComplexAsJson(bookSearch).toString();    
+            Page books = bookService.getBooksComplex(bookSearch);
+            if (books.getBooks().isEmpty() || books.getBooks() == null) {
+                model.addAttribute("nothing", true);
+                model.addAttribute("query", bookSearch.getQuery());
+            }
+            model.addAttribute("books", books.getBooks());
+            return "books";
         }
 
         @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
         @Secured({"ROLE_USER"})
-        public @ResponseBody String advancedSearch(@ModelAttribute BookSearch bookSearch){
-            System.out.println(bookSearch);
+        public  String advancedSearch(@ModelAttribute BookSearch bookSearch, Model model){
             logger.info("advanced search called with {}, {}, {}, {}", bookSearch);
-            return bookService.getBooksComplexByParamsAsJson(bookSearch).toString();
+            Page books = bookService.getBooksComplexByParams(bookSearch);
+            if (books.getBooks().isEmpty() || books.getBooks() == null)
+            model.addAttribute("books", books.getBooks());
+            return "books";
         }
 
 
@@ -89,7 +93,7 @@ public class BooksController {
         }
 
         @RequestMapping(value = "/mybooks", method = RequestMethod.GET)
-        public String myBooksG(Model model, Principal principal){
+        public String myBooks(Model model, Principal principal){
             Person person = personService.getByEmail(principal.getName());
             List<BooksInUse> uses = useService.getBooksInUseByPerson(person);
             model.addAttribute("uses", uses);

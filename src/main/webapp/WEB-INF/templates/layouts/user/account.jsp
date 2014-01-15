@@ -32,6 +32,7 @@
 
                                 </div>
                         </div>
+                                                    
                         <div class="col-md-9" id="acc_user_info_wrapper">
                              <ul class="list-unstyled">
                                 <li class="list-group-item">
@@ -101,6 +102,7 @@
                                 </li>
                             </ul>
                         </div>
+                                                  
                     </div>
                 </div>
                 <div class="col-md-2" id="left_main">

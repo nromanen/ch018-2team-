@@ -183,6 +183,8 @@ public class PersonServiceImpl implements PersonService {
         public boolean changeEmail(String email, Person person) {
             try {
                 person.setEmail(email);
+                person.setMailConfirm(Boolean.FALSE);
+                
                 update(person);
                 Authentication auth = new PreAuthenticatedAuthenticationToken(email,
                         SecurityContextHolder.getContext().getAuthentication().getPrincipal());
