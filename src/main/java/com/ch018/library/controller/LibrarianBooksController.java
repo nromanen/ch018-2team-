@@ -108,7 +108,13 @@ public class LibrarianBooksController {
 		Genre genre = genreService.getById(gid);
 		book.setGenre(genre);
 		List<Book> books = bookService.advancedSearch(book);
-		model.addAttribute("books", books);
+		
+		if (books.size() > 0) {
+			model.addAttribute("books", books);
+		} else {
+			model.addAttribute("books", bookService.getAll());
+		}
+		
 		return "librarian_books";
 	}
 	
@@ -130,7 +136,13 @@ public class LibrarianBooksController {
 	@RequestMapping(value = "/simplesearch", method=RequestMethod.POST)
 	public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
 		List<Book> books = bookService.simpleSearch(request);
-		model.addAttribute("books", books);
+		
+		if (books.size() > 0) {
+			model.addAttribute("books", books);
+		} else {
+			model.addAttribute("books", bookService.getAll());
+		}
+		
 		return "librarian_books";
 	}
 }

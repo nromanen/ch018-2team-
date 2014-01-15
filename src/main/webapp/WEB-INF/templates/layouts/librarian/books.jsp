@@ -55,7 +55,7 @@
 				                        <td>${book.publisher}</td>
 				                        <td>${book.pages}</td>
 				                        <td>${book.genre}</td>
-				                        <td><textarea class="form-control" rows="2"> ${book.description} </textarea></td>
+				                        <td><textarea class="form-control" rows="2" style=" background:transparent;"> ${book.description} </textarea></td>
 				                        <td>${book.shelf}</td>
 				                        <td>${book.term}</td>
 				                        <td>${book.currentQuantity}</td>
@@ -72,12 +72,12 @@
 				
 				</div>
 			</div>
-<div class="row">
-
-	<div class="col-md-1 col-md-offset-9" style="margin-top:10px">
-		<a href="<c:url value="/librarian/books/addbook"/>" class="btn btn-default btn-sm" role="button" style="background-color: #00A1A1 ; color: #FFFFFF"><spring:message code="message.libAddBook"/></a>
-	</div>
-   
-</div>			
+			<div class="row">
+			
+				<div class="col-md-1 col-md-offset-9" style="margin-top:10px">
+					<a href="<c:url value="/librarian/books/addbook"/>" class="btn btn-default btn-sm" role="button" style="background-color: #00A1A1 ; color: #FFFFFF"><spring:message code="message.libAddBook"/></a>
+				</div>
+			   
+			</div>			
 			
 		</div>

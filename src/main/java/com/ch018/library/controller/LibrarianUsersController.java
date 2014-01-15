@@ -116,7 +116,13 @@ public class LibrarianUsersController {
 	@RequestMapping(value = "/advencedsearch", method = RequestMethod.POST)
 	public String advancedSearch(@ModelAttribute("user") Person user, BindingResult result, Model model) throws Exception {
 		List<Person> person = personService.advancedSearch(user);
-		model.addAttribute("users", person);
+		
+		if(person.size() > 0){
+			model.addAttribute("users", person);
+		}else {
+			model.addAttribute("users", personService.getAll());
+		}
+		
 		return "librarian_users";
 	}
 	
@@ -128,7 +134,12 @@ public class LibrarianUsersController {
 	@RequestMapping(value = "/simplesearch", method = RequestMethod.POST)
 	public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
 		List<Person> person = personService.simpleSearch(request);
-		model.addAttribute("users", person);
+		
+		if(person.size() > 0){
+			model.addAttribute("users", person);
+		}else {
+			model.addAttribute("users", personService.getAll());
+		}
 		return "librarian_users";
 	}
 	

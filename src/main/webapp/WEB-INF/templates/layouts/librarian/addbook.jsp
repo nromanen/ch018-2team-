@@ -6,7 +6,6 @@
 
         	<div class="row">
         		
-			
 					<div class="col-md-7">
 						
 				        <form:form id="addbook" method="POST" commandName="book" class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">

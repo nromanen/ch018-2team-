@@ -3,8 +3,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
         	<div class="row">
-        	
-        	
 				
 					<div class="col-md-5">
 				        <form:form method="POST" commandName="bookInUse" class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">
@@ -38,4 +36,4 @@
 				        </form:form>
 				        
 				   </div>     
-</div>
+			</div>
