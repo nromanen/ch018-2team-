@@ -30,6 +30,13 @@
 								    	 <input name="days" class="form-control"/> 
 								    </div>
 							 </div>  
+							 
+							 <div class="form-group">
+									    <label for="inputEmail3" class="col-sm-2 control-label"></label>
+									    <div class="col-sm-10">
+									    	<h5 style="color: red;">${validation}</h5>
+									    </div>
+							 </div> 
 				           <div class="col-md-1 col-md-offset-10" style="margin-top:10px">
 							<input type="submit" class="btn btn-default btn-sm" value="<spring:message code="message.libSave"/>" style="background-color: #00A1A1 ; color: #FFFFFF">
 						</div>

@@ -165,5 +165,10 @@
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/userbooks.jsp" />
     </definition>
     
+    <definition name="librarian_orders_issue" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/issue.jsp" />
+    </definition>
+    
     <!-- Librarian/ -->
 </tiles-definitions>

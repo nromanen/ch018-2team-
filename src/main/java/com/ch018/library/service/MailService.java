@@ -97,13 +97,14 @@ public class MailService {
 	}
 
 	public void sendEmailBookIssued(String from, String to, String subject,
-									Orders order, Person person, Book book, BooksInUse bookinuse) {
+									Orders order, Person person, Book book, BooksInUse bookinuse, int term) {
 
 		StringBuilder letter = new StringBuilder();
 		letter.append("Dear ").append(person.getName())
 				.append(" . You have recieved a book ")
 				.append(book.getTitle() + " " + book.getAuthors())
 				.append(" on " + order.getOrderDate())
+				.append("for " + term + " days")
 				.append(". Please turn it back on ")
 				.append(bookinuse.getReturnDate())
 				.append(". Best regards, your library!");

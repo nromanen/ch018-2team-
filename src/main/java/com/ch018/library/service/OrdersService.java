@@ -28,5 +28,5 @@ public interface OrdersService {
          boolean isPersonOrderedBook(Person person, Book book);
          boolean isLimitReached(Person person);
          void checkPersonOrders(Book book, Date returnDate);
-         void issue(Orders order);
+         void issue(Orders order, int term);
 }

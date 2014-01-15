@@ -59,6 +59,7 @@ public class LibrarianBooksController {
 			model.addAttribute("genre", genreService.getAll());
 			return "librarian_books_add_book";
 		}else {
+			book.setCurrentQuantity(book.getGeneralQuantity());
 			bookService.save(book);
 		}
 		return "redirect:/librarian/books";

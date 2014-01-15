@@ -37,7 +37,7 @@
 		                            <td> <h5> <strong> <spring:message code="message.libSMS"/> </strong> </h5>  </td>    
 		                            <td>  <h5> <strong> <spring:message code="message.libReturnedOnTime"/> </strong> </h5>  </td>
 		                            <td>  <h5> <strong> <spring:message code="message.libReturnedLate"/> </strong> </h5>  </td> 
-		                            <td>  <h5> <strong> <spring:message code="message.libBooksOnHands"/> </strong> </h5>  </td>
+		                            <td>  <h5> <strong> Books Available </strong> </h5>  </td>
 		                            <td> <h5> <strong> <spring:message code="message.libRating"/> </strong> </h5>  </td>
 		                            <td>  <h5> <strong> <spring:message code="message.libOptions"/> </strong> </h5>  </td>
 		               	         

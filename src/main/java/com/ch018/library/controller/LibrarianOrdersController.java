@@ -5,9 +5,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.jws.WebParam.Mode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +27,11 @@ import com.ch018.library.service.PersonService;
 @RequestMapping(value = "/librarian/orders")
 public class LibrarianOrdersController {
 
+	private final int DEFAULT_TERM = 14;
+	private final String VALIDATION_FAILED = "Term must be between 1 and 70";
+	private final int MIN_ISUUE = 1;
+	private final int MAX_ISSUE = 70;
+	
 	@Autowired
 	OrdersService ordersService;
 	@Autowired
@@ -47,7 +55,7 @@ public class LibrarianOrdersController {
 		Orders order = new Orders();
 		
 		book = bookService.getBookById(3);
-		person = personService.getById(3);
+		person = personService.getById(11);
 		
 		order.setBook(book);
 		order.setPerson(person);
@@ -61,9 +69,27 @@ public class LibrarianOrdersController {
 	
 	
 	@RequestMapping(value = "/issue", method = RequestMethod.GET)
-	public String issue(@RequestParam("id") int id) throws Exception {
-		ordersService.issue(ordersService.getOrderByID(id));
-		ordersService.delete(ordersService.getOrderByID(id));
+	public String issueGet(@RequestParam("id") int id, Model model) throws Exception {
+		
+		model.addAttribute("order", ordersService.getOrderByID(id));
+		model.addAttribute("term", DEFAULT_TERM);
+		
+		return "librarian_orders_issue";
+	}
+	
+	@RequestMapping(value = "/issue", method = RequestMethod.POST)
+	public String issuePost(@RequestParam("id") int id, @RequestParam("term") int term, Model model) throws Exception {
+		
+		if( term <= MAX_ISSUE && term >= MIN_ISUUE){
+			ordersService.issue(ordersService.getOrderByID(id), term);
+			ordersService.delete(ordersService.getOrderByID(id));
+		}else {
+			model.addAttribute("order", ordersService.getOrderByID(id));
+			model.addAttribute("term", DEFAULT_TERM);
+			model.addAttribute("validation", VALIDATION_FAILED);
+			return "librarian_orders_issue";
+		}
+		
 		return "redirect:/librarian/orders";
 	}
 	

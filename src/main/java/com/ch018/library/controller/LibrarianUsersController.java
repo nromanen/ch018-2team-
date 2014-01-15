@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,8 @@ public class LibrarianUsersController {
 	private PersonService personService;
 	@Autowired
 	private BookInUseService bookInUseService;
+	@Autowired
+    BCryptPasswordEncoder encoder;
 	
 	@RequestMapping(value = "")
 
@@ -59,7 +62,17 @@ public class LibrarianUsersController {
 			return "librarian_add_user";
 		}else {
 			Person person = new Person();
-			person.setMultiBook(0);
+			user.setMultiBook(user.getBooksAllowed());
+			user.setMailConfirm(true);
+			user.setConfirm(true);
+			String password = encoder.encode(user.getPassword());
+			System.out.println("Password: " + password);
+			user.setPassword(password);
+			user.setProle("ROLE_USER");
+			user.setTimelyReturn(0);
+			user.setUntimekyReturn(0);
+			user.setFailedOrders(0);
+			
 			personService.save(user);
 
 		}	

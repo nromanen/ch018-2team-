@@ -145,12 +145,12 @@ public class OrdersServiceImpl implements OrdersService{
 
 	@Override
 	@Transactional
-	public void issue(Orders order) {
+	public void issue(Orders order, int term) {
 		Person person = order.getPerson();
 		
 		int booksOnHands = person.getMultiBook();
 		
-		person.setMultiBook(++booksOnHands);
+		person.setMultiBook(--booksOnHands);
 		
 		personService.update(person);
 		
@@ -166,7 +166,7 @@ public class OrdersServiceImpl implements OrdersService{
 		
 		BooksInUse  bookInUse = new BooksInUse();
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, +14);
+		calendar.add(Calendar.DAY_OF_YEAR, term);
 		Date date = calendar.getTime();
 		
 		bookInUse.setBook(order.getBook());
@@ -175,7 +175,7 @@ public class OrdersServiceImpl implements OrdersService{
 		
 		booksInUseService.save(bookInUse);
 		
-		mailService.sendEmailBookIssued("librairancv111@gmail.com", "dmitry.sankovsky@gmail.com", "Book Orders", order, person, book, bookInUse);
+		mailService.sendEmailBookIssued("librairancv111@gmail.com", "dmitry.sankovsky@gmail.com", "Book Orders", order, person, book, bookInUse, term);
 		
                 Date minDate = booksInUseService.getMinOrderDate(book);
                 checkPersonOrders(book, minDate);
