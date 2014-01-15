@@ -9,7 +9,7 @@
 	<div class="row">
 	
 	<div class="col-md-12">
-		<h5> <b> <spring:message code="message.libTitle"/>: </b> ${book.getTitle()} </h5> <h5> <b> <spring:message code="message.libAuthors"/>: </b> ${book.getAuthors()} </h5>
+		<h5> <b> <spring:message code="message.libTitle"/>: </b> ${person.getName()} </h5> <h5> <b> <spring:message code="message.libAuthors"/>: </b> ${person.getSurname()} </h5>
 	</div>
 	
 	<div class="col-md-12">
@@ -18,21 +18,18 @@
                 <tr>
                         <td> <b> <spring:message code="message.libHolder"/> </b> </td>
                         <td> <b> <spring:message code="message.libReturnDate"/> </b> </td>
-                        <td> <b> <spring:message code="message.libDaysToReturn"/> </b> </td>
                         <td> <b> Options </b> </td>
                         
                 </tr>
         </thead>
 		<c:forEach items="${booksInUse}" var="bookInUse">
                 <tr>
-                        <td>${bookInUse.key.person.name}</td>
-                        <td>${bookInUse.key.getReturnDate()}</td>
-                        <td>${bookInUse.value}</td>
-                        <td><a href="<c:url value="/librarian/toreturn/getback?id=${bookInUse.key.id}"/>" style="color: #0E3846">Get back</a>
+                        <td>${bookInUse.book.title}</td>
+                        <td>${bookInUse.getReturnDate()}</td>
+                        <td><a href="<c:url value="/librarian/toreturn/getback?id=${bookInUse.id}"/>" style="color: #0E3846">Get back</a>
                         
                 </tr>
         </c:forEach>
 	</table>
 	</div>
 	</div>
-	

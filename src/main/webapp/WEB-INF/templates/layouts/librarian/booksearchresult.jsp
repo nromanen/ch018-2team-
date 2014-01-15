@@ -28,7 +28,7 @@
 			        </thead>
 			        <c:forEach items="${books}" var="book">
 			                <tr>
-			                        <td>${book.bId}</td>
+			                        <td hidden="true">${book.bId}</td>
 			                        <td>${book.title}</td>
 			                        <td>${book.authors}</td>
 			                        <td>${book.year}</td>

@@ -16,21 +16,20 @@
 			<table  class="table table-hover table-striped table-bordered table-condensed">
 	    		    <thead>
 			                <tr>
-			                        <td> <b> ID </b> </td>
 			                        <td> <b> Person </b> </td>
 			                        <td> <b> Book </b> </td>
 			                        <td> <b> Order Date</b> </td>
-			                        <td> <b> Issue </b> </td>
+			                        <td> <b> Options </b> </td>
 			                         
 			                </tr>
 	       		   </thead>
 			        <c:forEach items="${orders}" var="order">
 			                <tr>
-			                        <td>${order.id}</td>
-			                        <td>${order.person.getName()}</td>
+			                    	<td hidden="true">${order.id}</td>
+			                        <td>${order.person.getName()} ${order.person.getSurname()}</td>
 			                        <td>${order.book.getTitle()}</td>
 			                        <td>${order.getOrderDate()}</td>
-			                        <td><a href="<c:url value="/librarian/orders/issue?id=${order.id}"/>">Issue</a>
+			                        <td><a href="<c:url value="/librarian/orders/issue?id=${order.id}"/>" style="color: #0E3846" >Issue</a>
 			                </tr>
 			        </c:forEach>
 			</table>

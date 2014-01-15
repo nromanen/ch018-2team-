@@ -22,6 +22,7 @@ import com.ch018.library.entity.Genre;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
+import com.ch018.library.validation.BookEditValidator;
 
 @Controller
 @RequestMapping(value = "/librarian/books")
@@ -50,11 +51,13 @@ public class LibrarianBooksController {
 	}
 	
 	@RequestMapping(value= "/addbook", method = RequestMethod.POST)
-	public String add(@ModelAttribute("book") @Valid Book book, BindingResult result, @RequestParam("genreId") Integer gid) throws Exception {
+	public String add(@ModelAttribute("book") @Valid Book book, BindingResult result, @RequestParam("genreId") Integer gid, Model model) throws Exception {
 		Genre genre = genreService.getById(gid);
 		book.setGenre(genre);
 		if (result.hasErrors()) {
 			System.out.println("Errors Addind Book" + result.toString());
+			model.addAttribute("genre", genreService.getAll());
+			return "librarian_books_add_book";
 		}else {
 			bookService.save(book);
 		}
@@ -77,10 +80,17 @@ public class LibrarianBooksController {
 	}
 	
 	@RequestMapping(value = "/editbook", method = RequestMethod.POST)
-	public String edit(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("id") int bookId,
+	public String edit(@ModelAttribute("book") @Valid BookEditValidator book, BindingResult result, @RequestParam("id") int bookId,
 					   @RequestParam("genreId") Integer gid, Model model) throws Exception {
-		book.setGenre(genreService.getById(gid));
-		bookService.update(book);
+		
+		if (result.hasErrors()) {
+			System.out.println("Error editing book: " + result.toString());
+			model.addAttribute("genre", genreService.getAll());
+			return "librarian_books_edit_book";
+		} else {
+			bookService.update(book, gid);
+		}
+		//book.setGenre(genreService.getById(gid));
 		return "redirect:/librarian/books";
 	}
 	
@@ -98,7 +108,7 @@ public class LibrarianBooksController {
 		book.setGenre(genre);
 		List<Book> books = bookService.advancedSearch(book);
 		model.addAttribute("books", books);
-		return "librarian_books_search_result";
+		return "librarian_books";
 	}
 	
 	@RequestMapping(value = "/holders", method = RequestMethod.GET)
@@ -120,6 +130,6 @@ public class LibrarianBooksController {
 	public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
 		List<Book> books = bookService.simpleSearch(request);
 		model.addAttribute("books", books);
-		return "librarian_books_search_result";
+		return "librarian_books";
 	}
 }

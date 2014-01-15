@@ -3,15 +3,16 @@ package com.ch018.library.DAO;
 import java.util.List;
 
 
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 import com.ch018.library.helper.BookSearch;
 import com.ch018.library.helper.Page;
+
 import org.hibernate.criterion.Order;
 import org.hibernate.transform.ResultTransformer;
 
@@ -128,11 +130,11 @@ public class BookDaoImpl implements BookDao {
             
             Disjunction or = Restrictions.disjunction();
             
-            or.add(Restrictions.like("title", query ));
+            or.add(Restrictions.like("title", query, MatchMode.ANYWHERE ));
             
-            or.add(Restrictions.like("authors", query ));
+            or.add(Restrictions.like("authors", query, MatchMode.ANYWHERE ));
             
-            or.add(Restrictions.like("publisher", query ));
+            or.add(Restrictions.like("publisher", query, MatchMode.ANYWHERE ));
 
             criteria.add(or);
             

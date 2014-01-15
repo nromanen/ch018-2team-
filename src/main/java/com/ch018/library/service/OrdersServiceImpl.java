@@ -174,9 +174,16 @@ public class OrdersServiceImpl implements OrdersService{
 		bookInUse.setReturnDate(date);
 		
 		booksInUseService.save(bookInUse);
-                
+		
+		mailService.sendEmailBookIssued("librairancv111@gmail.com", "dmitry.sankovsky@gmail.com", "Book Orders", order, person, book, bookInUse);
+		
                 Date minDate = booksInUseService.getMinOrderDate(book);
                 checkPersonOrders(book, minDate);
+	}
+	
+	public boolean isAvailable(){
+		
+		return false;
 	}
     
 }

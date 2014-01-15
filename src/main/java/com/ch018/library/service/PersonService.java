@@ -5,10 +5,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import sun.security.util.Password;
-
+import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import com.ch018.library.validation.PersonEditValidator;
 import com.ch018.library.validation.UserRegistrationForm;
+import com.ch018.library.validation.Password;;
 /**
  *
  * @author Edd Arazian
@@ -38,4 +39,6 @@ public interface PersonService {
         boolean restoreSendEmail(String email);
         boolean isKeyValid(String key);
         boolean restorePass(String key, Password password);
+        void update(PersonEditValidator person);
+        List<BooksInUse> getUsingBooks(Person person);
 }

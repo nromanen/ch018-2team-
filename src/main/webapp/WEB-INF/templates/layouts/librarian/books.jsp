@@ -1,20 +1,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 	<div class="row">
-		<div class="col-md-2 col-md-offset-5" style="margin-top:30px">
+		<div class="col-md-3 col-md-offset-5" style="margin-top:30px">
 				
-					<form name="search" action="<c:url value="/librarian/books/simplesearch" />" method="POST" >
-						<input type="text" class="form-control" id="" name="request"/>  <!--  <input type="submit" value="Search" /> -->
+					<form class="form-inline" name="search" action="<c:url value="/librarian/books/simplesearch" />" method="POST" >
+						  <div class="form-group">
+						<input type="text" class="form-control  input-sm" id="" name="request" placeholder="Title or Author"/> 
+						</div>
+						<button type="submit" class="btn btn-default">
+						  	<span class="glyphicon glyphicon-search"></span>
+						</button>
+						
+						<a href="<c:url value="/librarian/books/advancedsearch"/>" class="btn btn-default">
+							<span class="glyphicon glyphicon-cog"></span>
+						</a>
 						
 					</form>
+			</div>
 				
-			</div>
-			<div class="col-md-2"  style="margin-top:35px" >
-				<t class="ex1"><a href="<c:url value="/librarian/books/advancedsearch"/>"  class="btn btn-default btn-xs" role="button" style="margin-left: 7px"><spring:message code="message.libAdvanced"/></a></t>
-			</div>
-			
 	<div class="row">
 			<div class="col-md-12 " style="margin-top:30px">
 			
@@ -23,7 +30,7 @@
 				
      			   <thead>
          		       <tr>
-           	                <td> <b> ID </b> </td>
+           	                
            	   	            <td> <b> <spring:message code="message.libTitle"/> </b> </td>
             	            <td> <b> <spring:message code="message.libAuthors"/> </b> </td> 
                             <td> <b> <spring:message code="message.libYear"/> </b> </td>
@@ -41,20 +48,21 @@
        			 </thead>
 				        <c:forEach items="${books}" var="book">
 				                <tr>
-				                        <td>${book.bId}</td>
+				                        <td hidden="true">${book.bId}</td>
 				                        <td>${book.title}</td>
 				                        <td>${book.authors}</td>
 				                        <td>${book.year}</td>
 				                        <td>${book.publisher}</td>
 				                        <td>${book.pages}</td>
 				                        <td>${book.genre}</td>
-				                        <td>${book.description}</td>
+				                        <td><textarea class="form-control" rows="2"> ${book.description} </textarea></td>
 				                        <td>${book.shelf}</td>
 				                        <td>${book.term}</td>
 				                        <td>${book.currentQuantity}</td>
 				                        <td>${book.generalQuantity}</td>
-				                    <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>" style="color: #757575"><spring:message code="message.libEdit"/></a>
-				                    <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>" style="color: #757575"><spring:message code="message.libDelete"/></a></td>
+				                    <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>" style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
+				                    <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>" style="color: #0E3846"><spring:message code="message.libDelete"/> |</a>
+				                     <a href="<c:url value="/librarian/books/holders?id=${book.bId}"/>"style="color: #0E3846"><spring:message code="message.libHolders"/></a></td>
 				                </tr>
 				        </c:forEach>
 			   </table>
@@ -67,7 +75,7 @@
 <div class="row">
 
 	<div class="col-md-1 col-md-offset-9" style="margin-top:10px">
-		<a href="<c:url value="/librarian/books/addbook"/>" class="btn btn-default btn-sm" role="button"><spring:message code="message.libAddBook"/></a>
+		<a href="<c:url value="/librarian/books/addbook"/>" class="btn btn-default btn-sm" role="button" style="background-color: #00A1A1 ; color: #FFFFFF"><spring:message code="message.libAddBook"/></a>
 	</div>
    
 </div>			

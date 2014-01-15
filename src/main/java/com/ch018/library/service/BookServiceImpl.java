@@ -11,6 +11,8 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.helper.BookSearch;
 import com.ch018.library.helper.Page;
+import com.ch018.library.validation.BookEditValidator;
+
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,8 +36,11 @@ public class BookServiceImpl implements BookService {
 
         @Autowired
         private BookInUseService useService;
+        @Autowired
+    	private GenreService genreService;
 
-
+        Book bookEdit;
+        	
         private final Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
 
         @Override
@@ -209,5 +214,28 @@ public class BookServiceImpl implements BookService {
 
             return booksInUseEx;
         }
+        
+        
+
+		@Override
+		@Transactional
+		public void update(BookEditValidator book, int genreId) {
+			// TODO Auto-generated method stub
+			bookEdit = getBookById(book.getbId());
+			
+			bookEdit.setTitle(book.getTitle());
+			bookEdit.setAuthors(book.getAuthors());
+			bookEdit.setYear(book.getYear());
+			bookEdit.setPublisher(book.getPublisher());
+			bookEdit.setPages(book.getPages());
+			bookEdit.setDescription(book.getDescription());
+			bookEdit.setImg(book.getImg());
+			bookEdit.setShelf(book.getShelf());
+			bookEdit.setTerm(book.getTerm());
+			bookEdit.setGeneralQuantity(book.getGeneralQuantity());
+			bookEdit.setGenre(genreService.getById(genreId));
+			
+			update(bookEdit);
+		}
 }
 

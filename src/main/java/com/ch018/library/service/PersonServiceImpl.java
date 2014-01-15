@@ -15,11 +15,16 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sun.security.util.Password;
+
+
 
 import com.ch018.library.DAO.PersonDao;
+import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import com.ch018.library.validation.PersonEditValidator;
 import com.ch018.library.validation.UserRegistrationForm;
+import com.ch018.library.validation.Password;;
+
 /**
  *
  * @author Edd Arazian
@@ -37,6 +42,11 @@ public class PersonServiceImpl implements PersonService {
     
     @Autowired
     private MailService mailService;
+    
+    @Autowired
+    private BookInUseService bookInUse;
+    
+    private Person personEdit;
     
     @Override
     @Transactional
@@ -266,8 +276,34 @@ public class PersonServiceImpl implements PersonService {
             return false;
         }
 
-        
-        
+		@Override
+		@Transactional
+		public void update(PersonEditValidator user) {
+			// TODO Auto-generated method stub
+			
+			personEdit = getById(user.getPid());
+			
+	    	personEdit.setName(user.getName());
+			personEdit.setSurname(user.getSurname());
+			personEdit.setEmail(user.getEmail());
+			personEdit.setCellphone(user.getCellphone());
+			personEdit.setConfirm(user.isConfirm());
+			personEdit.setSms(user.isSms());
+			personEdit.setBooksAllowed(user.getBooksAllowed());
+			
+			update(personEdit);
+		}
+
+		@Override
+		@Transactional
+		public List<BooksInUse> getUsingBooks(Person person) {
+			// TODO Auto-generated method stub
+			
+			List<BooksInUse> books = bookInUse.getBooksInUseByPerson(person);
+			
+			return books;
+			
+		}
         
 }
 

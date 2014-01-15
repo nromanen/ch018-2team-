@@ -10,6 +10,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,9 +138,9 @@ public class PersonDaoImpl implements PersonDao {
 			
 			Disjunction or = Restrictions.disjunction();
 			
-			or.add(Restrictions.like("name", request));
+			or.add(Restrictions.like("name", request, MatchMode.ANYWHERE));
 			
-			or.add(Restrictions.like("surname", request));
+			or.add(Restrictions.like("surname", request, MatchMode.ANYWHERE));
 			
 			criteria.add(or);
 			
