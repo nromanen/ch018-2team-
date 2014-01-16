@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +37,8 @@ public class LibrarianBooksController {
 	@Autowired
 	BookInUseService bookInUseService;
 	
+	final Logger logger = LoggerFactory.getLogger(LibrarianBooksController.class);
+	
 	@RequestMapping(value = "")
 	public ModelAndView bookList () {
 		return new ModelAndView("librarian_books", "books", bookService.getAll());
@@ -55,8 +59,8 @@ public class LibrarianBooksController {
 		Genre genre = genreService.getById(gid);
 		book.setGenre(genre);
 		if (result.hasErrors()) {
-			System.out.println("Errors Addind Book" + result.toString());
 			model.addAttribute("genre", genreService.getAll());
+			logger.info("Error Addind Book" + result.toString());
 			return "librarian_books_add_book";
 		}else {
 			book.setCurrentQuantity(book.getGeneralQuantity());
@@ -70,6 +74,7 @@ public class LibrarianBooksController {
 	public String deleteBook(@RequestParam("id") int bookId, Model model) throws SQLException {
 		Book book = bookService.getBookById(bookId);
 		bookService.delete(book);
+		logger.info("Book deleted");
 		return "redirect:/librarian/books";
 	}
 	
@@ -85,8 +90,8 @@ public class LibrarianBooksController {
 					   @RequestParam("genreId") Integer gid, Model model) throws Exception {
 		
 		if (result.hasErrors()) {
-			System.out.println("Error editing book: " + result.toString());
 			model.addAttribute("genre", genreService.getAll());
+			logger.info("Error editing book: " + result.toString());
 			return "librarian_books_edit_book";
 		} else {
 			bookService.update(book, gid);
@@ -135,6 +140,12 @@ public class LibrarianBooksController {
 	
 	@RequestMapping(value = "/simplesearch", method=RequestMethod.POST)
 	public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
+		
+		if(request.equals("")){
+			model.addAttribute("books", bookService.getAll());
+			return "librarian_books";
+		}
+		
 		List<Book> books = bookService.simpleSearch(request);
 		
 		if (books.size() > 0) {

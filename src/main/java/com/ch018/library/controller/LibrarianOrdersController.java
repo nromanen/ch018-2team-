@@ -27,7 +27,6 @@ import com.ch018.library.service.PersonService;
 @RequestMapping(value = "/librarian/orders")
 public class LibrarianOrdersController {
 
-	private final int DEFAULT_TERM = 14;
 	private final String VALIDATION_FAILED = "Term must be between 1 and 70";
 	private final int MIN_ISUUE = 1;
 	private final int MAX_ISSUE = 70;
@@ -71,26 +70,42 @@ public class LibrarianOrdersController {
 	@RequestMapping(value = "/issue", method = RequestMethod.GET)
 	public String issueGet(@RequestParam("id") int id, Model model) throws Exception {
 		
-		model.addAttribute("order", ordersService.getOrderByID(id));
-		model.addAttribute("term", DEFAULT_TERM);
+		Orders order = ordersService.getOrderByID(id);
+		
+		model.addAttribute("order", order);
+		model.addAttribute("term", order.getDaysAmount());
 		
 		return "librarian_orders_issue";
 	}
 	
 	@RequestMapping(value = "/issue", method = RequestMethod.POST)
-	public String issuePost(@RequestParam("id") int id, @RequestParam("term") int term, Model model) throws Exception {
+	public String issuePost(@RequestParam("id") int id, @RequestParam("term") String term, Model model) throws Exception {
 		
-		if( term <= MAX_ISSUE && term >= MIN_ISUUE){
-			ordersService.issue(ordersService.getOrderByID(id), term);
+		int termInt = 0;
+		Orders order = ordersService.getOrderByID(id);
+		
+		try {
+			termInt = Integer.parseInt(term);
+		} catch (Exception e) {
+			
+			model.addAttribute("order", ordersService.getOrderByID(id));
+			model.addAttribute("term", order.getDaysAmount());
+			model.addAttribute("validation", "Please, enter correct value!");
+			return "librarian_orders_issue";
+		}
+		
+		if( termInt <= MAX_ISSUE && termInt >= MIN_ISUUE){
+			ordersService.issue(order, termInt);
 			ordersService.delete(ordersService.getOrderByID(id));
+			return "redirect:/librarian/orders";
 		}else {
 			model.addAttribute("order", ordersService.getOrderByID(id));
-			model.addAttribute("term", DEFAULT_TERM);
+			model.addAttribute("term", order.getDaysAmount());
 			model.addAttribute("validation", VALIDATION_FAILED);
 			return "librarian_orders_issue";
 		}
 		
-		return "redirect:/librarian/orders";
+		
 	}
 	
 	@RequestMapping(value = "/toissueinhour")
