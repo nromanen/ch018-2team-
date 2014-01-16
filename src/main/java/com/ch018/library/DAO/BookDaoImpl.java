@@ -30,6 +30,7 @@ import com.ch018.library.helper.Page;
 public class BookDaoImpl implements BookDao {
 
 		private final Logger logger = LoggerFactory.getLogger(BookDaoImpl.class);
+		
 		@Autowired
 		private SessionFactory factory;
 
