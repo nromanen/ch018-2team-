@@ -16,6 +16,13 @@
 								    	 <h5> ${inuse.person.name} ${inuse.person.surname}</h5> 
 								    </div>
 							 </div>  
+							 
+							 <div class="form-group">
+								    <label for="inputEmail3" class="col-sm-2 control-label">Rating</label>
+								    <div class="col-sm-10">
+								    	 <h5>  ${inuse.person.generalRating}</h5> 
+								    </div>
+							 </div> 
 				           
 				            <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label">Return Date</label>

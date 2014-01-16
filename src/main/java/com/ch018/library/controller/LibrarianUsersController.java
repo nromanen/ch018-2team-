@@ -24,6 +24,8 @@ import com.ch018.library.validation.PersonEditValidator;
 @RequestMapping(value = "/librarian/users")
 public class LibrarianUsersController {
 
+	private final double DEFAULT_RATING = 0.5;
+	
 	@Autowired
 	private PersonService personService;
 	@Autowired
@@ -71,6 +73,7 @@ public class LibrarianUsersController {
 			user.setProle("ROLE_USER");
 			user.setTimelyReturn(0);
 			user.setUntimekyReturn(0);
+			user.setGeneralRating(DEFAULT_RATING);
 			user.setFailedOrders(0);
 			
 			personService.save(user);
@@ -133,6 +136,12 @@ public class LibrarianUsersController {
 	
 	@RequestMapping(value = "/simplesearch", method = RequestMethod.POST)
 	public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
+		
+		if(request.equals("")){
+			model.addAttribute("users", personService.getAll());
+			return "librarian_users";
+		}
+		
 		List<Person> person = personService.simpleSearch(request);
 		
 		if(person.size() > 0){

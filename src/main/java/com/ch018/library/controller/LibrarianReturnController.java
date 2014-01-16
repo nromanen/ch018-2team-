@@ -60,14 +60,24 @@ public class LibrarianReturnController {
 		}
 		
 		@RequestMapping(value = "/edit", method = RequestMethod.POST)
-		public String edit(@RequestParam("id") int id, @RequestParam("days") int days, Model model) throws Exception {
+		public String edit(@RequestParam("id") int id, @RequestParam("days") String days, Model model) throws Exception {
 			
-			if( days <= MAX_ISSUE && days >= MIN_ISUUE){
+			int daysInt = 0;
 			BooksInUse bookInUse = booksInUseService.getBookInUseById(id);
+			
+			try {
+				daysInt = Integer.parseInt(days);
+			} catch (Exception e) {
+				model.addAttribute("inuse", booksInUseService.getBookInUseById(id));
+				model.addAttribute("validation", "Please, enter correct value!");
+				return "librarian_edittoreturn";
+			}
+			
+			if( daysInt <= MAX_ISSUE && daysInt >= MIN_ISUUE){
 			Date date = bookInUse.getReturnDate();
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
-			calendar.add(Calendar.DAY_OF_YEAR, days);
+			calendar.add(Calendar.DAY_OF_YEAR, daysInt);
 			date = calendar.getTime();
 			bookInUse.setReturnDate(date);
 			booksInUseService.update(bookInUse);
