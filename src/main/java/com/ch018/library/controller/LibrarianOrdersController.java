@@ -1,10 +1,17 @@
 package com.ch018.library.controller;
 
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Person;
+import com.ch018.library.entity.Orders;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.BookService;
+import com.ch018.library.service.OrdersService;
+import com.ch018.library.service.PersonService;
+
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import javax.jws.WebParam.Mode;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +21,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Orders;
-import com.ch018.library.entity.Person;
-import com.ch018.library.service.BookInUseService;
-import com.ch018.library.service.BookService;
-import com.ch018.library.service.OrdersService;
-import com.ch018.library.service.PersonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping(value = "/librarian/orders")
@@ -43,25 +45,6 @@ public class LibrarianOrdersController {
 	
 	@RequestMapping(value = "")
 	public String showAll (Model model) throws Exception {
-		
-		/*Calendar calen = Calendar.getInstance();
-		calen.add(Calendar.DAY_OF_YEAR, +3);
-		Date date = new Date();
-		date = calen.getTime();
-		
-		Book book = new Book();
-		Person person = new Person();
-		Orders order = new Orders();
-		
-		book = bookService.getBookById(3);
-		person = personService.getById(11);
-		
-		order.setBook(book);
-		order.setPerson(person);
-		order.setOrderDate(date);
-		
-		ordersService.save(order);*/
-		
 		model.addAttribute("orders", ordersService.getAll());
 		return "librarian_orders";
 	}
@@ -121,5 +104,26 @@ public class LibrarianOrdersController {
 		model.addAttribute("orders", orders);
 		return "librarian_orders";
 	}
+	
+    @RequestMapping(value= "/searchById", method = RequestMethod.POST)
+    public String searchById(Model model,/*,BindingResult result@RequestParam("id") String id,*/@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date) throws Exception {
+        int idSearch=0;
+        int surnameSearch=0;
+        int titleSearch=0;
+        //if (id.compareTo("ID")!=0) idSearch++;
+        if (surname.compareTo("Surname")!=0) surnameSearch++;
+        if (title.compareTo("Title")!=0) titleSearch++;
+        //if (idSearch==1&&surnameSearch==0&&titleSearch==0) model.addAttribute("orders",ordersService.getOrderByID(Integer.parseInt(id)));
+        if (idSearch==0&&surnameSearch==1&&titleSearch==0) model.addAttribute("orders",ordersService.getOrdersByPersonSurname(ordersService.getAll(), surname));
+        if (idSearch==0&&surnameSearch==0&&titleSearch==1) model.addAttribute("orders",ordersService.getOrdersByBookTitle(ordersService.getAll(),title));
+        //if (idSearch==1&&surnameSearch==1&&titleSearch==0) model.addAttribute("orders",ordersService.getOrdersByOrdersId(ordersService.getOrdersByPersonSurname(ordersService.getAll(),surname),Integer.parseInt(id)));
+        if (idSearch==0&&surnameSearch==1&&titleSearch==1) model.addAttribute("orders",ordersService.getOrdersByPersonSurname(ordersService.getOrdersByBookTitle(ordersService.getAll(),title),surname));
+        //if (idSearch==1&&surnameSearch==0&&titleSearch==1) model.addAttribute("orders",ordersService.getOrdersByOrdersId(ordersService.getOrdersByBookTitle(ordersService.getAll(),title),Integer.parseInt(id)));
+        //if (idSearch==1&&surnameSearch==1&&titleSearch==1) model.addAttribute("orders",ordersService.getOrdersByOrdersId(ordersService.getOrdersByBookTitle(ordersService.getOrdersByPersonSurname(ordersService.getAll(),surname),title),Integer.parseInt(id)));
+        //System.out.println("!"+idSearch+"!"+surnameSearch+"!"+titleSearch);
+        //model.addAttribute("orders", ordersService.getOrdersByPersonSurname(ordersService.getAll(),surname));/*.getOrdersByBookTitle(ordersService.getAll(), title)); /*getOrderByID(Integer.parseInt(id)));  /*Integer.parseInt(id))*/
+        System.out.println(":"+surname+":"+date+":"+title);
+        return "librarianorders";
+    }
 	
 }

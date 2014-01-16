@@ -32,6 +32,7 @@ import com.ch018.library.validation.Password;;
 @Service
 public class PersonServiceImpl implements PersonService {
     
+                private static final int DEFAULT_BOOKS_ALLOWED = 10;
 
 		private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 		
@@ -195,7 +196,8 @@ public class PersonServiceImpl implements PersonService {
             }
             person.setPassword(encoder.encode(person.getPassword()));
             person.setProle("ROLE_USER");
-            person.setMultiBook(5);
+            person.setBooksAllowed(DEFAULT_BOOKS_ALLOWED);
+            person.setMultiBook(DEFAULT_BOOKS_ALLOWED);
             String mailKey = encoder.encode(person.getEmail().concat(String.valueOf(new Random().nextLong())));
             person.setMailKey(mailKey);
             mailService.sendConfirmationMail("springytest@gmail.com", "etenzor@gmail.com", "confirmation mail", person.getMailKey());

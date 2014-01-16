@@ -1,5 +1,9 @@
 package com.ch018.library.service;
 
+import com.ch018.library.DAO.BookDao;
+import com.ch018.library.DAO.BooksInUseDao;
+import com.ch018.library.DAO.OrdersDao;
+import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.DAO.BooksInUseDao;
 import com.ch018.library.DAO.OrdersDao;
 import com.ch018.library.entity.Book;
@@ -8,6 +12,7 @@ import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.helper.OrderDays;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 /**
  *
  * @author Edd Arazain
@@ -51,6 +57,13 @@ public class OrdersServiceImpl implements OrdersService {
         
         @Autowired
         private BookInUseService booksInUseService;
+
+        @Autowired
+        private BookDao bookDao;
+
+        @Autowired
+        private PersonDao personDao;
+
         
         @Override
         @Transactional
@@ -130,7 +143,7 @@ public class OrdersServiceImpl implements OrdersService {
             int ordersCount = ordersDao.getOrderByPerson(person).size();
             int useCount = useDao.getBooksInUseByPerson(person).size();
 
-            if (person.getMultiBook() > ordersCount + useCount)
+            if (person.getBooksAllowed() > ordersCount + useCount)
                 return false;
             else 
                 return true;
@@ -301,5 +314,40 @@ public class OrdersServiceImpl implements OrdersService {
             }
             return days;
         }
+
+        @Override
+        @Transactional
+        public List<Orders> getOrdersByPersonSurname(List<Orders> orders, String surname){
+            List<Person> persons = new ArrayList<Person>();
+            List<Orders> answerList = new ArrayList<Orders>();
+            persons = personDao.getBySurname(surname);
+            for (Person ps:persons)
+                for (Orders or:orders){
+                    if (or.getPerson().getPid()==ps.getPid()) answerList.add(or);
+                }
+            return answerList;
+        }
+        @Override
+        @Transactional
+        public List<Orders> getOrdersByBookTitle(List<Orders> orders, String title){
+
+            List<Orders> answerList = new ArrayList<Orders>();
+            List<Book> books = new ArrayList<Book>();
+            books=bookDao.getBooksByTitle(title);
+            for (Book book:books)
+                for (Orders or:orders){
+                    if (or.getBook().getbId()==book.getbId()) answerList.add(or);
+            }
+           return answerList;
+        }
+        @Override
+        @Transactional
+        public List<Orders> getOrdersByOrdersId(List<Orders> orders,int id){
+            List<Orders> answerList = new ArrayList<Orders>();
+            for (Orders or:orders)
+                if (or.getId()==id) answerList.add(or);
+           return answerList;
+        }
+
 
 }

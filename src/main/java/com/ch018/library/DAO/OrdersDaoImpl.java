@@ -3,6 +3,8 @@ package com.ch018.library.DAO;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+
+import org.hibernate.Criteria;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,11 +18,16 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Repository
 public class OrdersDaoImpl implements OrdersDao {
@@ -169,4 +176,24 @@ public class OrdersDaoImpl implements OrdersDao {
         }
 
     }
+
+    @Override
+    public List<Orders> getOrderByIDList(int id) {
+
+        Session session = factory.openSession();
+        Criteria criteria = session.createCriteria(Orders.class);
+        criteria.add(Restrictions.eq("id", id));
+        List<Orders> orderes = criteria.list();
+
+        if(orderes.size() > 0 ){
+            System.out.println("not empty");
+
+        }
+
+        return  orderes;
+        //return (Orders) factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("id", id)).list().get(0);
+
+
+    }
+
 }
