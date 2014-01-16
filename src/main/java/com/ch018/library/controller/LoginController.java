@@ -37,10 +37,10 @@ public class LoginController {
                     return "redirect:/admin";
                 }
             }
-            return "redirect:/login";
+            return "redirect:/books";
         }
 
-        @RequestMapping(value = "/index", method = RequestMethod.GET)
+        /*@RequestMapping(value = "/index", method = RequestMethod.GET)
         public String index(HttpServletRequest req, Authentication auth) {
             if (auth != null && auth.isAuthenticated()) {
                 if (req.isUserInRole("ROLE_USER") || req.isUserInRole("ROLE_ADMIN")) {
@@ -50,11 +50,11 @@ public class LoginController {
                 }
             }
             return "redirect:/login";
-        }
+        }*/
 
         @RequestMapping(value = "/login", method = RequestMethod.GET)
-        public ModelAndView loginProcess() {
-            return new ModelAndView("index");
+        public String loginProcess() {
+            return "redirect:/";
         }
 
         @RequestMapping(value = "/denied")

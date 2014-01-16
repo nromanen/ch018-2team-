@@ -13,18 +13,27 @@
     <body>
         <div class="container">
             <div class="col-md-4 col-md-offset-4" style="margin-top: 50px;">
-                <div class="form-group">
-                    <form id="restore_pass_form">
-                        <input type="hidden" name="key" value="${key}">
-                        <input type="hidden" name="oldPass" value="111111">
-                        <input type="password" class="form-control" name="newPass" placeholder="New Password">
-                        <p />
-                        <input type="password" class="form-control" name="rNewPass" placeholder="Re_enter Password">
-                        <p />
-                            <input id="restore_pass_submit" type="submit" class="form-control btn btn-success" value="Change">
-                            <div id="restore_pass_err" class="alert alert-danger hide">
-                            </div>
-                    </form>
+
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="panel-title">Password reset form</div>
+                         </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <form id="restore_pass_form">
+
+                                <input type="hidden" name="key" value="${key}">
+                                <input type="hidden" name="oldPass" value="111111">
+                                <input type="password" class="form-control" name="newPass" placeholder="New Password">
+                                <p />
+                                <input type="password" class="form-control" name="rNewPass" placeholder="Re_enter Password">
+                                <p />
+                                <input id="restore_pass_submit" type="submit" class="form-control btn btn-success" value="Change">
+                                <div id="restore_pass_err" class="alert alert-danger hide">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

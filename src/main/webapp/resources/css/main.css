@@ -6,9 +6,6 @@
     z-index: 9999;
 }
 
-/*#content_bg{
-    margin-top: 20px;
-}*/
 
 li a{
     color : white;
@@ -20,7 +17,7 @@ li a{
 
 #search_field{
     
-    width: 400px;
+    width: 350px;
     
 }
 #order_book_part{
@@ -31,4 +28,10 @@ li a{
     
     margin-bottom: 10px;
     
+}
+ul li a{
+    font-size: 12px;
+}
+#restore_pass_form input {
+    margin: 10px;
 }

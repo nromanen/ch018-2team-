@@ -105,7 +105,7 @@ public class RegisterController {
 
         @RequestMapping(value = "/register", method = RequestMethod.GET)
         public String addUser(Model model){
-            return "redirect:/index";
+            return "register";
         }
 
 }

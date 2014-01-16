@@ -27,6 +27,7 @@ import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PersonService;
+import org.springframework.context.i18n.LocaleContextHolder;
 /**
  * 
  * @author Edd Arazian
@@ -53,7 +54,7 @@ public class BooksController {
         public String booksGeneral(Model model){
             List<Book> books = bookService.getAll();
             model.addAttribute("books", books);
-
+            logger.info("lang = {}", LocaleContextHolder.getLocale().getDisplayLanguage());
             return "books";
         }
 

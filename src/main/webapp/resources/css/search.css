@@ -1,4 +1,5 @@
   .autocomplete-suggestions {
+      width: 25% !important;
        background: #FFF;
        z-index: 9999;
        display: block;

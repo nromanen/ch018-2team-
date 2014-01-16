@@ -14,3 +14,4 @@
 <script type="text/javascript" src="<c:url value="/resources/js/holder.js" />"></script>       
 <script type="text/javascript" src="<c:url value="/resources/js/books.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/search.js" />"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/index.js"></script>
