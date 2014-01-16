@@ -44,7 +44,7 @@ $(document).ready(function () {
     $('#restore_pass_submit').click(function (event) {
         event.preventDefault();
         var form_input = $('#restore_pass_form').serialize();
-        
+        alert("1111");
          $.ajax({
             url: "/library/restore/password",
             type: "POST",
@@ -53,6 +53,7 @@ $(document).ready(function () {
             contentType: 'application/x-www-form-urlencoded',
             mimeType: 'application/json',
          success: function () {
+             alert("2222");
                location.href = "/library/" 
              },
          error: function(xhr, status, error){
