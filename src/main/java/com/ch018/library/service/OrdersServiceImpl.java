@@ -143,7 +143,7 @@ public class OrdersServiceImpl implements OrdersService {
             int ordersCount = ordersDao.getOrderByPerson(person).size();
             int useCount = useDao.getBooksInUseByPerson(person).size();
 
-            if (person.getMultiBook() > ordersCount + useCount)
+            if (person.getBooksAllowed() > ordersCount + useCount)
                 return false;
             else 
                 return true;
