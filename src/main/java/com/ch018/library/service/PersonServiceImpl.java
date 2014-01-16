@@ -297,7 +297,6 @@ public class PersonServiceImpl implements PersonService {
 		@Override
 		@Transactional
 		public void update(PersonEditValidator user) {
-			// TODO Auto-generated method stub
 			
 			personEdit = getById(user.getPid());
 			
@@ -315,7 +314,6 @@ public class PersonServiceImpl implements PersonService {
 		@Override
 		@Transactional
 		public List<BooksInUse> getUsingBooks(Person person) {
-			// TODO Auto-generated method stub
 			
 			List<BooksInUse> books = bookInUse.getBooksInUseByPerson(person);
 			
