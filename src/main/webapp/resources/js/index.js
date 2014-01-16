@@ -4,6 +4,8 @@ $.validator.addMethod('customphone', function (value, element) {
 
 $(document).ready(function () {
     
+    $('#reg_phone').mask("999-999-9999");
+    
     $('#view_books').click(function () {
        
         location.href = "books";

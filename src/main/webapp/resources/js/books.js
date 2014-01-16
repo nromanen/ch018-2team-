@@ -5,6 +5,7 @@ $(document).ready(function () {
      
      //advancedSearchPanel();
      
+     
    $('body').on({
        mouseenter : function(){
            
@@ -18,17 +19,6 @@ $(document).ready(function () {
        }
    }, '.book1');  
      
-   /*$('body').on('hover', '.book', function() {
-        
-        $(this).next().css("display", "block");
-        $(this).next().hover(function(){
-            
-        }, function(){
-            $(this).css("display", "none");
-        });
-        
-    });*/
-    
      
      $('#search_field').autocomplete({
          serviceUrl: "/library/books/autocomplete",
@@ -36,71 +26,25 @@ $(document).ready(function () {
          
      });
      
-   /* $('body').on('click', '.button', function() {
-        order($(this).val());
-    });
-    $('body').on('click', '#order_button', function() {
-        var bookId = $(this).val();
-        var time = $(this).prev().val();
-        makeOrder(bookId, time);
-    });
-    
-    $('body').on('click', '#my_orders', function() {
-        myOrders();
-    });
-    
-    $('body').on('click', '.delete_order_button', function() {
-        var orderId = $(this).val();
-        deleteOrder(orderId);
-    });
-    
-    $('body').on('click', '.edit_order_button', function() {
+     $('body').on('click', '#search_button', function(e) {
         
-        var orderId = $(this).val();
-        var date = $(this).prev().val();
         
-        editOrder(orderId, date);
+        e.preventDefault();
+        var url = $(this).attr('url');
+        var query = $('#search_field').val();
+        search(query, url);
+       
     });
-    
-    $('body').on('click', '#wish_button', function() {
-        var bookId = $(this).val();
-        addToWishList(bookId);
-    });
-    
-    $('body').on('click', '#my_wishlist', function() {
-        myWishes();
-    });
-    
-    $('body').on('click', '.delete_wish_button', function() {
-        var wishId = $(this).val();
-        deleteWish(wishId);
-    });
-    
-    $('body').on('click', '.confirm_wish_button', function() {
-        var wishId = $(this).val();
-        var date = $(this).prev().val();
-        confirmWish(wishId, date);
-    });
-    
-    $('body').on('click', '#my_books', function() {
-        myBooks();
-    });*/
 
     $('body').on('click', '#advanced_search_button', function() {
         
         
         $('#advanced_search_panel').toggle("slow");
-        
-        
+       
     });
     
     $('body').on('click', '#advanced_search_submit', function() {
-        
-        advancedSearch();
+        var url = $(this).attr('url');
+        advancedSearch(url);
     });
 });
-     
-
-
-
-

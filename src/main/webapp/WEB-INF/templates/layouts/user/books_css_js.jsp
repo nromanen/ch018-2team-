@@ -2,7 +2,7 @@
 
 
         
-<link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/main.css" /> 
+<link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/books.css" /> 
         
 <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/jquery.datetimepicker.css" /> 
         

@@ -9,12 +9,13 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
                 
 		
            
-                
+                <intercept-url pattern="/books/search" access="permitAll()" />
                 <intercept-url pattern="/books/*" access="hasRole('ROLE_USER')" />
                 <intercept-url pattern="/account" access="hasRole('ROLE_USER')" />
                 <intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
                 <intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/librarian/*" access="hasRole('ROLE_LIBRARIAN')" />
+                
                 <intercept-url pattern="/books" access="permitAll()" />
                 <intercept-url pattern="/" access="permitAll()" />
               
@@ -33,25 +34,11 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
         
         <beans:bean name="bcryptEncoder"
             class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-        <!--<beans:bean id="saltSource"
-            class="org.springframework.security.providers.dao.salt.ReflectionSaltSource"
-             />-->
         
 	<authentication-manager>
 		<authentication-provider user-service-ref="myUserDetailsService" >
                     <password-encoder ref="bcryptEncoder" />
                 </authentication-provider>
-                   
-                        <!--<password-encoder hash="sha" />
-			<jdbc-user-service data-source-ref="dataSource"
-                            users-by-username-query="
-                                select email, password, confirm from persons where email = ?
-                            "
-                            authorities-by-username-query="
-                                select email, prole from persons where email = ?
-                            "
-                        />
-		</authentication-provider>-->
 	</authentication-manager>
 
 </beans:beans>

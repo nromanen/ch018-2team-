@@ -2,7 +2,6 @@ package com.ch018.library.controller;
 
 import java.security.Principal;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.json.JSONObject;
@@ -22,8 +21,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ch018.library.entity.Person;
+import com.ch018.library.service.PersonService;
+import com.ch018.library.validation.Password;
+import com.ch018.library.validation.PersonalInfo;
+import org.springframework.validation.ObjectError;
 import com.ch018.library.controller.errors.IncorrectInput;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
@@ -48,57 +51,67 @@ public class AccountController {
 
         @RequestMapping(method = RequestMethod.GET)
         @Secured({"ROLE_USER"})
-        public String accountG(Model model, Principal principal){
+        public String account(Model model, Principal principal){
             Person person = personService.getByEmail(principal.getName());
             model.addAttribute("person", person);
             return "account";
         }
 
         @RequestMapping(value = "changeEmail", method = RequestMethod.POST)
-        @Secured({"ROLE_USER"})
         public ResponseEntity<String> changeEmail(@RequestParam("email") String email, Principal principal){
             Person person = personService.getByEmail(principal.getName());
             logger.info("person {} send request to email change to {}", person, email);
-            if (personService.changeEmail(email, person)) {
+            try {
+                personService.changeEmail(email, person);
                 JSONObject json = new JSONObject();
                 json.put("email", email);
                 logger.info("person {} email changed to ", person, person.getEmail());
                 return new ResponseEntity<>(json.toString(), HttpStatus.OK);
-            } else 
-                return new ResponseEntity<>("can't change email", HttpStatus.BAD_REQUEST); 
+            } catch(Exception e) { 
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
+            }
         }
 
         @RequestMapping(value = "changePassword", method = RequestMethod.POST)
-        @Secured({"ROLE_USER"})
-        public ResponseEntity<String> changePassword(@Valid @ModelAttribute() Password password, BindingResult result,
-                                                        Principal principal, HttpServletResponse response) throws Exception{
-            
-            logger.info("person {} send request to password change", SecurityContextHolder.getContext().getAuthentication().getName());
+        public ResponseEntity<String> changePassword(@Valid @ModelAttribute Password password, BindingResult result,
+                                                        Principal principal) {
+            logger.info("person {} send request to password change", principal.getName());
             validator.validate(password, result);
             if(result.hasErrors()) {
-                return new ResponseEntity<>(result.getFieldError().getDefaultMessage(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(getErrors(result), HttpStatus.BAD_REQUEST); 
             }
-            if(personService.updatePassword(password, principal)){
-                logger.info("person {} password succesfully changed", SecurityContextHolder.getContext().getAuthentication().getName());
-                return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
+            Person person = personService.getByEmail(principal.getName());
+            try {
+                personService.updatePassword(password, person);
+            } catch (Exception e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); 
             }
-            else{
-                logger.error("person {} password doesn't changed", SecurityContextHolder.getContext().getAuthentication().getName());
-                return new ResponseEntity<>("password doesn't changed", HttpStatus.OK);
-            }
+            logger.info("person {} password succesfully changed", SecurityContextHolder.getContext().getAuthentication().getName());
+            return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK); 
         }
-
-        @RequestMapping(value = "changeField", method = RequestMethod.POST)
-        @Secured({"ROLE_USER"})
-        public @ResponseBody String changeField(@RequestParam("fieldName") String fieldName, 
-                                                  @RequestParam("fieldValue") String fieldValue) throws Exception {
-            String field;
-            if((field = personService.updateField(fieldName, fieldValue)) != null){
-                JSONObject json = new JSONObject();
-                json.put("field", field);
-                return json.toString();
-            }     
-            else
-                throw new IncorrectInput("Incorrect " + fieldName);
+        
+        @RequestMapping(value = "updatePersonalInfo", method = RequestMethod.POST)
+        public ResponseEntity<String> updatePersonalInfo(@Valid @ModelAttribute PersonalInfo info, BindingResult result
+                                                    , Principal principal ) {
+            if (result.hasErrors()) {
+                return new ResponseEntity<>(getErrors(result), HttpStatus.BAD_REQUEST); 
+            
+            }
+            try {
+                Person person = personService.getByEmail(principal.getName());
+                personService.updatePersonalInfo(person, info);
+            } catch (Exception e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
         }
+        
+       private String getErrors(BindingResult result) {
+           StringBuilder sb = new StringBuilder();
+           for (ObjectError error : result.getAllErrors()) {
+                    sb.append(error.getDefaultMessage());
+                    sb.append("\n\r");
+                }
+           return sb.toString();
+       }
 }

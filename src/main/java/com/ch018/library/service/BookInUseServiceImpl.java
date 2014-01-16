@@ -80,19 +80,8 @@ public class BookInUseServiceImpl implements BookInUseService {
 
         @Override
         @Transactional
-        public Date getMinOrderDate(Book book) {
-            Calendar calendar = Calendar.getInstance();
-            if (book.getCurrentQuantity() > 0){
-                calendar.setTime(new Date());
-                calendar.add(Calendar.DAY_OF_YEAR, 1);
-                return calendar.getTime();
-            }
-            Date minDate = useDao.getMinOrderDate(book);
-            if (minDate.getTime() < new Date().getTime())
-                minDate = new Date();
-            calendar.setTime(minDate);
-            calendar.add(Calendar.DAY_OF_YEAR, 1);
-            return minDate;
+        public Date getMinReturnDate(Book book) {
+            return useDao.getMinReturnDate(book);
         }
 
         @Override

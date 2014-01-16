@@ -114,82 +114,25 @@ public class BookServiceImpl implements BookService {
         @Override
         @Transactional
         public Page getBooksComplex(BookSearch bookSearch) {
-            return bookDAO.getBooksComplex(bookSearch);
+            Page books = bookDAO.getBooksComplex(bookSearch);
+            return books;
         }
 
+		@Override
+		public List<Book> advancedSearch(Book book) {
+			return bookDAO.advancedSearch(book);
+		}
 
-    
-    
-	@Override
-	public List<Book> advancedSearch(Book book) {
-		return bookDAO.advancedSearch(book);
-	}
-
-	@Override
-	public List<Book> simpleSearch(String query) {
-		return bookDAO.simpleSearch(query);
-	}
+		@Override
+		public List<Book> simpleSearch(String query) {
+			return bookDAO.simpleSearch(query);
+		}
 
         @Override
         @Transactional
-        public JSONObject getBooksComplexByParamsAsJson(BookSearch bookSearch) {
+        public Page getBooksComplexByParams(BookSearch bookSearch) {
             Page books = bookDAO.getBooksComplexByParams(bookSearch);
-            boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
-            return formBooksJsonFromList(books,isUserAuth);
-        }
-
-        @Override
-        @Transactional
-        public JSONObject getBooksComplexAsJson(BookSearch bookSearch) {
-            boolean isUserAuth = SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
-            Page page;
-            page = getBooksComplex(bookSearch);
-
-            return formBooksJsonFromList(page, isUserAuth);
-        }
-
-
-        private JSONObject formBooksJsonFromList(Page page, boolean isUserAuth){
-
-            List<JSONObject> jsons = new ArrayList<>();
-
-            if(isUserAuth){
-
-                for(Book book : page.getBooks()){
-                    JSONObject json = new JSONObject();
-                    json.put("bId", book.getbId());
-                    json.put("title", book.getTitle());
-                    json.put("authors", book.getAuthors());
-                    json.put("publisher", book.getPublisher());
-                    json.put("description", book.getDescription());
-                    json.put("generalQuantity", book.getGeneralQuantity());
-                    json.put("currentQuantity", book.getCurrentQuantity());
-                    json.put("img", book.getImg());
-                    jsons.add(json);
-            }
-            }else{
-                for(Book book : page.getBooks()){
-                    JSONObject json = new JSONObject();
-
-                    json.put("title", book.getTitle());
-                    json.put("authors", book.getAuthors());
-                    json.put("publisher", book.getPublisher());
-                    json.put("description", book.getDescription());
-                    json.put("generalQuantity", book.getGeneralQuantity());
-                    json.put("currentQuantity", book.getCurrentQuantity());
-                    json.put("img", book.getImg());
-                    jsons.add(json);
-            }
-            }
-
-            JSONObject finalJson = new JSONObject();
-            finalJson.put("auth", isUserAuth);
-            finalJson.put("generalPages", page.getGeneralPagesQuantity());
-            finalJson.put("currentPage", page.getCurrentPageNum());
-            finalJson.put("books", jsons);
-
-            return finalJson;
-
+            return books;
         }
 
         @Override
@@ -214,8 +157,6 @@ public class BookServiceImpl implements BookService {
 
             return booksInUseEx;
         }
-        
-        
 
 		@Override
 		@Transactional

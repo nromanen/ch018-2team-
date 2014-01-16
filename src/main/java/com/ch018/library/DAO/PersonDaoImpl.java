@@ -71,7 +71,7 @@ public class PersonDaoImpl implements PersonDao {
           return (Person) factory.getCurrentSession().createCriteria(Person.class)
                    .add(Restrictions.eq("email", email)).uniqueResult(); 
         } catch (Exception e) {
-        	System.out.println("Catch" + e);
+            logger.error("in getByEmail[Dao] {}", e.getMessage());
             return null;
         }
        
