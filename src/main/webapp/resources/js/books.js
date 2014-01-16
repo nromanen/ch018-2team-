@@ -5,6 +5,7 @@ $(document).ready(function () {
      
      //advancedSearchPanel();
      
+     
    $('body').on({
        mouseenter : function(){
            
@@ -24,6 +25,16 @@ $(document).ready(function () {
          minChars: 2
          
      });
+     
+     $('body').on('click', '#search_button', function(e) {
+        
+        
+        e.preventDefault();
+        var url = $(this).attr('url');
+        var query = $('#search_field').val();
+        search(query, url);
+       
+    });
 
     $('body').on('click', '#advanced_search_button', function() {
         

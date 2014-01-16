@@ -4,7 +4,7 @@ $(document).ready(function(){
         var rawDate = $(this).val();
         var date = getDateInFormat(rawDate);
         var $parent = $(this).parent();
-        $parent.text(date);
+        $parent.text(date.split(" ")[0]);
         var diff = parseInt( (rawDate - new Date().getTime())/(24*3600*1000) );
         $parent.next().text(diff);
         if(diff*(-1) > 0){

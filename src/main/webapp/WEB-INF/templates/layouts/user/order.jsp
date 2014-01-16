@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-            <div class="row" style="background-color: #F0F0F0;">
+            <div class="row well">
                 
                 <div id="picker_date">
                     <div id="min_date" value="${minDate}"></div>
@@ -11,11 +11,11 @@
                     
                 </div>
                 
-                <div class="col-md-2" id="left_main">
-                    <!--New Arrivals-->
-                </div>
+                <!--<div class="col-md-2" id="left_main">
+                    New Arrivals
+                </div>-->
                 
-                <div class="col-md-8" id="center_main">
+                <div class="col-md-12" id="center_main">
                     
                     <!--Modal Books Limit-->
                     <input id="book_limit" type="hidden" value="${isBookLimitReached}">
@@ -48,35 +48,69 @@
                                 </div>
                                 <div class="col-md-6" id="order_book_info">
                                     <div class="row">
-                                        ${book.getTitle()}
+                                        <div class="text-info">
+                                            <b>Title: </b> ${book.getTitle()}
+                                        </div>
                                     </div>
                                     <div class="row">
-                                        ${book.getAuthors()}
+                                        <div class="text-info">
+                                            <b>Authors: </b>${book.getAuthors()}
+                                        </div>
                                     </div>
                                     <div class="row">
-                                        ${book.getPublisher()}
+                                        <div class="text-info">
+                                            <b>Publisher: </b> ${book.getPublisher()}
+                                        </div>
                                     </div>
                                     <div class="row" id="order_book_description">
-                                        ${book.getDescription()}
+                                        <div class="text-info">
+                                            <b>Description: </b> ${book.getDescription()}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5" id="order_order_wish_part">
                             <div class="row" id="order_order_button_part">
-                                <input type="hidden" id="minDate" value="${minDate}">
-                                <input class="form-control" id="datetimepicker">
-                                <input type="hidden" id="bookId" value="${book.getbId()}">
+                                
                                 
                                 <c:choose>
-                                    <c:when test="${inOrders || inUse}">
-                                        <button disabled="disabled" id="order_button" class="btn-info">Order</button> 
+                                    <c:when test="${inUse}">
+                                        <div class="alert alert-danger col-lg-6">
+                                            You already use that book
+                                        </div>
+                                    </c:when>
+                                    <c:when test="${inOrders}"> 
+                                        <div class="alert alert-warning col-lg-6">
+                                            You already ordered that book
+                                            
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        
+                                        
+                                        <a href="${pageContext.request.contextPath}/books/order/my" class="btn btn-primary">View Orders</a>
+                                    </c:when>
+                                    <c:when test="${inWishList}"> 
+                                        <input type="hidden" id="minDate" value="${minDate}">
+                                        <input class="form-control" id="datetimepicker">
+                                        <input type="hidden" id="bookId" value="${book.getbId()}">
+                                        <div class="alert alert-info col-lg-6">Already in WishList</div>
+                                        <div class="clearfix"></div>
+                                        <button id="order_button" class="btn btn-info">Order</button> 
+                                        
                                     </c:when>
                                     <c:otherwise>
-                                        <button id="order_button" class="btn-info">Order</button> 
+                                        <input type="hidden" id="minDate" value="${minDate}">
+                                        <input class="form-control" id="datetimepicker">
+                                        <input type="hidden" id="bookId" value="${book.getbId()}">
+                                        
+                                        <button id="order_button" class="btn btn-info">Order</button> 
+                                        
+                                        <button id="wish_button"  class="btn btn-warning">Add To WishList</button>     
                                     </c:otherwise>
                                 </c:choose>
-                                
+
+                             
                                 <div class="modal fade" id="order_modal" tabindex="-1" role="dialog" aria-labelledby="order_modal_label" aria-hidden="true">
                                         <div class="modal-dialog">
                                           <div class="modal-content">
@@ -98,24 +132,14 @@
                                         
                             </div>
                             
-                            <div class="row" id="order_wish_button_part">
-                                <input type="hidden" value="${book.getbId()}">
-                                <c:choose>
-                                    <c:when test="${ inUse || inWishList || inOrders}">
-                                        <button disabled="disabled" id="wish_button"  class="btn-warning">Add To WishList</button> 
-                                    </c:when>
-                                    <c:otherwise>
-                                        <button id="wish_button"  class="btn-warning">Add To WishList</button> 
-                                    </c:otherwise>
-                                        </c:choose>
-                            </div>
+                            
                                 <div class="row" id="book_orders">
                                     <ul class="list-group list-unstyled">
                                         <li class="list-group-item-heading dropdown">Book already ordered for dates</li>
                                         <c:forEach var="order" items="${orders}">
                                             <li class="list-group-item">
                                                 <div class="tab-content text-warning">
-                                                    ${order.getOrderDate()}
+                                                    ${order.orderDate}
                                                 </div>
                                             </li>
                                         </c:forEach>
@@ -143,9 +167,9 @@
                         
                     
                 </div>
-                                <div class="col-md-2" id="left_main">
-                    <!--New Arrivals-->
-                </div>
+                                <!--<div class="col-md-2" id="left_main">
+                    New Arrivals
+                </div>-->
                 
                 
             </div>

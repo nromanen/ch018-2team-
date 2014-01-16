@@ -1,11 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-            <div class="row" style="background-color: #F0F0F0;">
+            <div class="row well" >
                 
                 <div class="col-md-2" id="left_main">
-                    <!--New Arrivals-->
+                    <div class="pull-left text-info"><h3>Books In Use</h3></div>
                 </div>
                 
                 <div class="col-md-8" id="center_main">
+                    
                     <ul class="list-unstyled">
                        
                        
@@ -26,10 +27,10 @@
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-md-5">
-                                        ${use.getBook().getTitle()}
+                                        ${use.book.title}
                                     </div>
                                     <div class="col-md-4">
-                                        <input class="mybooks_date" type="hidden" value="${use.getReturnDate().getTime()}">
+                                        <input class="mybooks_date" type="hidden" value="${use.returnDate.time}">
                                         
                                     </div>
                                     <div class="col-md-3">

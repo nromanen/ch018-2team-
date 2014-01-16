@@ -70,11 +70,12 @@ public class BooksController {
         }
 
         @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
-        @Secured({"ROLE_USER"})
         public  String advancedSearch(@ModelAttribute BookSearch bookSearch, Model model){
             logger.info("advanced search called with {}, {}, {}, {}", bookSearch);
             Page books = bookService.getBooksComplexByParams(bookSearch);
-            if (books.getBooks().isEmpty() || books.getBooks() == null)
+            if (books.getBooks().isEmpty() || books.getBooks() == null) {
+                model.addAttribute("nothing", true);
+            }
             model.addAttribute("books", books.getBooks());
             return "books";
         }

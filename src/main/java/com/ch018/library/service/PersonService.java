@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ch018.library.entity.Person;
 import com.ch018.library.validation.Password;
+import com.ch018.library.validation.PersonalInfo;
 import com.ch018.library.validation.UserRegistrationForm;
 /**
  *
@@ -28,9 +29,8 @@ public interface PersonService {
         List<Person> getByRole(String role);
         List<Person> getConfirmed();
         List<Person> getSmsEnabled();
-        boolean changeEmail(String email, Person person);
-        boolean updatePassword(Password password, Principal principal);
-        String updateField(String fieldName, String filedValue);
+        void changeEmail(String email, Person person) throws Exception;
+        void updatePassword(Password password, Person person) throws Exception;
         List<Person> simpleSearch(String request);
         List<Person> advancedSearch(Person person);
         Person countRating(Person person); 
@@ -39,4 +39,5 @@ public interface PersonService {
         boolean restoreSendEmail(String email);
         boolean isKeyValid(String key);
         boolean restorePass(String key, Password password);
+        void updatePersonalInfo(Person person, PersonalInfo info) throws Exception;
 }

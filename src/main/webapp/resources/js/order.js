@@ -1,7 +1,7 @@
 
 
 $(document).ready(function(){
-    
+   
     var isLimitReacher = $('#book_limit').val();
     if(isLimitReacher === 'true')
         $('#book_limit_modal').modal('show');
@@ -20,15 +20,27 @@ $(document).ready(function(){
                 },
                 onSelectDate:function(current_time,$input){
                     var days = getAvailableDays(current_time, $('.order'));
-                    
+                    var d = 'can order for ' + days + 'days';
                     if($(this).find($('#picker_notify')).attr('id') === undefined){
                         console.log($(this));
-                        var $div = $('<div>', {id: 'picker_notify', style : 'position : absolute; left: 100%; width:100px; height:100px; border : 2px solid black'}).text(days);
+                        
+                        var $div = $('<div>', {id: 'picker_notify', title: d, style : 'position : absolute; top: 0%; left: 50%; text-size:16px;'});
+                        $div.attr('data-toggle', 'tooltip');
                         $div.appendTo($(this));
-                    
+                        $('#picker_notify').tooltip('show');
+                     
                     }else{
-                        $('#picker_notify').text(days);
+                        console.log("before" + $('#picker_notify').attr('title'));
+                        //$('#picker_notify').attr('title', d);
+                        
+                        $('#picker_notify')
+                        
+                        .attr('data-original-title', d)
+                        .tooltip('fixTitle')
+                        .tooltip('show');
+                console.log("after" + $('#picker_notify').attr('title'));
                     }
+                    
                     
                 },
                 format: 'Y/m/d H:i',
@@ -50,7 +62,7 @@ $(document).ready(function(){
     });
     
     $('#wish_button').click(function() {
-       bookId = $(this).prev().val();
+        var bookId = $('#bookId').val();
         addToWishList(bookId);
     });
     

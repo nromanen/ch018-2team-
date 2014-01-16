@@ -1,5 +1,9 @@
-
+$.validator.addMethod('customphone', function (value, element) {
+    return this.optional(element) || /^\d{3}-\d{3}-\d{4}$/.test(value);
+}, "Please enter a valid phone number");
 $(document).ready(function (){
+    
+    $('#acc_cellphone').mask("999-999-9999");
     
     $('body').click(function () {
        
@@ -7,178 +11,148 @@ $(document).ready(function (){
         
     });
    
-    
-    
-    
-    $('#acc_email_button').click(function (){
-        if($('#acc_email_button').text() === 'Change'){
-            $('#email_text').addClass('hide');
-            $('#email_edit').removeClass('hide');
-            $('#acc_email_button').text('Confirm');
+    $('#nav_bar a').click(function (e) {
+       
+        e.preventDefault();
+        $(this).tab('show');
+        
+    });
+    $('#info_form').validate({
+       
+        rules: {
+            name: {
+                required : true,
+                minlength : 2,
+                maxlength : 20
+            },
+            surname: {
+                required : true,
+                minlength : 2,
+                maxlength: 20
+            },
+            cellphone : 'customphone'
+        },  
+        submitHandler: function(form) {
             
-        }else{
             
-            var field = $('#email_edit').val();
             $.ajax({
-                url: "/library/account/changeEmail",
-                type: "POST",
-                data: {'email' : field},
-                dataType: "json",
-                contentType: 'application/x-www-form-urlencoded',
-                mimeType: 'application/json',
-
-                success: function (data) {
-
-                    window.location.href = "/library";
-
+            url: $('#info_form').attr('action'),
+            type: "POST",
+            data: $('#info_form').serialize(),
+            dataType: "json",
+            contentType: 'application/x-www-form-urlencoded',
+            mimeType: 'application/json',
+         success: function () {
+                $('#info_success').text('Information successfully changed');
+                $('#info_success').removeClass('hide');
              },
-               error: function(xhr, status, error){
-                 
-                    $('#error_div').text(xhr.responseText);
-                    $('#error_div').removeClass('hide');
-               
-               }
+         error: function(xhr, status, error){
+                $('#info_error').text(xhr.responseText);
+                $('#info_error').removeClass('hide');
+         }
          });
-            
-            
+        return false;
         }
     });
     
-    $('#acc_name_button').click(function (){
-        if($('#acc_name_button').text() === 'Change'){
-            $('#name_text').addClass('hide');
-            $('#name_edit').removeClass('hide');
-            $('#acc_name_button').text('Confirm');
-            
-        }else{
-            
-            var field = $('#name_edit').val();
+    $('#pass_form').validate({
+        rules: {
+            oldPass: {
+                required : true,
+                minlength : 6,
+                maxlength : 16
+            },
+            NewPass: {
+                required : true,
+                minlength : 6,
+                maxlength : 16
+            },
+            rNewPass: {
+                required : true,
+                minlength : 6,
+                maxlength : 16
+            },
+        messages :{
+            rNewPass :{
+                equalTo : 'entered password\'s don\'t match'
+            }
+        }
+        },   
+        submitHandler: function(form) {
+
+
             $.ajax({
-                url: "/library/account/changeField",
+                url: $('#pass_form').attr('action'),
                 type: "POST",
-                data: {'fieldName' : 'name', 'fieldValue' : field},
+                data: $('#pass_form').serialize(),
                 dataType: "json",
                 contentType: 'application/x-www-form-urlencoded',
                 mimeType: 'application/json',
+                success: function() {
+                    $('#pass_success').text('Password successfully changed. You will be redirected to login page');
+                    $('#pass_success').removeClass('hide');
+                    setTimeout(function() {
+                        window.location.href = "/library/";
+                    }, 3000);
+                },
+                error: function(xhr, status, error) {
+                    $('#pass_error').text(xhr.responseText);
+                    $('#pass_error').removeClass('hide');
+                }
+            });
+            return false;
+            }
+            });
+            
+            
 
-                success: function (data) {
-
-                    $('#name_edit').addClass('hide');
-                    $('#name_text').removeClass('hide');
-                    $('#acc_name_button').text('Change');
-                    $('#name_text').text(data.field);
-
-             }
-         });
-            
-            
-        }
-    });
-    
-    $('#acc_password_button').click(function (){
-        if($('#acc_password_button').text() === 'Change Password'){
-            
-            $('#old_pass').removeClass('hide');
-            $('#new_pass').removeClass('hide');
-            $('#re_new_pass').removeClass('hide');
-            
-            $('#acc_password_button').text('Confirm');
-            
-        }else{
-            
-            var old_pass = $('#old_pass').val();
-            var new_pass = $('#new_pass').val();
-            var re_new_pass = $('#re_new_pass').val();
-            
-            $.ajax({
-                url: "/library/account/changePassword",
-                type: "POST",
-                data: {'oldPass' : old_pass, 'newPass' : new_pass, 'rNewPass' : re_new_pass},
-                dataType: "json",
-                contentType: 'application/x-www-form-urlencoded',
-                mimeType: 'application/json',
-
-                success: function () {
-
-                    window.location.href = "/library";
-
-             },
-              error: function(xhr, status, error){
-                 alert(xhr.responseText);
-                $('#error_pass_div').text(xhr.responseText);
-                $('#error_pass_div').removeClass('hide');
-              }
-         });
-            
-            
-        }
-    });
+    $('#email_form').validate({
+        rules: {
+            email: {
+                required : true,
+                maxlength : 30
+            }
+        },
         
-        $('#acc_phone_button').click(function (){
-        if($('#acc_phone_button').text() === 'Change'){
-            $('#phone_text').addClass('hide');
-            $('#phone_edit').removeClass('hide');
-            $('#acc_phone_button').text('Confirm');
-            
-        }else{
-            
-            var field = $('#phone_edit').val();
+        submitHandler: function(form) {
+
+
             $.ajax({
-                url: "/library/account/changeField",
+                url: $('#email_form').attr('action'),
                 type: "POST",
-                data: {'fieldName' : 'phone', 'fieldValue' : field},
+                data: $('#email_form').serialize(),
                 dataType: "json",
                 contentType: 'application/x-www-form-urlencoded',
                 mimeType: 'application/json',
-
-                success: function (data) {
-
-                    $('#phone_edit').addClass('hide');
-                    $('#phone_text').removeClass('hide');
-                    $('#acc_phone_button').text('Change');
-                    $('#phone_text').text(data.field);
-
-             }
-         });
-            
-            
-        }
+                success: function(data) {
+                    $('#email_success').text('Email successfully changed to ' + data.email + ' You will be redirected to login page');
+                    $('#email_success').removeClass('hide');
+                    setTimeout(function() {
+                        window.location.href = "/library/";
+                    }, 4000);
+                },
+                error: function(xhr, status, error) {
+                    $('#email_error').text(xhr.responseText);
+                    $('#email_error').removeClass('hide');
+                }
+            });
+            return false;
+            }
     });
     
     
-    $('#acc_surname_button').click(function (){
-        if($('#acc_surname_button').text() === 'Change'){
-            $('#surname_text').addClass('hide');
-            $('#surname_edit').removeClass('hide');
-            $('#acc_surname_button').text('Confirm');
-            
-        }else{
-            
-            var field = $('#surname_edit').val();
-            $.ajax({
-                url: "/library/account/changeField",
-                type: "POST",
-                data: {'fieldName' : 'surname', 'fieldValue' : field},
-                dataType: "json",
-                contentType: 'application/x-www-form-urlencoded',
-                mimeType: 'application/json',
 
-                success: function (data) {
+    $('body').click(function() {
 
-                    $('#surname_edit').addClass('hide');
-                    $('#surname_text').removeClass('hide');
-                    $('#acc_surname_button').text('Change');
-                    $('#surname_text').text(data.field);
+        $('#info_error').addClass('hide');
+        $('#mail_error').addClass('hide');
+        $('#pass_error').addClass('hide');
+        $('#info_success').addClass('hide');
+        $('#mail_success').addClass('hide');
+        $('#pass_success').addClass('hide');
 
-             }
-         });
-            
-            
-        }
     });
-        
-        
-        
-        
+   
+    
     });
    

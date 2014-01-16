@@ -6,14 +6,29 @@
     z-index: 9999;
 }
 
-#content_bg{
-    background: #F0F0F0;
-}
+/*#content_bg{
+    margin-top: 20px;
+}*/
 
 li a{
     color : white;
 }
 #center_main{
     margin-top: 10px;
+    
+}
+
+#search_field{
+    
+    width: 400px;
+    
+}
+#order_book_part{
+    padding-right: 30px;
+}
+
+#order_book_info .row{
+    
+    margin-bottom: 10px;
     
 }

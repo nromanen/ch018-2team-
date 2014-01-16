@@ -1,6 +1,9 @@
 
 $(document).ready(function(){
     
+    if($(".calendar").size() == 0){
+        $('#empty_wish_list').modal("show");
+    }
     $(".calendar").each(function(){
         var $parent = $(this).parent();
         var minDateLong = $parent.find($('.minDate')).val();
@@ -64,6 +67,9 @@ function deleteWish(wishId){
         mimeType: 'application/json',
         success: function() {
             $('#wish_li_' + wishId).remove(); 
+                if($(".calendar").size() == 0){
+                    $('#empty_wish_list').modal("show");
+    }
             }
         });
     

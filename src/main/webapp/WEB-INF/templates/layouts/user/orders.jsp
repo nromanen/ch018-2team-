@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-            <div class="row" style="background-color: #F0F0F0;">
+            <div class="row well" >
                 
                 <div class="col-md-2" id="left_main">
-                    <!--New Arrivals-->
+                    <div class="pull-left text-info"><h3>Orders</h3></div>
                 </div>
                 
                 <div class="col-md-8" id="center_main">
@@ -16,7 +16,7 @@
                                         Order Date
                                     </div>
                                     <div class="col-md-3">
-                                        Delete
+                                        
                                     </div>
                                 </div>
                             </li>
@@ -60,3 +60,24 @@
                 
             </div>
             
+            <!--Modal Empty-->
+                    
+                    <div class="modal fade" id="empty_orders_list" tabindex="-1" role="dialog" aria-labelledby="empty_orders_list_label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                              <h4 class="modal-title" id="empty_orders_list_label">Empty List Notification</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                              <h2>You don't have any order</h2>
+                                              <h3>Try search in our collection</h3>
+                                            </div>
+                                            <div class="modal-footer">
+                                           
+                                              <button type="button" onclick="location.href = '${pageContext.request.contextPath}//books'"class="btn btn-primary">View Books</button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                </div>
+                    <!--Modal Empty-->

@@ -1,7 +1,9 @@
 
 
 $(document).ready(function(){
-
+    if($(".calendar").size() == 0){
+        $('#empty_orders_list').modal("show");
+    }
     $(".calendar").each(function (){
         var changed = $(this).parent().find(".changed").val();
         var orderDateLong = $(this).prev().val();
@@ -12,20 +14,24 @@ $(document).ready(function(){
         console.log("minDate " + minDate);
         var $orders = $(this).parent().find('.order');
 
-        if(changed === 'true'){
+       /* if(changed === 'true'){
             
             var $btn = $(this).next();
             $btn.attr('data-toggle', 'popover');
             $btn.attr('data-content', 'choose another date');
-            $btn.popover("show");
+            $btn.popover('show');
         }else if(orderDateLong > (minDateLong + (24*3600*1000))){
             
             var $btn = $(this).next();
             $btn.attr('data-toggle', 'popover');
             $btn.attr('data-content', 'can choose earlier date');
-            $btn.popover("show");
+            $btn.popover({placement : 'bottom'});
+            $btn.popover('show');
+            $btn.popover().hover(function () {
+               $btn.popover('hide'); 
+            });
             
-        }
+        }*/
         
         
         $(this).datetimepicker({
@@ -35,14 +41,19 @@ $(document).ready(function(){
             },
             onSelectDate: function(current_time, $input) {
                 var days = getAvailableDays(current_time, $orders);
-                
+                console.log(days);
+                var d = 'can order for ' + days + 'days';
                 if ($(this).find($('.picker_notify')).attr('class') === undefined) {
                     console.log($(this))
-                    var $div = $('<div>', {class: 'picker_notify', style: 'position : absolute; left: 100%; width:100px; height:100px; border : 2px solid black'}).text(days);
-                    $div.appendTo($(this));
+                    var $div = $('<div>', {class: 'picker_notify', title: d, style : 'position : absolute; top: 0%; left: 50%; text-size:16px;'});
+                        $div.attr('data-toggle', 'tooltip');
+                        $div.appendTo($(this));
+                        $('.picker_notify').tooltip('show');
 
                 } else {
-                    $('.picker_notify').text(days);
+                    $('.picker_notify').attr('data-original-title', d)
+                        .tooltip('fixTitle')
+                        .tooltip('show');
                 }
 
             },
@@ -83,7 +94,9 @@ function deleteOrder(orderId){
             
             //myOrders();
             $('#order_li_' + orderId).remove();
-               
+            if ($(".calendar").size() == 0) {
+                $('#empty_orders_list').modal("show");
+            }
                 
             }
 
