@@ -67,7 +67,7 @@ public class RegisterController {
         public String confirmation(@RequestParam("key") String key){
            
             if(personService.confirmMail(key))
-                return "redirect:/index";
+                return "redirect:/";
             else
                 return "error";
         }
@@ -105,7 +105,7 @@ public class RegisterController {
 
         @RequestMapping(value = "/register", method = RequestMethod.GET)
         public String addUser(Model model){
-            return "redirect:/index";
+            return "register";
         }
 
 }

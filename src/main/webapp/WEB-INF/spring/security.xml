@@ -22,7 +22,7 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
                 <access-denied-handler error-page="/denied"/>
 		<form-login login-page="/login" default-target-url="/"
 			authentication-failure-url="/login?fail=true" />
-		<logout logout-success-url="/index" />
+		<logout logout-success-url="/" />
 		
 		<anonymous username="guest" granted-authority="ROLE_ANONYMOUS" />
 		<remember-me key="secret" token-validity-seconds="604800"/>

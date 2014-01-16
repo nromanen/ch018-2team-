@@ -2,6 +2,8 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
+
+<sec:authorize access="isAuthenticated()">
     <ul class="nav navbar-nav navbar-right">
         <li><a href="${pageContext.request.contextPath}/books" id="my_books"><spring:message code="messages.home" /></a></li>
         <li><a  href="${pageContext.request.contextPath}/books/mybooks" id="my_books"><spring:message code="message.mybooks" /></a></li>
@@ -10,44 +12,101 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="message.hello" /> <sec:authentication property="principal.username" /> <b class="caret"></b></a>
             <ul class="dropdown-menu">
-                <li><a href="${pageContext.request.contextPath}/account" id="my_account">account</a></li>
+                <li><a href="${pageContext.request.contextPath}/account" id="my_account"><spring:message code="message.account" /></a></li>
                 <li><a href="<c:url value="/j_spring_security_logout" />"><spring:message code="message.logout" /></a></li>
             </ul>
         </li>
     </ul>
+</sec:authorize>
 
+<sec:authorize access="hasRole('ROLE_ANONYMOUS')">
+    <div class="nav navbar-nav navbar-left" style="margin-top: 5px;">
+                    <form class="form-inline" role="form" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
+                        <div class="form-group">
+                            <input  class="form-control" type="text" name="j_username" placeholder="Enter Email">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="password" name="j_password" placeholder="Enter Password">
+                        </div>
+                        
 
-
-
-<!--<div class="col-md-5" id="user_menu">
-    
-    <sec:authorize access="isAuthenticated()">
-        <div class="navbar nav-pills" role="navigation">
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="${pageContext.request.contextPath}/books" id="my_books"><spring:message code="messages.home" /></a></li>
-                    <li><a  href="${pageContext.request.contextPath}/books/mybooks" id="my_books"><spring:message code="message.mybooks" /></a></li>
-                    <li><a  href="${pageContext.request.contextPath}/books/order/my" id="my_orders"><spring:message code="message.orders" /></a></li>
-                    <li><a href="${pageContext.request.contextPath}/books/wishlist/my" id="my_wishlist"><spring:message code="message.wishlist" /></a></li>
-                    <li>
-                        <div class="btn-toolbar" role="toolbar" style="margin-top: 15px;">
-                        <div class="btn-group">
-                            <a class="dropdown-toggle" type="button" data-toggle="dropdown">
-                                 <spring:message code="message.hello" /> <sec:authentication property="principal.username" /> <span class="caret"></span></a>
-                                 <ul class="dropdown-menu" role="menu">
-                                     <li><a href="${pageContext.request.contextPath}/account" id="my_account">account</a></li>
-                                     <li><a href="<c:url value="/j_spring_security_logout" />"><spring:message code="message.logout" /></a></li>
-                                 </ul>
+                        <button  type="submit" class="btn btn-primary btn-sm"><spring:message code="message.singin" /></button>
+                        
+                        
+                        <div class="row" style="margin-left: 30px;">
+                            
+                                <label>
+                                    <input  type="checkbox" name="_spring_security_remember_me">
+                                    <span><spring:message code="message.remember" />
+                                    
+                                </label>
+                                    
+                                    
+                                    <label style="margin-left: 20px;">
+                                        <span><a id="restore"><spring:message code="message.forgot"/></a>
+                                    
+                                </label>
+                           
+                                    
+                                    
                             
                         </div>
+                        
+                        
+                    </form>
+                </div>
+                        <div class="nav navbar-nav "  style="margin-top: 7px; margin-left: 30px;">
+                            <a href="${pageContext.request.contextPath}/register" type="submit" class="btn btn-success btn-sm"><spring:message code="message.registration" /></a>
                         </div>
-                    </li>
+                            <div class="clearfix"></div>
+                            
+                            
+                            
+</sec:authorize>
+
+
+ <!--Modal Forgot pass-->
+                    <div class="modal fade" id="forgot_pass" tabindex="-1" role="dialog" aria-labelledby="forgot_pass_label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                              <h4 class="modal-title" id="forgot_pass_label">Notification</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                              <h1>For Restoring password input your email</h1>
+                                            </div>
+                                              <div class="modal-footer">
+                                                  <form id="restore_mail_form" action="${pageContext.request.contextPath}/restore" method="post">
+                                                      <input type="email" class="form-control" name="email" placeholder="Email">
+                                                      <p>
+                                                      <input id="restore_mail_form_submit" type="submit" class="form-control btn btn-warning" value="Restore">
+                                                      <div id="forgot_error_mail_div" class="alert alert-danger hide">
+                                                      </div>
+                                                  </form>
+                                            </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                </div>
+                    <!--Modal Forgot pass-->
                     
+                    <!--Modal forgot_mail_send-->
                     
-                    
-                </ul>
-            </div>
-        </div>
-    </sec:authorize>
-    
-</div>-->
+                    <div class="modal fade" id="forgot_mail_send" tabindex="-1" role="dialog" aria-labelledby="forgot_mail_send_label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                              <h4 class="modal-title" id="forgot_mail_send_label">Limit Notification</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                              <h2>Check your email for password restore details</h2>
+                                              
+                                            </div>
+                                            
+                                            </div>
+                                          </div>
+                                        </div>
+                                </div>
+                    <!--Modal forgot_mail_send-->  
