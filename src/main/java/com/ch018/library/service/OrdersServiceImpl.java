@@ -15,8 +15,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /**
@@ -24,12 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Edd Arazain
  */
 @Service
-public class OrdersServiceImpl implements OrdersService{
+public class OrdersServiceImpl implements OrdersService {
 
-        private final static int MAX_DAYS = 14;
-        private final static long MILLIS_IN_DAY = 24*3600*1000;
-        private final static long DIFF_TIME_IN_MILLIS = 10*60*1000; 
-        private final static int ADDITIONAL_DAY_IF_SAT = 2;
+        private static final int MAX_DAYS = 14;
+        private static final long MILLIS_IN_DAY = 24 * 3600 * 1000;
+        private static final long DIFF_TIME_IN_MILLIS = 10 * 60 * 1000; 
+        private static final int ADDITIONAL_DAY_IF_SAT = 2;
                 
         private final Logger logger = LoggerFactory.getLogger(OrdersServiceImpl.class);
     
@@ -56,7 +54,7 @@ public class OrdersServiceImpl implements OrdersService{
         
         @Override
         @Transactional
-        public void save(Orders order){ 
+        public void save(Orders order) { 
                 ordersDao.save(order);
                 if(wishService.isPersonWishBook(order.getPerson(), order.getBook()))
                     wishService.delete(wishService.getWishByPersonBook(order.getPerson(), order.getBook()));
@@ -64,37 +62,37 @@ public class OrdersServiceImpl implements OrdersService{
 
         @Override
         @Transactional
-        public void delete(Orders order){
+        public void delete(Orders order) {
                 ordersDao.delete(order);
         }
 
         @Override
         @Transactional
-        public void update(int id, Date newDate){
+        public void update(int id, Date newDate) {
                 ordersDao.update(id, newDate);
         }
 
         @Override
         @Transactional
-        public List<Orders> getAll(){
+        public List<Orders> getAll() {
                 return ordersDao.getAll();
         }
 
         @Override
         @Transactional
-        public List<Orders> getOrderByPerson(Person person){
+        public List<Orders> getOrderByPerson(Person person) {
                 return ordersDao.getOrderByPerson(person);
         }
 
         @Override
         @Transactional
-        public List<Orders> getOrderByBook(Book book){
+        public List<Orders> getOrderByBook(Book book) {
                 return ordersDao.getOrderByBook(book);
         }
 
         @Override
         @Transactional
-        public List<Orders> getOrderByDate(Date date){
+        public List<Orders> getOrderByDate(Date date) {
                 return ordersDao.getOrderByDate(date);
         }
 
@@ -128,11 +126,11 @@ public class OrdersServiceImpl implements OrdersService{
 
         @Override
         @Transactional
-        public boolean isLimitReached(Person person){
+        public boolean isLimitReached(Person person) {
             int ordersCount = ordersDao.getOrderByPerson(person).size();
             int useCount = useDao.getBooksInUseByPerson(person).size();
 
-            if(person.getMultiBook() > ordersCount + useCount)
+            if (person.getMultiBook() > ordersCount + useCount)
                 return false;
             else 
                 return true;
@@ -155,45 +153,45 @@ public class OrdersServiceImpl implements OrdersService{
         }
 
 
-		@Override
-		@Transactional
-		public void issue(Orders order, int term) {
-			Person person = order.getPerson();
-			
-			int booksOnHands = person.getMultiBook();
-			
-			person.setMultiBook(--booksOnHands);
-			
-			personService.update(person);
-			
-			Book book = order.getBook();
-			
-			int currentQuantity = book.getCurrentQuantity();
-			
-			currentQuantity -=1;
-			
-			book.setCurrentQuantity(currentQuantity);
-			
-			bookService.update(book);
-			
-			BooksInUse  bookInUse = new BooksInUse();
-			Calendar calendar = Calendar.getInstance();
-			calendar.add(Calendar.DAY_OF_YEAR, term);
-			Date date = calendar.getTime();
-			
-			bookInUse.setBook(order.getBook());
-			bookInUse.setPerson(order.getPerson());
-			bookInUse.setReturnDate(date);			
-			booksInUseService.save(bookInUse);
-			mailService.sendEmailBookIssued("librairancv111@gmail.com", "dmitry.sankovsky@gmail.com", "Book Orders", order, person, book, bookInUse, term);
-			Date minDate = booksInUseService.getMinOrderDate(book);
-            checkPersonOrders(book, minDate);
-		}
-	
-		public boolean isAvailable(){
-		
-			return false;
-		}
+      @Override
+      @Transactional
+      public void issue(Orders order, int term) {
+          Person person = order.getPerson();
+
+          int booksOnHands = person.getMultiBook();
+
+          person.setMultiBook(--booksOnHands);
+
+          personService.update(person);
+
+          Book book = order.getBook();
+
+          int currentQuantity = book.getCurrentQuantity();
+
+          currentQuantity -= 1;
+
+          book.setCurrentQuantity(currentQuantity);
+
+          bookService.update(book);
+
+          BooksInUse bookInUse = new BooksInUse();
+          Calendar calendar = Calendar.getInstance();
+          calendar.add(Calendar.DAY_OF_YEAR, term);
+          Date date = calendar.getTime();
+
+          bookInUse.setBook(order.getBook());
+          bookInUse.setPerson(order.getPerson());
+          bookInUse.setReturnDate(date);
+          booksInUseService.save(bookInUse);
+          mailService.sendEmailBookIssued("librairancv111@gmail.com", "dmitry.sankovsky@gmail.com", "Book Orders", order, person, book, bookInUse, term);
+          Date minDate = booksInUseService.getMinReturnDate(book);
+          checkPersonOrders(book, minDate);
+      }
+
+      public boolean isAvailable() {
+
+          return false;
+      }
                
 		
 
