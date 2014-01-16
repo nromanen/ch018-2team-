@@ -35,18 +35,26 @@ public class Orders implements Serializable {
         private Date orderDate;
         @Column(name = "changed")
         private boolean changed;
+        @Column(name = "daysamount")
+        private long daysAmount;
         
-        public Orders(){
+        public Orders() {
                 
         }
         
-        public Orders(Person person, Book book, Date date){
+        public Orders(Person person, Book book, Date date) {
                 this.person = person;
                 this.book = book;
                 this.orderDate = date;
                 this.changed = false;
         }
-        
+
+        public Orders(Person person, Book book, Date orderDate, long daysAmount) {
+            this.person = person;
+            this.book = book;
+            this.orderDate = orderDate;
+            this.daysAmount = daysAmount;
+        }
         
         public int getId() {
                 return id;
@@ -94,6 +102,24 @@ public class Orders implements Serializable {
             this.orderDate = orderDate;
         }
 
+        public boolean isChanged() {
+            return changed;
+        }
+
+        public void setChanged(boolean changed) {
+            this.changed = changed;
+        }
+
+        public long getDaysAmount() {
+            return daysAmount;
+        }
+
+        public void setDaysAmount(long daysAmount) {
+            this.daysAmount = daysAmount;
+        }
+
+        
+        
         @Override
         public String toString() {
            return person.getPid() + " " + book.getbId() + " " + orderDate;

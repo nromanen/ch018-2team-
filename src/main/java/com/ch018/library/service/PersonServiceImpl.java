@@ -15,11 +15,14 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sun.security.util.Password;
+
 
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.Person;
+import com.ch018.library.validation.Password;
+import com.ch018.library.validation.PersonalInfo;
 import com.ch018.library.validation.UserRegistrationForm;
+import java.security.MessageDigest;
 /**
  *
  * @author Edd Arazian
@@ -27,125 +30,102 @@ import com.ch018.library.validation.UserRegistrationForm;
 @Service
 public class PersonServiceImpl implements PersonService {
     
-    private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
-    
-    @Autowired
-    private PersonDao personDao;
-    
-    @Autowired
-    private BCryptPasswordEncoder encoder;
-    
-    @Autowired
-    private MailService mailService;
-    
-    @Override
-    @Transactional
-    public void save(Person person) {
-        personDao.save(person);
-    }
+        private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
-    @Override
-    @Transactional
-    public void delete(int id) {
-        personDao.delete(id);
-    }
+        @Autowired
+        private PersonDao personDao;
 
-    @Override
-    @Transactional
-    public void update(Person person) {
-        personDao.update(person);
-    }
+        @Autowired
+        private BCryptPasswordEncoder encoder;
 
-    @Override
-    @Transactional
-    public List<Person> getAll() {
-        return personDao.getAll();
-    }
+        @Autowired
+        private MailService mailService;
 
-    @Override
-    @Transactional
-    public Person getById(int id) {
-        return personDao.getById(id);
-    }
-
-    @Override
-    @Transactional
-    public Person getByEmail(String email) {
-        return personDao.getByEmail(email);
-    }
-
-    @Override
-    @Transactional
-    public List<Person> getByName(String name) {
-        return personDao.getByName(name);
-    }
-
-    @Override
-    @Transactional
-    public List<Person> getBySurname(String surname) {
-        return personDao.getBySurname(surname);
-    }
-
-    @Override
-    @Transactional
-    public Person getByCellPhone(String cellphone) {
-        return personDao.getByCellPhone(cellphone);
-    }
-
-    @Override
-    @Transactional
-    public List<Person> getByRole(String role) {
-        return personDao.getByRole(role);
-    }
-
-    @Override
-    @Transactional
-    public List<Person> getConfirmed() {
-        return personDao.getConfirmed();
-    }
-
-    @Override
-    @Transactional
-    public List<Person> getSmsEnabled() {
-        return personDao.getConfirmed();
-    }
-
-    @Override
-    @Transactional
-    public boolean updatePassword(Password password, Principal principal) {
-        Person person = personDao.getByEmail(principal.getName());
-        if (!encoder.matches(password.getOldPass(), person.getPassword())) {
-            logger.error("passwords don't match during update");
-            return false;
+        @Override
+        @Transactional
+        public void save(Person person) {
+            personDao.save(person);
         }
-        Authentication auth = new PreAuthenticatedAuthenticationToken(person.getEmail(), encoder.encode(password.getNewPass()));
-        person.setPassword(encoder.encode(password.getNewPass()));
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        logger.error("passwords for {} changed", person.getEmail());
-        return true;
-    }
 
-    @Override
-    @Transactional
-    public String updateField(String fieldName, String fieldValue) {
-        Person person = personDao.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (fieldName.equals("name")) {
-            person.setName(fieldValue);
-            update(person);
-            return person.getName();
-        } else if (fieldName.equals("surname")) {
-            person.setSurname(fieldValue);
-            update(person);
-            return person.getSurname();
-        } else if (fieldName.equals("phone")) {
-            person.setCellphone(fieldValue);
-            update(person);
-            return person.getCellphone();
-        } else {
-            return null;
+        @Override
+        @Transactional
+        public void delete(int id) {
+            personDao.delete(id);
         }
-        
-    }
+
+        @Override
+        @Transactional
+        public void update(Person person) {
+            personDao.update(person);
+        }
+
+        @Override
+        @Transactional
+        public List<Person> getAll() {
+            return personDao.getAll();
+        }
+
+        @Override
+        @Transactional
+        public Person getById(int id) {
+            return personDao.getById(id);
+        }
+
+        @Override
+        @Transactional
+        public Person getByEmail(String email) {
+            return personDao.getByEmail(email);
+        }
+
+        @Override
+        @Transactional
+        public List<Person> getByName(String name) {
+            return personDao.getByName(name);
+        }
+
+        @Override
+        @Transactional
+        public List<Person> getBySurname(String surname) {
+            return personDao.getBySurname(surname);
+        }
+
+        @Override
+        @Transactional
+        public Person getByCellPhone(String cellphone) {
+            return personDao.getByCellPhone(cellphone);
+        }
+
+        @Override
+        @Transactional
+        public List<Person> getByRole(String role) {
+            return personDao.getByRole(role);
+        }
+
+        @Override
+        @Transactional
+        public List<Person> getConfirmed() {
+            return personDao.getConfirmed();
+        }
+
+        @Override
+        @Transactional
+        public List<Person> getSmsEnabled() {
+            return personDao.getConfirmed();
+        }
+
+        @Override
+        @Transactional
+        public void updatePassword(Password password, Person person) throws Exception {
+            if (!encoder.matches(password.getOldPass(), person.getPassword())) {
+                logger.error("passwords don't match during update");
+                throw new Exception("old password incorrect");
+            }
+            Authentication auth = new PreAuthenticatedAuthenticationToken(person.getEmail(), encoder.encode(password.getNewPass()));
+            person.setPassword(encoder.encode(password.getNewPass()));
+            update(person);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            logger.error("passwords for {} changed", person.getEmail());
+        }
 
 	@Override
         @Transactional
@@ -179,17 +159,22 @@ public class PersonServiceImpl implements PersonService {
 
         @Override
         @Transactional
-        public boolean changeEmail(String email, Person person) {
+        public void changeEmail(String email, Person person) throws Exception {
             try {
+                if(getByEmail(email) != null) 
+                    throw new Exception("email already in use");
                 person.setEmail(email);
+                person.setMailConfirm(Boolean.FALSE);
+                String key = getHashFromString(email);
+                person.setMailKey(key);
                 update(person);
+                mailService.sendConfirmationMail("springytest@gmail.com", "etenzor@gmail.com", "email change confirmation", key);
                 Authentication auth = new PreAuthenticatedAuthenticationToken(email,
                         SecurityContextHolder.getContext().getAuthentication().getPrincipal());
                 SecurityContextHolder.getContext().setAuthentication(auth);
-                return true;
             } catch (Exception e) {
                 logger.error("error during email: {} change {}", email, e.getMessage());
-                return false;
+                throw new Exception("email doesn't changed. Try later");
             }
         }
 
@@ -266,8 +251,43 @@ public class PersonServiceImpl implements PersonService {
             return false;
         }
 
+        @Override
+        @Transactional
+        public void updatePersonalInfo(Person person, PersonalInfo info) throws Exception {
+            try {
+                person.setName(info.getName());
+                person.setSurname(info.getSurname());
+                person.setCellphone(info.getCellphone());
+                person.setSms(info.isSms());
+                update(person);
+            } catch (Exception e) {
+                logger.error("error in updatePersonalInfo {}", e.getMessage());
+                throw new Exception("information not update");
+            }
+            
+        }
         
-        
+        private  String getHashFromString(String str) {
+            MessageDigest md = null;
+            try {
+                md = MessageDigest.getInstance("SHA-1");
+            } catch (Exception e) {
+                return null;
+            }
+            Random rand = new Random();
+            str = str + String.valueOf(rand.nextLong());
+            byte[] b = md.digest(str.getBytes());
+            String result = "";
+            for (int i = 0; i < b.length; i++) {
+                result +=
+                        Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
+            }
+            return result;
+        }
+                
+
+
+
         
 }
 

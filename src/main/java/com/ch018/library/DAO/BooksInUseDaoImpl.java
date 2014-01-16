@@ -77,7 +77,7 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
         }
         
         @Override
-        public Date getMinOrderDate(Book book) {
+        public Date getMinReturnDate(Book book) {
             Date minDate = (Date) factory.getCurrentSession().createCriteria(BooksInUse.class).add(Restrictions.eq("book", book))
                     .setProjection(Projections.projectionList().add(Projections.min("returnDate"))).uniqueResult();
             if (minDate == null) {

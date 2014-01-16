@@ -7,6 +7,8 @@ import java.util.List;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import com.ch018.library.helper.OrderDays;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 /**
  *
@@ -17,6 +19,7 @@ public interface OrdersService {
          void save(Orders order);
          void delete(Orders order);
          void update(int id, Date newDate);
+         void update(Orders order);
          List<Orders> getAll();
          List<Orders> getOrderByPerson(Person person);
          List<Orders> getOrderByBook(Book book);
@@ -29,4 +32,8 @@ public interface OrdersService {
          boolean isLimitReached(Person person);
          void checkPersonOrders(Book book, Date returnDate);
          void issue(Orders order);
+         OrderDays getMinOrderDate(Book book);
+         int getCorrectAmountOfOrderDays(Book book, Date orderDate) throws Exception;
+         void addOrder(Person person, int bookId, Date orderDate) throws Exception;
+         Orders editOrder(Person person, int orderId, Date orderDate) throws Exception;
 }

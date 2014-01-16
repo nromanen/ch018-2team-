@@ -52,11 +52,8 @@ public class Person implements Serializable {
         @Column(name = "password", nullable = false)
         private String password;
 
-        @Column(name = "salt")
-        private String salt;
-
         @Column(name = "prole")
-        private String prole;
+        private String personRole;
 
         @NotEmpty
         @Column(name = "cellphone")
@@ -167,14 +164,6 @@ public class Person implements Serializable {
             this.password = password;
         }
 
-        public String getSalt() {
-            return salt;
-        }
-
-        public void setSalt(String salt) {
-            this.salt = salt;
-        }
-
 
 
         public String getCellphone() {
@@ -202,11 +191,11 @@ public class Person implements Serializable {
         }
 
         public String getProle() {
-            return prole;
+            return personRole;
         }
 
         public void setProle(String prole) {
-            this.prole = Roles.valueOf(prole).toString();
+            this.personRole = Roles.valueOf(prole).toString();
         }
 
 

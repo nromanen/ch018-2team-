@@ -22,8 +22,10 @@ import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 import com.ch018.library.helper.BookSearch;
 import com.ch018.library.helper.Page;
+import org.hibernate.Hibernate;
 import org.hibernate.criterion.Order;
 import org.hibernate.transform.ResultTransformer;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -196,4 +198,20 @@ public class BookDaoImpl implements BookDao {
         
         return page;
     }
+
+    @Override
+    public Book getBookWith(int id) {
+    
+        try {
+            Book book = (Book) factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.eq("bId", id)).uniqueResult();
+            Hibernate.initialize(book.getPersonsOrders());
+            return book;
+        } catch (Exception e) {
+            
+        }
+        
+        return null;
+    }
+    
+    
 }

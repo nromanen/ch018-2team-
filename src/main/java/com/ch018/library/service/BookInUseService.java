@@ -23,7 +23,7 @@ public interface BookInUseService {
         List<BooksInUse> getBooksInUseByBook(Book book);
         List<BooksInUse> getBooksInUseByIssueDate(Date issue);
         List<BooksInUse> getBooksInUseByReturnDate(Date issue);
-        Date getMinOrderDate(Book book);
+        Date getMinReturnDate(Book book);
         BooksInUse getBookInUseById(int id);
         boolean isPersonHaveBook(Person person, Book book);
         void getBookBack(BooksInUse bookInUse);

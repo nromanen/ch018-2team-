@@ -18,31 +18,31 @@ public class UserRegistrationForm {
 
 
         @NotEmpty
-        @Size(min = MIN_NAME, max = MAX_NAME)
+        @Size(min = MIN_NAME, max = MAX_NAME, message = "name size must be between 2 and 30")
         private String name;
 
         @NotEmpty
-        @Size(min = MIN_NAME, max = MAX_NAME)
+        @Size(min = MIN_NAME, max = MAX_NAME, message = "surname size must be between 2 and 30")
         private String surname;
 
         @NotEmpty
-        @Email
+        @Email(message = "email format incorrect")
         private String email;
 
         @NotEmpty
-        @Email
+        @Email(message = "email format incorrect")
         private String rEmail;
 
-        @NotEmpty
-        @Size(min = MIN_PASS, max = MAX_PASS)
+        @NotEmpty(message = "password field can't be empty")
+        @Size(min = MIN_PASS, max = MAX_PASS, message = "password size must be between 6 and 16")
         private String password;
 
-        @NotEmpty
-        @Size(min = MIN_PASS, max = MAX_PASS)
+        @NotEmpty(message = "re-enter password field can't be empty")
+        @Size(min = MIN_PASS, max = MAX_PASS, message = "password size must be between 6 and 16")
         private String rPassword;
 
-        @NotEmpty
-        @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}")
+        @NotEmpty(message = "phone field can't be empty")
+        @Pattern(regexp = "\\d{3}-\\d{3}-\\d{4}", message = "phone must be in format xxx-xxx-xxxx")
         private String cellPhone;
 
         public String getName() {
