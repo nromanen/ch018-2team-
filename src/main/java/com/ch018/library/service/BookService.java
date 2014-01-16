@@ -11,10 +11,7 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.helper.BookSearch;
 import com.ch018.library.helper.Page;
-
-
-
-
+import com.ch018.library.validation.BookEditValidator;
 
 @Service
 public interface BookService {
@@ -34,4 +31,5 @@ public interface BookService {
              List<Book> simpleSearch(String query);
              Page getBooksComplexByParams(BookSearch bookSearch);       
              Map<BooksInUse, Integer> getHolders(Book book);
+             void update(BookEditValidator book, int genreId);
 }

@@ -3,7 +3,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" isELIgnored="false"
     pageEncoding="UTF-8"%>
-
 	
 	<div class="row" >
 	
@@ -28,7 +27,7 @@
 			        </thead>
 			        <c:forEach items="${books}" var="book">
 			                <tr>
-			                        <td>${book.bId}</td>
+			                        <td hidden="true">${book.bId}</td>
 			                        <td>${book.title}</td>
 			                        <td>${book.authors}</td>
 			                        <td>${book.year}</td>

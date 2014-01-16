@@ -6,7 +6,7 @@ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 	<property name="host" value="smtp.gmail.com" />
 	<property name="port" value="587" />
-	<property name="username" value="springytest@gmail.com" />
+	<property name="username" value="springytest@gmail.com"/>
 	<property name="password" value="cghbyu765" />
  
 	<property name="javaMailProperties">
@@ -16,7 +16,5 @@ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
        	   </props>
 	</property>
 </bean>
- 
-
  
 </beans>

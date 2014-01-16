@@ -1,9 +1,9 @@
 package com.ch018.library.service;
 
-//import com.ch018.library.dao.PersonDao;
 import java.security.Principal;
 import java.util.List;
 import java.util.Random;
+import java.security.MessageDigest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,14 +15,16 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
 import com.ch018.library.DAO.PersonDao;
+import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
 import com.ch018.library.validation.Password;
 import com.ch018.library.validation.PersonalInfo;
 import com.ch018.library.validation.UserRegistrationForm;
-import java.security.MessageDigest;
+import com.ch018.library.validation.PersonEditValidator;
+import com.ch018.library.validation.UserRegistrationForm;
+import com.ch018.library.validation.Password;;
+
 /**
  *
  * @author Edd Arazian
@@ -30,22 +32,28 @@ import java.security.MessageDigest;
 @Service
 public class PersonServiceImpl implements PersonService {
     
-        private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
-        @Autowired
-        private PersonDao personDao;
-
-        @Autowired
-        private BCryptPasswordEncoder encoder;
-
-        @Autowired
-        private MailService mailService;
-
-        @Override
-        @Transactional
-        public void save(Person person) {
-            personDao.save(person);
-        }
+		private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
+		
+		@Autowired
+		private PersonDao personDao;
+		
+		@Autowired
+		private BCryptPasswordEncoder encoder;
+		
+		@Autowired
+		private MailService mailService;
+		
+		@Autowired
+		private BookInUseService bookInUse;
+		
+		private Person personEdit;
+		
+		@Override
+		@Transactional
+		public void save(Person person) {
+			personDao.save(person);
+		}
 
         @Override
         @Transactional
@@ -127,35 +135,35 @@ public class PersonServiceImpl implements PersonService {
             logger.error("passwords for {} changed", person.getEmail());
         }
 
-	@Override
+		@Override
         @Transactional
-	public List<Person> simpleSearch(String request) {
-		return personDao.simpleSearch(request);
-	}
+		public List<Person> simpleSearch(String request) {
+			return personDao.simpleSearch(request);
+		}
 
-	@Override
+		@Override
         @Transactional
-	public List<Person> advancedSearch(Person person) {
-		return personDao.advancedSearch(person);
-	}
+		public List<Person> advancedSearch(Person person) {
+			return personDao.advancedSearch(person);
+		}
 
-	@Override
-	@Transactional
-	public Person countRating(Person person) {
-		int returnedInTime, returnedNotInTime; 
-		double grade = 0;
-		int booksOnHands, gradeInt = 0;
-		returnedInTime = person.getTimelyReturn();
-		returnedNotInTime = person.getUntimekyReturn();
-		if((returnedInTime > 0) || (returnedNotInTime > 0) ){
-			grade = (double) returnedInTime/(returnedNotInTime + returnedInTime);
-			grade *= 100;
-			gradeInt = (int) grade;
-			}
-		person.setGeneralRating(gradeInt);
-		update(person);
-		return person;
-	}
+		@Override
+		@Transactional
+		public Person countRating(Person person) {
+			int returnedInTime, returnedNotInTime; 
+			double grade = 0;
+			int booksOnHands, gradeInt = 0;
+			returnedInTime = person.getTimelyReturn();
+			returnedNotInTime = person.getUntimekyReturn();
+			if((returnedInTime > 0) || (returnedNotInTime > 0) ){
+				grade = (double) returnedInTime/(returnedNotInTime + returnedInTime);
+				grade *= 100;
+				gradeInt = (int) grade;
+				}
+			person.setGeneralRating(gradeInt);
+			update(person);
+			return person;
+		}
 
         @Override
         @Transactional
@@ -251,6 +259,7 @@ public class PersonServiceImpl implements PersonService {
             return false;
         }
 
+
         @Override
         @Transactional
         public void updatePersonalInfo(Person person, PersonalInfo info) throws Exception {
@@ -284,10 +293,35 @@ public class PersonServiceImpl implements PersonService {
             }
             return result;
         }
-                
 
+		@Override
+		@Transactional
+		public void update(PersonEditValidator user) {
+			// TODO Auto-generated method stub
+			
+			personEdit = getById(user.getPid());
+			
+	    	personEdit.setName(user.getName());
+			personEdit.setSurname(user.getSurname());
+			personEdit.setEmail(user.getEmail());
+			personEdit.setCellphone(user.getCellphone());
+			personEdit.setConfirm(user.isConfirm());
+			personEdit.setSms(user.isSms());
+			personEdit.setBooksAllowed(user.getBooksAllowed());
+			
+			update(personEdit);
+		}
 
-
+		@Override
+		@Transactional
+		public List<BooksInUse> getUsingBooks(Person person) {
+			// TODO Auto-generated method stub
+			
+			List<BooksInUse> books = bookInUse.getBooksInUseByPerson(person);
+			
+			return books;
+			
+		}
         
 }
 

@@ -11,6 +11,8 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.helper.BookSearch;
 import com.ch018.library.helper.Page;
+import com.ch018.library.validation.BookEditValidator;
+
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,8 +36,11 @@ public class BookServiceImpl implements BookService {
 
         @Autowired
         private BookInUseService useService;
+        @Autowired
+    	private GenreService genreService;
 
-
+        Book bookEdit;
+        	
         private final Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
 
         @Override
@@ -113,18 +118,15 @@ public class BookServiceImpl implements BookService {
             return books;
         }
 
+		@Override
+		public List<Book> advancedSearch(Book book) {
+			return bookDAO.advancedSearch(book);
+		}
 
-    
-    
-	@Override
-	public List<Book> advancedSearch(Book book) {
-		return bookDAO.advancedSearch(book);
-	}
-
-	@Override
-	public List<Book> simpleSearch(String query) {
-		return bookDAO.simpleSearch(query);
-	}
+		@Override
+		public List<Book> simpleSearch(String query) {
+			return bookDAO.simpleSearch(query);
+		}
 
         @Override
         @Transactional
@@ -132,50 +134,6 @@ public class BookServiceImpl implements BookService {
             Page books = bookDAO.getBooksComplexByParams(bookSearch);
             return books;
         }
-
-
-        /*private JSONObject formBooksJsonFromList(Page page, boolean isUserAuth){
-
-            List<JSONObject> jsons = new ArrayList<>();
-
-            if(isUserAuth){
-
-                for(Book book : page.getBooks()){
-                    JSONObject json = new JSONObject();
-                    json.put("bId", book.getbId());
-                    json.put("title", book.getTitle());
-                    json.put("authors", book.getAuthors());
-                    json.put("publisher", book.getPublisher());
-                    json.put("description", book.getDescription());
-                    json.put("generalQuantity", book.getGeneralQuantity());
-                    json.put("currentQuantity", book.getCurrentQuantity());
-                    json.put("img", book.getImg());
-                    jsons.add(json);
-            }
-            }else{
-                for(Book book : page.getBooks()){
-                    JSONObject json = new JSONObject();
-
-                    json.put("title", book.getTitle());
-                    json.put("authors", book.getAuthors());
-                    json.put("publisher", book.getPublisher());
-                    json.put("description", book.getDescription());
-                    json.put("generalQuantity", book.getGeneralQuantity());
-                    json.put("currentQuantity", book.getCurrentQuantity());
-                    json.put("img", book.getImg());
-                    jsons.add(json);
-            }
-            }
-
-            JSONObject finalJson = new JSONObject();
-            finalJson.put("auth", isUserAuth);
-            finalJson.put("generalPages", page.getGeneralPagesQuantity());
-            finalJson.put("currentPage", page.getCurrentPageNum());
-            finalJson.put("books", jsons);
-
-            return finalJson;
-
-        }*/
 
         @Override
         @Transactional
@@ -200,7 +158,25 @@ public class BookServiceImpl implements BookService {
             return booksInUseEx;
         }
 
-        
-        
+		@Override
+		@Transactional
+		public void update(BookEditValidator book, int genreId) {
+			// TODO Auto-generated method stub
+			bookEdit = getBookById(book.getbId());
+			
+			bookEdit.setTitle(book.getTitle());
+			bookEdit.setAuthors(book.getAuthors());
+			bookEdit.setYear(book.getYear());
+			bookEdit.setPublisher(book.getPublisher());
+			bookEdit.setPages(book.getPages());
+			bookEdit.setDescription(book.getDescription());
+			bookEdit.setImg(book.getImg());
+			bookEdit.setShelf(book.getShelf());
+			bookEdit.setTerm(book.getTerm());
+			bookEdit.setGeneralQuantity(book.getGeneralQuantity());
+			bookEdit.setGenre(genreService.getById(genreId));
+			
+			update(bookEdit);
+		}
 }
 

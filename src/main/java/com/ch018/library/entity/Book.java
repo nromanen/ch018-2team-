@@ -2,6 +2,7 @@ package com.ch018.library.entity;
 
 import java.io.Serializable;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
@@ -52,7 +54,7 @@ public class Book implements Serializable{
 	private String publisher;
         
         @NotNull
-        @Range(min=1, max=1000)
+        @Range(min=1, max=10000)
         @Column(name="pages")
 	private int pages;
         
@@ -84,9 +86,11 @@ public class Book implements Serializable{
         @Column(name = "cur_quantity")
         private int currentQuantity;
         
+        
         @NotNull
+        @Range(min=1, max=1000)
         @Column(name = "gen_quantity")
-        private int generalQuantity;
+       private Integer generalQuantity;
         
         @OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
 	private Set<Person> personsUse;
@@ -105,14 +109,13 @@ public class Book implements Serializable{
 		title = b.getTitle();
 	}
 
-        public int getbId() {
-            return bId;
-        }
+    public int getbId() {
+        return bId;
+    }
 
-        public void setbId(int bId) {
-            this.bId = bId;
-        }
-	
+    public void setbId(int bId) {
+    	this.bId = bId;
+    }
 	
 	public String getTitle() {
 		return title;
@@ -236,11 +239,11 @@ public class Book implements Serializable{
         this.currentQuantity = currentQuantity;
     }
 
-    public int getGeneralQuantity() {
+    public Integer getGeneralQuantity() {
         return generalQuantity;
     }
 
-    public void setGeneralQuantity(int generalQuantity) {
+    public void setGeneralQuantity(Integer generalQuantity) {
         this.generalQuantity = generalQuantity;
     }
 
