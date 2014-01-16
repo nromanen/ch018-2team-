@@ -1,0 +1,21 @@
+#index_head{
+    
+    background-color: #2aabd2;
+    
+}
+#index_body{
+    background-color: #F0F0F0;
+}
+
+#registration_form input {
+    width: 80%;
+    margin: 0 10%;
+}
+#registration_form button {
+   
+    margin: 0 10%;
+}
+#error_div{
+    
+    margin: 0 10%;
+}

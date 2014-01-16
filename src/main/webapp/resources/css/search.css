@@ -1,0 +1,28 @@
+  .autocomplete-suggestions {
+      width: 25% !important;
+       background: #FFF;
+       z-index: 9999;
+       display: block;
+   }
+.autocomplete-suggestion {
+    padding: 5px 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size:16px;
+   
+}
+.autocomplete-suggestions{
+     border: 2px solid #31b0d5;
+    border-radius: 10px;
+}
+.autocomplete-selected { 
+    background: #F0F0F0; 
+}
+.autocomplete-suggestions strong { 
+    font-weight: bold;
+    color: #3399FF; 
+}
+
+ 
+ 
+

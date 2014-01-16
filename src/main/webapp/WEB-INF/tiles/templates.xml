@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ 
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+ 
+<tiles-definitions>
+
+    
+    
+    
+    <definition name="search" preparer="genres" template="/WEB-INF/templates/layouts/user/search.jsp"></definition>
+    
+    <definition name="user-header" template="/WEB-INF/templates/layouts/user/user-header-template.jsp">
+        <put-attribute name="search"   value="search"/>
+        <put-attribute name="usermenu" value="/WEB-INF/templates/layouts/user/usermenu.jsp"/>
+    </definition>
+    
+    <definition name="base-template" template="/WEB-INF/templates/base-template.jsp">
+        
+        <put-attribute name="header" value="" />
+        
+        <put-attribute name="style-js-main" value="/WEB-INF/templates/layouts/user/main_css_js.jsp" />
+        
+        <put-attribute name="style-js" value="" />
+        
+        <put-attribute name="footer" value="/WEB-INF/templates/layouts/footer.jsp" />
+    </definition>
+
+    <definition name="books"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/books_css_js.jsp" />
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/books.jsp" />
+        
+    </definition>
+    
+    <definition name="order"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/order_css_js.jsp" />
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/order.jsp" />
+        
+    </definition>
+    
+    <definition name="orders"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/orders_css_js.jsp" />
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/orders.jsp" />
+        
+    </definition>
+    
+    <definition name="wishlist"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/wishlist_css_js.jsp" />
+        
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/wishlist.jsp" />
+        
+    </definition>
+    
+    <definition name="mybooks"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/mybooks_css_js.jsp" />
+        
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/myBooks.jsp" />
+        
+    </definition>
+    
+    <definition name="account"  extends="base-template">
+        
+        <put-attribute name="header" value="user-header" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/account_css_js.jsp" />
+
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/account.jsp" />
+        
+    </definition>
+    
+    <!-- /Librarian -->
+    
+    <definition name="librarian_header" template="/WEB-INF/templates/layouts/librarian/header.jsp" />
+    
+    <!-- Books -->
+    <definition name="librarian_books" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/books.jsp" />
+    </definition>
+    
+    <definition name="librarian_books_advanced_search" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/bookadvancedsearch.jsp" />
+    </definition>
+    
+    <definition name="librarian_books_search_result" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/booksearchresult.jsp" />
+    </definition>
+    
+    <definition name="librarian_books_add_book" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/addbook.jsp" />
+    </definition>
+    
+    <definition name="librarian_books_edit_book" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/editbook.jsp" />
+    </definition>
+    
+    <definition name="librarian_books_holders" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/bookholders.jsp" />
+    </definition>
+    
+    <!-- Users -->
+    <definition name="librarian_users" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/users.jsp" />
+    </definition>
+    
+    <definition name="librarian_add_user" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/adduser.jsp" />
+    </definition>
+    
+    <definition name="librarian_edit_user" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/edituser.jsp" />
+    </definition>
+    
+    <definition name="librarian_user_advanced_search" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/usersadvencedsearch.jsp" />
+    </definition>
+    
+    <!-- Orders -->
+    <!--<definition name="librarian_orders" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/orders.jsp" />
+    </definition> -->
+    
+    <!-- BooksInUse -->
+    <definition name="librarian_toreturn" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/toreturn.jsp" />
+    </definition>
+    
+    <definition name="librarian_getbookback" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/getbookback.jsp" />
+    </definition>
+    
+    <definition name="librarian_edittoreturn" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/edittoreturn.jsp" />
+    </definition>
+    
+    <definition name="librarian_using_books" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/userbooks.jsp" />
+    </definition>
+    
+    <definition name="librarian_orders_issue" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/issue.jsp" />
+    </definition>
+    
+    <!-- Librarian/ -->
+    <!-- -->
+    <definition name="librarian_orders" extends="base-template">
+        <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/librarianorders.jsp" />
+    </definition>
+</tiles-definitions>

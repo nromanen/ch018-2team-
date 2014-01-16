@@ -1,77 +1,105 @@
 package com.ch018.library.controller;
 
-import com.ch018.library.DAO.BookDAO;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.ch018.library.entity.Book;
-import com.ch018.library.service.BookService;
-import com.ch018.library.service.GenreService;
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Person;
+import com.ch018.library.helper.BookSearch;
+import com.ch018.library.helper.Page;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.BookService;
+import com.ch018.library.service.GenreService;
+import com.ch018.library.service.PersonService;
+import org.springframework.context.i18n.LocaleContextHolder;
 /**
  * 
- * @author Yurik Mikhaletskiy
+ * @author Edd Arazian
  *
  */
 
 @Controller
 @RequestMapping(value = "/books")
 public class BooksController {
-	
 
-    @Autowired
-    BookService bServ;
-    @Autowired
-    GenreService gServ;
-    
-        @RequestMapping(value = "/")
-        public String bookList(Model model){
-            model.addAttribute("books", bServ.getAll());
+
+        @Autowired
+        BookService bookService;
+        @Autowired
+        GenreService genreService;
+        @Autowired
+        PersonService personService;
+        @Autowired
+        BookInUseService useService;
+
+        final Logger logger = LoggerFactory.getLogger(BooksController.class);
+
+        @RequestMapping(method = RequestMethod.GET)
+        public String booksGeneral(Model model){
+            List<Book> books = bookService.getAll();
+            model.addAttribute("books", books);
+            logger.info("lang = {}", LocaleContextHolder.getLocale().getDisplayLanguage());
             return "books";
         }
-	
-	@RequestMapping(value = "/addBook", method = RequestMethod.GET)
-	public String addBook(Model model) {
-		          model.addAttribute("genres", gServ.getAll());
-                          return "addBook";
-	}
-        
-        @RequestMapping(value = "/addBook", method = RequestMethod.POST)
-	public String addBook(@ModelAttribute() Book book, @RequestParam("genreId") Integer gid) {
-		          book.setGenre(gServ.getById(gid));
-                          try{
-                          bServ.save(book);
-                          }catch(Exception e){
-                              System.out.println(e);
-                          }
-                          return "redirect:/books/addBook";
-	}
-        
-        @RequestMapping(value = "/edit", method = RequestMethod.GET)
-        public String editBook(@RequestParam("id") Integer id, Model model){
-                Book book = bServ.getBookById(id);
-                model.addAttribute("book", book);
-                model.addAttribute("genres", gServ.getAll());
-                return "editBook";
+
+        @RequestMapping(value = "/search", method = RequestMethod.POST)
+        public String booksSearch(@ModelAttribute BookSearch bookSearch, Model model){
+
+            Page books = bookService.getBooksComplex(bookSearch);
+            if (books.getBooks().isEmpty() || books.getBooks() == null) {
+                model.addAttribute("nothing", true);
+                model.addAttribute("query", bookSearch.getQuery());
+            }
+            model.addAttribute("books", books.getBooks());
+            return "books";
         }
-        
-        @RequestMapping(value = "/edit", method = RequestMethod.POST)
-        public String editBook(@RequestParam("genreId") Integer gid, @ModelAttribute() Book book){
-                book.setGenre(gServ.getById(gid));
-                System.out.println(book);
-                bServ.update(book);
-                return "redirect:/books/";
-                
+
+        @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
+        public  String advancedSearch(@ModelAttribute BookSearch bookSearch, Model model){
+            logger.info("advanced search called with {}, {}, {}, {}", bookSearch);
+            Page books = bookService.getBooksComplexByParams(bookSearch);
+            if (books.getBooks().isEmpty() || books.getBooks() == null) {
+                model.addAttribute("nothing", true);
+            }
+            model.addAttribute("books", books.getBooks());
+            return "books";
         }
+
+
+        @RequestMapping(value = "/autocomplete", method = RequestMethod.GET)
+        public @ResponseBody String autocomplete(@RequestParam("query") String query){
+            List<String> titles = new ArrayList<>();    
+            List<Book> books = bookService.getBooksByTitle(query);
+            for(Book book : books)
+                titles.add(book.getTitle());
+            JSONObject json = new JSONObject();
+            json.put("suggestions", titles);
+            logger.info("autocomplete called with {}", query);
+            return json.toString();
+        }
+
+        @RequestMapping(value = "/mybooks", method = RequestMethod.GET)
+        public String myBooks(Model model, Principal principal){
+            Person person = personService.getByEmail(principal.getName());
+            List<BooksInUse> uses = useService.getBooksInUseByPerson(person);
+            model.addAttribute("uses", uses);
+            return "mybooks";
+        }
+
 }

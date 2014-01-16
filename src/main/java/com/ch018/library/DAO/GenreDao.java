@@ -4,9 +4,12 @@
  */
 package com.ch018.library.DAO;
 
-import com.ch018.library.entity.Genre;
 import java.util.List;
+
 import org.springframework.stereotype.Repository;
+
+import com.ch018.library.entity.Genre;
+
 
 /**
  *
@@ -15,11 +18,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GenreDao {
     
-    void save(Genre genre);
-    void update(Genre genre);
-    void update(int id, Genre genre);
-    void delete(Genre genre);
-    List<Genre> getAll();
-    Genre getById(int id);
-    Genre getByDescription(String description); 
+        void save(Genre genre);
+        void update(Genre genre);
+        void update(int id, Genre genre);
+        void delete(Genre genre);
+        List<Genre> getAll();
+        Genre getById(int id);
+        Genre getByDescription(String description); 
 }

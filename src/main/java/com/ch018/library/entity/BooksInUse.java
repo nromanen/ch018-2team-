@@ -2,7 +2,6 @@ package com.ch018.library.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,12 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
-import org.hibernate.annotations.OnDelete;
 
 
 @Entity
@@ -37,18 +34,14 @@ public class BooksInUse implements Serializable {
         @JoinColumn(name = "bid", referencedColumnName = "bid")
         private Book book;
 
-        @Temporal(value = TemporalType.DATE)
+        @Temporal(value = TemporalType.TIMESTAMP)
         @Column(name = "issue_date")
         private Date issueDate;
         
-        @Temporal(value = TemporalType.DATE)
+        @Temporal(value = TemporalType.TIMESTAMP)
         @Column(name = "return_date")
         private Date returnDate;
         
-       
-
-        
-
         public BooksInUse() {
         }
 
@@ -94,28 +87,4 @@ public class BooksInUse implements Serializable {
             this.returnDate = returnDate;
         }
 
-   
-        
-        
-        @Override
-        public boolean equals(Object other) {
-            if (other == null) return false;
-            if (other == this) return true;
-            if (!(other instanceof BooksInUse))return false;
-            BooksInUse otherBookInUse = (BooksInUse) other;
-            return person.getPid() == otherBookInUse.person.getPid() 
-                    && book.getbId() == otherBookInUse.book.getbId();
-        }
-        
-        @Override
-        public int hashCode() {
-            return person.hashCode() + book.hashCode() + returnDate.hashCode();
-        }
-       
-        @Override 
-        public String toString() {
-            return person.getPid() + " " + book.getbId() + " " + returnDate;
-        }
-
-	
 }
