@@ -19,6 +19,10 @@ import com.ch018.library.service.PersonService;
 @RequestMapping(value = "/librarian/toreturn")
 public class LibrarianReturnController {
 
+	private final String VALIDATION_FAILED = "Days must be between 1 and 15";
+	private final int MIN_ISUUE = 1;
+	private final int MAX_ISSUE = 15;
+	
 		@Autowired
 		private BookInUseService booksInUseService;
 		@Autowired
@@ -56,7 +60,9 @@ public class LibrarianReturnController {
 		}
 		
 		@RequestMapping(value = "/edit", method = RequestMethod.POST)
-		public String edit(@RequestParam("id") int id, @RequestParam("days") int days) throws Exception {
+		public String edit(@RequestParam("id") int id, @RequestParam("days") int days, Model model) throws Exception {
+			
+			if( days <= MAX_ISSUE && days >= MIN_ISUUE){
 			BooksInUse bookInUse = booksInUseService.getBookInUseById(id);
 			Date date = bookInUse.getReturnDate();
 			Calendar calendar = Calendar.getInstance();
@@ -65,6 +71,11 @@ public class LibrarianReturnController {
 			date = calendar.getTime();
 			bookInUse.setReturnDate(date);
 			booksInUseService.update(bookInUse);
+			} else {
+				model.addAttribute("inuse", booksInUseService.getBookInUseById(id));
+				model.addAttribute("validation", VALIDATION_FAILED);
+				return "librarian_edittoreturn";
+			}
 			return "redirect:/librarian/toreturn";
 		}
 		

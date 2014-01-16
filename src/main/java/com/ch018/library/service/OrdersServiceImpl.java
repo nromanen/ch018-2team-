@@ -7,9 +7,11 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.helper.OrderDays;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,13 +106,11 @@ public class OrdersServiceImpl implements OrdersService{
 
         @Override
         public List<Orders> getOrdersToday() {
-            // TODO Auto-generated method stub
             return ordersDao.getOrdersToday();
         }
 
         @Override
         public List<Orders> getOrdersInHour() {
-            // TODO Auto-generated method stub
             return ordersDao.getOrdersInHour();
         }
 
@@ -155,39 +155,47 @@ public class OrdersServiceImpl implements OrdersService{
         }
 
 
-	@Override
-	@Transactional
-	public void issue(Orders order) {
-		Person person = order.getPerson();
+		@Override
+		@Transactional
+		public void issue(Orders order, int term) {
+			Person person = order.getPerson();
+			
+			int booksOnHands = person.getMultiBook();
+			
+			person.setMultiBook(--booksOnHands);
+			
+			personService.update(person);
+			
+			Book book = order.getBook();
+			
+			int currentQuantity = book.getCurrentQuantity();
+			
+			currentQuantity -=1;
+			
+			book.setCurrentQuantity(currentQuantity);
+			
+			bookService.update(book);
+			
+			BooksInUse  bookInUse = new BooksInUse();
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.DAY_OF_YEAR, term);
+			Date date = calendar.getTime();
+			
+			bookInUse.setBook(order.getBook());
+			bookInUse.setPerson(order.getPerson());
+			bookInUse.setReturnDate(date);			
+			booksInUseService.save(bookInUse);
+			mailService.sendEmailBookIssued("librairancv111@gmail.com", "dmitry.sankovsky@gmail.com", "Book Orders", order, person, book, bookInUse, term);
+			Date minDate = booksInUseService.getMinOrderDate(book);
+            checkPersonOrders(book, minDate);
+		}
+	
+		public boolean isAvailable(){
 		
-		int booksOnHands = person.getMultiBook();
-		
-		person.setMultiBook(++booksOnHands);
-		
-		personService.update(person);
-		
-		Book book = order.getBook();
-		
-		int currentQuantity = book.getCurrentQuantity();
-		
-		currentQuantity -=1;
-		
-		book.setCurrentQuantity(currentQuantity);
-		
-		bookService.update(book);
-		
-		BooksInUse  bookInUse = new BooksInUse();
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, +14);
-		Date date = calendar.getTime();
-		
-		bookInUse.setBook(order.getBook());
-		bookInUse.setPerson(order.getPerson());
-		bookInUse.setReturnDate(date);
-		
-		booksInUseService.save(bookInUse);
+			return false;
+		}
                
-	}
+		
 
         @Override
         @Transactional
@@ -295,4 +303,5 @@ public class OrdersServiceImpl implements OrdersService{
             }
             return days;
         }
+
 }

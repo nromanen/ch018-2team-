@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
         	<div class="row">
@@ -7,24 +8,19 @@
 					<div class="col-md-7">
 				        <form:form method="POST" commandName="inuse"  class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">
 				          
-				            <div class="form-group">
-								    <label for="inputEmail3" class="col-sm-2 control-label">ID</label>
-								    <div class="col-sm-10">
-								    	 <form:input path="id" class="form-control"/> 
-								    </div>
-							 </div>  
+								    	 <form:input path="id" type="hidden" class="form-control"/> 
 				           
 				            <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label">Name</label>
 								    <div class="col-sm-10">
-								    	 <form:input path="person.name" class="form-control"/> 
+								    	 <h5> ${inuse.person.name} ${inuse.person.surname}</h5> 
 								    </div>
 							 </div>  
 				           
 				            <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label">Return Date</label>
 								    <div class="col-sm-10">
-								    	 <form:input path="returnDate" class="form-control"/> 
+								    	 <h5> ${inuse.returnDate} </h5> 
 								    </div>
 							 </div>  
 							
@@ -34,8 +30,16 @@
 								    	 <input name="days" class="form-control"/> 
 								    </div>
 							 </div>  
-				           
-				          <input type="submit" value="Save">
+							 
+							 <div class="form-group">
+									    <label for="inputEmail3" class="col-sm-2 control-label"></label>
+									    <div class="col-sm-10">
+									    	<h5 style="color: red;">${validation}</h5>
+									    </div>
+							 </div> 
+				           <div class="col-md-1 col-md-offset-10" style="margin-top:10px">
+							<input type="submit" class="btn btn-default btn-sm" value="<spring:message code="message.libSave"/>" style="background-color: #00A1A1 ; color: #FFFFFF">
+						</div>
 				        </form:form>
 				   </div>     
 		    </div>    	

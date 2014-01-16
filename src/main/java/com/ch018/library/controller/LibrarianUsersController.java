@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.PersonService;
+import com.ch018.library.validation.PersonEditValidator;
 
 @Controller
 @RequestMapping(value = "/librarian/users")
@@ -25,16 +28,24 @@ public class LibrarianUsersController {
 	private PersonService personService;
 	@Autowired
 	private BookInUseService bookInUseService;
+	@Autowired
+    BCryptPasswordEncoder encoder;
 	
 	@RequestMapping(value = "")
 
 	public String showAll(Model model) throws Exception {
+		
 		 List<Person> person = personService.getAll();
-         for (Person pers : person) {
+        
+		 for (Person pers : person) {
         	 personService.countRating(pers);
          }
-         model.addAttribute("users", person);
-         return "librarian_users"; 
+
+		 model.addAttribute("users", person);  
+         
+		 
+		 
+		 return "librarian_users"; 
 	}
 	
 	@RequestMapping(value = "/adduser", method = RequestMethod.GET)
@@ -45,13 +56,23 @@ public class LibrarianUsersController {
 	}
 	
 	@RequestMapping(value = "/adduser",method = RequestMethod.POST)
-	public String addUser(@Valid @ModelAttribute("user") Person user, BindingResult result) throws Exception {
+	public String addUser( @ModelAttribute("user") @Valid Person user, BindingResult result) throws Exception {
 		if (result.hasErrors()) {
 			System.out.println("Errors Adding User" + result.toString());
-
+			return "librarian_add_user";
 		}else {
 			Person person = new Person();
-			person.setMultiBook(0);
+			user.setMultiBook(user.getBooksAllowed());
+			user.setMailConfirm(true);
+			user.setConfirm(true);
+			String password = encoder.encode(user.getPassword());
+			System.out.println("Password: " + password);
+			user.setPassword(password);
+			user.setProle("ROLE_USER");
+			user.setTimelyReturn(0);
+			user.setUntimekyReturn(0);
+			user.setFailedOrders(0);
+			
 			personService.save(user);
 
 		}	
@@ -66,12 +87,16 @@ public class LibrarianUsersController {
 	}
 	
 	@RequestMapping(value = "/edituser", method = RequestMethod.POST) 
-	public String editUser(@ModelAttribute("user") Person user, BindingResult result, @RequestParam("pid") int pid,
+	public String editUser(@ModelAttribute("user") @Valid PersonEditValidator user, BindingResult result, @RequestParam("pid") int pid,
 			Model model) throws Exception {
-		Person person = personService.getById(pid);
-		String password = person.getPassword();
-		user.setPassword(password);
-		personService.update(user);
+		
+		if (result.hasErrors()) {
+			System.out.println("Error editing user: " + result.toString());
+			return "librarian_edit_user";
+		} else {
+			personService.update(user);
+		}
+		
 		return "redirect:/librarian/users";
 	}
 	
@@ -91,7 +116,13 @@ public class LibrarianUsersController {
 	@RequestMapping(value = "/advencedsearch", method = RequestMethod.POST)
 	public String advancedSearch(@ModelAttribute("user") Person user, BindingResult result, Model model) throws Exception {
 		List<Person> person = personService.advancedSearch(user);
-		model.addAttribute("users", person);
+		
+		if(person.size() > 0){
+			model.addAttribute("users", person);
+		}else {
+			model.addAttribute("users", personService.getAll());
+		}
+		
 		return "librarian_users";
 	}
 	
@@ -103,7 +134,23 @@ public class LibrarianUsersController {
 	@RequestMapping(value = "/simplesearch", method = RequestMethod.POST)
 	public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
 		List<Person> person = personService.simpleSearch(request);
-		model.addAttribute("users", person);
+		
+		if(person.size() > 0){
+			model.addAttribute("users", person);
+		}else {
+			model.addAttribute("users", personService.getAll());
+		}
 		return "librarian_users";
+	}
+	
+	@RequestMapping(value = "/readnow", method = RequestMethod.GET)
+	public String usingBooks(@RequestParam("id") int id, Model model) throws Exception {
+		
+		Person person = personService.getById(id);
+		List<BooksInUse> booksInUse = personService.getUsingBooks(person);
+		model.addAttribute("person", person);
+		model.addAttribute("booksInUse", booksInUse);
+		
+		return "librarian_using_books";
 	}
 }
