@@ -134,6 +134,8 @@
                             
                             
                                 <div class="row" id="book_orders">
+                                    
+                                    <c:if test="${orders != null and orders.size() != 0}">
                                     <ul class="list-group list-unstyled">
                                         <li class="list-group-item-heading dropdown">Book already ordered for dates</li>
                                         <c:forEach var="order" items="${orders}">
@@ -144,6 +146,7 @@
                                             </li>
                                         </c:forEach>
                                     </ul>
+                                    </c:if>
                                 </div>
                             <div class="modal fade" id="wish_modal" tabindex="-1" role="dialog" aria-labelledby="wish_modal_label" aria-hidden="true">
                                         <div class="modal-dialog">
