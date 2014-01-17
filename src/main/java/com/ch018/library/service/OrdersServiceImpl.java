@@ -4,24 +4,21 @@ import com.ch018.library.DAO.BookDao;
 import com.ch018.library.DAO.BooksInUseDao;
 import com.ch018.library.DAO.OrdersDao;
 import com.ch018.library.DAO.PersonDao;
-import com.ch018.library.DAO.BooksInUseDao;
-import com.ch018.library.DAO.OrdersDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.helper.OrderDays;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -320,7 +317,7 @@ public class OrdersServiceImpl implements OrdersService {
         public List<Orders> getOrdersByPersonSurname(List<Orders> orders, String surname){
             List<Person> persons = new ArrayList<Person>();
             List<Orders> answerList = new ArrayList<Orders>();
-            persons = personDao.getBySurname(surname);
+            persons = personDao.getPersonsBySurname(surname);
             for (Person ps:persons)
                 for (Orders or:orders){
                     if (or.getPerson().getPid()==ps.getPid()) answerList.add(or);

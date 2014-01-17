@@ -4,8 +4,7 @@
  */
 package com.ch018.library.DAO;
 
-import java.util.List;
-
+import com.ch018.library.entity.Person;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ch018.library.entity.Person;
+import java.util.List;
 
 
 /**
@@ -32,7 +31,13 @@ public class PersonDaoImpl implements PersonDao {
     @Autowired
     private SessionFactory factory;
 
-    
+    @Override
+    public List<Person> getPersonsBySurname(String surname){
+
+        return factory.getCurrentSession().createCriteria(Person.class).add(Restrictions.like("surname", "%" + surname + "%")).list();
+    }
+
+
     @Override
     public void save(Person person) {
         factory.getCurrentSession().save(person);
