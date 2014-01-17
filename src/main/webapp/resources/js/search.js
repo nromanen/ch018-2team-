@@ -1,3 +1,32 @@
+$(document).ready(function () {
+     
+     $('#search_field').autocomplete({
+         serviceUrl: "/library/books/autocomplete",
+         minChars: 2
+         
+     });
+     
+     $('body').on('click', '#search_button', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('url');
+        var query = $('#search_field').val();
+        search(query, url);   
+    });
+
+    $('body').on('click', '#advanced_search_button', function() {
+        
+        
+        $('#advanced_search_panel').toggle("slow");
+       
+    });
+    
+    $('body').on('click', '#advanced_search_submit', function() {
+        var url = $(this).attr('url');
+        advancedSearch(url);
+    });
+});
+
+
 function search(query, url){
     doPost({query : query}, url);
   

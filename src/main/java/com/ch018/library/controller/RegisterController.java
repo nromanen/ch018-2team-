@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.validation.Password;
 import com.ch018.library.validation.UserRegistrationForm;
+import org.springframework.validation.ObjectError;
 /**
  *
  * @author Edd Arazian
@@ -52,9 +53,7 @@ public class RegisterController {
         public ResponseEntity<String> addUser(@Valid @ModelAttribute UserRegistrationForm form, BindingResult result) {
             validator.validate(form, result);
             if(result.hasErrors()){
-                FieldError fieldError = result.getFieldError();
-                logger.info("incorrect {} entered", fieldError);
-                return new ResponseEntity<>(fieldError.getField(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(getErrors(result), HttpStatus.BAD_REQUEST);
             }
             if(personService.register(form))
                 return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
@@ -96,7 +95,7 @@ public class RegisterController {
                                                                 , BindingResult result){
             validatorPass.validate(password, result);
             if(result.hasErrors())
-                return new ResponseEntity<>(result.getFieldError().getDefaultMessage(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(getErrors(result), HttpStatus.BAD_REQUEST);
             if(personService.restorePass(key, password))
                 return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
             return new ResponseEntity<>("error during restore", HttpStatus.BAD_REQUEST);
@@ -108,4 +107,12 @@ public class RegisterController {
             return "register";
         }
 
+        private String getErrors(BindingResult result) {
+           StringBuilder sb = new StringBuilder();
+           for (ObjectError error : result.getAllErrors()) {
+                    sb.append(error.getDefaultMessage());
+                    sb.append("\n");
+                }
+           return sb.toString();
+       }
 }

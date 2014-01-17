@@ -98,9 +98,10 @@ public class BookInUseServiceImpl implements BookInUseService {
 	@Override
 	@Transactional
 	public void getBookBack(BooksInUse bookInUse) {
-        	Date now = new Date();
+        
+		Date now = new Date();
 	
-                Person person = bookInUse.getPerson();
+        Person person = bookInUse.getPerson();
 		int booksReturnedIntime = person.getTimelyReturn();
 		int booksReturnedNotIntime = person.getUntimekyReturn();
 		int booksOnHands = 0;

@@ -3,74 +3,66 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<%@ taglib uri="http://tiles.apache.org/tags-tiles-extras" prefix="tilesx" %>
+<tilesx:useAttribute name="genres" />
 
+<div class="col-lg-6" >
+    <div style="margin:0 0 0 -30px;">
 
-    
-    
-    <tilesx:useAttribute name="genres" />
-    
-    <div class="col-md-6" >
-        <div style="margin:0 0 0 -30px;">
-            
-               
-                    
-                        <ul class="navbar-form navbar-left navbar-nav list-unstyled">
-                            <li class="dropdown">
-                                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><spring:message code="message.lang" /><b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="?lang=en">English</a></li>
-                                    <li><a href="?lang=ua">Ukrainian</a></li>
-                                    
-                                </ul>
-                            </li>
-                        </ul>
-                  
-               
-        </div>
-        
+        <ul class="navbar-form navbar-left navbar-nav list-unstyled">
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><spring:message code="message.lang" /><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="?lang=en">English</a></li>
+                    <li><a href="?lang=ua">Ukrainian</a></li>
+
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+
     <form class="navbar-form navbar-right" role="search">
-      <div class="form-group">
-          
-              
-          <input  maxlength="50" type="text" class="form-control" id="search_field" name="search" placeholder="Search" onkeydown="if (window.event.keyCode==13) search($(this).val(), $('#search_button').attr('url'))">
-              
-          
-        
-      </div>
-      <button type="submit" class="btn btn-default" id="search_button" url="${pageContext.request.contextPath}/books/search"><spring:message code="message.search" /></button>
+        <div class="form-group">
+
+
+            <input  maxlength="50" type="text" class="form-control" id="search_field" name="search" placeholder="Search" onkeydown="if (window.event.keyCode == 13)
+                      search($(this).val(), $('#search_button').attr('url'))">
+
+
+
+        </div>
+        <button type="submit" class="btn btn-default" id="search_button" url="${pageContext.request.contextPath}/books/search"><spring:message code="message.search" /></button>
     </form>
     <div class="clearfix"></div>
     <div class="pull-right" >
         <sec:authorize access="isAuthenticated()">
 
-                <a id="advanced_search_button"><spring:message code="message.advanced" /></a> 
+            <a id="advanced_search_button"><spring:message code="message.advanced" /></a> 
 
-                <div id="advanced_search_panel">
-                    <div class="control-group col-md-12">
-                        <input maxlength="25" class="form-control" id="advanced_search_title" type="text" placeholder="Title">
-                    </div>
-                    <div class="control-group col-md-12">
-                        <input maxlength="25" class="form-control" id="advanced_search_authors" type="text" placeholder="Author">
-                    </div>
-                    <div class="control-group col-md-12">
-                        <input maxlength="25" class="form-control" id="advanced_search_publisher" type="text" placeholder="Publisher">
-                    </div>
-
-                    <div class="control-group col-md-12">
-                        <select class="form-control" id="advanced_search_select">
-                            <option selected="selected" value="0">All Genres</option>
-                            <c:forEach var="genre" items="${genres}">
-                                <option value="${genre.getId()}">${genre.getDescription()}</option>
-                            </c:forEach>
-                        </select>    
-                    </div>
-
-                    <button class="form-control btn-info" id="advanced_search_submit" url="${pageContext.request.contextPath}/books/advancedSearch">search</button> 
-
+            <div id="advanced_search_panel">
+                <div class="control-group col-md-12">
+                    <input maxlength="25" class="form-control" id="advanced_search_title" type="text" placeholder="Title">
                 </div>
-            </sec:authorize>
+                <div class="control-group col-md-12">
+                    <input maxlength="25" class="form-control" id="advanced_search_authors" type="text" placeholder="Author">
+                </div>
+                <div class="control-group col-md-12">
+                    <input maxlength="25" class="form-control" id="advanced_search_publisher" type="text" placeholder="Publisher">
+                </div>
+
+                <div class="control-group col-md-12">
+                    <select class="form-control" id="advanced_search_select">
+                        <option selected="selected" value="0">All Genres</option>
+                        <c:forEach var="genre" items="${genres}">
+                            <option value="${genre.getId()}">${genre.getDescription()}</option>
+                        </c:forEach>
+                    </select>    
+                </div>
+                <div class="control-group col-md-12">
+                    <button class="form-control btn-info" id="advanced_search_submit" url="${pageContext.request.contextPath}/books/advancedSearch">search</button> 
+                </div>
+            </div>
+        </sec:authorize>
     </div>
-    </div>
-    
-        
+</div>
+

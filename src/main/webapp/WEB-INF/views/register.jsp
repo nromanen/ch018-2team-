@@ -6,12 +6,10 @@ prefix="form"%>
 <html>
 <head>
  <title>Test</title>
-  <c:url value="/resources/css/bootstrap.min.css" var="bootstrapCSS" />  
-  <link rel="stylesheet" type="text/css" media="screen" href="${bootstrapCSS}" />
-  <c:url value="/resources/css/index.css" var="indexCSS" />  
-  <link rel="stylesheet" type="text/css" media="screen" href="${indexCSS}" />
-  <c:url value="/resources/css/bootstrap-theme.min.css" var="bootstrapTCSS" />  
-  <link rel="stylesheet" type="text/css" media="screen" href="${bootstrapTCSS}" />
+
+  <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/index.css" />  
+  <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/bootstrap-theme.min.css" />
   
   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.validate.min.js"></script>
@@ -53,7 +51,7 @@ prefix="form"%>
                             <input id="reg_phone" class="form-control" type="text" name="cellPhone" required placeholder="<spring:message code="message.phone" />">
                         </div>
                         <div class="form-group">
-                        <button id="form_submit" class="btn btn-success" type="submit" ><spring:message code="message.registration" /></button>
+                        <button id="form_submit" class="btn btn-success" url="${pageContext.request.contextPath}/register" type="submit" ><spring:message code="message.registration" /></button>
                         <div class="clearfix"></div>
                         <div id="error_div" class="alert alert-danger hide">
                             

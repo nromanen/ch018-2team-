@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
     
-    if($(".calendar").size() == 0){
+    if($(".calendar").size() == 0) {
         $('#empty_wish_list').modal("show");
     }
     $(".calendar").each(function(){

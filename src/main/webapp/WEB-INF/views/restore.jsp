@@ -25,11 +25,11 @@
 
                                 <input type="hidden" name="key" value="${key}">
                                 <input type="hidden" name="oldPass" value="111111">
-                                <input type="password" class="form-control" name="newPass" placeholder="New Password">
+                                <input id="pass" type="password" minlength="6" maxlength="16" class="form-control" name="newPass" placeholder="New Password">
                                 <p />
-                                <input type="password" class="form-control" name="rNewPass" placeholder="Re_enter Password">
+                                <input type="password" minlength="6" maxlength="16" equalto="#pass" class="form-control" name="rNewPass" placeholder="Re_enter Password" />
                                 <p />
-                                <input id="restore_pass_submit" type="submit" class="form-control btn btn-success" value="Change">
+                                <input id="restore_pass_submit" url="${pageContext.request.contextPath}/restore/password" type="submit" class="form-control btn btn-success" value="Change">
                                 <div id="restore_pass_err" class="alert alert-danger hide">
                                 </div>
                             </form>

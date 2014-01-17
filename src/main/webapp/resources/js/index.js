@@ -6,24 +6,20 @@ $(document).ready(function () {
     
     $('#reg_phone').mask("999-999-9999");
     
-    $('#view_books').click(function () {
-       
-        location.href = "books";
-        
-    });
     $('#restore').click(function () {
        $('#forgot_pass').modal("show"); 
     });
     
     
-    $('#restore_mail_form_submit').click(function (event) {
-        event.preventDefault();
-        var form_input = $('#restore_mail_form').serialize();
-        
-         $.ajax({
-            url: "/library/restore",
+    
+    
+    $('#restore_mail_form').validate({
+         errorClass: "my-error-class",
+         submitHandler: function(form) {
+            $.ajax({
+            url: $('#restore_mail_form_submit').attr('url'),
             type: "POST",
-            data: form_input,
+            data: $('#restore_mail_form').serialize(),
             dataType: "json",
             contentType: 'application/x-www-form-urlencoded',
             mimeType: 'application/json',
@@ -37,36 +33,12 @@ $(document).ready(function () {
                 $('#forgot_error_mail_div').text(xhr.responseText);
                 $('#forgot_error_mail_div').removeClass('hide');
          }
-         });
-        
-    });
-    
-    $('#restore_pass_submit').click(function (event) {
-        event.preventDefault();
-        var form_input = $('#restore_pass_form').serialize();
-        alert("1111");
-         $.ajax({
-            url: "/library/restore/password",
-            type: "POST",
-            data: form_input,
-            dataType: "json",
-            contentType: 'application/x-www-form-urlencoded',
-            mimeType: 'application/json',
-         success: function () {
-             alert("2222");
-               location.href = "/library/" 
-             },
-         error: function(xhr, status, error){
-                 
-                $('#restore_pass_err').text(xhr.responseText);
-                $('#restore_pass_err').removeClass('hide');
+         }); 
          }
-         });
-        
     });
     
     $('#registration_form').validate({
-        
+        errorClass: "my-error-class",
         rules: {
             name: {
                 required : true,
@@ -93,33 +65,55 @@ $(document).ready(function () {
             rPass :{
                 equalTo : 'entered password\'s don\'t match'
             }
+        },
+        submitHandler: function(form) {
+            
+            $.ajax({
+                url: $('#form_submit').attr('url'),
+                type: "POST",
+                data: $('#registration_form').serialize(),
+                dataType: "json",
+                contentType: 'application/x-www-form-urlencoded',
+                mimeType: 'application/json',
+             success: function () {
+                    $('#success_reg').modal('show');
+
+                 },
+             error: function(xhr, status, error){
+
+                    $('#error_div').text(xhr.responseText);
+                    $('#error_div').removeClass('hide');
+             }
+         });
+            
         }
         
     });
     
-    $('#form_submit').click(function(event){
-        event.preventDefault();
-        var form_input = $('#registration_form').serialize();
-        
-        $.ajax({
-            url: "/library/register",
+    
+    $('#restore_pass_form').validate({
+        errorClass: "my-error-class",
+        submitHandler: function(form) {
+            $.ajax({
+            url: $('restore_pass_submit').attr('url'),
             type: "POST",
-            data: form_input,
+            data: $('#restore_pass_form').serialize(),
             dataType: "json",
             contentType: 'application/x-www-form-urlencoded',
             mimeType: 'application/json',
          success: function () {
-                $('#success_reg').modal('show');
-                
+               location.href = "/library/" 
              },
          error: function(xhr, status, error){
                  
-                $('#error_div').text(xhr.responseText);
-                $('#error_div').removeClass('hide');
+                $('#restore_pass_err').text(xhr.responseText);
+                $('#restore_pass_err').removeClass('hide');
          }
          });
-        
+            
+        }
     });
+    
     
     
 });

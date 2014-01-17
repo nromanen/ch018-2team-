@@ -3,56 +3,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" isELIgnored="false"
          pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js">
-    </script>
-    <style>
-        t.ex1 {margin:300px 20px}
-        t.ex3 {margin:10px 70px}
-        t.ex2 {position:fixed; right:430px; top: 195px}
-    </style>
-    <title>Librarian Orders</title>
-
-</head>
-<body>
-
-<div class="container" id="divContent">
-
     <div class="row">
 
+        <div class="col-md-10 col-md-offset-1" style="margin-top:30px">
 
-
-
-
-        <div>
-
-
-
-
-
-            <table id="upTable" border = "1" width="80%">
+            <table id="upTable" class="table table-hover table-striped table-bordered table-condensed" width="80%">
                 <tr>
                     <!--<td width="10%" onblur="jQuery:onblur();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDId" name="idsearch" onclick="this.innerHTML=''"><b>ID</b></td> -->    <!--onkeyup="resources/js/searchById.js"-->
-                    <td width="20%" onblur="jQuery:onblur();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDSurname" onclick="this.innerHTML=''"><b>Surname</b></td>
+                    <td width="20%" onblur="jQuery:onblur();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDSurname" onclick="this.innerHTML=''"><b>Person</b></td>
                     <td width="20%"contenteditable="true" onkeyup="jQuery:tdid();" id="TDTitle" onclick="this.innerHTML=''"><b>Title</b></td>
                     <td width="30%"contenteditable="true" id="TDDate" onclick="this.innerHTML=''"><b>Date</b></td>
-                    <td></td>  <!--  this.getElementById("TDId").innerHTML-->
+                    <td width="30%" ><b>Options</b></td>
+                    <!--  this.getElementById("TDId").innerHTML-->
                 </tr>
             </table>
             <div id="content1">
-                <table id="downTable" border = "1" width="80%" >
+                <table id="downTable" class="table table-hover table-striped table-bordered table-condensed"  width="80%" style="margin-top:-15px" >
                     <c:forEach items="${orders}" var="order">
                         <tr>
                             <!--<td width="10%">${order.id}</td>-->
-                            <td width="20%">${order.person.getSurname()}</td>
-                            <td width="20%">${order.book.getTitle()}</td>
-                            <td width="30%">${order.getOrderDate()}</td>
+                            <td width="20%">${order.person.name} ${order.person.surname}</td>
+                            <td width="20%">${order.book.title}</td>
+                            <td width="30%">${order.orderDate}</td>
 
 
-                            <td><a href="<c:url value="/librarian/orders/issue?id=${order.id}"/>">Issue</a>
+                            <td><a href="<c:url value="/librarian/orders/issue?id=${order.id}"/>" style="color: #0E3846">Issue</a>
                         </tr>
                     </c:forEach>
                 </table>
@@ -61,7 +36,7 @@
 
         </div>
     </div>
-</div>
+
 <script type="text/javascript">
     /* $(document).ready(function(){
      $("#TDId").keyup(function(){ */
@@ -77,5 +52,3 @@
      }); */
 </script>
 
-</body>
-</html>

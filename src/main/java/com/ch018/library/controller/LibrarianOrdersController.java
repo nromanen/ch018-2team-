@@ -88,7 +88,6 @@ public class LibrarianOrdersController {
 			return "librarian_orders_issue";
 		}
 		
-		
 	}
 	
 	@RequestMapping(value = "/toissueinhour")
@@ -123,7 +122,7 @@ public class LibrarianOrdersController {
         //System.out.println("!"+idSearch+"!"+surnameSearch+"!"+titleSearch);
         //model.addAttribute("orders", ordersService.getOrdersByPersonSurname(ordersService.getAll(),surname));/*.getOrdersByBookTitle(ordersService.getAll(), title)); /*getOrderByID(Integer.parseInt(id)));  /*Integer.parseInt(id))*/
         System.out.println(":"+surname+":"+date+":"+title);
-        return "librarianorders";
+        return "librarian_orders";
     }
 	
 }
