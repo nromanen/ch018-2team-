@@ -2,12 +2,13 @@ package com.ch018.library.service;
 
 import java.util.List;
 
-import com.ch018.library.DAO.GenreDao;
-import com.ch018.library.entity.Genre;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.ch018.library.DAO.GenreDao;
+import com.ch018.library.entity.Genre;
+
 /**
  *
  * @author Edd ARazian

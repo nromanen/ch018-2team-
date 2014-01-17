@@ -40,18 +40,18 @@ public class BooksController {
 
 
         @Autowired
-        BookService bookService;
+        private BookService bookService;
         @Autowired
-        GenreService genreService;
+        private GenreService genreService;
         @Autowired
-        PersonService personService;
+        private PersonService personService;
         @Autowired
-        BookInUseService useService;
+        private BookInUseService useService;
 
-        final Logger logger = LoggerFactory.getLogger(BooksController.class);
+        private final Logger logger = LoggerFactory.getLogger(BooksController.class);
 
         @RequestMapping(method = RequestMethod.GET)
-        public String booksGeneral(Model model){
+        public String booksGeneral(Model model) {
             List<Book> books = bookService.getAll();
             model.addAttribute("books", books);
             logger.info("lang = {}", LocaleContextHolder.getLocale().getDisplayLanguage());
@@ -59,7 +59,7 @@ public class BooksController {
         }
 
         @RequestMapping(value = "/search", method = RequestMethod.POST)
-        public String booksSearch(@ModelAttribute BookSearch bookSearch, Model model){
+        public String booksSearch(@ModelAttribute BookSearch bookSearch, Model model) {
 
             Page books = bookService.getBooksComplex(bookSearch);
             if (books.getBooks().isEmpty() || books.getBooks() == null) {
@@ -71,7 +71,7 @@ public class BooksController {
         }
 
         @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
-        public  String advancedSearch(@ModelAttribute BookSearch bookSearch, Model model){
+        public  String advancedSearch(@ModelAttribute BookSearch bookSearch, Model model) {
             logger.info("advanced search called with {}, {}, {}, {}", bookSearch);
             Page books = bookService.getBooksComplexByParams(bookSearch);
             if (books.getBooks().isEmpty() || books.getBooks() == null) {
@@ -83,19 +83,20 @@ public class BooksController {
 
 
         @RequestMapping(value = "/autocomplete", method = RequestMethod.GET)
-        public @ResponseBody String autocomplete(@RequestParam("query") String query){
-            List<String> titles = new ArrayList<>();    
-            List<Book> books = bookService.getBooksByTitle(query);
-            for(Book book : books)
-                titles.add(book.getTitle());
+        public @ResponseBody String autocomplete(@RequestParam("query") String query) {
+            List<String> titles = new ArrayList<>();   
             JSONObject json = new JSONObject();
+            List<Book> books = bookService.getBooksByTitle(query);
+            for (Book book : books) {
+                titles.add(book.getTitle());
+            }
             json.put("suggestions", titles);
             logger.info("autocomplete called with {}", query);
             return json.toString();
         }
 
         @RequestMapping(value = "/mybooks", method = RequestMethod.GET)
-        public String myBooks(Model model, Principal principal){
+        public String myBooks(Model model, Principal principal) {
             Person person = personService.getByEmail(principal.getName());
             List<BooksInUse> uses = useService.getBooksInUseByPerson(person);
             model.addAttribute("uses", uses);
