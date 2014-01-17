@@ -1,6 +1,5 @@
 package com.ch018.library.controller;
 
-
 import javax.validation.Valid;
 
 import org.json.JSONObject;
@@ -15,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,94 +24,102 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.validation.Password;
 import com.ch018.library.validation.UserRegistrationForm;
-import org.springframework.validation.ObjectError;
+
 /**
- *
+ * 
  * @author Edd Arazian
  */
 @Controller
 public class RegisterController {
-        @Autowired
-        PersonService personService;
-        
-        @Autowired
-        BCryptPasswordEncoder encoder;
-        
-        @Autowired(required = true)
-        @Qualifier("registrationformvalidator")
-        Validator validator;
-        
-        @Autowired(required = true)
-        @Qualifier("passwordvalidator")
-        Validator validatorPass;
-        
-        final Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
-        @RequestMapping(value = "/register", method = RequestMethod.POST)
-        @Secured({"ROLE_ANONYMOUS"})
-        public ResponseEntity<String> addUser(@Valid @ModelAttribute UserRegistrationForm form, BindingResult result) {
-            validator.validate(form, result);
-            if(result.hasErrors()){
-                return new ResponseEntity<>(getErrors(result), HttpStatus.BAD_REQUEST);
-            }
-            if(personService.register(form))
-                return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
-            else
-                return new ResponseEntity<>("problems with registration", HttpStatus.BAD_REQUEST);
-            
-        }
-        
-        @RequestMapping(value = "/confirm", method = RequestMethod.GET)
-        public String confirmation(@RequestParam("key") String key){
-           
-            if(personService.confirmMail(key))
-                return "redirect:/";
-            else
-                return "error";
-        }
-        
-        @RequestMapping(value = "/restore", method = RequestMethod.POST)
-        public ResponseEntity<String> restore(@RequestParam("email") String email) {
-            
-                if(personService.restoreSendEmail(email)){
-                    return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
-                }
-                return new ResponseEntity<>("email not exists", HttpStatus.BAD_REQUEST);
-                       
-        }
-        
-        @RequestMapping(value = "/restore/password", method = RequestMethod.GET)
-        public String restorePass(@RequestParam("key") String key, Model model) {
-            if(personService.isKeyValid(key)) {
-                model.addAttribute("key", key);
-                return "restore";
-            }
-            return "error";
-        } 
-        
-        @RequestMapping(value = "/restore/password", method = RequestMethod.POST)
-        public ResponseEntity<String> restorePassPost(@RequestParam("key") String key,@Valid @ModelAttribute Password password
-                                                                , BindingResult result){
-            validatorPass.validate(password, result);
-            if(result.hasErrors())
-                return new ResponseEntity<>(getErrors(result), HttpStatus.BAD_REQUEST);
-            if(personService.restorePass(key, password))
-                return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
-            return new ResponseEntity<>("error during restore", HttpStatus.BAD_REQUEST);
-        }
-        
-
-        @RequestMapping(value = "/register", method = RequestMethod.GET)
-        public String addUser(Model model){
-            return "register";
-        }
-
-        private String getErrors(BindingResult result) {
-           StringBuilder sb = new StringBuilder();
-           for (ObjectError error : result.getAllErrors()) {
-                    sb.append(error.getDefaultMessage());
-                    sb.append("\n");
-                }
-           return sb.toString();
-       }
+		private final Logger logger = LoggerFactory
+				.getLogger(RegisterController.class);
+	
+		@Autowired
+		private PersonService personService;
+	
+		@Autowired
+		private BCryptPasswordEncoder encoder;
+	
+		@Autowired(required = true)
+		@Qualifier("registrationformvalidator")
+		private Validator validator;
+	
+		@Autowired(required = true)
+		@Qualifier("passwordvalidator")
+		private Validator validatorPass;
+	
+		@RequestMapping(value = "/register", method = RequestMethod.POST)
+		@Secured({ "ROLE_ANONYMOUS" })
+		public ResponseEntity<String> addUser(@Valid @ModelAttribute UserRegistrationForm form, BindingResult result) {
+			validator.validate(form, result);
+			if (result.hasErrors()) {
+				return new ResponseEntity<>(getErrors(result),
+						HttpStatus.BAD_REQUEST);
+			}
+			if (personService.register(form))
+				return new ResponseEntity<>(new JSONObject().toString(),
+						HttpStatus.OK);
+			else
+				return new ResponseEntity<>("problems with registration",
+						HttpStatus.BAD_REQUEST);
+	
+		}
+	
+		@RequestMapping(value = "/confirm", method = RequestMethod.GET)
+		public String confirmation(@RequestParam("key") String key) {
+	
+			if (personService.confirmMail(key))
+				return "redirect:/";
+			else
+				return "error";
+		}
+	
+		@RequestMapping(value = "/restore", method = RequestMethod.POST)
+		public ResponseEntity<String> restore(@RequestParam("email") String email) {
+	
+			if (personService.restoreSendEmail(email)) {
+				return new ResponseEntity<>(new JSONObject().toString(),
+						HttpStatus.OK);
+			}
+			return new ResponseEntity<>("email not exists", HttpStatus.BAD_REQUEST);
+	
+		}
+	
+		@RequestMapping(value = "/restore/password", method = RequestMethod.GET)
+		public String restorePass(@RequestParam("key") String key, Model model) {
+			if (personService.isKeyValid(key)) {
+				model.addAttribute("key", key);
+				return "restore";
+			}
+			return "error";
+		}
+	
+		@RequestMapping(value = "/restore/password", method = RequestMethod.POST)
+		public ResponseEntity<String> restorePassPost(@RequestParam("key") String key, 
+															@Valid @ModelAttribute Password password, BindingResult result) {
+			validatorPass.validate(password, result);
+			if (result.hasErrors())
+				return new ResponseEntity<>(getErrors(result),
+						HttpStatus.BAD_REQUEST);
+			if (personService.restorePass(key, password))
+				return new ResponseEntity<>(new JSONObject().toString(),
+						HttpStatus.OK);
+			return new ResponseEntity<>("error during restore",
+					HttpStatus.BAD_REQUEST);
+		}
+	
+		@RequestMapping(value = "/register", method = RequestMethod.GET)
+		public String addUser(Model model) {
+			return "register";
+		}
+	
+		private String getErrors(BindingResult result) {
+			StringBuilder sb = new StringBuilder();
+			for (ObjectError error : result.getAllErrors()) {
+				sb.append(error.getDefaultMessage());
+				sb.append("\n");
+			}
+			return sb.toString();
+		}
 }

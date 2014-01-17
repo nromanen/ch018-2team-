@@ -4,9 +4,11 @@
  */
 package com.ch018.library.DAO;
 
-import com.ch018.library.entity.Person;
 import java.util.List;
+
 import org.springframework.stereotype.Component;
+
+import com.ch018.library.entity.Person;
 
 /**
  *
@@ -30,4 +32,5 @@ public interface PersonDao {
     List<Person> simpleSearch(String request);
     List<Person> advancedSearch(Person person); 
     Person getPersonByKey(String key);
+    List<Person> getPersonsBySurname(String surname);
 }
