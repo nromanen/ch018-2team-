@@ -18,7 +18,7 @@ $(document).ready(function (){
         
     });
     $('#info_form').validate({
-       
+       errorClass: "my-error-class",
         rules: {
             name: {
                 required : true,
@@ -56,6 +56,7 @@ $(document).ready(function (){
     });
     
     $('#pass_form').validate({
+        errorClass: "my-error-class",
         rules: {
             oldPass: {
                 required : true,
@@ -107,6 +108,7 @@ $(document).ready(function (){
             
 
     $('#email_form').validate({
+        errorClass: "my-error-class",
         rules: {
             email: {
                 required : true,

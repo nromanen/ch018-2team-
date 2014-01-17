@@ -297,7 +297,7 @@ public class OrdersServiceImpl implements OrdersService {
             order.setOrderDate(orderDate);
             order.setDaysAmount(orderDays);
             update(order);
-            logger.info("person {} edit order for book {} to date {} for {} days", person, book, orderDate, orderDays);
+            logger.info("person {} edit order for book {} to date {} for {}  days", person, book, orderDate, orderDays);
             return order;
             
         }

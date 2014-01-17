@@ -66,4 +66,9 @@ public class LoginController {
         public String error() {
             return "error";
         }
+        
+        @RequestMapping(value = "/errors/404")
+        public String error404() {
+            return "error404";
+        }
 }
