@@ -1,18 +1,15 @@
 package com.ch018.library.service;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ch018.library.entity.Person;
-import com.ch018.library.validation.Password;
-import com.ch018.library.validation.PersonalInfo;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import com.ch018.library.validation.Password;
 import com.ch018.library.validation.PersonEditValidator;
+import com.ch018.library.validation.PersonalInfo;
 import com.ch018.library.validation.UserRegistrationForm;
-import com.ch018.library.validation.Password;;
 /**
  *
  * @author Edd Arazian

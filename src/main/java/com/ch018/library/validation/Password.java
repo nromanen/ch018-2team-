@@ -14,15 +14,18 @@ public class Password {
         public static final int MAX_SIZE = 16;
 
         @NotEmpty(message = "password field can't be empty")
-        @Size(min = MIN_SIZE, max = MAX_SIZE, message = "password size must be between 6 and 16")
+        @Size(min = MIN_SIZE, max = MAX_SIZE
+        			, message = "password size must be between 6 and 16")
         private String oldPass;
 
         @NotEmpty(message = "password field can't be empty")
-        @Size(min = MIN_SIZE, max = MAX_SIZE, message = "password size must be between 6 and 16")
+        @Size(min = MIN_SIZE, max = MAX_SIZE
+        			, message = "password size must be between 6 and 16")
         private String newPass;
 
         @NotEmpty(message = "password field can't be empty")
-        @Size(min = MIN_SIZE, max = MAX_SIZE, message = "password size must be between 6 and 16")
+        @Size(min = MIN_SIZE, max = MAX_SIZE
+        			, message = "password size must be between 6 and 16")
         private String rNewPass;
 
         public String getOldPass() {

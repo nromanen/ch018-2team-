@@ -4,11 +4,8 @@
  */
 package com.ch018.library.tiles.preparer;
 
-import com.ch018.library.entity.Orders;
-import com.ch018.library.entity.Person;
-import com.ch018.library.service.OrdersService;
-import com.ch018.library.service.PersonService;
 import java.util.List;
+
 import org.apache.tiles.Attribute;
 import org.apache.tiles.AttributeContext;
 import org.apache.tiles.preparer.ViewPreparer;
@@ -16,6 +13,11 @@ import org.apache.tiles.request.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import com.ch018.library.entity.Orders;
+import com.ch018.library.entity.Person;
+import com.ch018.library.service.OrdersService;
+import com.ch018.library.service.PersonService;
 
 /**
  *
@@ -25,10 +27,10 @@ import org.springframework.stereotype.Component;
 public class OrdersPreparer implements ViewPreparer {
 
     @Autowired
-    OrdersService ordersService;
+    private OrdersService ordersService;
     
     @Autowired
-    PersonService personService;
+    private PersonService personService;
     
     @Override
     public void execute(Request rqst, AttributeContext ac) {

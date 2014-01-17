@@ -36,10 +36,10 @@ public class BookServiceImpl implements BookService {
 
         @Autowired
         private BookInUseService useService;
+        
         @Autowired
     	private GenreService genreService;
 
-        Book bookEdit;
         	
         private final Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
 
@@ -161,7 +161,8 @@ public class BookServiceImpl implements BookService {
 		@Override
 		@Transactional
 		public void update(BookEditValidator book, int genreId) {
-			// TODO Auto-generated method stub
+			
+			Book bookEdit;
 			bookEdit = getBookById(book.getbId());
 			
 			bookEdit.setTitle(book.getTitle());

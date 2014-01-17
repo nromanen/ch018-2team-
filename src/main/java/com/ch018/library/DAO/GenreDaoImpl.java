@@ -4,14 +4,16 @@
  */
 package com.ch018.library.DAO;
 
-import com.ch018.library.entity.Genre;
 import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.ch018.library.entity.Genre;
 
 /**
  *
