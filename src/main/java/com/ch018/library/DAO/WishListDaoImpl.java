@@ -4,14 +4,16 @@
  */
 package com.ch018.library.DAO;
 
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Person;
-import com.ch018.library.entity.WishList;
 import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Person;
+import com.ch018.library.entity.WishList;
 /**
  *
  * @author Edd Arazian
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Repository;
 public class WishListDaoImpl implements WishListDao {
     
         @Autowired
-        SessionFactory factory;
+        private SessionFactory factory;
 
         @Override
         public void save(WishList wish) {
@@ -57,12 +59,13 @@ public class WishListDaoImpl implements WishListDao {
         }
         @Override
         public boolean isPersonWishBook(Person person, Book book) {
-            try{   
-                WishList wish = (WishList) factory.getCurrentSession().createCriteria(WishList.class)
+            try{
+                WishList wish = (WishList) factory.getCurrentSession()
+                			.createCriteria(WishList.class)
                             .add(Restrictions.eq("person", person))
-                                .add(Restrictions.eq("book", book)).list().get(0);
+                            .add(Restrictions.eq("book", book)).list().get(0);
                 return wish == null ? false : true;
-            }catch(Exception e){
+            } catch(Exception e) {
                 return false;
             }
 

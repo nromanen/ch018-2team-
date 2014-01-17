@@ -6,6 +6,7 @@ package com.ch018.library.validation;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -14,14 +15,19 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 public class PersonalInfo {
     
+		private static final int MAX_NAME = 30;
+	
         @NotEmpty
-        @Size(min = 2, max = 30, message = "name size must be between 2 and 30")
+        @Size(min = 2, max = MAX_NAME
+        		, message = "name size must be between 2 and 30")
         private String name;
         @NotEmpty
-        @Size(min = 2, max = 30, message = "surname size must be between 2 and 30")
+        @Size(min = 2, max = MAX_NAME
+        		, message = "surname size must be between 2 and 30")
         private String surname;
         
-        @Pattern(message = "must be in format xxx-xxx-xxxx",regexp = "\\d{3}-\\d{3}-\\d{4}")
+        @Pattern(message = "must be in format xxx-xxx-xxxx"
+        			,regexp = "\\d{3}-\\d{3}-\\d{4}")
         private String cellphone;
         private boolean sms;
 

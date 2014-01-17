@@ -1,8 +1,9 @@
 package com.ch018.library.helper;
 
-import com.ch018.library.entity.Orders;
 import java.util.Date;
 import java.util.List;
+
+import com.ch018.library.entity.Orders;
 
 /**
  *
@@ -52,8 +53,5 @@ public class OrderDays {
         public void setOrders(List<Orders> orders) {
             this.orders = orders;
         }
-
-        
-
     
 }

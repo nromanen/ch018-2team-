@@ -1,12 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.entity;
 
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 @Entity
@@ -59,7 +62,7 @@ public class Genre implements Serializable {
         public boolean equals(Object other) {
             if (other == null) return false;
             if (other == this) return true;
-            if (!(other instanceof Genre))return false;
+            if (!(other instanceof Genre)) return false;
             Genre otherGenre = (Genre) other;
             return description.equals(otherGenre.getDescription());
         }
@@ -69,10 +72,13 @@ public class Genre implements Serializable {
             return this.description.hashCode();
         }
 
-        @Override
-        public String toString() {
-            return description;
-        }
+		@Override
+		public String toString() {
+			return "Genre [id=" + id + ", books=" + books + ", description="
+					+ description + "]";
+		}
+
+        
 
     
 }

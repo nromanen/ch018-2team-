@@ -4,15 +4,16 @@
  */
 package com.ch018.library.controller;
 
-import com.ch018.library.service.BookService;
-import com.ch018.library.service.PersonService;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+
+import com.ch018.library.service.BookService;
+import com.ch018.library.service.PersonService;
 
 /**
  *
@@ -40,17 +41,6 @@ public class LoginController {
             return "redirect:/books";
         }
 
-        /*@RequestMapping(value = "/index", method = RequestMethod.GET)
-        public String index(HttpServletRequest req, Authentication auth) {
-            if (auth != null && auth.isAuthenticated()) {
-                if (req.isUserInRole("ROLE_USER") || req.isUserInRole("ROLE_ADMIN")) {
-                    return "redirect:/books/";
-                } else if (req.isUserInRole("ROLE_LIBRARIAN")) {
-                    return "redirect:/librarian";
-                }
-            }
-            return "redirect:/login";
-        }*/
 
         @RequestMapping(value = "/login", method = RequestMethod.GET)
         public String loginProcess() {

@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,266 +19,269 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 @Entity
-@Table(name="books")
-public class Book implements Serializable{
+@Table(name = "books")
+public class Book implements Serializable {
 	
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "bid", unique = true, nullable = false)
-	private int bId;
-        
-        @NotEmpty
-        @Size(max=255)
-        @Column(name="title", unique = true, nullable = false)
-	private String title;
-        
-        @NotEmpty
-        @Size(max=255)
-        @Column(name="authors")
-	private String authors;
-        
-        
-        @ManyToOne()
-        @JoinColumn(name = "gid")
-        private Genre genre;
-        
-        @NotNull
-        @Range(min=1800, max=2030)
-        @Column(name="year_public")
-	private int year;
-        
-        @NotEmpty
-        @Size(max=255)
-        @Column(name="publisher")
-	private String publisher;
-        
-        @NotNull
-        @Range(min=1, max=10000)
-        @Column(name="pages")
-	private int pages;
-        
-        @Size(min=0)
-        @Column(name="description")
-	private String description;
-        
-        @Column(name = "bookcase")
-        //@OneToOne(targetEntity = BookCase.class)
-        //@JoinColumn(name = "caseid", referencedColumnName = "id")
-        private int bookcase;
-        
-        @NotNull
-        @Range(min=1, max=1000)
-        @Column(name="shelf")
-        //@OneToOne(targetEntity = BookCase.class)
-        //@JoinColumn(name = "shelfid", referencedColumnName = "shelfid")
-	private int shelf;
-        
-        @NotNull
-        @Range(min=0, max=365)
-        @Column(name="term")
-	private int term;
-        
-        @Column(name = "img")
-        private String img;
-        
-        @Range(min=0)
-        @Column(name = "cur_quantity")
-        private int currentQuantity;
-        
-        
-        @NotNull
-        @Range(min=1, max=1000)
-        @Column(name = "gen_quantity")
-       private Integer generalQuantity;
-        
-        @OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
-	private Set<Person> personsUse;
-        
-        @OneToMany(targetEntity = Orders.class, mappedBy = "book")
-        private Set<Person> personsOrders;
-        
-        @OneToMany(targetEntity = WishList.class, mappedBy = "book")
-        private Set<Person> personsWishes;
-
-        public Book() {
-		
-	}
+		private static final int MAX_NAME = 255;
+		private static final int MIN_YEAR = 1800;
+		private static final int MAX_YEAR = 2030;
+		private static final int MAX_PAGES = 10000;
+		private static final int MAX_SHELF = 1000;
+		private static final int MAX_QUANTITY = 1000;
+		private static final int MAX_TERM = 365;
 	
-	public Book(Book b) {
-		title = b.getTitle();
-	}
-
-    public int getbId() {
-        return bId;
-    }
-
-    public void setbId(int bId) {
-    	this.bId = bId;
-    }
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		@Column(name = "bid", unique = true, nullable = false)
+		private int bId;
 	
-	public String getTitle() {
-		return title;
-	}
+		@NotEmpty
+		@Size(max = MAX_NAME)
+		@Column(name = "title", unique = true, nullable = false)
+		private String title;
 	
+		@NotEmpty
+		@Size(max = MAX_NAME)
+		@Column(name = "authors")
+		private String authors;
 	
-	public String getAuthors() {
-		return authors;
-	}
+		@ManyToOne()
+		@JoinColumn(name = "gid")
+		private Genre genre;
 	
+		@NotNull
+		@Range(min = MIN_YEAR, max = MAX_YEAR)
+		@Column(name = "year_public")
+		private int year;
 	
-	public int getYear() {
-		return year;
-	}
+		@NotEmpty
+		@Size(max = MAX_NAME)
+		@Column(name = "publisher")
+		private String publisher;
 	
+		@NotNull
+		@Range(min = 1, max = MAX_PAGES)
+		@Column(name = "pages")
+		private int pages;
 	
-	public String getPublisher() {
-		return publisher;
-	}
+		@Size(min = 0)
+		@Column(name = "description")
+		private String description;
 	
+		@Column(name = "bookcase")
+		// @OneToOne(targetEntity = BookCase.class)
+		// @JoinColumn(name = "caseid", referencedColumnName = "id")
+		private int bookcase;
 	
-	public int getPages() {
-		return pages;
-	}
+		@NotNull
+		@Range(min = 1, max = MAX_SHELF)
+		@Column(name = "shelf")
+		// @OneToOne(targetEntity = BookCase.class)
+		// @JoinColumn(name = "shelfid", referencedColumnName = "shelfid")
+		private int shelf;
 	
+		@NotNull
+		@Range(min = 0, max = MAX_TERM)
+		@Column(name = "term")
+		private int term;
 	
-	public String getDescription() {
-		return description;
-	}
+		@Column(name = "img")
+		private String img;
 	
+		@Range(min = 0)
+		@Column(name = "cur_quantity")
+		private int currentQuantity;
 	
-	public int getShelf() {
-		return shelf;
-	}
+		@NotNull
+		@Range(min = 1, max = MAX_QUANTITY)
+		@Column(name = "gen_quantity")
+		private Integer generalQuantity;
 	
+		@OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
+		private Set<Person> personsUse;
 	
-	public int getTerm() {
-		return term;
-        }
+		@OneToMany(targetEntity = Orders.class, mappedBy = "book")
+		private Set<Person> personsOrders;
 	
+		@OneToMany(targetEntity = WishList.class, mappedBy = "book")
+		private Set<Person> personsWishes;
 	
-	public void setTitle(String title) {
-		this.title = title;
-	}
+		public Book() {
 	
-	public void setAuthors(String authors) {
-		this.authors = authors;
-	}
+		}
 	
-	public void setYear(int year) {
-		this.year = year;
-	}
+		public Book(Book b) {
+			title = b.getTitle();
+		}
 	
-	public void setPublisher(String publisher) {
-		this.publisher = publisher;
-	}
+		public int getbId() {
+			return bId;
+		}
 	
-	public void setPages(int pages) {
-		this.pages = pages;
-	}
+		public void setbId(int bId) {
+			this.bId = bId;
+		}
 	
-	public void setDescription(String description) {
-		this.description = description;
-	}
+		public String getTitle() {
+			return title;
+		}
 	
-	public void setShelf(int shelf) {
-		this.shelf = shelf;
-	}
+		public String getAuthors() {
+			return authors;
+		}
 	
-	public void setTerm(int term) {
-		this.term = term;
-	}
-
-    public Set<Person> getPersonsUse() {
-        return personsUse;
-    }
-
-    public void setPersonsUse(Set<Person> personsUse) {
-        this.personsUse = personsUse;
-    }
-
-    public Set<Person> getPersonsOrders() {
-        return personsOrders;
-    }
-
-    public void setPersonsOrders(Set<Person> personsOrders) {
-        this.personsOrders = personsOrders;
-    }
-
-    
-    
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
-    }
-
-    public int getBookcase() {
-        return bookcase;
-    }
-
-    public void setBookcase(int bookcase) {
-        this.bookcase = bookcase;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-     public int getCurrentQuantity() {
-        return currentQuantity;
-    }
-
-    public void setCurrentQuantity(int currentQuantity) {
-        this.currentQuantity = currentQuantity;
-    }
-
-    public Integer getGeneralQuantity() {
-        return generalQuantity;
-    }
-
-    public void setGeneralQuantity(Integer generalQuantity) {
-        this.generalQuantity = generalQuantity;
-    }
-
-    public Set<Person> getPersonsWishes() {
-        return personsWishes;
-    }
-
-    public void setPersonsWishes(Set<Person> personsWishes) {
-        this.personsWishes = personsWishes;
-    }
-    
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) {
+		public int getYear() {
+			return year;
+		}
+	
+		public String getPublisher() {
+			return publisher;
+		}
+	
+		public int getPages() {
+			return pages;
+		}
+	
+		public String getDescription() {
+			return description;
+		}
+	
+		public int getShelf() {
+			return shelf;
+		}
+	
+		public int getTerm() {
+			return term;
+		}
+	
+		public void setTitle(String title) {
+			this.title = title;
+		}
+	
+		public void setAuthors(String authors) {
+			this.authors = authors;
+		}
+	
+		public void setYear(int year) {
+			this.year = year;
+		}
+	
+		public void setPublisher(String publisher) {
+			this.publisher = publisher;
+		}
+	
+		public void setPages(int pages) {
+			this.pages = pages;
+		}
+	
+		public void setDescription(String description) {
+			this.description = description;
+		}
+	
+		public void setShelf(int shelf) {
+			this.shelf = shelf;
+		}
+	
+		public void setTerm(int term) {
+			this.term = term;
+		}
+	
+		public Set<Person> getPersonsUse() {
+			return personsUse;
+		}
+	
+		public void setPersonsUse(Set<Person> personsUse) {
+			this.personsUse = personsUse;
+		}
+	
+		public Set<Person> getPersonsOrders() {
+			return personsOrders;
+		}
+	
+		public void setPersonsOrders(Set<Person> personsOrders) {
+			this.personsOrders = personsOrders;
+		}
+	
+		public Genre getGenre() {
+			return genre;
+		}
+	
+		public void setGenre(Genre genre) {
+			this.genre = genre;
+		}
+	
+		public int getBookcase() {
+			return bookcase;
+		}
+	
+		public void setBookcase(int bookcase) {
+			this.bookcase = bookcase;
+		}
+	
+		public String getImg() {
+			return img;
+		}
+	
+		public void setImg(String img) {
+			this.img = img;
+		}
+	
+		public int getCurrentQuantity() {
+			return currentQuantity;
+		}
+	
+		public void setCurrentQuantity(int currentQuantity) {
+			this.currentQuantity = currentQuantity;
+		}
+	
+		public Integer getGeneralQuantity() {
+			return generalQuantity;
+		}
+	
+		public void setGeneralQuantity(Integer generalQuantity) {
+			this.generalQuantity = generalQuantity;
+		}
+	
+		public Set<Person> getPersonsWishes() {
+			return personsWishes;
+		}
+	
+		public void setPersonsWishes(Set<Person> personsWishes) {
+			this.personsWishes = personsWishes;
+		}
+	
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			if (this.title.equals(((Book) obj).getTitle())
+					&& this.getAuthors().equals(((Book) obj).getAuthors())
+					&& this.getPublisher().equals(((Book) obj).getPublisher())) {
+				return true;
+			}
 			return false;
 		}
-		if (this.title.equals(((Book) obj).getTitle())
-				&& this.getAuthors().equals(((Book) obj).getAuthors())
-				&& this.getPublisher().equals(((Book) obj).getPublisher())) {
-			return true;
+	
+		@Override
+		public int hashCode() {
+			return this.bId;
 		}
-		return false;
-	}
 	
-	@Override 
-	public int hashCode() {
-		return this.bId;
-	}
+		@Override
+		public String toString() {
+			return "Book [bId=" + bId + ", title=" + title + ", authors=" + authors
+					+ ", genre=" + genre + ", year=" + year + ", publisher="
+					+ publisher + ", pages=" + pages + ", description="
+					+ description + ", bookcase=" + bookcase + ", shelf=" + shelf
+					+ ", term=" + term + ", img=" + img + ", currentQuantity="
+					+ currentQuantity + ", generalQuantity=" + generalQuantity
+					+ ", personsUse=" + personsUse + ", personsOrders="
+					+ personsOrders + ", personsWishes=" + personsWishes + "]";
+		}
 
-	@Override
-	public String toString() {
-		return bId + " " + getTitle() + " " + getAuthors() + " " + getYear();
-	}
-
-	
 }

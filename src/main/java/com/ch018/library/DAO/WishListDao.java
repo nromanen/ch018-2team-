@@ -4,11 +4,13 @@
  */
 package com.ch018.library.DAO;
 
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
 import com.ch018.library.entity.WishList;
-import java.util.List;
-import org.springframework.stereotype.Repository;
 /**
  *
  * @author Edd Arazian
