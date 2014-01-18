@@ -1,15 +1,23 @@
 package com.ch018.library.service;
 
 import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +53,10 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Autowired
 		private BookInUseService bookInUse;
+		
+		@Autowired
+		@Qualifier(value = "org.springframework.security.authenticationManager")
+	    protected AuthenticationManager authenticationManager;
 	
 		private Person personEdit;
 	
@@ -203,8 +215,7 @@ public class PersonServiceImpl implements PersonService {
 			person.setProle("ROLE_USER");
 			person.setBooksAllowed(DEFAULT_BOOKS_ALLOWED);
 			person.setMultiBook(DEFAULT_BOOKS_ALLOWED);
-			String mailKey = encoder.encode(person.getEmail().concat(
-					String.valueOf(new Random().nextLong())));
+			String mailKey = getHashFromString(form.getEmail());
 			person.setMailKey(mailKey);
 			mailService.sendConfirmationMail("springytest@gmail.com",
 					"etenzor@gmail.com", "confirmation mail", person.getMailKey());
@@ -215,14 +226,23 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Override
 		@Transactional
-		public boolean confirmMail(String key) {
+		public boolean confirmMail(String key, HttpServletRequest request) {
 			Person person = personDao.getPersonByKey(key);
 			if (person == null)
 				return false;
 			person.setMailConfirm(Boolean.TRUE);
 			person.setMailKey(null);
 			save(person);
-			logger.info("person {} successfully confirm mail", person);
+			
+			UsernamePasswordAuthenticationToken token = 
+						new UsernamePasswordAuthenticationToken(person.getEmail(), person.getPassword()
+						, Arrays.asList(new SimpleGrantedAuthority(person.getProle())));
+			request.getSession();
+			token.setDetails(new WebAuthenticationDetails(request));
+			Authentication auth = authenticationManager.authenticate(token);
+			SecurityContextHolder.getContext().setAuthentication(auth);
+			
+			logger.info("person {} successfully confirm mail | auth {}", person, SecurityContextHolder.getContext());
 			return true;
 		}
 	
@@ -232,8 +252,7 @@ public class PersonServiceImpl implements PersonService {
 			Person person = getByEmail(email);
 			if (person != null) {
 	
-				String mailKey = encoder.encode(person.getEmail().concat(
-						String.valueOf(new Random().nextLong())));
+				String mailKey = getHashFromString(email);
 				person.setMailKey(mailKey);
 				mailService.sendRestoreMail("springytest@gmail.com",
 						"etenzor@gmail.com", person.getMailKey());

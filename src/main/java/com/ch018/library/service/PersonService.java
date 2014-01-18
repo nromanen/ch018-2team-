@@ -2,6 +2,8 @@ package com.ch018.library.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
 
 import com.ch018.library.entity.BooksInUse;
@@ -34,7 +36,7 @@ public interface PersonService {
         List<Person> advancedSearch(Person person);
         Person countRating(Person person); 
         boolean register(UserRegistrationForm form);
-        boolean confirmMail(String key);
+        boolean confirmMail(String key, HttpServletRequest request);
         boolean restoreSendEmail(String email);
         boolean isKeyValid(String key);
         boolean restorePass(String key, Password password);

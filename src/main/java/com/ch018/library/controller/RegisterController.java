@@ -1,5 +1,6 @@
 package com.ch018.library.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.json.JSONObject;
@@ -67,9 +68,8 @@ public class RegisterController {
 		}
 	
 		@RequestMapping(value = "/confirm", method = RequestMethod.GET)
-		public String confirmation(@RequestParam("key") String key) {
-	
-			if (personService.confirmMail(key))
+		public String confirmation(@RequestParam("key") String key, HttpServletRequest request) {
+			if (personService.confirmMail(key, request))
 				return "redirect:/";
 			else
 				return "error";
