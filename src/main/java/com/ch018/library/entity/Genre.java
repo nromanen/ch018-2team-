@@ -74,7 +74,7 @@ public class Genre implements Serializable {
 
 		@Override
 		public String toString() {
-			return "Genre [id=" + id + ", books=" + books + ", description="
+			return "Genre [id=" + id + ", description="
 					+ description + "]";
 		}
 

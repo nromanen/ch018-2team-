@@ -7,14 +7,15 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	<http use-expressions="true">
                 
-		
-           
-                <intercept-url pattern="/books/search" access="permitAll()" />
+				<intercept-url pattern="/books/search" access="permitAll()" />
+				<intercept-url pattern="/books/autocomplete" access="permitAll()" />
+				<intercept-url pattern="/books/advancedSearch" access="permitAll()" />
+				<intercept-url pattern="/books/order" access="permitAll()" />
                 <intercept-url pattern="/books/*" access="hasRole('ROLE_USER')" />
                 <intercept-url pattern="/account" access="hasRole('ROLE_USER')" />
                 <intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
                 <intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/librarian/*" access="hasRole('ROLE_LIBRARIAN')" />
+				<intercept-url pattern="/librarian/*" access="hasRole('ROLE_LIBRARIAN')" />
                 <intercept-url pattern="/register" access="hasRole('ROLE_ANONYMOUS')" />
                 <intercept-url pattern="/books" access="permitAll()" />
                 <intercept-url pattern="/" access="permitAll()" />

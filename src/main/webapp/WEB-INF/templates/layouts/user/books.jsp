@@ -25,37 +25,45 @@
 			<div class="col-md-3">
 				<div class="item" id="i${i}">
 					<div class="item-image">
-						<sec:authorize access="isAuthenticated()">
-							<a
-								href="${pageContext.request.contextPath}/books/order?id=${book.bId}">
-						</sec:authorize>
-						<img src="${book.img}" alt="" class="img-responsive">
-						<sec:authorize access="isAuthenticated()">
-							</a>
-						</sec:authorize>
+						<a
+							href="${pageContext.request.contextPath}/books/order?id=${book.bId}">
+							<img src="${book.img}" alt="" class="img-responsive">
+						</a>
+
 					</div>
 					<div class="item-details">
 						<h5>${book.title}</h5>
+						
 					</div>
 					<hr>
 					<div class="clearfix"></div>
-					<div class="item-quantity pull-left">Quantity:
-						${book.currentQuantity}</div>
+
+					<c:choose>
+						<c:when test="${book.currentQuantity <= 0}">
+							<div class="item-quantity pull-left"
+								style="background: red !important;">Quantity:
+								${book.currentQuantity}</div>
+						</c:when>
+						<c:otherwise>
+							<div class="item-quantity pull-left">Quantity:
+								${book.currentQuantity}</div>
+						</c:otherwise>
+					</c:choose>
+
 
 					<div class="pull-right">
-						<sec:authorize access="isAuthenticated()">
-							<a
-								href="${pageContext.request.contextPath}/books/order?id=${book.bId}"
-								class="btn btn-info">More</a>
-						</sec:authorize>
+						<a
+							href="${pageContext.request.contextPath}/books/order?id=${book.bId}"
+							class="btn btn-info">More</a>
+
 					</div>
 					<div class="clearfix"></div>
 				</div>
 			</div>
 			<c:set var="i" value="${i + 1}" scope="page" />
 			<c:if test="${i mod 4 == 0}">
-	</div>
-	</c:if>
+				</div>
+			</c:if>
 	</c:forEach>
 
 </div>

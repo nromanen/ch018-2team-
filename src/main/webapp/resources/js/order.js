@@ -1,4 +1,3 @@
-
 $(document)
 		.ready(
 				function() {
@@ -89,9 +88,9 @@ $(document)
 
 				});
 
-function makeOrder(bookId, time) {
+function makeOrder(bookId, time, url) {
 	$.ajax({
-		url : "/library/books/order/add",
+		url : $('#path').attr('url') + "/books/order/add",
 		type : "POST",
 		data : {
 			'bookId' : bookId,
@@ -109,10 +108,10 @@ function makeOrder(bookId, time) {
 	});
 }
 
-function addToWishList(bookId) {
+function addToWishList(bookId, url) {
 
 	$.ajax({
-		url : "/library/books/wishlist/add",
+		url : $('#path').attr('url') +  '/books/wishlist/add',
 		type : "POST",
 		data : {
 			'bookId' : bookId

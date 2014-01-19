@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	$('#search_field').autocomplete({
-		serviceUrl : "/library/books/autocomplete",
+		serviceUrl : $('#search_field').attr('url') +  "/books/autocomplete",
 		minChars : 2
 
 	});

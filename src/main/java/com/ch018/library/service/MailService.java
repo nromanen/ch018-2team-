@@ -60,19 +60,21 @@ public class MailService {
 		}
 	
 		public void sendConfirmationMail(String from, String to, String subject,
-				String key) {
+				String key, String path) {
 			StringBuilder body = new StringBuilder(
 					"For account confirmation please click here : ");
-			body.append("http://localhost:8080/library/confirm?key=");
+			body.append(path);
+			body.append("/confirm?key=");
 			body.append(key);
 			sendMessage(from, to, subject, body.toString());
 		}
 	
-		public void sendRestoreMail(String from, String to, String key) {
+		public void sendRestoreMail(String from, String to, String key, String path) {
 			String subject = "password restore details";
 			StringBuilder body = new StringBuilder(
 					"For password restore please click link : ");
-			body.append("http://localhost:8080/library/restore/password?key=");
+			body.append(path);
+			body.append("/library/restore/password?key=");
 			body.append(key);
 			sendMessage(from, to, subject, body.toString());
 		}

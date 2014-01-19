@@ -5,6 +5,8 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,7 @@ import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PersonService;
+
 import org.springframework.context.i18n.LocaleContextHolder;
 /**
  * 
@@ -60,7 +63,6 @@ public class BooksController {
 
         @RequestMapping(value = "/search", method = RequestMethod.POST)
         public String booksSearch(@ModelAttribute BookSearch bookSearch, Model model) {
-
             Page books = bookService.getBooksComplex(bookSearch);
             if (books.getBooks().isEmpty() || books.getBooks() == null) {
                 model.addAttribute("nothing", true);
@@ -83,6 +85,7 @@ public class BooksController {
 
 
         @RequestMapping(value = "/autocomplete", method = RequestMethod.GET)
+        @Secured( {"permitAll()"} )
         public @ResponseBody String autocomplete(@RequestParam("query") String query) {
             List<String> titles = new ArrayList<>();   
             JSONObject json = new JSONObject();

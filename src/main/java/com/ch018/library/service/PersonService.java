@@ -30,14 +30,14 @@ public interface PersonService {
         List<Person> getByRole(String role);
         List<Person> getConfirmed();
         List<Person> getSmsEnabled();
-        void changeEmail(String email, Person person) throws Exception;
+        void changeEmail(String email, Person person, String path) throws Exception;
         void updatePassword(Password password, Person person) throws Exception;
         List<Person> simpleSearch(String request);
         List<Person> advancedSearch(Person person);
         Person countRating(Person person); 
-        boolean register(UserRegistrationForm form);
+        boolean register(UserRegistrationForm form, String path);
         boolean confirmMail(String key, HttpServletRequest request);
-        boolean restoreSendEmail(String email);
+        boolean restoreSendEmail(String email, String path);
         boolean isKeyValid(String key);
         boolean restorePass(String key, Password password);
         void updatePersonalInfo(Person person, PersonalInfo info) throws Exception;

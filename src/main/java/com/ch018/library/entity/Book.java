@@ -280,8 +280,7 @@ public class Book implements Serializable {
 					+ description + ", bookcase=" + bookcase + ", shelf=" + shelf
 					+ ", term=" + term + ", img=" + img + ", currentQuantity="
 					+ currentQuantity + ", generalQuantity=" + generalQuantity
-					+ ", personsUse=" + personsUse + ", personsOrders="
-					+ personsOrders + ", personsWishes=" + personsWishes + "]";
+					 + "]";
 		}
 
 }
