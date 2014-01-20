@@ -250,27 +250,7 @@ public class Book implements Serializable {
 			this.personsWishes = personsWishes;
 		}
 	
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			if (this.title.equals(((Book) obj).getTitle())
-					&& this.getAuthors().equals(((Book) obj).getAuthors())
-					&& this.getPublisher().equals(((Book) obj).getPublisher())) {
-				return true;
-			}
-			return false;
-		}
-	
-		@Override
-		public int hashCode() {
-			return this.bId;
-		}
+		
 	
 		@Override
 		public String toString() {
