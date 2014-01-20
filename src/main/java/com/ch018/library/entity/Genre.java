@@ -1,15 +1,8 @@
 package com.ch018.library.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 
 @Entity
@@ -74,8 +67,9 @@ public class Genre implements Serializable {
 
 		@Override
 		public String toString() {
-			return "Genre [id=" + id + ", books=" + books + ", description="
-					+ description + "]";
+			//return "Genre [id=" + id + ", books=" + books + ", description="
+			//		+ description + "]";
+            return  description;
 		}
 
         
