@@ -36,7 +36,7 @@ public class LibrarianUsersController {
 		 List<Person> person = personService.getAll();
                 
                 for (Person pers : person) {
-                        pers = personService.countRating(pers);
+                       personService.countRating(pers);
                 }
                 
                 model.addAttribute("users", person);

@@ -34,7 +34,4 @@ public interface BooksInUseDao {
 
     boolean isPersonHaveBook(Person person, Book book);
     
-    List<Person> getAllUsers();
-    
-
 }

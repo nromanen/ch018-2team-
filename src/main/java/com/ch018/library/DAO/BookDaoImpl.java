@@ -1,14 +1,19 @@
 package com.ch018.library.DAO;
 
 import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.Person;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.SimpleExpression;
 import org.slf4j.Logger;
@@ -79,51 +84,31 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> advancedSearch(Book book) {
         // TODO Auto-generated method stub
+        
         Session session = factory.openSession();
-
-        String q = "from Book where 1=1 ";
-
+        
+        Criteria criteria = session.createCriteria(Book.class);
+        
         if (!book.getTitle().equals("")) {
-            q += " and title = :title";
+        	criteria.add(Restrictions.eq("title", book.getTitle()));
         }
         if (!book.getAuthors().equals("")) {
-            q += " and authors = :authors";
+        	criteria.add(Restrictions.eq("authors", book.getAuthors()));
         }
         if (!book.getGenre().equals("")) {
-            q += " and genre = :genre";
+        	criteria.add(Restrictions.eq("genre", book.getGenre()));
         }
         if (book.getYear() != 0) {
-            q += " and year = :year";
+        	criteria.add(Restrictions.eq("year", book.getYear()));
         }
         if (!book.getPublisher().equals("")) {
-            q += " and publisher = :publisher";
+        	criteria.add(Restrictions.eq("publisher", book.getPublisher()));
         }
         if (book.getPages() != 0) {
-            q += " and pages = :pages";
+        	criteria.add(Restrictions.eq("pages", book.getPages()));
         }
 
-        Query query = session.createQuery(q);
-
-        if (!book.getTitle().equals("")) {
-            query.setParameter("title", book.getTitle());
-        }
-        if (!book.getAuthors().equals("")) {
-            query.setParameter("authors", book.getAuthors());
-        }
-        if (!book.getGenre().equals("")) {
-            query.setParameter("genre", book.getGenre());
-        }
-        if (book.getYear() != 0) {
-            query.setParameter("year", book.getYear());
-        }
-        if (!book.getPublisher().equals("")) {
-            query.setParameter("publisher", book.getPublisher());
-        }
-        if (book.getPages() != 0) {
-            query.setParameter("pages", book.getPages());
-        }
-
-        List<Book> books = query.list();
+        List<Book> books = criteria.list();
 
         return books;
     }
@@ -135,13 +120,20 @@ public class BookDaoImpl implements BookDao {
 
             Session session = factory.openSession();
 
-            Query q = session.createQuery("from Book where title like :parameter or"
-                    + " authors like :parameter or "
-                    + " publisher like :parameter");
-            q.setParameter("parameter", query + "%");
+            Criteria criteria = session.createCriteria(Book.class);
+            
+            Disjunction or = Restrictions.disjunction();
+            
+            or.add(Restrictions.like("title", query ));
+            
+            or.add(Restrictions.like("authors", query ));
+            
+            or.add(Restrictions.like("publisher", query ));
 
-            List<Book> books = q.list();
-
+            criteria.add(or);
+            
+            List<Book> books = criteria.list();
+           
             return books;
         } else {
             return null;
