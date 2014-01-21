@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ch018.library.service.PersonService;
 import com.ch018.library.validation.Password;
+import com.ch018.library.validation.PasswordValidator;
+import com.ch018.library.validation.RegistrationFormValidator;
 import com.ch018.library.validation.UserRegistrationForm;
 
 /**
@@ -45,12 +47,12 @@ public class RegisterController {
 		private BCryptPasswordEncoder encoder;
 	
 		@Autowired(required = true)
-		@Qualifier("registrationformvalidator")
-		private Validator validator;
+		//@Qualifier("registrationformvalidator")
+		private RegistrationFormValidator validator;
 	
 		@Autowired(required = true)
-		@Qualifier("passwordvalidator")
-		private Validator validatorPass;
+		//@Qualifier("passwordvalidator")
+		private PasswordValidator validatorPass;
 	
 		@RequestMapping(value = "/register", method = RequestMethod.POST)
 		@Secured({ "ROLE_ANONYMOUS" })

@@ -1,22 +1,23 @@
 package com.ch018.library.controller;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -28,43 +29,59 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.service.BookService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:servlet-context.xml", "classpath:root-context.xml"})
 @WebAppConfiguration
-@ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml",
-							"file:src/main/webapp/WEB-INF/spring/appServlet/controllers.xml",
-							"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
 public class BooksControllerTest {
 	
 
-	
 	@Autowired
-    BookService bookService;
-	
+	private BookService bookService;
+
 	@Autowired
-    WebApplicationContext wac;
+	private WebApplicationContext wac;
+	
+	private MockMvc mockMvc;
+	
+	List<Book> books;
+	
+	@Before
+	public void setup() {
+		
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		
+		Book book1 = new Book();
+		Book book2 = new Book();
+		
+		book1.setbId(1);
+		book1.setTitle("book1");
+		
+		book2.setbId(2);
+		book2.setTitle("book2");
 
-    MockMvc mockMvc;
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
+		books = Arrays.asList(book1, book2);
+	}
 	
 	@Test
-	public void booksGetTest() throws Exception {
+	public void testBooks() throws Exception {
 
-		Book book = new Book();
-		book.setbId(1);
-		book.setTitle("book1");
-		
-		when(Mockito.mock(BookService.class).getAll()).thenReturn(Arrays.asList(book));
-		
-		
+		when(bookService.getAll()).thenReturn(books);
 		
 		mockMvc.perform(get("/books"))
 			.andExpect(status().isOk())
-			.andExpect(view().name("books"))
-			.andExpect(model().attribute("books", hasSize(1)));
-
+			.andExpect(model().attribute("books", hasSize(2)))
+			.andExpect(model().attribute("books", hasItem(
+					allOf(
+							hasProperty("bId", is(1)),
+							hasProperty("title", is("book1"))
+							))))
+			.andExpect(model().attribute("books", hasItem(
+					allOf(
+							hasProperty("bId", is(2)),
+							hasProperty("title", is("book2"))
+							))))
+			.andExpect(forwardedUrl("/WEB-INF/templates/base-template.jsp"));
 	}
+	
+
 
 }

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.validation.Password;
+import com.ch018.library.validation.PasswordValidator;
 import com.ch018.library.validation.PersonalInfo;
 
 /**
@@ -41,8 +42,8 @@ public class AccountController {
 		private PersonService personService;
 	
 		@Autowired(required = true)
-		@Qualifier("passwordvalidator")
-		private Validator validator;
+		//@Qualifier("passwordvalidator")
+		private PasswordValidator validator;
 	
 		private final Logger logger = LoggerFactory.getLogger(AccountController.class);
 	

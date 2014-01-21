@@ -52,6 +52,16 @@ public class BooksController {
         private BookInUseService useService;
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
+        
+        public BooksController() {
+			
+		}
+        
+        public BooksController(BookService bookService) {
+        	
+        	this.bookService = bookService;
+        	
+        }
 
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(Model model) {
