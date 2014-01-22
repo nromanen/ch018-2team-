@@ -16,14 +16,17 @@ public class BookSearch extends Book {
         private Integer viewPageNum = 1;
         private Integer lowBorder;
         private Integer highBorder;
-        private Integer booksOnPage = 20;
-        private String query;
+        private Integer booksOnPage = 1;
+        private String query = "";
         private String sort = "title";
         private Boolean order = false;
         
         public void setBorders() {
             highBorder = viewPageNum * booksOnPage;
             lowBorder = highBorder - booksOnPage;
+            if(highBorder - lowBorder == 1 && lowBorder > 0) {
+            	highBorder = lowBorder;
+            }
         }
 
         public Integer getYearStart() {

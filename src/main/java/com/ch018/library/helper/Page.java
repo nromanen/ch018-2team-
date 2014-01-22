@@ -56,5 +56,14 @@ public class Page {
             this.bookSearch = bookSearch;
         }
 
+		@Override
+		public String toString() {
+			return "Page [generalItemsQuantity=" + generalItemsQuantity
+					+ ", generalPagesQuantity=" + generalPagesQuantity
+					+ ", currentPageNum=" + currentPageNum + ", books=" + books
+					+ ", bookSearch=" + bookSearch + "]";
+		}
+
+        
         
 }

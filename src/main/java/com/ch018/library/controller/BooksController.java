@@ -31,6 +31,8 @@ import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PersonService;
 
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 /**
  * 
  * @author Edd Arazian
@@ -65,20 +67,22 @@ public class BooksController {
 
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(Model model) {
-            List<Book> books = bookService.getAll();
-            model.addAttribute("books", books);
-            logger.info("lang = {}", LocaleContextHolder.getLocale().getDisplayLanguage());
+        	Page page = bookService.getBooksComplex(new BookSearch());
+            model.addAttribute("page", page);
+            
             return "books";
         }
 
         @RequestMapping(value = "/search", method = RequestMethod.POST)
         public String booksSearch(@ModelAttribute BookSearch bookSearch, Model model) {
-            Page books = bookService.getBooksComplex(bookSearch);
-            if (books.getBooks().isEmpty() || books.getBooks() == null) {
+        	logger.info("bookSearch = {}", bookSearch);
+            Page page = bookService.getBooksComplex(bookSearch);
+            logger.info("page = {}", page);
+            if (page.getBooks().isEmpty() || page.getBooks() == null) {
                 model.addAttribute("nothing", true);
                 model.addAttribute("query", bookSearch.getQuery());
             }
-            model.addAttribute("books", books.getBooks());
+            model.addAttribute("page", page);
             return "books";
         }
 
@@ -89,7 +93,7 @@ public class BooksController {
             if (books.getBooks().isEmpty() || books.getBooks() == null) {
                 model.addAttribute("nothing", true);
             }
-            model.addAttribute("books", books.getBooks());
+            model.addAttribute("page", books.getBooks());
             return "books";
         }
 

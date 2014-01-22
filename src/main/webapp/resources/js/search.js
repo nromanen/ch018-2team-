@@ -1,5 +1,77 @@
 $(document).ready(function() {
 
+	
+	
+	//pagination part_start
+	
+	var cur_page = $('#pagination_info').attr('page');
+	console.log('cur ' + cur_page)
+	var general_pages = $('#pagination_info').attr('generalPages');
+	var query = $('#pagination_info').attr('query');
+	console.log('current ' + cur_page + 'general = ' + general_pages + 'query' + query);
+	if(cur_page == 1 && general_pages == 1) {
+		$('#first_page').removeClass('hide');
+		$('#first_page').addClass('disabled');
+	}
+	else if(cur_page > 1 && cur_page == general_pages) {
+		$('#first_page').removeClass('hide');
+		$('#prev_page').removeClass('hide');
+		$('#last_page').removeClass('hide');
+		$('#last_page').addClass('disabled');
+	} 
+	else if (cur_page == 1) {
+		$('#first_page').removeClass('hide');
+		$('#first_page').addClass('disabled');
+		$('#next_page').removeClass('hide');
+		$('#last_page').removeClass('hide');
+	} else {
+		$('#first_page').removeClass('hide');
+		$('#prev_page').removeClass('hide');
+		$('#next_page').removeClass('hide');
+		$('#last_page').removeClass('hide');
+		
+	}
+		
+	
+	
+
+	$('#first_page').click(function () {
+		var url = $('#search_button').attr('url');
+		var page = 1;
+		var size = $('#pagination_info').attr('size');
+		var query = $('#pagination_info').attr('query');
+		search(query, url, page, size);
+	});
+	
+	$('#prev_page').click(function () {
+		var url = $('#search_button').attr('url');
+		var page = Number($('#pagination_info').attr('page'));
+		page = page - 1;
+		var size = $('#pagination_info').attr('size');
+		var query = $('#pagination_info').attr('query');
+		search(query, url, page, size);
+	});
+	
+	$('#next_page').click(function () {
+		var url = $('#search_button').attr('url');
+		var page = Number($('#pagination_info').attr('page'));
+		page = page + 1;
+		var size = $('#pagination_info').attr('size');
+		var query = $('#pagination_info').attr('query');
+		search(query, url, page, size);
+	});
+	
+	$('#last_page').click(function () {
+		var url = $('#search_button').attr('url');
+		var page = $('#pagination_info').attr('generalPages');
+		var size = $('#pagination_info').attr('size');
+		var query = $('#pagination_info').attr('query');
+		search(query, url, page, size);
+	});
+	
+	//pagination part_end
+	
+	
 	$('#search_field').autocomplete({
 		serviceUrl : $('#search_field').attr('url') +  "/books/autocomplete",
 		minChars : 2
@@ -25,9 +97,11 @@ $(document).ready(function() {
 	});
 });
 
-function search(query, url) {
+function search(query, url, page, size) {
 	doPost({
-		query : query
+		query : query,
+		viewPageNum : page,
+		booksOnPage : size
 	}, url);
 
 }

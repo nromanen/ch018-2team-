@@ -163,9 +163,15 @@ public class BookDaoImpl implements BookDao {
 		@Override
 		public Page getBooksComplex(BookSearch bookSearch) {
 			Page page = new Page();
+			page.setBookSearch(bookSearch);
+			String query;
 			page.setCurrentPageNum(bookSearch.getViewPageNum());
 			bookSearch.setBorders();
-			String query = "%" + bookSearch.getQuery() + "%";
+			logger.info("in dao {}", bookSearch);
+			if(bookSearch.getQuery().equals(""))
+				query = "%";
+			else
+				query = "%" + bookSearch.getQuery() + "%";
 			Criteria criteria = factory.getCurrentSession().createCriteria(
 					Book.class);
 			SimpleExpression tExp = Restrictions.like("title", query);
@@ -173,8 +179,9 @@ public class BookDaoImpl implements BookDao {
 			SimpleExpression pExp = Restrictions.like("publisher", query);
 			criteria.add(Restrictions.or(tExp, aExp, pExp));
 			page.setGeneralItemsQuantity(criteria.list().size());
-			page.setGeneralPagesQuantity(page.getGeneralItemsQuantity()
-					/ bookSearch.getBooksOnPage());
+			int general = page.getGeneralItemsQuantity()/bookSearch.getBooksOnPage();
+			general = general == 0 ? 1 : general;
+			page.setGeneralPagesQuantity(general);
 			if (bookSearch.getOrder())
 				criteria.addOrder(Order.desc(bookSearch.getSort()));
 			else

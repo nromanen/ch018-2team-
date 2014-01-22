@@ -8,6 +8,12 @@
 
 
 	<div class="col-md-12">
+	
+		<div id="pagination_info" page="${page.currentPageNum}" generalPages="${page.generalPagesQuantity}" query="${page.bookSearch.query}"
+			size="${page.bookSearch.booksOnPage} ">
+			
+		</div>
+	
 		<c:choose>
 			<c:when test="${nothing}">
 				<h3>
@@ -17,7 +23,7 @@
 			</c:when>
 		</c:choose>
 		<c:set var="i" value="0" scope="page" />
-		<c:forEach var="book" items="${books}">
+		<c:forEach var="book" items="${page.books}">
 
 			<c:if test="${i mod 4 == 0}">
 				<div class="row" id="${i}">
@@ -68,6 +74,16 @@
 
 </div>
 
-</div>
 
+</div>
+<div class="row">
+	<div class="col-md-3 col-md-offset-4">
+		<ul class='pagination'>
+			<li id="first_page" class="hide"><span>1</span></li>
+			<li id="prev_page" class="hide"><span>prev</span></li>
+			<li id="next_page" class="hide"><span>next</span></li>
+			<li id="last_page" class="hide"><span>${page.generalPagesQuantity}</span></li>
+		</ul>
+	</div>
+</div>
 
