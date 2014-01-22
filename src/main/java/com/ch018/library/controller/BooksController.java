@@ -29,6 +29,7 @@ import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PersonService;
+import com.sun.org.apache.regexp.internal.recompile;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.PageRequest;
@@ -67,7 +68,13 @@ public class BooksController {
 
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(Model model) {
-        	Page page = bookService.getBooksComplex(new BookSearch());
+        	BookSearch search = new BookSearch();
+        	Page page;
+        	try {
+        		page = bookService.getBooksComplex(search);
+        	} catch (Exception e) {
+        		return "error";
+        	}
             model.addAttribute("page", page);
             
             return "books";
@@ -76,7 +83,12 @@ public class BooksController {
         @RequestMapping(value = "/search", method = RequestMethod.POST)
         public String booksSearch(@ModelAttribute BookSearch bookSearch, Model model) {
         	logger.info("bookSearch = {}", bookSearch);
-            Page page = bookService.getBooksComplex(bookSearch);
+        	Page page;
+        	try {
+        		page = bookService.getBooksComplex(bookSearch);
+        	} catch (Exception e) {
+        		return "error";
+        	}
             logger.info("page = {}", page);
             if (page.getBooks().isEmpty() || page.getBooks() == null) {
                 model.addAttribute("nothing", true);

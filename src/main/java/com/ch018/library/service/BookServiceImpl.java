@@ -113,7 +113,7 @@ public class BookServiceImpl implements BookService {
 
         @Override
         @Transactional
-        public Page getBooksComplex(BookSearch bookSearch) {
+        public Page getBooksComplex(BookSearch bookSearch) throws Exception {
             Page books = bookDAO.getBooksComplex(bookSearch);
             return books;
         }
