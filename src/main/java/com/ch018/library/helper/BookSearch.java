@@ -16,7 +16,7 @@ public class BookSearch extends Book {
         private Integer viewPageNum = 1;
         private Integer lowBorder;
         private Integer highBorder;
-        private Integer booksOnPage = 1;
+        private Integer booksOnPage = 3;
         private String query = "";
         private String sort = "title";
         private Boolean order = false;

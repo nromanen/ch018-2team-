@@ -70,11 +70,7 @@ public class BooksController {
         public String booksGeneral(Model model) {
         	BookSearch search = new BookSearch();
         	Page page;
-        	try {
-        		page = bookService.getBooksComplex(search);
-        	} catch (Exception e) {
-        		return "error";
-        	}
+        	page = bookService.getBooksComplex(search);
             model.addAttribute("page", page);
             
             return "books";

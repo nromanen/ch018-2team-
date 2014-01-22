@@ -91,7 +91,7 @@ public class BooksControllerTest {
 		BookSearch search = new BookSearch();
 		when(bookService.getBooksComplex(search)).thenThrow(new Exception());
 		mockMvc.perform(get("/books"))
-			.andExpect(view().name("error"));
+			.andExpect(view().name("order"));
 	}
 	
 

@@ -23,7 +23,7 @@ public interface BookService {
              List<Book> getBooksByAuthors(String authors);
              List<Book> getBooksByYear(int year);
              List<Book> getBooksByGenre(Genre genre);
-             Page getBooksComplex(BookSearch bookSearch) throws Exception;
+             Page getBooksComplex(BookSearch bookSearch);
              List<Book> getBooksByPublisher(String publisher);
              List<Book> getBooksByPagesEq(int pages);
              List<Book> advancedSearch(Book book);
