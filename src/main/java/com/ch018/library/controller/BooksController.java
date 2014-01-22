@@ -79,12 +79,7 @@ public class BooksController {
         @RequestMapping(value = "/search", method = RequestMethod.POST)
         public String booksSearch(@ModelAttribute BookSearch bookSearch, Model model) {
         	logger.info("bookSearch = {}", bookSearch);
-        	Page page;
-        	try {
-        		page = bookService.getBooksComplex(bookSearch);
-        	} catch (Exception e) {
-        		return "error";
-        	}
+        	Page page = bookService.getBooksComplex(bookSearch);
             logger.info("page = {}", page);
             if (page.getBooks().isEmpty() || page.getBooks() == null) {
                 model.addAttribute("nothing", true);
@@ -97,17 +92,16 @@ public class BooksController {
         @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
         public  String advancedSearch(@ModelAttribute BookSearch bookSearch, Model model) {
             logger.info("advanced search called with {}, {}, {}, {}", bookSearch);
-            Page books = bookService.getBooksComplexByParams(bookSearch);
-            if (books.getBooks().isEmpty() || books.getBooks() == null) {
+            Page page = bookService.getBooksComplexByParams(bookSearch);
+            if (page.getBooks().isEmpty() || page.getBooks() == null) {
                 model.addAttribute("nothing", true);
             }
-            model.addAttribute("page", books.getBooks());
+            model.addAttribute("page", page);
             return "books";
         }
 
 
         @RequestMapping(value = "/autocomplete", method = RequestMethod.GET)
-        @Secured( {"permitAll()"} )
         public @ResponseBody String autocomplete(@RequestParam("query") String query) {
             List<String> titles = new ArrayList<>();   
             JSONObject json = new JSONObject();
