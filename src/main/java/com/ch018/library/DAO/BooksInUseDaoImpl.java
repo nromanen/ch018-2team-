@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
@@ -65,7 +66,7 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 	
 		@Override
 		public List<BooksInUse> getAll() {
-			return factory.getCurrentSession().createCriteria(BooksInUse.class)
+			return factory.getCurrentSession().createCriteria(BooksInUse.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 					.list();
 	
 		}

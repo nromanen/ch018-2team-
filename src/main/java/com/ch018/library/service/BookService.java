@@ -1,6 +1,8 @@
 package com.ch018.library.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -31,4 +33,7 @@ public interface BookService {
              Page getBooksComplexByParams(BookSearch bookSearch);       
              Map<BooksInUse, Integer> getHolders(Book book);
              void update(BookEditValidator book, int genreId);
+             HashMap<Book, String> getAllByLocale(Locale locale);
+             HashMap<Book, String> getBooksByLocale(List<Book> book, Locale locale);
+             HashMap<Book, String> getBookByLocale(Book book, Locale locale);
 }

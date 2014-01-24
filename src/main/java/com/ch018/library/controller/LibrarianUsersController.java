@@ -1,10 +1,13 @@
 package com.ch018.library.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Language;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.LanguageService;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.validation.PersonEditValidator;
 
@@ -25,6 +30,7 @@ import com.ch018.library.validation.PersonEditValidator;
 public class LibrarianUsersController {
 
 		private static final double DEFAULT_RATING = 0.5;
+		private static final int FIRST_PAGE = 1;
 	
 		@Autowired
 		private PersonService personService;
@@ -34,20 +40,46 @@ public class LibrarianUsersController {
 	
 		@Autowired
 		private BCryptPasswordEncoder encoder;
+		
+		@Autowired
+		private LanguageService langService;
 	
 		@RequestMapping(value = "")
 		public String showAll(Model model) throws Exception {
+			
 			List<Person> person = personService.getAll();
 	
 			for (Person pers : person) {
 				personService.countRating(pers);
 			}
-	
-			model.addAttribute("users", person);
+			model.addAttribute("users", personService.pagination(FIRST_PAGE));
+			
+			//Locale locale = LocaleContextHolder.getLocale();
 	
 			return "librarian_users";
 		}
-	
+		
+		@RequestMapping(value = "/orderbyname", method = RequestMethod.GET)
+		public String orderByName(Model model) throws Exception {
+			
+			model.addAttribute("users", personService.orderByName());
+			return "librarian_users";
+		}
+		
+		@RequestMapping(value = "/orderbysurname", method = RequestMethod.GET)
+		public String orderBySurame(Model model) throws Exception {
+			
+			model.addAttribute("users", personService.orderBySurname());
+			return "librarian_users";
+		}
+		
+		@RequestMapping(value = "/orderbyrating", method = RequestMethod.GET)
+		public String orderByRating(Model model) throws Exception {
+			
+			model.addAttribute("users", personService.orderByRating());
+			return "librarian_users";
+		}
+		
 		@RequestMapping(value = "/adduser", method = RequestMethod.GET)
 		public String addUser(Model model) throws Exception {
 			Person user = new Person();
@@ -105,8 +137,19 @@ public class LibrarianUsersController {
 		}
 	
 		@RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
-		public String deleteUser(@RequestParam("id") int id, Model model)
-				throws Exception {
+		public String deleteUser(@RequestParam("id") int id, Model model) throws Exception {
+			
+			/*
+			String error = "Error deleting books! This user has an order!";
+			
+			try {
+				personService.delete(id);
+			} catch (Exception e) {
+				System.out.println("Error deleting books");
+				model.addAttribute("exception", error);
+				return "redirect:/librarian/users";
+			}
+			*/
 			personService.delete(id);
 			return "redirect:/librarian/users";
 		}
