@@ -19,8 +19,11 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.GenreTranslations;
+import com.ch018.library.helper.AdvancedSearchQuery;
 import com.ch018.library.helper.BookSearch;
 import com.ch018.library.helper.Page;
+import com.ch018.library.helper.SearchParams;
+import com.ch018.library.helper.SimpleSearchQuery;
 import com.ch018.library.validation.BookEditValidator;
 
 @Service
@@ -111,8 +114,8 @@ public class BookServiceImpl implements BookService {
 
         @Override
         @Transactional
-        public Page getBooksComplex(BookSearch bookSearch) {
-            Page books = bookDAO.getBooksComplex(bookSearch);
+        public List<Book> getBooksComplex(SimpleSearchQuery searchQuery, SearchParams searchParams) {
+        	List<Book> books = bookDAO.getBooksComplex(searchQuery, searchParams);
             return books;
         }
 
@@ -128,8 +131,8 @@ public class BookServiceImpl implements BookService {
 
         @Override
         @Transactional
-        public Page getBooksComplexByParams(BookSearch bookSearch) {
-            Page books = bookDAO.getBooksComplexByParams(bookSearch);
+        public List<Book> getBooksComplexByParams(AdvancedSearchQuery advancedSearchQuery, SearchParams searchParams) {
+            List<Book> books = bookDAO.getBooksComplexByParams(advancedSearchQuery, searchParams);
             return books;
         }
 

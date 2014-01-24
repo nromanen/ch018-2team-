@@ -2,6 +2,7 @@ package com.ch018.library.controller;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.json.JSONObject;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.validation.Password;
+import com.ch018.library.validation.PasswordValidator;
 import com.ch018.library.validation.PersonalInfo;
 
 /**
@@ -40,8 +42,8 @@ public class AccountController {
 		private PersonService personService;
 	
 		@Autowired(required = true)
-		@Qualifier("passwordvalidator")
-		private Validator validator;
+		//@Qualifier("passwordvalidator")
+		private PasswordValidator validator;
 	
 		private final Logger logger = LoggerFactory.getLogger(AccountController.class);
 	
@@ -55,12 +57,13 @@ public class AccountController {
 	
 		@RequestMapping(value = "changeEmail", method = RequestMethod.POST)
 		public ResponseEntity<String> changeEmail(
-				@RequestParam("email") String email, Principal principal) {
+				@RequestParam("email") String email, Principal principal, HttpServletRequest request) {
 			Person person = personService.getByEmail(principal.getName());
+			String path = request.getServerName() + ":" + String.valueOf(request.getServerPort());
 			logger.info("person {} send request to email change to {}", person,
 					email);
 			try {
-				personService.changeEmail(email, person);
+				personService.changeEmail(email, person, path);
 				JSONObject json = new JSONObject();
 				json.put("email", email);
 				logger.info("person {} email changed to ", person,
@@ -82,6 +85,7 @@ public class AccountController {
 				return new ResponseEntity<>(getErrors(result),
 						HttpStatus.BAD_REQUEST);
 			}
+			
 			Person person = personService.getByEmail(principal.getName());
 			try {
 				personService.updatePassword(password, person);

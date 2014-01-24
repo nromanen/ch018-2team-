@@ -56,16 +56,22 @@ public class OrderController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String orderGet(@RequestParam("id") Integer bookId, Model model,
 			Principal principal) {
+		
+		Book book = bookService.getBookById(bookId);
+		model.addAttribute("book", book);
+		if(principal == null) {
+			return "order";
+		}
 
 		Person person = personService.getByEmail(principal.getName());
-		Book book = bookService.getBookById(bookId);
+		
 		boolean limit = ordersService.isLimitReached(person);
 		model.addAttribute("isBookLimitReached", limit);
 		if (limit) {
 			model.addAttribute("inUse", true);
 			return "order";
 		}
-		model.addAttribute("book", book);
+		
 		model.addAttribute("orders", ordersService.getOrderByBook(book));
 		model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
 		model.addAttribute("inOrders",

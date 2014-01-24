@@ -111,14 +111,11 @@ $(document)
 														success : function() {
 															$('#pass_success')
 																	.text(
-																			'Password successfully changed. You will be redirected to login page');
+																			'Password successfully changed.');
 															$('#pass_success')
 																	.removeClass(
 																			'hide');
-															setTimeout(
-																	function() {
-																		window.location.href = "/library/";
-																	}, 3000);
+															
 														},
 														error : function(xhr,
 																status, error) {
@@ -168,7 +165,7 @@ $(document)
 																			'hide');
 															setTimeout(
 																	function() {
-																		window.location.href = "/library/";
+																		window.location.href = "/";
 																	}, 4000);
 														},
 														error : function(xhr,
