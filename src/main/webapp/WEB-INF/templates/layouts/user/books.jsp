@@ -18,19 +18,19 @@
 		<div class="row">
 			<div class="col-md-offset-2 ">
 			<form class="form-inline">
-				<select class="form-control" id="sort_field">
+				<select class="form-control input-sm" id="sort_field">
 					<option selected="selected" value="title">Sort by</option>
 					<option value="title">Title</option>
 					<option value="authors">Authors</option>
 					<option value="publisher">Publisher</option>
 					<option value="currentQuantity">Quantity</option>
 				</select>
-				<select class="form-control" id="sort_order">
+				<select class="form-control input-sm" id="sort_order">
 					<option selected="selected" value="false">Sort order</option>
 					<option value="false">Ascending</option>
 					<option value="true">Descending</option>
 				</select>
-				<select class="form-control" id="page_size">
+				<select class="form-control input-sm" id="page_size">
 					<option selected="selected" value="2">Books on page</option>
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -40,35 +40,35 @@
 				Year
 				<c:choose>
 					<c:when test="${page.searchParams.yearStart == null}">
-						<input class="form-control" type="text" id="year_start" placeholder="from" style="width: 80px;">
+						<input class="form-control input-sm" type="text" id="year_start" placeholder="from" style="width: 80px;">
 					</c:when>
 					<c:otherwise>
-						<input class="form-control" type="text" id="year_start" placeholder="from" style="width: 80px;" value="${page.searchParams.yearStart}">
+						<input class="form-control input-sm" type="text" id="year_start" placeholder="from" style="width: 80px;" value="${page.searchParams.yearStart}">
 					</c:otherwise>
 				</c:choose>
 				<c:choose>
 					<c:when test="${page.searchParams.yearEnd == null}">
-						<input class="form-control" type="text" id="year_end" placeholder="from" style="width: 80px;">
+						<input class="form-control input-sm" type="text" id="year_end" placeholder="from" style="width: 80px;">
 					</c:when>
 					<c:otherwise>
-						<input class="form-control" type="text" id="year_end" placeholder="from" style="width: 80px;" value="${page.searchParams.yearEnd}">
+						<input class="form-control input-sm" type="text" id="year_end" placeholder="from" style="width: 80px;" value="${page.searchParams.yearEnd}">
 					</c:otherwise>
 				</c:choose>
 				Pages
 				<c:choose>
 					<c:when test="${page.searchParams.bookPageStart == null}">
-						<input class="form-control" type="text" id="page_start" placeholder="from" style="width: 80px;">
+						<input class="form-control input-sm" type="text" id="page_start" placeholder="from" style="width: 80px;">
 					</c:when>
 					<c:otherwise>
-						<input class="form-control" type="text" id="page_start" placeholder="from" style="width: 80px;" value="${page.searchParams.bookPageStart}">
+						<input class="form-control input-sm" type="text" id="page_start" placeholder="from" style="width: 80px;" value="${page.searchParams.bookPageStart}">
 					</c:otherwise>
 				</c:choose>
 				<c:choose>
 					<c:when test="${page.searchParams.bookPageEnd == null}">
-						<input class="form-control" type="text" id="page_end" placeholder="from" style="width: 80px;">
+						<input class="form-control input-sm" type="text" id="page_end" placeholder="from" style="width: 80px;">
 					</c:when>
 					<c:otherwise>
-						<input class="form-control" type="text" id="page_end" placeholder="from" style="width: 80px;" value="${page.searchParams.bookPageEnd}">
+						<input class="form-control input-sm" type="text" id="page_end" placeholder="from" style="width: 80px;" value="${page.searchParams.bookPageEnd}">
 					</c:otherwise>
 				</c:choose>
 				
@@ -142,12 +142,12 @@
 </div>
 
 <div class="row">
-	<div class="col-md-3 col-md-offset-4">
+	<div class="col-md-4 col-md-offset-5">
 		<ul class='pagination'>
 			<li id="first_page" class="hide"><span>1</span></li>
-			<li id="prev_page" class="hide"><span> << </span></li>
+			<li id="prev_page" class="hide"><span> &laquo; </span></li>
 			<li id="current_page" class="disabled hide"><span>${page.searchParams.page}<span></li>
-			<li id="next_page" class="hide"><span> >> </span></li>
+			<li id="next_page" class="hide"><span> &raquo; </span></li>
 			<li id="last_page" class="hide"><span>${page.pagesQuantity}</span></li>
 		</ul>
 	</div>

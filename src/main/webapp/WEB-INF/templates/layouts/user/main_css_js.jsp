@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/main.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/search.css" />
 

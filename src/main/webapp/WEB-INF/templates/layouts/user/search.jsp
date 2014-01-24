@@ -36,7 +36,7 @@
 		</div>
 		<button type="submit" class="btn btn-default" id="search_button"
 			url="${pageContext.request.contextPath}/books/search">
-			<spring:message code="message.search" />
+			<span class="glyphicon glyphicon-search"></span>
 		</button>
 	</form>
 	<div class="clearfix"></div>
