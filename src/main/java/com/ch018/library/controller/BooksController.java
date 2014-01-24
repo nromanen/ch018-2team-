@@ -86,6 +86,7 @@ public class BooksController {
         @RequestMapping(value = "/search", method = RequestMethod.POST)
         public String booksSearch(@ModelAttribute SimpleSearchQuery tmpQuery,
         							@ModelAttribute SearchParams tmpParams, Model model) {
+        	logger.info("tmpParams = {}", tmpParams);
         	logger.info("searchParams = {}", searchParams);
         	logger.info("searchQuery = {}", searchQuery);
         	Page page;

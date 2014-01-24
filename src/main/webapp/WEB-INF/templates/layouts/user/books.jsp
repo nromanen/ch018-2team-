@@ -38,14 +38,39 @@
 					<option value="4">4</option>
 				</select>
 				Year
-				<input class="form-control" type="text" id="year_start" placeholder="from" style="width: 80px;">
-				
-				<input class="form-control" type="text" id="year_end" placeholder="to" style="width: 80px;">
-				
+				<c:choose>
+					<c:when test="${page.searchParams.yearStart == null}">
+						<input class="form-control" type="text" id="year_start" placeholder="from" style="width: 80px;">
+					</c:when>
+					<c:otherwise>
+						<input class="form-control" type="text" id="year_start" placeholder="from" style="width: 80px;" value="${page.searchParams.yearStart}">
+					</c:otherwise>
+				</c:choose>
+				<c:choose>
+					<c:when test="${page.searchParams.yearEnd == null}">
+						<input class="form-control" type="text" id="year_end" placeholder="from" style="width: 80px;">
+					</c:when>
+					<c:otherwise>
+						<input class="form-control" type="text" id="year_end" placeholder="from" style="width: 80px;" value="${page.searchParams.yearEnd}">
+					</c:otherwise>
+				</c:choose>
 				Pages
-				<input class="form-control" type="text" id="page_start" placeholder="from" style="width: 80px;">
-				
-				<input class="form-control" type="text" id="page_end" placeholder="to" style="width: 80px;">
+				<c:choose>
+					<c:when test="${page.searchParams.bookPageStart == null}">
+						<input class="form-control" type="text" id="page_start" placeholder="from" style="width: 80px;">
+					</c:when>
+					<c:otherwise>
+						<input class="form-control" type="text" id="page_start" placeholder="from" style="width: 80px;" value="${page.searchParams.bookPageStart}">
+					</c:otherwise>
+				</c:choose>
+				<c:choose>
+					<c:when test="${page.searchParams.bookPageEnd == null}">
+						<input class="form-control" type="text" id="page_end" placeholder="from" style="width: 80px;">
+					</c:when>
+					<c:otherwise>
+						<input class="form-control" type="text" id="page_end" placeholder="from" style="width: 80px;" value="${page.searchParams.bookPageEnd}">
+					</c:otherwise>
+				</c:choose>
 				
 				<button class="btn btn-info btn-sm" id="choose_button">Show</button>
 				</form>
@@ -115,12 +140,14 @@
 
 
 </div>
+
 <div class="row">
 	<div class="col-md-3 col-md-offset-4">
 		<ul class='pagination'>
 			<li id="first_page" class="hide"><span>1</span></li>
-			<li id="prev_page" class="hide"><span>prev</span></li>
-			<li id="next_page" class="hide"><span>next</span></li>
+			<li id="prev_page" class="hide"><span> << </span></li>
+			<li id="current_page" class="disabled hide"><span>${page.searchParams.page}<span></li>
+			<li id="next_page" class="hide"><span> >> </span></li>
 			<li id="last_page" class="hide"><span>${page.pagesQuantity}</span></li>
 		</ul>
 	</div>

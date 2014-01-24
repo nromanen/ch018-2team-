@@ -31,6 +31,10 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
 import com.ch018.library.helper.BookSearch;
 import com.ch018.library.helper.Page;
+import com.ch018.library.helper.PageContainer;
+import com.ch018.library.helper.SearchParams;
+import com.ch018.library.helper.SearchQuery;
+import com.ch018.library.helper.SimpleSearchQuery;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.PersonService;
@@ -40,7 +44,7 @@ import com.ch018.library.service.PersonService;
 @WebAppConfiguration
 public class BooksControllerTest {
 	
-/*
+
 	@Autowired
 	private BookService bookService;
 	
@@ -49,6 +53,15 @@ public class BooksControllerTest {
 	
 	@Autowired
 	private BookInUseService useService;
+	
+	@Autowired
+    private SearchParams searchParams;
+	
+    @Autowired
+    private PageContainer pageContainer;
+    
+    @Autowired
+    private SimpleSearchQuery searchQuery;
 
 	@Autowired
 	private WebApplicationContext wac;
@@ -93,12 +106,14 @@ public class BooksControllerTest {
 		
 		uses = Arrays.asList(use);
 		
-	}*/
-	/*
-	@Test
+	}
+	
+	/*@Test
 	public void booksNormalFlow() throws Exception {
-		BookSearch search = new BookSearch();
-		when(bookService.getBooksComplex(search)).thenReturn(page);
+		Page page = new Page();
+		page.setBooks(books);
+		
+		when(pageContainer.getPage(searchQuery, searchParams)).thenReturn(page);
 		
 		mockMvc.perform(get("/books"))
 			.andExpect(status().isOk())
@@ -106,12 +121,12 @@ public class BooksControllerTest {
 			.andExpect(model().attribute("page", hasProperty("books")))
 			.andExpect(forwardedUrl("/WEB-INF/templates/base-template.jsp"));
 		
-		verify(bookService, times(1)).getBooksComplex(search);
-		verifyNoMoreInteractions(bookService);
+		verify(pageContainer, times(1)).getPage(searchQuery, searchParams);
+		verifyNoMoreInteractions(pageContainer);
 		
-	}
+	}*/
 	
-	@Test
+	/*@Test
 	public void booksSearchNormalFlow() throws Exception {
 		BookSearch search = new BookSearch();
 		when(bookService.getBooksComplex(search)).thenReturn(page);

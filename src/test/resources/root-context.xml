@@ -58,6 +58,19 @@
   <constructor-arg value="com.ch018.library.validation.PasswordValidator"/>
  </bean>
 
+<bean id="pageContainer" name="pageContainer" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.helper.PageContainer"/>
+ </bean>
+ 
+ <bean id="searchParams" name="searchParams" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.helper.SearchParams"/>
+ </bean>
+
+ <bean id="simpleSearchQuery" name="simpleSearchQuery" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.helper.SimpleSearchQuery"/>
+ </bean>
+
+
 
 	<import resource="data.xml" />
 	<import resource="mail.xml" />

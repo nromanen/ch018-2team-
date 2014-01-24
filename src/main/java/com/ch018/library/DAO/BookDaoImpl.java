@@ -179,6 +179,19 @@ public class BookDaoImpl implements BookDao {
 			SimpleExpression pExp = Restrictions.like("publisher", query);
 			criteria.add(Restrictions.or(tExp, aExp, pExp));
 
+			if (searchParams.getBookPageStart() != null &&
+					searchParams.getBookPageEnd() != null) {
+			  criteria.add(Restrictions.between("pages",
+					  searchParams.getBookPageStart(), searchParams.getBookPageEnd())); 
+			}
+			
+			if (searchParams.getYearStart() != null &&
+					searchParams.getYearEnd() != null) {
+			  criteria.add(Restrictions.between("year",
+					  searchParams.getYearStart(), searchParams.getYearEnd())); 
+			  logger.info("YEARS {}", criteria.list());
+			}
+			
 			if (searchParams.getOrder())
 				criteria.addOrder(Order.desc(searchParams.getOrderField()));
 			else
@@ -206,17 +219,18 @@ public class BookDaoImpl implements BookDao {
 				criteria.add(Restrictions.like("publisher",
 						"%" + advancedSearchQuery.getPublisher() + "%"));
 			}
-			/*
-			 * if (bookSearch.getBookPageStart() != null &&
-			 * bookSearch.getBookPageEnd() != null)
-			 * criteria.add(Restrictions.between("pages",
-			 * bookSearch.getBookPageStart(), bookSearch.getBookPageEnd()));
-			 */
+			if (searchParams.getBookPageStart() != null &&
+					searchParams.getBookPageEnd() != null) {
+			  criteria.add(Restrictions.between("pages",
+					  searchParams.getBookPageStart(), searchParams.getBookPageEnd())); 
+			  logger.info("PAGES {}", criteria.list());
+			}
+			 
 			if (searchParams.getOrder())
 				criteria.addOrder(Order.desc(searchParams.getOrderField()));
 			else
 				criteria.addOrder(Order.asc(searchParams.getOrderField()));
-	
+			
 			return criteria.list();
 		}
 
