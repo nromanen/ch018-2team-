@@ -330,4 +330,26 @@ public class PersonServiceImpl implements PersonService {
 	
 		}
 
+		@Override
+		public List<Person> orderByName() {
+			return personDao.orderByName();
+		}
+
+		@Override
+		public List<Person> orderBySurname() {
+			// TODO Auto-generated method stub
+			return personDao.orderBySurname();
+		}
+
+		@Override
+		public List<Person> orderByRating() {
+			// TODO Auto-generated method stub
+			return personDao.orderByRating();
+		}
+
+		@Override
+		public List<Person> pagination(int pageNumber) {
+			return personDao.pagination(pageNumber);
+		}
+
 }

@@ -1,14 +1,20 @@
 package com.ch018.library.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,14 +22,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.GenreTranslations;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
+import com.ch018.library.service.GenreTranslationService;
 import com.ch018.library.validation.BookEditValidator;
 
 @Controller
@@ -32,16 +39,27 @@ public class LibrarianBooksController {
 		
 		@Autowired
 		private BookService bookService;
+		
 		@Autowired
 		private GenreService genreService;
+		
 		@Autowired
 		private BookInUseService bookInUseService;
 		
+		@Autowired
+		private GenreTranslationService genreTranslService;
+		
 		final Logger logger = LoggerFactory.getLogger(LibrarianBooksController.class);
 		
+		private Locale locale;
+		
 		@RequestMapping(value = "")
-		public ModelAndView bookList() {
-			return new ModelAndView("librarian_books", "books", bookService.getAll());
+		public String bookList(Model model) {
+			
+			locale = LocaleContextHolder.getLocale();
+			
+			model.addAttribute("books", bookService.getAllByLocale(locale));
+			return "librarian_books";
 		}
 		
 		@RequestMapping(value = "/addbook", method = RequestMethod.GET)
@@ -49,17 +67,20 @@ public class LibrarianBooksController {
 			final int DEFAULT_TERM_OF_ISSUANCE = 14;
 			Book book = new Book();
 			book.setTerm(DEFAULT_TERM_OF_ISSUANCE);
+			
+			Locale locale = LocaleContextHolder.getLocale();
+			
 			model.addAttribute("book", book);
-			model.addAttribute("genre", genreService.getAll());
+			model.addAttribute("genre", genreTranslService.getAllByLocale(locale.toString()));
 			return "librarian_books_add_book";
 		}
 		
 		@RequestMapping(value = "/addbook", method = RequestMethod.POST)
 		public String add(@ModelAttribute("book") @Valid Book book, BindingResult result, @RequestParam("genreId") Integer gid, Model model) throws Exception {
-			Genre genre = genreService.getById(gid);
-			book.setGenre(genre);
+			Set<GenreTranslations> genreTranslation = genreTranslService.getByGenreId(gid);
+			book.setGenre(genreTranslation);
 			if (result.hasErrors()) {
-				model.addAttribute("genre", genreService.getAll());
+				model.addAttribute("genre", genreTranslService.getAllByLocale(locale.toString()));
 				logger.info("Error Addind Book" + result.toString());
 				return "librarian_books_add_book";
 			} else {
@@ -72,15 +93,27 @@ public class LibrarianBooksController {
 		
 		@RequestMapping(value = "/deletebook")
 		public String deleteBook(@RequestParam("id") int bookId, Model model) throws SQLException {
-			Book book = bookService.getBookById(bookId);
-			bookService.delete(book);
-			logger.info("Book deleted");
+		
+			String error = "error";
+			
+			try {
+				Book book = bookService.getBookById(bookId);
+				bookService.delete(book);
+				logger.info("Book deleted");
+			} catch (Exception e) {
+				System.out.println("Error deleting books");
+			}
 			return "redirect:/librarian/books";
 		}
 		
 		@RequestMapping(value = "/editbook", method = RequestMethod.GET)
 		public String edit(@RequestParam("id") int bookId, Model model) throws SQLException {
-			model.addAttribute("genre", genreService.getAll());
+			
+			locale = LocaleContextHolder.getLocale();
+			
+			Book book = bookService.getBookById(bookId);
+			
+			model.addAttribute("genre", genreTranslService.getAllByLocale(locale.toString()));
 			model.addAttribute("book", bookService.getBookById(bookId));
 			return "librarian_books_edit_book";
 		}
@@ -102,17 +135,24 @@ public class LibrarianBooksController {
 		
 		@RequestMapping(value = "/advancedsearch", method = RequestMethod.GET)
 		public String advancedSearch(Model model) throws Exception {
+			locale = LocaleContextHolder.getLocale();
 			Book book = new Book();
 			model.addAttribute("book", book);
-			model.addAttribute("genre", genreService.getAll());
+			model.addAttribute("genre", genreTranslService.getAllByLocale(locale.toString()));
 			return "librarian_books_advanced_search";
 		}
 		
 		@RequestMapping(value = "/advancedsearch", method = RequestMethod.POST)
 		public String advancedSearch(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("genreId") Integer gid, Model model) throws Exception {
-			Genre genre = genreService.getById(gid);
-			book.setGenre(genre);
-			List<Book> books = bookService.advancedSearch(book);
+			
+			locale = LocaleContextHolder.getLocale();
+			
+			Set<GenreTranslations> genreTranslations = genreTranslService.getByGenreId(gid);
+			book.setGenre(genreTranslations);
+			
+			List<Book> booksList = bookService.advancedSearch(book);
+			
+			HashMap<Book, String> books = bookService.getBooksByLocale(booksList, locale);
 			
 			if (books.size() > 0) {
 				model.addAttribute("books", books);
@@ -146,7 +186,9 @@ public class LibrarianBooksController {
 				return "librarian_books";
 			}
 			
-			List<Book> books = bookService.simpleSearch(request);
+			List<Book> booksList = bookService.simpleSearch(request);
+			
+			HashMap<Book, String> books = bookService.getBooksByLocale(booksList, locale);
 			
 			if (books.size() > 0) {
 				model.addAttribute("books", books);

@@ -1,9 +1,10 @@
 package com.ch018.library.DAO;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.GenreTranslations;
 import com.ch018.library.helper.BookSearch;
 import com.ch018.library.helper.Page;
 
@@ -110,19 +112,19 @@ public class BookDaoImpl implements BookDao {
 			Criteria criteria = session.createCriteria(Book.class);
 	
 			if (!book.getTitle().equals("")) {
-				criteria.add(Restrictions.eq("title", book.getTitle()));
+				criteria.add(Restrictions.like("title", book.getTitle(), MatchMode.ANYWHERE));
 			}
 			if (!book.getAuthors().equals("")) {
-				criteria.add(Restrictions.eq("authors", book.getAuthors()));
+				criteria.add(Restrictions.like("authors", book.getAuthors(), MatchMode.ANYWHERE));
 			}
-			if (!book.getGenre().equals("")) {
-				criteria.add(Restrictions.eq("genre", book.getGenre()));
+			if (!(book.getGenre() == null)) {
+				//criteria.add(Restrictions.eq("genre", book.getGenre()));
 			}
 			if (book.getYear() != 0) {
 				criteria.add(Restrictions.eq("year", book.getYear()));
 			}
 			if (!book.getPublisher().equals("")) {
-				criteria.add(Restrictions.eq("publisher", book.getPublisher()));
+				criteria.add(Restrictions.like("publisher", book.getPublisher(), MatchMode.ANYWHERE));
 			}
 			if (book.getPages() != 0) {
 				criteria.add(Restrictions.eq("pages", book.getPages()));
@@ -226,5 +228,6 @@ public class BookDaoImpl implements BookDao {
 	
 			return page;
 		}
+
 
 }

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" isELIgnored="false"
     pageEncoding="UTF-8"%>
 	    
@@ -27,7 +28,9 @@
 				                    	<td hidden="true">${order.id}</td>
 				                        <td>${order.person.name} ${order.person.surname}</td>
 				                        <td>${order.book.title}</td>
-				                        <td>${order.getOrderDate()}</td>
+				                        <!-- <td>${order.getOrderDate()}</td>  --> 
+				                        <td><c:out  value="${fn:substring(order.getOrderDate(), 0, 11)}"/></td>
+				                        
 				                        <td><a href="<c:url value="/librarian/orders/issue?id=${order.id}"/>" style="color: #0E3846" >Issue</a>
 				                </tr>
 				        </c:forEach>

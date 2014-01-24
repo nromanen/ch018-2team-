@@ -39,6 +39,11 @@ public class LibrarianOrdersController {
 		
 		@RequestMapping(value = "")
 		public String showAll(Model model) throws Exception {
+			
+			List<Orders> orders = ordersService.getAll();
+			
+			System.out.println("Orders size:" + orders.size());
+			
 			model.addAttribute("orders", ordersService.getAll());
 			return "librarian_orders";
 		}

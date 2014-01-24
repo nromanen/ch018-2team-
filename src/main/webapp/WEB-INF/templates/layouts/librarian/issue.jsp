@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
         	<div class="row">
@@ -32,9 +33,9 @@
 							 </div> 
 							 
 							  <div class="form-group">
-								    <label for="inputEmail3" class="col-sm-2 control-label">Return Date</label>
+								    <label for="inputEmail3" class="col-sm-2 control-label">Order Date</label>
 								    <div class="col-sm-10">
-								    	 <h5> ${order.orderDate} </h5> 
+								    	 <h5> <c:out  value="${fn:substring(order.getOrderDate(), 0, 11)}"/> </h5> 
 								    </div>
 							 </div> 
 								 <div class="form-group">

@@ -33,4 +33,9 @@ public interface PersonDao {
     List<Person> advancedSearch(Person person); 
     Person getPersonByKey(String key);
     List<Person> getPersonsBySurname(String surname);
+    List<Person> orderByName();
+    List<Person> orderBySurname();
+    List<Person> orderByRating();
+    List<Person> pagination(int pageNumber);
+    		
 }
