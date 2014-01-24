@@ -20,7 +20,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 public class Genre implements Serializable {
 
 		
-        @Id
+       	@Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int id;
 
@@ -78,11 +78,10 @@ public class Genre implements Serializable {
 
 		@Override
 		public String toString() {
-		
 			//return "Genre [id=" + id + ", books=" + books + ", description="
 			//		+ description + "]";
 			return description;
-			
+
 		}
 
         

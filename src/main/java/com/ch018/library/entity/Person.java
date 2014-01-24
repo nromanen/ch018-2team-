@@ -327,9 +327,7 @@ public class Person implements Serializable {
 					+ multiBook + ", timelyReturn=" + timelyReturn
 					+ ", untimekyReturn=" + untimekyReturn + ", booksAllowed="
 					+ booksAllowed + ", failedOrders=" + failedOrders
-					+ ", generalRating=" + generalRating + ", img=" + img
-					+ ", booksInUse=" + booksInUse + ", orders=" + orders
-					+ ", wishes=" + wishes + "]";
+					+ ", generalRating=" + generalRating + ", img=" + img + "]";
 		}
 
 }

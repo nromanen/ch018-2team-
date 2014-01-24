@@ -1,13 +1,8 @@
-$(document)
-		.ready(
-				function() {
-
+$(document).ready(function() {
 					if ($(".calendar").size() == 0) {
 						$('#empty_wish_list').modal("show");
 					}
-					$(".calendar")
-							.each(
-									function() {
+					$(".calendar").each(function() {
 										var $parent = $(this).parent();
 										var minDateLong = $parent.find(
 												$('.minDate')).val();
@@ -15,10 +10,8 @@ $(document)
 											minDateLong = new Date().getTime();
 										var minDate = getDateInFormat(
 												minDateLong).split(" ");
-										var $orders = $(this).parent().find(
-												'.order');
-										console.log("wish calendar start "
-												+ minDate);
+										var $orders = $(this).parent().find('.order');
+										console.log("wish calendar start " + minDate);
 										$(this)
 												.datetimepicker(
 														{
@@ -33,33 +26,24 @@ $(document)
 															onSelectDate : function(
 																	current_time,
 																	$input) {
-																var days = getAvailableDays(
-																		current_time,
-																		$orders);
-
-																if ($(this)
-																		.find(
-																				$('.picker_notify'))
-																		.attr(
-																				'class') === undefined) {
-																	console
-																			.log($(this))
-																	var $div = $(
-																			'<div>',
+																var days = getAvailableDays(current_time,$orders);
+																var d = 'can order for '+ days + 'days';
+																if ($(this).find($('.picker_notify')).attr('class') === undefined) {
+																	var $div = $('<div>',
 																			{
 																				class : 'picker_notify',
-																				style : 'position : absolute; left: 100%; width:100px; height:100px; border : 2px solid black'
-																			})
-																			.text(
-																					days);
-																	$div
-																			.appendTo($(this));
+																				title : d,
+																				style : 'position : absolute; top: 0%; left: 50%; text-size:16px;'
+																			});
+																	$div.attr('data-toggle', 'tooltip');
+																	$div.appendTo($(this));
+																	$('.picker_notify')
+																			.tooltip('show');
 
 																} else {
-																	$(
-																			'.picker_notify')
-																			.text(
-																					days);
+																	$('.picker_notify').attr('data-original-title',d)
+																			.tooltip('fixTitle')
+																			.tooltip('show');
 																}
 															},
 															format : 'Y/m/d H:i',
@@ -97,7 +81,7 @@ $(document)
 function deleteWish(wishId) {
 
 	$.ajax({
-		url : "/library/books/wishlist/delete",
+		url : $('#path').attr('url') + "/books/wishlist/delete",
 		type : "POST",
 		data : {
 			'wishId' : wishId
@@ -118,7 +102,7 @@ function deleteWish(wishId) {
 function confirmWish(wishId, bookId, date) {
 
 	$.ajax({
-		url : "/library/books/order/add",
+		url : $('#path').attr('url') + "/books/order/add",
 		type : "POST",
 		data : {
 			'bookId' : bookId,

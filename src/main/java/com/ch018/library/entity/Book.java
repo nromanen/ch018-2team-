@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -50,9 +51,9 @@ public class Book implements Serializable {
 		@Column(name = "authors")
 		private String authors;
 	
-		/*@ManyToOne()
+		/*@ManyToOne
 		@JoinColumn(name = "gid")
-		private Genre genre;*/
+		private Genre genreOld;*/
 		
 		@ManyToMany(fetch=FetchType.EAGER)
 		@JoinTable(name = "book_genre", joinColumns = {@JoinColumn(name = "bId")}, inverseJoinColumns = {@JoinColumn(name = "gid")})
@@ -219,12 +220,12 @@ public class Book implements Serializable {
 			this.genre = genre;
 		}
 	
-		/*public Genre getGenre() {
-			return genre;
+		/*public Genre getGenreOld() {
+			return genreOld;
 		}
 	
-		public void setGenre(Genre genre) {
-			this.genre = genre;
+		public void setGenreOld(Genre genre) {
+			this.genreOld = genre;
 		}*/
 	
 		public int getBookcase() {
@@ -267,27 +268,7 @@ public class Book implements Serializable {
 			this.personsWishes = personsWishes;
 		}
 	
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			if (this.title.equals(((Book) obj).getTitle())
-					&& this.getAuthors().equals(((Book) obj).getAuthors())
-					&& this.getPublisher().equals(((Book) obj).getPublisher())) {
-				return true;
-			}
-			return false;
-		}
-	
-		@Override
-		public int hashCode() {
-			return this.bId;
-		}
+		
 	
 		@Override
 		public String toString() {
@@ -297,8 +278,7 @@ public class Book implements Serializable {
 					+ description + ", bookcase=" + bookcase + ", shelf=" + shelf
 					+ ", term=" + term + ", img=" + img + ", currentQuantity="
 					+ currentQuantity + ", generalQuantity=" + generalQuantity
-					+ ", personsUse=" + personsUse + ", personsOrders="
-					+ personsOrders + ", personsWishes=" + personsWishes + "]";
+					 + "]";
 		}
 
 }

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,9 +54,9 @@ public class WishListController {
 	final Logger logger = LoggerFactory.getLogger(WishListController.class);
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	@Secured({ "ROLE_USER" })
-	public @ResponseBody String add(@RequestParam("bookId") Integer bookId, Principal principal) {
-		Person person = personService.getByEmail(principal.getName());
+	public @ResponseBody String add(@RequestParam("bookId") Integer bookId) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		Person person = personService.getByEmail(email);
 		Book book = bookService.getBookById(bookId);
 		WishList wish = new WishList(person, book);
 		wishService.save(wish);

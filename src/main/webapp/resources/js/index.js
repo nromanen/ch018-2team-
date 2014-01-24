@@ -3,6 +3,7 @@ $.validator.addMethod('customphone', function(value, element) {
 }, "Please enter a valid phone number");
 
 $(document).ready(function() {
+	
 
 	$('#reg_phone').mask("999-999-9999");
 
@@ -98,7 +99,7 @@ $(document).ready(function() {
 				contentType : 'application/x-www-form-urlencoded',
 				mimeType : 'application/json',
 				success : function() {
-					location.href = "/library/"
+					location.href = "/";
 				},
 				error : function(xhr, status, error) {
 

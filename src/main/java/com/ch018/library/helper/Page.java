@@ -4,57 +4,47 @@ import java.util.List;
 
 import com.ch018.library.entity.Book;
 
-/**
- *
- * @author Edd Arazian
- */
 public class Page {
-    
-        private int generalItemsQuantity;
-        private int generalPagesQuantity;
-        private int currentPageNum;
-        private List<Book> books;
-        private BookSearch bookSearch;
 
-        public int getGeneralItemsQuantity() {
-            return generalItemsQuantity;
-        }
-
-        public void setGeneralItemsQuantity(int generalItemsQuantity) {
-            this.generalItemsQuantity = generalItemsQuantity;
-        }
-
-        public int getCurrentPageNum() {
-            return currentPageNum;
-        }
-
-        public void setCurrentPageNum(int currentPageNum) {
-            this.currentPageNum = currentPageNum;
-        }
-
-        public List<Book> getBooks() {
-            return books;
-        }
-
-        public void setBooks(List<Book> books) {
-            this.books = books;
-        }
-
-        public int getGeneralPagesQuantity() {
-            return generalPagesQuantity;
-        }
-
-        public void setGeneralPagesQuantity(int generalPagesQuantity) {
-            this.generalPagesQuantity = generalPagesQuantity;
-        }
-
-        public BookSearch getBookSearch() {
-            return bookSearch;
-        }
-
-        public void setBookSearch(BookSearch bookSearch) {
-            this.bookSearch = bookSearch;
-        }
-
-        
+		private SearchParams searchParams;
+		private SimpleSearchQuery searchQuery;
+		private int pagesQuantity;
+		private List<Book> books;
+		
+		
+		public SearchParams getSearchParams() {
+			return searchParams;
+		}
+		public void setSearchParams(SearchParams searchParams) {
+			this.searchParams = searchParams;
+		}
+		public SimpleSearchQuery getSearchQuery() {
+			return searchQuery;
+		}
+		public void setSearchQuery(SimpleSearchQuery searchQuery) {
+			this.searchQuery = searchQuery;
+		}
+		public int getPagesQuantity() {
+			return pagesQuantity;
+		}
+		public void setPagesQuantity(int pagesQuantity) {
+			this.pagesQuantity = pagesQuantity;
+		}
+		public List<Book> getBooks() {
+			return books;
+		}
+		public void setBooks(List<Book> books) {
+			this.books = books;
+		}
+		@Override
+		public String toString() {
+			return "Page [searchParams=" + searchParams + ", searchQuery="
+					+ searchQuery + ", pagesQuantity=" + pagesQuantity
+					+ ", books=" + books + "]";
+		}
+		
+		
+		
+		
+	
 }

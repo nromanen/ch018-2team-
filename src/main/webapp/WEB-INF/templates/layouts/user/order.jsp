@@ -1,6 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <div class="row well">
+	
+	<div id="path" url="${pageContext.request.contextPath}"></div>
 
+	<sec:authorize access="isAuthenticated()">
 	<div id="picker_date">
 		<div id="min_date" value="${minDate}"></div>
 		<div id="disabled_dates" value="${disabled}"></div>
@@ -11,6 +15,7 @@
 		</c:forEach>
 
 	</div>
+	</sec:authorize>
 
 	<!--<div class="col-md-2" id="left_main">
                     New Arrivals
@@ -18,6 +23,7 @@
 
 	<div class="col-md-12" id="center_main">
 
+		<sec:authorize access="isAuthenticated()">
 		<!--Modal Books Limit-->
 		<input id="book_limit" type="hidden" value="${isBookLimitReached}">
 		<div class="modal fade" id="book_limit_modal" tabindex="-1"
@@ -45,7 +51,7 @@
 			</div>
 		</div>
 		<!--Modal Books Limit-->
-
+		</sec:authorize>
 
 		<div class="row">
 			<div class="col-md-7" id="order_book_part">
@@ -77,10 +83,16 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="col-md-5" id="order_order_wish_part">
 				<div class="row" id="order_order_button_part">
-
-
+					<sec:authorize access='hasRole("ROLE_ANONYMOUS")'>
+						<div class="alert alert-info">
+						For ordering please <a href="${pageContext.request.contextPath}/login">Log-In</a>
+					</div>
+					</sec:authorize>
+					
+					<sec:authorize access="isAuthenticated()">
 					<c:choose>
 						<c:when test="${inUse}">
 							<div class="alert alert-danger col-lg-6">You already use
@@ -146,7 +158,7 @@
 
 
 				</div>
-
+				
 
 				<div class="row" id="book_orders">
 
@@ -163,6 +175,7 @@
 						</ul>
 					</c:if>
 				</div>
+				</sec:authorize>
 				<div class="modal fade" id="wish_modal" tabindex="-1" role="dialog"
 					aria-labelledby="wish_modal_label" aria-hidden="true">
 					<div class="modal-dialog">
@@ -188,6 +201,7 @@
 					</div>
 				</div>
 			</div>
+			
 		</div>
 
 

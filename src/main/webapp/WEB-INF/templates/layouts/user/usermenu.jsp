@@ -12,7 +12,7 @@
         <li><a  href="${pageContext.request.contextPath}/books/order/my" id="my_orders"><spring:message code="message.orders" /><span class="badge pull-right">${orders}</span></a></li>
         <li><a href="${pageContext.request.contextPath}/books/wishlist/my" id="my_wishlist"><spring:message code="message.wishlist" /></a></li>
         <li class="dropdown" id="hello">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="message.hello" /> <sec:authentication property="principal.username" /> <b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><spring:message code="message.hello" /> ${pageContext.request.userPrincipal.name} <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li><a href="${pageContext.request.contextPath}/account" id="my_account"><spring:message code="message.account" /></a></li>
                 <li><a href="<c:url value="/j_spring_security_logout" />"><spring:message code="message.logout" /></a></li>
@@ -34,6 +34,14 @@
 
             <button  type="submit" class="btn btn-primary btn-sm"><spring:message code="message.singin" /></button>
 
+			<c:if test="${param.fail != null}">  
+	    		<div id="login_error" class="row" style="margin-left: 5px">
+					<div  style="font-size: 16px; color: red">
+						Incorrect login/password entered
+					</div>
+				</div>
+			</c:if>  
+			
 
             <div class="row" style="margin-left: 5px;">
 

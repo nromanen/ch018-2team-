@@ -27,8 +27,7 @@
 		<div class="form-group">
 
 
-			<input maxlength="50" type="text" class="form-control"
-				id="search_field" name="search" placeholder="Search"
+			<input maxlength="50" type="text" class="form-control" id="search_field" url= "${pageContext.request.contextPath}" name="search" placeholder="Search" 
 				onkeydown="if (window.event.keyCode == 13)
                       search($(this).val(), $('#search_button').attr('url'))">
 
@@ -42,7 +41,6 @@
 	</form>
 	<div class="clearfix"></div>
 	<div class="pull-right">
-		<sec:authorize access="isAuthenticated()">
 
 			<a id="advanced_search_button"><spring:message
 					code="message.advanced" /></a>
@@ -65,7 +63,7 @@
 					<select class="form-control" id="advanced_search_select">
 						<option selected="selected" value="0">All Genres</option>
 						<c:forEach var="genre" items="${genres}">
-							<option value="${genre.getId()}">${genre.getDescription()}</option>
+							<option value="${genre.getId()}">${genre.genreTranslation}</option>
 						</c:forEach>
 					</select>
 				</div>
@@ -74,7 +72,6 @@
 						url="${pageContext.request.contextPath}/books/advancedSearch">search</button>
 				</div>
 			</div>
-		</sec:authorize>
 	</div>
 </div>
 
