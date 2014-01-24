@@ -3,11 +3,13 @@ package com.ch018.library.helper;
 import com.ch018.library.entity.Book;
 
 /**
- *
+ * Contains user request search params. 
+ * Use equals to verify changes in params which can cause result change. 
  * @author Edd Arazian
  */
 public class BookSearch extends Book {
 
+		private String query = "";
         private Integer yearStart;
         private Integer yearEnd;
         private Integer bookPageStart;
@@ -17,7 +19,7 @@ public class BookSearch extends Book {
         private Integer lowBorder;
         private Integer highBorder;
         private Integer booksOnPage = 3;
-        private String query = "";
+        
         private String sort = "title";
         private Boolean order = false;
         
@@ -127,7 +129,7 @@ public class BookSearch extends Book {
 
         
 
-        @Override
+		@Override
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
@@ -136,14 +138,8 @@ public class BookSearch extends Book {
 			result = prime * result
 					+ ((bookPageStart == null) ? 0 : bookPageStart.hashCode());
 			result = prime * result
-					+ ((booksOnPage == null) ? 0 : booksOnPage.hashCode());
-			result = prime * result
 					+ ((genreId == null) ? 0 : genreId.hashCode());
-			result = prime * result + ((order == null) ? 0 : order.hashCode());
 			result = prime * result + ((query == null) ? 0 : query.hashCode());
-			result = prime * result + ((sort == null) ? 0 : sort.hashCode());
-			result = prime * result
-					+ ((viewPageNum == null) ? 0 : viewPageNum.hashCode());
 			result = prime * result
 					+ ((yearEnd == null) ? 0 : yearEnd.hashCode());
 			result = prime * result
@@ -170,35 +166,15 @@ public class BookSearch extends Book {
 					return false;
 			} else if (!bookPageStart.equals(other.bookPageStart))
 				return false;
-			if (booksOnPage == null) {
-				if (other.booksOnPage != null)
-					return false;
-			} else if (!booksOnPage.equals(other.booksOnPage))
-				return false;
 			if (genreId == null) {
 				if (other.genreId != null)
 					return false;
 			} else if (!genreId.equals(other.genreId))
 				return false;
-			if (order == null) {
-				if (other.order != null)
-					return false;
-			} else if (!order.equals(other.order))
-				return false;
 			if (query == null) {
 				if (other.query != null)
 					return false;
 			} else if (!query.equals(other.query))
-				return false;
-			if (sort == null) {
-				if (other.sort != null)
-					return false;
-			} else if (!sort.equals(other.sort))
-				return false;
-			if (viewPageNum == null) {
-				if (other.viewPageNum != null)
-					return false;
-			} else if (!viewPageNum.equals(other.viewPageNum))
 				return false;
 			if (yearEnd == null) {
 				if (other.yearEnd != null)

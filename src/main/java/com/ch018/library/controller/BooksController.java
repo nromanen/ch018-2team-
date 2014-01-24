@@ -23,14 +23,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import com.ch018.library.helper.AdvancedSearchQuery;
 import com.ch018.library.helper.BookSearch;
 import com.ch018.library.helper.Page;
+import com.ch018.library.helper.PageContainer;
+import com.ch018.library.helper.SearchParams;
+import com.ch018.library.helper.SimpleSearchQuery;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PersonService;
 import com.sun.org.apache.regexp.internal.recompile;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -53,37 +58,54 @@ public class BooksController {
         private PersonService personService;
         @Autowired
         private BookInUseService useService;
+        
+        @Autowired
+        private SimpleSearchQuery searchQuery;
+       // @Autowired
+        private AdvancedSearchQuery advancedSearchQuery;
+        @Autowired
+        private SearchParams searchParams;
+        @Autowired
+        private PageContainer pageContainer;
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
         
-        public BooksController() {
-			
-		}
-        
-        public BooksController(BookService bookService) {
-        	
-        	this.bookService = bookService;
-        	
-        }
-
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(Model model) {
-        	BookSearch search = new BookSearch();
+        	logger.info("searchParamsStart: {}", searchParams);
+        	logger.info("SearchQueryStart: {}", searchQuery);
         	Page page;
-        	page = bookService.getBooksComplex(search);
+        	searchParams.setDefaults();
+        	pageContainer.recalculate(searchQuery, searchParams);
+        	page = pageContainer.getPage(searchQuery, searchParams);
             model.addAttribute("page", page);
             
             return "books";
         }
 
         @RequestMapping(value = "/search", method = RequestMethod.POST)
-        public String booksSearch(@ModelAttribute BookSearch bookSearch, Model model) {
-        	logger.info("bookSearch = {}", bookSearch);
-        	Page page = bookService.getBooksComplex(bookSearch);
-            logger.info("page = {}", page);
-            if (page.getBooks().isEmpty() || page.getBooks() == null) {
+        public String booksSearch(@ModelAttribute SimpleSearchQuery tmpQuery,
+        							@ModelAttribute SearchParams tmpParams, Model model) {
+        	logger.info("searchParams = {}", searchParams);
+        	logger.info("searchQuery = {}", searchQuery);
+        	Page page;
+        	if(!tmpQuery.equals(searchQuery) || !tmpParams.equals(searchParams)) {
+        		
+        		searchQuery.set(tmpQuery);
+        		searchParams.set(tmpParams);
+        		logger.info("searchParams = {}", searchParams);
+            	logger.info("searchQuery = {}", searchQuery);
+        		pageContainer.recalculate(searchQuery, searchParams);
+        		page = pageContainer.getPage(searchQuery, searchParams);
+        		
+        	} else {
+        		searchParams.set(tmpParams);
+        		
+        		page = pageContainer.getPage(searchQuery, searchParams);
+        	}
+        	if (page.getBooks().isEmpty() || page.getBooks() == null) {
                 model.addAttribute("nothing", true);
-                model.addAttribute("query", bookSearch.getQuery());
+                model.addAttribute("query", searchQuery.getQuery());
             }
             model.addAttribute("page", page);
             return "books";
@@ -91,12 +113,12 @@ public class BooksController {
 
         @RequestMapping(value = "/advancedSearch", method = RequestMethod.POST)
         public  String advancedSearch(@ModelAttribute BookSearch bookSearch, Model model) {
-            logger.info("advanced search called with {}, {}, {}, {}", bookSearch);
-            Page page = bookService.getBooksComplexByParams(bookSearch);
+            /*logger.info("advanced search called with {}, {}, {}, {}", bookSearch);
+            //Page page = bookService.getBooksComplexByParams(bookSearch);
             if (page.getBooks().isEmpty() || page.getBooks() == null) {
                 model.addAttribute("nothing", true);
             }
-            model.addAttribute("page", page);
+            model.addAttribute("page", page);*/
             return "books";
         }
 

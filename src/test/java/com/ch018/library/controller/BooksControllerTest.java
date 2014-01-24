@@ -40,7 +40,7 @@ import com.ch018.library.service.PersonService;
 @WebAppConfiguration
 public class BooksControllerTest {
 	
-
+/*
 	@Autowired
 	private BookService bookService;
 	
@@ -93,8 +93,8 @@ public class BooksControllerTest {
 		
 		uses = Arrays.asList(use);
 		
-	}
-	
+	}*/
+	/*
 	@Test
 	public void booksNormalFlow() throws Exception {
 		BookSearch search = new BookSearch();
@@ -216,6 +216,6 @@ public class BooksControllerTest {
 			//.andExpect(status().isOk())
 			.andExpect(model().attributeExists("uses"))
 			.andExpect(model().attribute("uses", hasProperty("person", hasProperty("email", equalTo("email")))));
-	}
+	}*/
 
 }

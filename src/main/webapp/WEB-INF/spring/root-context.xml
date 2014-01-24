@@ -20,16 +20,28 @@
 	
 	<context:annotation-config />
 
-        <task:annotation-driven />
+    <task:annotation-driven />
 	
 	<context:component-scan base-package="com.ch018.library" />
 	
-	
-	
+	<bean id="searchParams" class="com.ch018.library.helper.SearchParams" scope="session">
+      
+      <aop:scoped-proxy/>
+   	</bean>
+   	
+   	<bean id="simpleSearchQuery" class="com.ch018.library.helper.SimpleSearchQuery" scope="session">
+      
+      <aop:scoped-proxy/>
+   	</bean>
+   	
+   	<bean id="pageContainer" class="com.ch018.library.helper.PageContainer" scope="session">
+      
+      <aop:scoped-proxy/>
+   	</bean>
 	
 	<import resource="data.xml" />
-        <import resource="security.xml"/>
-        <import resource="mail.xml"/>
-        <import resource="tiles.xml"/>
+	<import resource="security.xml"/>
+	<import resource="mail.xml"/>
+	<import resource="tiles.xml"/>
 
 </beans>

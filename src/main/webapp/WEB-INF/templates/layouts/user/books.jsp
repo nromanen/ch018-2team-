@@ -9,9 +9,47 @@
 
 	<div class="col-md-12">
 	
-		<div id="pagination_info" page="${page.currentPageNum}" generalPages="${page.generalPagesQuantity}" query="${page.bookSearch.query}"
-			size="${page.bookSearch.booksOnPage} ">
+		<div id="pagination_info" page="${page.searchParams.page}" generalPages="${page.pagesQuantity}" query="${page.searchQuery.query}"
+			size="${page.searchParams.pageSize}" orderField="${page.searchParams.orderField}" order="${page.searchParams.order}" 
+			path="${pageContext.request.contextPath}" >
 			
+		</div>
+	
+		<div class="row">
+			<div class="col-md-offset-2 ">
+			<form class="form-inline">
+				<select class="form-control" id="sort_field">
+					<option selected="selected" value="title">Sort by</option>
+					<option value="title">Title</option>
+					<option value="authors">Authors</option>
+					<option value="publisher">Publisher</option>
+					<option value="currentQuantity">Quantity</option>
+				</select>
+				<select class="form-control" id="sort_order">
+					<option selected="selected" value="false">Sort order</option>
+					<option value="false">Ascending</option>
+					<option value="true">Descending</option>
+				</select>
+				<select class="form-control" id="page_size">
+					<option selected="selected" value="2">Books on page</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+				</select>
+				Year
+				<input class="form-control" type="text" id="year_start" placeholder="from" style="width: 80px;">
+				
+				<input class="form-control" type="text" id="year_end" placeholder="to" style="width: 80px;">
+				
+				Pages
+				<input class="form-control" type="text" id="page_start" placeholder="from" style="width: 80px;">
+				
+				<input class="form-control" type="text" id="page_end" placeholder="to" style="width: 80px;">
+				
+				<button class="btn btn-info btn-sm" id="choose_button">Show</button>
+				</form>
+			</div>
 		</div>
 	
 		<c:choose>
@@ -22,6 +60,7 @@
 				</h3>
 			</c:when>
 		</c:choose>
+		
 		<c:set var="i" value="0" scope="page" />
 		<c:forEach var="book" items="${page.books}">
 
@@ -82,7 +121,7 @@
 			<li id="first_page" class="hide"><span>1</span></li>
 			<li id="prev_page" class="hide"><span>prev</span></li>
 			<li id="next_page" class="hide"><span>next</span></li>
-			<li id="last_page" class="hide"><span>${page.generalPagesQuantity}</span></li>
+			<li id="last_page" class="hide"><span>${page.pagesQuantity}</span></li>
 		</ul>
 	</div>
 </div>

@@ -33,6 +33,28 @@ $(document).ready(function() {
 	}
 		
 	
+	$('#choose_button').click(function() {
+		var size = $('#page_size').val();
+		var order = $('#sort_order').val();
+		var orderField = $('#sort_field').val();
+		var url = $('#search_button').attr('url');
+		var query = $('#pagination_info').attr('query');
+		var page = 1;
+		var yearStart = $('#year_start');
+		var yearEnd = $('#year_end');
+		var pageStart = $('#page_start');
+		var pageEnd = $('#page_end');
+		//$('#pagination_info').attr('size', size);
+		//$('#pagination_info').attr('order', order);
+		//$('#pagination_info').attr('orderField', orderField);
+		search(query, url, page, size, order, orderField, yearStart, yearEnd, pageStart, pageEnd);
+		
+		
+		Integer yearStart;
+	    private Integer yearEnd;
+	    private Integer bookPageStart;
+	    private Integer bookPageEnd;
+	});
 	
 
 	$('#first_page').click(function () {
@@ -40,7 +62,9 @@ $(document).ready(function() {
 		var page = 1;
 		var size = $('#pagination_info').attr('size');
 		var query = $('#pagination_info').attr('query');
-		search(query, url, page, size);
+		var order = $('#pagination_info').attr('order');
+		var orderfield = $('#pagination_info').attr('orderfield');
+		search(query, url, page, size, order, orderfield);
 	});
 	
 	$('#prev_page').click(function () {
@@ -49,7 +73,9 @@ $(document).ready(function() {
 		page = page - 1;
 		var size = $('#pagination_info').attr('size');
 		var query = $('#pagination_info').attr('query');
-		search(query, url, page, size);
+		var order = $('#pagination_info').attr('order');
+		var orderfield = $('#pagination_info').attr('orderfield');
+		search(query, url, page, size, order, orderfield);
 	});
 	
 	$('#next_page').click(function () {
@@ -58,7 +84,9 @@ $(document).ready(function() {
 		page = page + 1;
 		var size = $('#pagination_info').attr('size');
 		var query = $('#pagination_info').attr('query');
-		search(query, url, page, size);
+		var order = $('#pagination_info').attr('order');
+		var orderfield = $('#pagination_info').attr('orderfield');
+		search(query, url, page, size, order, orderfield);
 	});
 	
 	$('#last_page').click(function () {
@@ -66,7 +94,9 @@ $(document).ready(function() {
 		var page = $('#pagination_info').attr('generalPages');
 		var size = $('#pagination_info').attr('size');
 		var query = $('#pagination_info').attr('query');
-		search(query, url, page, size);
+		var order = $('#pagination_info').attr('order');
+		var orderfield = $('#pagination_info').attr('orderfield');
+		search(query, url, page, size, order, orderfield);
 	});
 	
 	//pagination part_end
@@ -81,8 +111,12 @@ $(document).ready(function() {
 	$('body').on('click', '#search_button', function(e) {
 		e.preventDefault();
 		var url = $(this).attr('url');
+		page = 1;
+		var size = $('#pagination_info').attr('size');
 		var query = $('#search_field').val();
-		search(query, url);
+		var order = $('#pagination_info').attr('order');
+		var orderfield = $('#pagination_info').attr('orderfield');
+		search(query, url, page, size, order, orderfield);
 	});
 
 	$('body').on('click', '#advanced_search_button', function() {
@@ -97,11 +131,13 @@ $(document).ready(function() {
 	});
 });
 
-function search(query, url, page, size) {
+function search(query, url, page, size, order, orderField) {
 	doPost({
 		query : query,
-		viewPageNum : page,
-		booksOnPage : size
+		page : page,
+		pageSize : size,
+		orderField : orderField,
+		order : order
 	}, url);
 
 }
@@ -130,6 +166,8 @@ function doPost(params, url) {
 	});
 
 	$.each(params, function(index, value) {
+		if(value == null)
+			return ;
 		$('<input>', {
 			name : index,
 			val : value
