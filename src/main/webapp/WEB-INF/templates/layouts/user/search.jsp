@@ -63,7 +63,7 @@
 					<select class="form-control" id="advanced_search_select">
 						<option selected="selected" value="0">All Genres</option>
 						<c:forEach var="genre" items="${genres}">
-							<option value="${genre.getId()}">${genre.getDescription()}</option>
+							<option value="${genre.getId()}">${genre.genreTranslation}</option>
 						</c:forEach>
 					</select>
 				</div>

@@ -43,4 +43,8 @@ public interface PersonService {
         void updatePersonalInfo(Person person, PersonalInfo info) throws Exception;
         void update(PersonEditValidator person);
         List<BooksInUse> getUsingBooks(Person person);
+        List<Person> orderByName();
+        List<Person> orderBySurname();
+        List<Person> orderByRating();
+        List<Person> pagination(int pageNumber);
 }

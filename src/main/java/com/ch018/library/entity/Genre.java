@@ -1,6 +1,7 @@
 package com.ch018.library.entity;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -11,20 +12,23 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.context.i18n.LocaleContextHolder;
+
 
 @Entity
 @Table(name = "genres")
 public class Genre implements Serializable {
 
-        @Id
+		
+       	@Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int id;
 
-        @OneToMany(mappedBy = "genre")
-        private Set<Book> books;
-
         @Column(name = "description")
         private String description;
+        
+        @OneToMany(mappedBy = "genre")
+        private Set<Book> books;
 
         public Genre() {
 
@@ -53,11 +57,11 @@ public class Genre implements Serializable {
         public String getDescription() {
             return description;
         }
-
+        
         public void setDescription(String description) {
             this.description = description;
         }
-
+        
         @Override
         public boolean equals(Object other) {
             if (other == null) return false;
@@ -74,8 +78,10 @@ public class Genre implements Serializable {
 
 		@Override
 		public String toString() {
-			return "Genre [id=" + id + ", description="
-					+ description + "]";
+			//return "Genre [id=" + id + ", books=" + books + ", description="
+			//		+ description + "]";
+			return description;
+
 		}
 
         
