@@ -4,108 +4,173 @@ $(document).ready(function() {
 	
 	//pagination part_start
 	
-	var cur_page = $('#pagination_info').attr('page');
-	console.log('cur ' + cur_page)
-	var general_pages = $('#pagination_info').attr('generalpages');
-	console.log(general_pages);
-	var query = $('#pagination_info').attr('query');
-	console.log('current ' + cur_page + 'general = ' + general_pages + 'query' + query);
-	if(cur_page == 1 && general_pages == 1) {
-		$('#first_page').removeClass('hide');
-		$('#first_page').addClass('disabled');
-	}
-	else if(cur_page > 1 && cur_page == general_pages) {
-		$('#first_page').removeClass('hide');
-		$('#prev_page').removeClass('hide');
-		$('#last_page').removeClass('hide');
-		$('#last_page').addClass('disabled');
-	} 
-	else if (cur_page == 1) {
-		$('#first_page').removeClass('hide');
-		$('#first_page').addClass('disabled');
-		$('#next_page').removeClass('hide');
-		$('#last_page').removeClass('hide');
-	} else {
-		$('#first_page').removeClass('hide');
-		$('#prev_page').removeClass('hide');
-		$('#current_page').removeClass('hide');
-		$('#next_page').removeClass('hide');
-		$('#last_page').removeClass('hide');
-		
-	}
-		
-	
-	$('#choose_button').click(function(e) {
-		e.preventDefault();
-		var size = $('#page_size').val();
-		var order = $('#sort_order').val();
-		var orderField = $('#sort_field').val();
-		var url = $('#search_button').attr('url');
-		var query = $('#pagination_info').attr('query');
-		var page = 1;
-		var yearStart = $('#year_start').val() === "" ? -1 : $('#year_start').val();
-		var yearEnd = $('#year_end').val() === "" ? -1 : $('#year_end').val();
-		var pageStart = $('#page_start').val() === "" ? -1 : $('#page_start').val();
-		var pageEnd = $('#page_end').val() === "" ? -1 : $('#page_end').val();
-		//$('#pagination_info').attr('size', size);
-		//$('#pagination_info').attr('order', order);
-		//$('#pagination_info').attr('orderField', orderField);
-		//search(query, url, page, size, order, orderField);
-		doPost({
-			pageSize : size,
-			order : order,
-			orderField : orderField,
-			query : query,
-			page : page,
-			yearStart : yearStart,
-			yearEnd : yearEnd,
-			bookPageStart : pageStart,
-			bookPageEnd : pageEnd
-		}, url);
-	});
-	
+		var path = $('#pagination_info').attr('path');
+		var orderField = $('#pagination_info').attr('orderField');
+		var order = $('#pagination_info').attr('order');
+		var page  = Number($('#pagination_info').attr('page'));
+		var pagesQuantity = Number($('#pagination_info').attr('pagesQuantity'));
+		var bookPageStart = Number($('#pagination_info').attr('bookPageStart'));
+		var bookPageEnd = Number($('#pagination_info').attr('bookPageEnd'));
+		var yearStart = Number($('#pagination_info').attr('yearStart'));
+		var yearEnd = Number($('#pagination_info').attr('yearEnd'));
+		var choosenBookPageStart = isNaN(Number($('#pagination_info').attr('choosenBookPageStart'))) ? bookPageStart : Number($('#pagination_info').attr('choosenBookPageStart'));
+		var choosenBookPageEnd = isNaN(Number($('#pagination_info').attr('choosenBookPageEnd'))) ? bookPageEnd : Number($('#pagination_info').attr('choosenBookPageEnd'));
+		var choosenYearStart = isNaN(Number($('#pagination_info').attr('choosenYearStart'))) ? yearStart : Number($('#pagination_info').attr('choosenYearStart'));
+		var choosenYearEnd = isNaN(Number($('#pagination_info').attr('choosenYearEnd'))) ? yearEnd : Number($('#pagination_info').attr('choosenYearEnd'));
+		choosenBookPageStart = choosenBookPageStart === 0 ? bookPageStart : choosenBookPageStart;
+		choosenBookPageEnd = choosenBookPageEnd === 0 ? bookPageEnd : choosenBookPageEnd;
+		choosenYearStart = choosenYearStart === 0 ? yearStart : choosenYearStart;
+		choosenYearEnd = choosenYearEnd === 0 ? yearEnd : choosenYearEnd;
+			console.log('bookPageStart ' + bookPageStart + ' ' + 'bookPageEnd ' + bookPageEnd + ' ' + 'yearStart ' + yearStart + 'yearEnd ' + yearEnd );
+			console.log('choosenBookPageStart ' + choosenBookPageStart + ' ' + 'choosenBookPageEnd ' + choosenBookPageEnd + ' ' + 'choosenYearStart ' + choosenYearStart + 'choosenYearEnd ' + choosenYearEnd );
 
-	$('#first_page').click(function () {
-		var url = $('#search_button').attr('url');
-		var page = 1;
-		var size = $('#pagination_info').attr('size');
-		var query = $('#pagination_info').attr('query');
-		var order = $('#pagination_info').attr('order');
-		var orderfield = $('#pagination_info').attr('orderfield');
-		search(query, url, page, size, order, orderfield);
-	});
+		
+		//sortby part
+		$('#sortby > option').each(function() {
+			console.log($(this).attr('order'));
+			$(this).attr('url', path + '/books/search?page=1&orderField=' + this.value + '&order=' + $(this).attr('order'));
+			if(this.value === orderField && $(this).attr('order') === order) {
+				$(this).attr('selected', 'selected');
+			}
+		});
+		
+		$('#sortby').change(function () {
+			
+			location.href = $('#sortby option:selected').attr('url');
+			
+		});
+		//sortby part
+		
+		//genreselect
+		
+
+			$('#genreSelect > option').each(function() {
+
+				if (this.value === $('#pagination_info').attr('genreId')) {
+					$(this).attr('selected', 'selected');
+					return false;
+				}
+			});
+		
+		//genreselect
+		
+		//pagesize
+			$('#pageSize > option').each(function() {
+
+				if (this.value === $('#pagination_info').attr('pageSize')) {
+					$(this).attr('selected', 'selected');
+					return false;
+				}
+			});
+		//pagesize
 	
-	$('#prev_page').click(function () {
-		var url = $('#search_button').attr('url');
-		var page = Number($('#pagination_info').attr('page'));
-		page = page - 1;
-		var size = $('#pagination_info').attr('size');
-		var query = $('#pagination_info').attr('query');
-		var order = $('#pagination_info').attr('order');
-		var orderfield = $('#pagination_info').attr('orderfield');
-		search(query, url, page, size, order, orderfield);
-	});
+		//page part
+		
+		if(page == 1 && pagesQuantity == 1) {
+			$('#first_page').removeClass('hide');
+			$('#first_page').addClass('disabled');
+		}
+		else if(page > 1 && page == pagesQuantity) {
+			$('#first_page').removeClass('hide');
+			$('#first_page').children().attr('href', path + '/books/search?page=1');
+			
+			$('#prev_page').removeClass('hide');
+			var prev_page = page - 1;
+			$('#prev_page').children().attr('href', path + '/books/search?page=' + prev_page);
+			
+			$('#last_page').removeClass('hide');
+			$('#last_page').addClass('disabled');
+		} 
+		else if (page == 1) {
+			$('#first_page').removeClass('hide');
+			$('#first_page').addClass('disabled');
+			
+			$('#next_page').removeClass('hide');
+			var next_page = page + 1;
+			$('#next_page').children().attr('href', path + '/books/search?page=' + next_page);
+			
+			$('#last_page').removeClass('hide');
+			$('#last_page').children().attr('href', path + '/books/search?page=' + pagesQuantity);
+		} else {
+			$('#first_page').removeClass('hide');
+			$('#first_page').children().attr('href', path + '/books/search?page=1');
+			
+			$('#prev_page').removeClass('hide');
+			var prev_page = page - 1;
+			$('#prev_page').children().attr('href', path + '/books/search?page=' + prev_page);
+			
+			$('#current_page').removeClass('hide');
+			
+			$('#next_page').removeClass('hide');
+			var next_page = page + 1;
+			$('#next_page').children().attr('href', path + '/books/search?page=' + next_page);
+			
+			$('#last_page').removeClass('hide');
+			$('#last_page').children().attr('href', path + '/books/search?page=' + pagesQuantity);
+		}
+		
+		//page part
+		
+		//sliders
+		
+		   $( "#pages-range" ).slider({
+			      range: true,
+			      min: bookPageStart,
+			      max: bookPageEnd,
+			      values: [ choosenBookPageStart, choosenBookPageEnd ],
+			      slide: function( event, ui ) {
+			        $( "#pages" ).val('Pages range' + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+			      }
+			    });
+			    $( "#pages" ).val($( "#pages-range" ).slider( "values", 0 ) +
+			      " - " + $( "#pages-range" ).slider( "values", 1 ) );
+			    
+			$( "#years-range" ).slider({
+				      range: true,
+				      min: yearStart,
+				      max: yearEnd,
+				      values: [ choosenYearStart, choosenYearEnd ],
+				      slide: function( event, ui ) {
+				        $( "#years" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+				      }
+				    });
+				    $( "#years" ).val($( "#years-range" ).slider( "values", 0 ) +
+				      " - " + $( "#years-range" ).slider( "values", 1 ) );
+		//sliders
 	
-	$('#next_page').click(function () {
-		var url = $('#search_button').attr('url');
-		var page = Number($('#pagination_info').attr('page'));
-		page = page + 1;
-		var size = $('#pagination_info').attr('size');
-		var query = $('#pagination_info').attr('query');
-		var order = $('#pagination_info').attr('order');
-		var orderfield = $('#pagination_info').attr('orderfield');
-		search(query, url, page, size, order, orderfield);
-	});
+		//searchPost button
+				    
+				    $('#searchPost').click(function () {
+				    	var query = $('#query').val();
+				    	var title = $('#title').val();
+				    	var authors = $('#authors').val();
+				    	var publisher = $('#publisher').val();
+				    	var minPages = $( "#pages-range" ).slider("values")[0];
+				    	var maxPages = $( "#pages-range" ).slider("values")[1];
+				    	var minYear = $( "#years-range" ).slider("values")[0];
+				    	var maxYear = $( "#years-range" ).slider("values")[1];
+				    	var pageSize = $('#pageSize').val();
+				    	var genreId = $('#genreSelect').val();
+				    	var url = path + '/books/search';
+				    		
+				    	doPost({
+				    		query : query,
+				    		title : title,
+				    		authors : authors,
+				    		publisher : publisher,
+				    		choosenPageStart : minPages,
+				    		choosenPageEnd : maxPages,
+				    		choosenYearStart : minYear,
+				    		choosenYearEnd : maxYear,
+							pageSize : pageSize,
+							genreId : genreId,
+							page : 1
+						}, url);
+				    	
+				    });
+				    
+		//searchPost button
 	
-	$('#last_page').click(function () {
-		var url = $('#search_button').attr('url');
-		var page = $('#pagination_info').attr('generalPages');
-		var size = $('#pagination_info').attr('size');
-		var query = $('#pagination_info').attr('query');
-		var order = $('#pagination_info').attr('order');
-		var orderfield = $('#pagination_info').attr('orderfield');
-		search(query, url, page, size, order, orderfield);
-	});
 	
 	//pagination part_end
 	
@@ -120,50 +185,15 @@ $(document).ready(function() {
 		e.preventDefault();
 		var url = $(this).attr('url');
 		page = 1;
-		var size = $('#pagination_info').attr('size');
 		var query = $('#search_field').val();
-		var order = $('#pagination_info').attr('order');
-		var orderfield = $('#pagination_info').attr('orderfield');
-		search(query, url, page, size, order, orderfield);
+		doPost({
+			query : query,
+			page : page
+		}, url);
 	});
 
-	$('body').on('click', '#advanced_search_button', function() {
 
-		$('#advanced_search_panel').toggle("slow");
-
-	});
-
-	$('body').on('click', '#advanced_search_submit', function() {
-		var url = $(this).attr('url');
-		advancedSearch(url);
-	});
 });
-
-function search(query, url, page, size, order, orderField) {
-	doPost({
-		query : query,
-		page : page,
-		pageSize : size,
-		orderField : orderField,
-		order : order
-	}, url);
-
-}
-
-function advancedSearch(url) {
-
-	var title = $('#advanced_search_title').val();
-	var authors = $('#advanced_search_authors').val();
-	var publisher = $('#advanced_search_publisher').val();
-	var genreId = $('#advanced_search_select').val();
-	doPost({
-		title : title,
-		authors : authors,
-		publisher : publisher,
-		genreId : genreId
-	}, url);
-
-}
 
 function doPost(params, url) {
 	
@@ -174,9 +204,6 @@ function doPost(params, url) {
 	});
 	
 	$.each(params, function(index, value) {
-		
-		if(value === -1)
-			return;
 		
 		$('<input>', {
 			name : index,

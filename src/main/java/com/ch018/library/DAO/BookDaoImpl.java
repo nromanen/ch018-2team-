@@ -1,8 +1,6 @@
 package com.ch018.library.DAO;
 
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -10,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
 import org.slf4j.Logger;
@@ -19,12 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
-import com.ch018.library.entity.GenreTranslations;
-import com.ch018.library.helper.AdvancedSearchQuery;
-import com.ch018.library.helper.BookSearch;
-import com.ch018.library.helper.Page;
 import com.ch018.library.helper.SearchParams;
-import com.ch018.library.helper.SimpleSearchQuery;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -166,31 +160,48 @@ public class BookDaoImpl implements BookDao {
 		}
 	
 		@Override
-		public List<Book> getBooksComplex(SimpleSearchQuery searchQuery, SearchParams searchParams) {
-			
+		public List<Book> getBooksComplex(SearchParams searchParams) {
 			String query;
-
-			if(searchQuery.getQuery().equals(""))
-				query = "%";
-			else
-				query = "%" + searchQuery.getQuery() + "%";
 			Criteria criteria = factory.getCurrentSession().createCriteria(
 					Book.class);
-			SimpleExpression tExp = Restrictions.like("title", query);
-			SimpleExpression aExp = Restrictions.like("authors", query);
-			SimpleExpression pExp = Restrictions.like("publisher", query);
-			criteria.add(Restrictions.or(tExp, aExp, pExp));
-
-			if (searchParams.getBookPageStart() != null &&
-					searchParams.getBookPageEnd() != null) {
-			  criteria.add(Restrictions.between("pages",
-					  searchParams.getBookPageStart(), searchParams.getBookPageEnd())); 
+			if (searchParams.getQuery() !=  null) {
+				query = "%" + searchParams.getQuery() + "%";
+				SimpleExpression tExp = Restrictions.like("title", query);
+				SimpleExpression aExp = Restrictions.like("authors", query);
+				SimpleExpression pExp = Restrictions.like("publisher", query);
+				criteria.add(Restrictions.or(tExp, aExp, pExp));
 			}
 			
-			if (searchParams.getYearStart() != null &&
-					searchParams.getYearEnd() != null) {
+			if(searchParams.getTitle() != null) {
+				query = "%" + searchParams.getTitle() + "%";
+				criteria.add(Restrictions.like("title", query));
+			}
+			
+			if(searchParams.getAuthors() != null) {
+				query = "%" + searchParams.getAuthors() + "%";
+				criteria.add(Restrictions.like("authors", query));
+			}
+			
+			if(searchParams.getPublisher() != null) {
+				query = "%" + searchParams.getPublisher() + "%";
+				criteria.add(Restrictions.like("publisher", query));
+			}
+			
+			if (searchParams.getGenreId() > 0) {
+				criteria.add(Restrictions.eq("genreOld.id", searchParams.getGenreId()));
+			}
+
+			if (searchParams.getChoosenPageStart() != null &&
+					searchParams.getChoosenPageEnd() != null) {
+			  criteria.add(Restrictions.between("pages",
+					  searchParams.getChoosenPageStart(), searchParams.getChoosenPageEnd()));
+			  logger.info("PAGES {}", criteria.list());
+			}
+			
+			if (searchParams.getChoosenYearStart() != null &&
+					searchParams.getChoosenYearEnd() != null) {
 			  criteria.add(Restrictions.between("year",
-					  searchParams.getYearStart(), searchParams.getYearEnd())); 
+					  searchParams.getChoosenYearStart(), searchParams.getChoosenYearEnd())); 
 			  logger.info("YEARS {}", criteria.list());
 			}
 			
@@ -198,43 +209,29 @@ public class BookDaoImpl implements BookDao {
 				criteria.addOrder(Order.desc(searchParams.getOrderField()));
 			else
 				criteria.addOrder(Order.asc(searchParams.getOrderField()));
+			
 			return criteria.list();
 		}
 	
+	
 		@Override
-		public List<Book> getBooksComplexByParams(AdvancedSearchQuery advancedSearchQuery, SearchParams searchParams) {
+		public Integer getMinIntegerField(String field) {
 			
-			Criteria criteria = factory.getCurrentSession().createCriteria(
-					Book.class);
-			if (advancedSearchQuery.getGenreId() > 0) {
-				criteria.add(Restrictions.eq("genre.id", advancedSearchQuery.getGenreId()));
-			}
-			if (!advancedSearchQuery.getTitle().equals("")) {
-				criteria.add(Restrictions.like("title", "%" + advancedSearchQuery.getTitle()
-						+ "%"));
-			}
-			if (!advancedSearchQuery.getAuthors().equals("")) {
-				criteria.add(Restrictions.like("authors",
-						"%" + advancedSearchQuery.getAuthors() + "%"));
-			}
-			if (!advancedSearchQuery.getPublisher().equals("")) {
-				criteria.add(Restrictions.like("publisher",
-						"%" + advancedSearchQuery.getPublisher() + "%"));
-			}
-			if (searchParams.getBookPageStart() != null &&
-					searchParams.getBookPageEnd() != null) {
-			  criteria.add(Restrictions.between("pages",
-					  searchParams.getBookPageStart(), searchParams.getBookPageEnd())); 
-			  logger.info("PAGES {}", criteria.list());
-			}
-			 
-			if (searchParams.getOrder())
-				criteria.addOrder(Order.desc(searchParams.getOrderField()));
-			else
-				criteria.addOrder(Order.asc(searchParams.getOrderField()));
+			Integer minPages = (Integer) factory.getCurrentSession()
+					.createCriteria(Book.class)
+					.setProjection(Projections.projectionList()
+					.add(Projections.min(field))).uniqueResult();
+			return minPages;
 			
-			return criteria.list();
 		}
-
-
+		
+		@Override
+        public Integer getMaxIntegerField(String field) {
+        	Integer maxPages = (Integer) factory.getCurrentSession()
+					.createCriteria(Book.class)
+					.setProjection(Projections.projectionList()
+					.add(Projections.max(field))).uniqueResult();
+			return maxPages;
+        }
+		
 }

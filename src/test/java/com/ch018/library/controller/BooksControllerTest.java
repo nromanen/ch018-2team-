@@ -1,21 +1,9 @@
 package com.ch018.library.controller;
 
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.mockito.Mockito.*;
-
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.experimental.theories.suppliers.TestedOn;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +17,9 @@ import org.springframework.web.context.WebApplicationContext;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
-import com.ch018.library.helper.BookSearch;
 import com.ch018.library.helper.Page;
 import com.ch018.library.helper.PageContainer;
 import com.ch018.library.helper.SearchParams;
-import com.ch018.library.helper.SearchQuery;
-import com.ch018.library.helper.SimpleSearchQuery;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.PersonService;
@@ -60,8 +45,6 @@ public class BooksControllerTest {
     @Autowired
     private PageContainer pageContainer;
     
-    @Autowired
-    private SimpleSearchQuery searchQuery;
 
 	@Autowired
 	private WebApplicationContext wac;

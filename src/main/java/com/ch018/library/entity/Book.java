@@ -51,9 +51,9 @@ public class Book implements Serializable {
 		@Column(name = "authors")
 		private String authors;
 	
-		/*@ManyToOne
+		@ManyToOne
 		@JoinColumn(name = "gid")
-		private Genre genreOld;*/
+		private Genre genreOld;
 		
 		@ManyToMany(fetch=FetchType.EAGER)
 		@JoinTable(name = "book_genre", joinColumns = {@JoinColumn(name = "bId")}, inverseJoinColumns = {@JoinColumn(name = "gid")})
@@ -220,13 +220,13 @@ public class Book implements Serializable {
 			this.genre = genre;
 		}
 	
-		/*public Genre getGenreOld() {
+		public Genre getGenreOld() {
 			return genreOld;
 		}
 	
 		public void setGenreOld(Genre genre) {
 			this.genreOld = genre;
-		}*/
+		}
 	
 		public int getBookcase() {
 			return bookcase;
