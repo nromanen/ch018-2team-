@@ -127,7 +127,8 @@
 								WishList</button>
 						</c:otherwise>
 					</c:choose>
-
+					<div class="clearfix"></div>
+					<div class="alert alert-danger hide" id="order_err"></div>
 
 					<div class="modal fade" id="order_modal" tabindex="-1"
 						role="dialog" aria-labelledby="order_modal_label"

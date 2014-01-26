@@ -106,6 +106,7 @@ public class Book implements Serializable {
 		@Range(min = 1, max = MAX_QUANTITY)
 		@Column(name = "gen_quantity")
 		private Integer generalQuantity;
+		
 	
 		@OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
 		private Set<Person> personsUse;

@@ -174,35 +174,38 @@ $(document).ready(function() {
 	
 	//pagination part_end
 	
+				    $('#search_field').autocomplete({
+						serviceUrl : $('#search_field').attr('url') +  "/books/autocomplete",
+						minChars : 2
+
+					});
+
+				$('body').on('click', '#search_button', function(e) {
+					e.preventDefault();
+					var url = $(this).attr('url');
+					page = 1;
+					var query = $('#search_field').val();
+					doPost({
+						query : query,
+						page : page,
+						generalQuery: true
+					}, url);
+				});
+
 	
-	$('#search_field').autocomplete({
-		serviceUrl : $('#search_field').attr('url') +  "/books/autocomplete",
-		minChars : 2
 
-	});
-
-	$('body').on('click', '#search_button', function(e) {
-		e.preventDefault();
-		var url = $(this).attr('url');
-		page = 1;
-		var query = $('#search_field').val();
-		doPost({
-			query : query,
-			page : page
-		}, url);
-	});
 
 
 });
 
 function doPost(params, url) {
-	
+
 	$form = $('<form>', {
 		action : url,
 		method : 'POST',
 		style : 'display:none'
 	});
-	
+
 	$.each(params, function(index, value) {
 		
 		$('<input>', {
@@ -213,4 +216,4 @@ function doPost(params, url) {
 
 	$form.appendTo('body');
 	$form.submit();
-}
+	}

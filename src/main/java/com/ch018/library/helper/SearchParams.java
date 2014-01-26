@@ -10,9 +10,11 @@ public class SearchParams {
 
 		@Autowired
 		BookService bookService;
+		
+		private static final int DEFAULT_PAGE_SIZE = 12;
 	
 		private int page = 1;
-		private int pageSize = 1;
+		private int pageSize = DEFAULT_PAGE_SIZE;
 		private String orderField = "title";
 		private Boolean order = Boolean.FALSE;
 		
@@ -26,14 +28,19 @@ public class SearchParams {
 	    private Integer choosenPageStart;
 	    private Integer choosenPageEnd;
 	    
+	    private Boolean generalQuery = Boolean.FALSE;
 	    private String query;
 	    private String title;
 	    private String authors;
 	    private String publisher;
 	    private Integer genreId;
 	    
+	    private Boolean fieldChanged = Boolean.FALSE;
+	    private Boolean orderChanged = Boolean.FALSE;
+	    
 
 	    public void init() {
+	    	
 	    	yearStart = bookService.getMinIntegerField("year");
 		    yearEnd = bookService.getMaxIntegerField("year");
 		    bookPageStart = bookService.getMinIntegerField("pages");
@@ -43,7 +50,7 @@ public class SearchParams {
 	    
 	    public void setDefaults() {
 	    	page = 1;
-	    	pageSize = 1;
+	    	pageSize = DEFAULT_PAGE_SIZE;
 	    	
 	    	orderField = "title";
 	    	order = Boolean.FALSE;
@@ -58,6 +65,7 @@ public class SearchParams {
 		    choosenPageStart = null;
 		    choosenPageEnd = null;
 		    
+		    query = null;
 		    title = null;
 		    authors = null;
 		    publisher = null;
@@ -66,12 +74,17 @@ public class SearchParams {
 	    
 	    
 	    public void update(SearchParams params) {
+	    	if(params.getGeneralQuery()) {
+	    		this.setDefaults();
+	    		query = params.getQuery();
+	    		return;
+	    	}
 	    	page = params.getPage();
-	    	if(params.getPageSize() != 1)
+	    	if(params.getPageSize() != DEFAULT_PAGE_SIZE)
 	    		pageSize = params.getPageSize();
-	    	//if(!params.getOrderField().equals("title"))
+	    	if(params.getFieldChanged()) 
 	    		orderField = params.getOrderField();
-	    	
+	    	if(params.getOrderChanged())
 	    		order = params.getOrder();
 	    	if(params.getChoosenYearStart() != null)
 	    		choosenYearStart = params.getChoosenYearStart();
@@ -133,6 +146,7 @@ public class SearchParams {
 
 		public void setOrderField(String orderField) {
 			this.orderField = orderField;
+			this.fieldChanged = Boolean.TRUE;
 		}
 
 
@@ -145,6 +159,7 @@ public class SearchParams {
 
 		public void setOrder(Boolean order) {
 			this.order = order;
+			this.orderChanged = Boolean.TRUE;
 		}
 
 
@@ -303,6 +318,33 @@ public class SearchParams {
 			this.genreId = genreId;
 		}
 
+		
+
+		public Boolean getFieldChanged() {
+			return fieldChanged;
+		}
+
+		public void setFieldChanged(Boolean fieldChanged) {
+			this.fieldChanged = fieldChanged;
+		}
+
+		public Boolean getOrderChanged() {
+			return orderChanged;
+		}
+
+		public void setOrderChanged(Boolean orderChanged) {
+			this.orderChanged = orderChanged;
+		}
+
+		
+		
+		public Boolean getGeneralQuery() {
+			return generalQuery;
+		}
+
+		public void setGeneralQuery(Boolean generalQuery) {
+			this.generalQuery = generalQuery;
+		}
 
 		@Override
 		public String toString() {

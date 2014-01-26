@@ -7,7 +7,7 @@
 
 <div class="row">
 
-	<div id="pagination_info" page="${page.searchParams.page}" pagesQuantity="${page.pagesQuantity}" orderField="${page.searchParams.orderField}" order="${page.searchParams.order}" 
+	<div id="pagination_info" page="${page.searchParams.page}" pageSize="${page.searchParams.pageSize}" pagesQuantity="${page.pagesQuantity}" orderField="${page.searchParams.orderField}" order="${page.searchParams.order}" 
 			path="${pageContext.request.contextPath}" genreId="${page.searchParams.genreId}" bookPageStart="${page.searchParams.bookPageStart}" bookPageEnd="${page.searchParams.bookPageEnd}"
 			yearStart="${page.searchParams.yearStart}" yearEnd="${page.searchParams.yearEnd}" choosenBookPageStart = "${page.searchParams.choosenPageStart}"
 			choosenBookPageEnd = "${page.searchParams.choosenPageEnd}" choosenYearStart = "${page.searchParams.choosenYearStart}"
@@ -47,12 +47,11 @@
 		<div class="row">
 			<label for="pageSize">Page size:</label> 
 				<select id="pageSize" class="form-control input-sm" type="text">
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
+						<option value="8">8</option>
+						<option value="12">12</option>
+						<option value="24">24</option>
+						<option value="36">36</option>
+						<option value="48">48</option>
 				</select>
 		
 		</div>

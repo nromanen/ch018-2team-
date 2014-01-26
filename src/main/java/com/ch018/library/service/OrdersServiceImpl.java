@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -219,12 +220,14 @@ public class OrdersServiceImpl implements OrdersService {
 			Date minDate = new Date();
 			Calendar calendar = Calendar.getInstance();
 			List<Orders> orders = ordersDao.getOrderByBook(book);
-	
-			if (currentQuantity > 0 && orders.size() == 0) {
+			orders = excludeSelfOrders(orders);
+			
+			if (currentQuantity > 0 && orders.size() < currentQuantity) {
 				calendar.setTime(minDate);
-				calendar.add(Calendar.DAY_OF_YEAR, 1);
+				//calendar.add(Calendar.DAY_OF_YEAR, 1);
 				return new OrderDays(calendar.getTime(), MAX_DAYS);
-			} else if (currentQuantity <= 0) {
+			} 
+			else if (currentQuantity <= 0 || orders.size() > currentQuantity) {
 				minDate = booksInUseService.getMinReturnDate(book);
 			}
 	
@@ -249,18 +252,20 @@ public class OrdersServiceImpl implements OrdersService {
 			if (orderDate.getTime() < (new Date().getTime() - DIFF_TIME_IN_MILLIS))
 				throw new Exception("Incorrect Date Choosen");
 			List<Orders> orders = ordersDao.getOrderByBook(book);
+			orders = excludeSelfOrders(orders);
 			int days = MAX_DAYS;
 			long currentOrderDateInMillis = orderDate.getTime();
 			for (Orders order : orders) {
 				long orderDateInMillis = order.getOrderDate().getTime();
 				if (currentOrderDateInMillis < orderDateInMillis) {
-					Long daysRes = (orderDateInMillis - currentOrderDateInMillis)
+					Double daysRes = (double) (orderDateInMillis - currentOrderDateInMillis)
 							/ MILLIS_IN_DAY;
-					days = daysRes.intValue();
+					days = (int) Math.ceil(daysRes);
 					if (days <= 0)
 						throw new Exception("Incorrect Date Choosen");
 					else if (days > MAX_DAYS)
 						days = MAX_DAYS;
+					break;
 				}
 			}
 			return checkForWeekend(orderDate, days);
@@ -365,6 +370,19 @@ public class OrdersServiceImpl implements OrdersService {
 				if (or.getId() == id)
 					answerList.add(or);
 			return answerList;
+		}
+
+		@Transactional
+		private List<Orders> excludeSelfOrders(List<Orders> orders) {
+			String email = SecurityContextHolder.getContext().getAuthentication().getName();
+			Person person = personService.getByEmail(email);
+			List<Orders> excluded = new ArrayList<>();
+			for(Orders order : orders) {
+				if(order.getPerson().getPid() == person.getPid())
+					continue;
+				excluded.add(order);
+			}
+			return excluded;
 		}
 
 }
