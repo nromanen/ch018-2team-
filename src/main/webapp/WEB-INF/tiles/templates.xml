@@ -8,7 +8,7 @@
     
     
     <definition name="search" preparer="genres" template="/WEB-INF/templates/layouts/user/search.jsp"></definition>
-    <definition name="usermenu" template="/WEB-INF/templates/layouts/user/usermenu.jsp"></definition>
+    <definition name="usermenu" preparer="orders" template="/WEB-INF/templates/layouts/user/usermenu.jsp"></definition>
     
     <definition name="user-header" template="/WEB-INF/templates/layouts/user/user-header-template.jsp">
         <put-attribute name="search"   value="search"/>

@@ -62,6 +62,9 @@ public class OrdersServiceImpl implements OrdersService {
 	
 		@Autowired
 		private PersonDao personDao;
+		
+		@Autowired
+		private SmsService smsService;
 	
 		@Override
 		@Transactional
@@ -286,6 +289,7 @@ public class OrdersServiceImpl implements OrdersService {
 					book, orderDate, days);
 			mailService.sendMailWithOrder("springytest@gmail.com",
 					"etenzor@gmail.com", "order", order);
+			smsService.sendSms("new order " + order.getBook().getTitle());
 		}
 	
 		@Override
