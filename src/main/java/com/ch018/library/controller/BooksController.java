@@ -67,32 +67,33 @@ public class BooksController {
         	pageContainer.recalculate(searchParams);
         	page = pageContainer.getPage(searchParams);
             model.addAttribute("page", page);
-            
             return "books";
         }
         
         @RequestMapping(value = "/search", method = RequestMethod.GET)
         public String bookSearchGet(@ModelAttribute SearchParams tmpParams, Model model) {
         	Page page;
-        	if(searchParams.isSlidersNull())
+        	logger.info("search param GET {}", searchParams);
+        	logger.info("tmpParams GET {}", tmpParams);
+        	if(searchParams.isSlidersNull()) {
         		searchParams.init();
-        	if(searchParams.getPage() != tmpParams.getPage() 
-        			&& searchParams.getOrderField().equals(tmpParams.getOrderField())) {
+        		
+        	}
+        	System.out.println(tmpParams.getFieldChanged() + " " + tmpParams.getOrderChanged());
+        	if(!tmpParams.getFieldChanged() && !tmpParams.getOrderChanged()) {
         		
         		searchParams.update(tmpParams);
-        		logger.info("before  {}", searchParams);
+        		logger.info("search param GET after update {}", searchParams);
         		page = pageContainer.getPage(searchParams);
-        		logger.info("after  {}", searchParams);
+        		
         	}else {
         		searchParams.update(tmpParams);
             	pageContainer.recalculate(searchParams);
             	page = pageContainer.getPage(searchParams);
         	}
         	
-
         	if (page.getBooks().isEmpty() || page.getBooks() == null) {
                 model.addAttribute("nothing", true);
-                model.addAttribute("query", searchParams.getQuery());
             }
             model.addAttribute("page", page);
             return "books";
@@ -110,7 +111,6 @@ public class BooksController {
 
         	if (page.getBooks().isEmpty() || page.getBooks() == null) {
                 model.addAttribute("nothing", true);
-                model.addAttribute("query", searchParams.getQuery());
             }
             model.addAttribute("page", page);
             return "books";

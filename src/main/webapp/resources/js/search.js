@@ -119,7 +119,7 @@ $(document).ready(function() {
 			      max: bookPageEnd,
 			      values: [ choosenBookPageStart, choosenBookPageEnd ],
 			      slide: function( event, ui ) {
-			        $( "#pages" ).val('Pages range' + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+			        $( "#pages" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
 			      }
 			    });
 			    $( "#pages" ).val($( "#pages-range" ).slider( "values", 0 ) +

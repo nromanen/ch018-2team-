@@ -1,6 +1,7 @@
 package com.ch018.library.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,6 +17,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -107,6 +110,9 @@ public class Book implements Serializable {
 		@Column(name = "gen_quantity")
 		private Integer generalQuantity;
 		
+		@Column(name = "arrival_date")
+		@Temporal(TemporalType.TIMESTAMP)
+		private Date arrivalDate;
 	
 		@OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
 		private Set<Person> personsUse;
