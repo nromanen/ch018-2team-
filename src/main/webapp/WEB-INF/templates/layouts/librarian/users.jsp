@@ -59,7 +59,7 @@
 				                        <td>${user.generalRating}/100</td>
 				                        
 				                    <td><a href="<c:url value="/librarian/users/edituser?id=${user.pid}"/>"  style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
-				                        <a href="<c:url value="/librarian/users/deleteuser?id=${user.pid}"/>"  style="color: #0E3846"><spring:message code="message.libDelete"/>|</a>
+				                        <a on id="deleta"  href="<c:url value="/librarian/users/deleteuser?id=${user.pid}"/>"   style="color: #0E3846"><spring:message code="message.libDelete"/>|</a>
 				                        <a href="<c:url value="/librarian/users/readnow?id=${user.pid}"/>"  style="color: #0E3846">Books</a></td>
 				                </tr>
 				        </c:forEach>
@@ -69,6 +69,7 @@
 					
 				
 			</div>
+        <div id="d" onmouseover="jQuery:k();"> <h1>OLOLOLO</h1></div>
 		<div class="row">
 
 	<div class="col-md-1 col-md-offset-9" style="margin-top:10px">
@@ -77,3 +78,20 @@
 
 </div>		
 	</div>
+<script type="text/javascript">
+function delete_user(){
+    $.ajax({
+        url: '/librarian/users/deleteuser?id=${user.pid}',
+        type: "get",
+        cache: false,
+        success: function a(){
+             $("#deleta").showPopup()
+                jError('<b>Все норм</b>: Оляля.');},
+        error:  jError('<b>Все норм</b>: Оляля.')
+    });
+
+}
+function k(){
+    $("#d").modal();
+}
+</script>
