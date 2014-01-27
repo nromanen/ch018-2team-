@@ -19,11 +19,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.GenreTranslations;
-import com.ch018.library.helper.AdvancedSearchQuery;
-import com.ch018.library.helper.BookSearch;
-import com.ch018.library.helper.Page;
 import com.ch018.library.helper.SearchParams;
-import com.ch018.library.helper.SimpleSearchQuery;
 import com.ch018.library.validation.BookEditValidator;
 
 @Service
@@ -114,8 +110,8 @@ public class BookServiceImpl implements BookService {
 
         @Override
         @Transactional
-        public List<Book> getBooksComplex(SimpleSearchQuery searchQuery, SearchParams searchParams) {
-        	List<Book> books = bookDAO.getBooksComplex(searchQuery, searchParams);
+        public List<Book> getBooksComplex(SearchParams searchParams) {
+        	List<Book> books = bookDAO.getBooksComplex(searchParams);
             return books;
         }
 
@@ -128,13 +124,6 @@ public class BookServiceImpl implements BookService {
 		public List<Book> simpleSearch(String query) {
 			return bookDAO.simpleSearch(query);
 		}
-
-        @Override
-        @Transactional
-        public List<Book> getBooksComplexByParams(AdvancedSearchQuery advancedSearchQuery, SearchParams searchParams) {
-            List<Book> books = bookDAO.getBooksComplexByParams(advancedSearchQuery, searchParams);
-            return books;
-        }
 
         @Override
         @Transactional
@@ -222,5 +211,18 @@ public class BookServiceImpl implements BookService {
 			return localBook;
 		}
 
+		@Override
+		@Transactional
+		public Integer getMinIntegerField(String field) {
+			return bookDAO.getMinIntegerField(field);
+		}
+
+		@Override
+		@Transactional
+		public Integer getMaxIntegerField(String field) {
+			return bookDAO.getMaxIntegerField(field);
+		}
+
+		
 }
 

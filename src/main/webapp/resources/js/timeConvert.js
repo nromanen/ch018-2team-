@@ -36,12 +36,13 @@ function getAvailableDays(current_time, $order) {
 		var order_time = $(this).attr('start');
 		if (time < order_time) {
 			days = (order_time - time) / (24 * 3600 * 1000);
+			console.log("days in conv " + days);
 			return false;
 		}
 	});
 	if (days > 14)
 		days = 14;
-	return Math.floor(days);
+	return Math.ceil(days);
 
 }
 

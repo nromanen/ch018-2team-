@@ -7,7 +7,6 @@ import com.ch018.library.entity.Book;
 public class Page {
 
 		private SearchParams searchParams;
-		private SimpleSearchQuery searchQuery;
 		private int pagesQuantity;
 		private List<Book> books;
 		
@@ -17,12 +16,6 @@ public class Page {
 		}
 		public void setSearchParams(SearchParams searchParams) {
 			this.searchParams = searchParams;
-		}
-		public SimpleSearchQuery getSearchQuery() {
-			return searchQuery;
-		}
-		public void setSearchQuery(SimpleSearchQuery searchQuery) {
-			this.searchQuery = searchQuery;
 		}
 		public int getPagesQuantity() {
 			return pagesQuantity;
@@ -39,7 +32,7 @@ public class Page {
 		@Override
 		public String toString() {
 			return "Page [searchParams=" + searchParams + ", searchQuery="
-					+ searchQuery + ", pagesQuantity=" + pagesQuantity
+					+ ", pagesQuantity=" + pagesQuantity
 					+ ", books=" + books + "]";
 		}
 		
