@@ -7,6 +7,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js">
     </script>
 
@@ -14,7 +15,7 @@
 
 </head>
 <body>
-<p id="lala"></p>
+<div id="one"> <h1>fuck this shit</h1></div>
 <div class="container" id="divContent">
 
     <div class="row">
@@ -37,15 +38,15 @@
             <table id="upTable" border="1" width="80%" class="table table-hover table-striped table-bordered table-condensed">
                 <tr>
 
-                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDSurname" onclick="this.innerHTML=''">Surname</td>
-                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDTitle" onclick="this.innerHTML=''">Title</td>
-                    <td width="30%" onblur="jQuery:bl();" contenteditable="true" id="TDDate" onclick="this.innerHTML=''">Date</td>
+                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDSurname" onclick="jQuery:clkSurname();">Surname</td>
+                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDTitle" onclick="jQuery:clkTitle();">Title</td>
+                    <td width="30%" onblur="jQuery:bl();" contenteditable="true" id="TDDate" onclick="jQuery:clkDate();">Date</td>
                     <td width="30%">Options</td>
 
 
                 </tr>
             </table>
-            <div id="content1" class="table table-hover table-striped table-bordered table-condensed">
+            <div id="content1" class="table table-hover table-striped  table-condensed">
                 <table id="downTable" border="1" width="80%" class="table table-hover table-striped table-bordered table-condensed">
                     <c:forEach items="${orders}" var="order">
                         <tr>
@@ -78,6 +79,19 @@
         if ($("#TDSurname").text()=="") $("#TDSurname").text("Surname");
         if ($("#TDDate").text()=="") $("#TDDate").text("Date");
         if ($("#TDTitle").text()=="") $("#TDTitle").text("Title");
+
+    }
+    function clkSurname(){
+        if ($("#TDSurname").text()=="Surname") $("#TDSurname").text("");
+
+
+    }
+    function clkDate(){
+        if ($("#TDDate").text()=="Date") $("#TDDate").text("");
+
+    }
+    function clkTitle(){
+        if ($("#TDTitle").text()=="Title") $("#TDTitle").text("");
     }
 
 </script>
