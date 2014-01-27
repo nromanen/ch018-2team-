@@ -14,7 +14,6 @@
 <tiles:insertAttribute name="style-js-main" />
 <tiles:insertAttribute name="style-js" />
 
-
 </head>
 <body>
 	<div class="container">

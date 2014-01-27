@@ -1,8 +1,10 @@
 package com.ch018.library.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Set;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -76,10 +78,11 @@ public class Genre implements Serializable {
             return this.description.hashCode();
         }
 
-		@Override
-		public String toString() {
+      @Override
+      public String toString() {
 			//return "Genre [id=" + id + ", books=" + books + ", description="
 			//		+ description + "]";
+
 			return description;
 
 		}

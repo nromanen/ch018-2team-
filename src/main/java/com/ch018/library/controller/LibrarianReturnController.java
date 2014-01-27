@@ -1,8 +1,9 @@
 package com.ch018.library.controller;
 
-import java.util.Calendar;
-import java.util.Date;
-
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.BookService;
+import com.ch018.library.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.service.BookInUseService;
-import com.ch018.library.service.BookService;
-import com.ch018.library.service.PersonService;
+import java.util.Calendar;
+import java.util.Date;
 
 @Controller
 @RequestMapping(value = "/librarian/toreturn")
@@ -89,5 +88,20 @@ public class LibrarianReturnController {
 			}
 			return "redirect:/librarian/toreturn";
 		}
+    @RequestMapping(value = "/searchById", method = RequestMethod.POST)
+    public String searchById(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date) throws Exception {
+
+        int surnameSearch = 0;
+        int titleSearch = 0;
+        System.out.println("Title:"+title+"Surname:"+surname);
+        if (surname.compareTo("Surname")!=0) surnameSearch++;
+        if (title.compareTo("Title")!=0) titleSearch++;
+        if (surnameSearch==1&&titleSearch==0) model.addAttribute("booksInUse",booksInUseService.getAll());
+        if (surnameSearch==0&&titleSearch==1) model.addAttribute("booksInUse",booksInUseService.getAll());
+        //System.out.println("!!!"+booksInUseService.getAll());
+        //if (surnameSearch==1&&titleSearch==1) model.addAttribute("inuse",);
+
+        return "librarian_toreturn";
+    }
 		
 }
