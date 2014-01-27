@@ -1,6 +1,7 @@
 package com.ch018.library.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,6 +17,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -51,9 +54,9 @@ public class Book implements Serializable {
 		@Column(name = "authors")
 		private String authors;
 	
-		/*@ManyToOne
+		@ManyToOne
 		@JoinColumn(name = "gid")
-		private Genre genreOld;*/
+		private Genre genreOld;
 		
 		@ManyToMany(fetch=FetchType.EAGER)
 		@JoinTable(name = "book_genre", joinColumns = {@JoinColumn(name = "bId")}, inverseJoinColumns = {@JoinColumn(name = "gid")})
@@ -106,6 +109,10 @@ public class Book implements Serializable {
 		@Range(min = 1, max = MAX_QUANTITY)
 		@Column(name = "gen_quantity")
 		private Integer generalQuantity;
+		
+		@Column(name = "arrival_date")
+		@Temporal(TemporalType.TIMESTAMP)
+		private Date arrivalDate;
 	
 		@OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
 		private Set<Person> personsUse;
@@ -220,13 +227,13 @@ public class Book implements Serializable {
 			this.genre = genre;
 		}
 	
-		/*public Genre getGenreOld() {
+		public Genre getGenreOld() {
 			return genreOld;
 		}
 	
 		public void setGenreOld(Genre genre) {
 			this.genreOld = genre;
-		}*/
+		}
 	
 		public int getBookcase() {
 			return bookcase;

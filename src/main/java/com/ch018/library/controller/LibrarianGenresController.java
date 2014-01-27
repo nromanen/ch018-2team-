@@ -55,26 +55,28 @@ public class LibrarianGenresController {
 	
 		System.out.println("Result UKR: " + ukr);
 		System.out.println("Result ENG: " + eng);
-		
+		int max = 1;
 		Locale locale = LocaleContextHolder.getLocale();
 		List<GenreTranslations> genres = genreTranslationsServeice.getAllByLocale(locale.toString());
-		
-		int[] genresId = new int[genres.size()];
-		int j = 0;
-		for (GenreTranslations genresTransl : genres) {
-			genresId[j] = genresTransl.getGenreId();
-			j++;
-		}
-		
-		int max = genresId[0];
-		for(int i = 1; i < genresId.length; i++){
-			if(max < genresId[i]){
-				max = genresId[i];
+		System.out.println(genres.size());
+		if( genres.size() > 0) {
+			int[] genresId = new int[genres.size()];
+			int j = 0;
+			for (GenreTranslations genresTransl : genres) {
+				genresId[j] = genresTransl.getGenreId();
+				j++;
 			}
+			
+			max = genresId[0];
+			for(int i = 1; i < genresId.length; i++){
+				if(max < genresId[i]){
+					max = genresId[i];
+				}
+			}
+			
+			max +=1;
+			System.out.println("Max value is " + max);
 		}
-		
-		max +=1;
-		System.out.println("Max value is " + max);
 		
 		GenreTranslations genreUKR = new GenreTranslations();
 		

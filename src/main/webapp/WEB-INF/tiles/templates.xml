@@ -21,10 +21,12 @@
         <put-attribute name="style-js" value="" />
         <put-attribute name="footer" value="/WEB-INF/templates/layouts/footer.jsp" />
     </definition>
+    
+    <definition name="booksContent" preparer="genres" template="/WEB-INF/templates/layouts/user/books.jsp"></definition>
 
     <definition name="books"  extends="base-template">
         <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/books_css_js.jsp" />
-        <put-attribute name="content" value="/WEB-INF/templates/layouts/user/books.jsp" />     
+        <put-attribute name="content" value="booksContent" />     
     </definition>
     
     <definition name="order"  extends="base-template">
