@@ -39,7 +39,7 @@
 					<option value="0">All Genres</option>
 					<c:forEach var="genre" items="${genres}">
 						
-						<option value="${genre.genreId}">${genre.genreTranslation}</option>
+						<option value="${genre.id}">${genre.description}</option>
 					</c:forEach>
 				</select>
 		

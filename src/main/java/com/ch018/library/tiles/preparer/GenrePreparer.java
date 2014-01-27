@@ -19,11 +19,11 @@ import com.ch018.library.service.GenreTranslationService;
 public class GenrePreparer implements ViewPreparer {
 
 	    @Autowired
-	    private GenreTranslationService genreService;
+	    private GenreService genreService;
 	    
 	    @Override
 	    public void execute(Request rqst, AttributeContext ac) {
 	    	String locale = LocaleContextHolder.getLocale().toString();
-	        ac.putAttribute("genres", new Attribute(genreService.getAllByLocale(locale)));
+	        ac.putAttribute("genres", new Attribute(genreService.getAll()));
 	    }
 }
