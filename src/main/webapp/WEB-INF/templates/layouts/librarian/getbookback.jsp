@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
         	<div class="row">
@@ -19,7 +20,7 @@
 							 <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label">Return Date</label>
 								    <div class="col-sm-10">
-								    	 <h5> ${bookInUse.returnDate} </h5> 
+								    	 <h5> <c:out  value="${fn:substring(bookInUse.getReturnDate(), 0, 11)}"/> </h5> 
 								    </div>
 							 </div> 
 							  

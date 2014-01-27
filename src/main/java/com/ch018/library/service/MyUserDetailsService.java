@@ -36,7 +36,7 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(person.getProle());   
         UserDetails user =  new User(person.getEmail(), person.getPassword(), person.isMailConfirm(), true, true, true, authorities);
-        logger.info("user {} registered", username);
+        logger.info("user {} login", user);
         return user;  
     } 
 }

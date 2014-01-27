@@ -66,7 +66,7 @@ public class OrdersDaoImpl implements OrdersDao {
 	
 		@Override
 		public List<Orders> getAll() {
-			return factory.getCurrentSession().createCriteria(Orders.class).list();
+			return factory.getCurrentSession().createCriteria(Orders.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		}
 	
 		@Override

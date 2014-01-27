@@ -1,9 +1,10 @@
 package com.ch018.library.DAO;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
@@ -18,8 +19,12 @@ import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.GenreTranslations;
+import com.ch018.library.helper.AdvancedSearchQuery;
 import com.ch018.library.helper.BookSearch;
 import com.ch018.library.helper.Page;
+import com.ch018.library.helper.SearchParams;
+import com.ch018.library.helper.SimpleSearchQuery;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -110,19 +115,19 @@ public class BookDaoImpl implements BookDao {
 			Criteria criteria = session.createCriteria(Book.class);
 	
 			if (!book.getTitle().equals("")) {
-				criteria.add(Restrictions.eq("title", book.getTitle()));
+				criteria.add(Restrictions.like("title", book.getTitle(), MatchMode.ANYWHERE));
 			}
 			if (!book.getAuthors().equals("")) {
-				criteria.add(Restrictions.eq("authors", book.getAuthors()));
+				criteria.add(Restrictions.like("authors", book.getAuthors(), MatchMode.ANYWHERE));
 			}
-			if (!book.getGenre().equals("")) {
-				criteria.add(Restrictions.eq("genre", book.getGenre()));
+			if (!(book.getGenre() == null)) {
+				//criteria.add(Restrictions.eq("genre", book.getGenre()));
 			}
 			if (book.getYear() != 0) {
 				criteria.add(Restrictions.eq("year", book.getYear()));
 			}
 			if (!book.getPublisher().equals("")) {
-				criteria.add(Restrictions.eq("publisher", book.getPublisher()));
+				criteria.add(Restrictions.like("publisher", book.getPublisher(), MatchMode.ANYWHERE));
 			}
 			if (book.getPages() != 0) {
 				criteria.add(Restrictions.eq("pages", book.getPages()));
@@ -161,70 +166,75 @@ public class BookDaoImpl implements BookDao {
 		}
 	
 		@Override
-		public Page getBooksComplex(BookSearch bookSearch) {
-			Page page = new Page();
-			page.setCurrentPageNum(bookSearch.getViewPageNum());
-			bookSearch.setBorders();
-			String query = "%" + bookSearch.getQuery() + "%";
+		public List<Book> getBooksComplex(SimpleSearchQuery searchQuery, SearchParams searchParams) {
+			
+			String query;
+
+			if(searchQuery.getQuery().equals(""))
+				query = "%";
+			else
+				query = "%" + searchQuery.getQuery() + "%";
 			Criteria criteria = factory.getCurrentSession().createCriteria(
 					Book.class);
 			SimpleExpression tExp = Restrictions.like("title", query);
 			SimpleExpression aExp = Restrictions.like("authors", query);
 			SimpleExpression pExp = Restrictions.like("publisher", query);
 			criteria.add(Restrictions.or(tExp, aExp, pExp));
-			page.setGeneralItemsQuantity(criteria.list().size());
-			page.setGeneralPagesQuantity(page.getGeneralItemsQuantity()
-					/ bookSearch.getBooksOnPage());
-			if (bookSearch.getOrder())
-				criteria.addOrder(Order.desc(bookSearch.getSort()));
+
+			if (searchParams.getBookPageStart() != null &&
+					searchParams.getBookPageEnd() != null) {
+			  criteria.add(Restrictions.between("pages",
+					  searchParams.getBookPageStart(), searchParams.getBookPageEnd())); 
+			}
+			
+			if (searchParams.getYearStart() != null &&
+					searchParams.getYearEnd() != null) {
+			  criteria.add(Restrictions.between("year",
+					  searchParams.getYearStart(), searchParams.getYearEnd())); 
+			  logger.info("YEARS {}", criteria.list());
+			}
+			
+			if (searchParams.getOrder())
+				criteria.addOrder(Order.desc(searchParams.getOrderField()));
 			else
-				criteria.addOrder(Order.asc(bookSearch.getSort()));
-			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-					.setFirstResult(bookSearch.getLowBorder())
-					.setMaxResults(bookSearch.getHighBorder());
-			page.setBooks(criteria.list());
-			return page;
+				criteria.addOrder(Order.asc(searchParams.getOrderField()));
+			return criteria.list();
 		}
 	
 		@Override
-		public Page getBooksComplexByParams(BookSearch bookSearch) {
-			bookSearch.setBorders();
-			Page page = new Page();
-			page.setCurrentPageNum(bookSearch.getViewPageNum());
+		public List<Book> getBooksComplexByParams(AdvancedSearchQuery advancedSearchQuery, SearchParams searchParams) {
+			
 			Criteria criteria = factory.getCurrentSession().createCriteria(
 					Book.class);
-			if (bookSearch.getGenreId() > 0) {
-				criteria.add(Restrictions.eq("genre.id", bookSearch.getGenreId()));
+			if (advancedSearchQuery.getGenreId() > 0) {
+				criteria.add(Restrictions.eq("genre.id", advancedSearchQuery.getGenreId()));
 			}
-			if (!bookSearch.getTitle().equals("")) {
-				criteria.add(Restrictions.like("title", "%" + bookSearch.getTitle()
+			if (!advancedSearchQuery.getTitle().equals("")) {
+				criteria.add(Restrictions.like("title", "%" + advancedSearchQuery.getTitle()
 						+ "%"));
 			}
-			if (!bookSearch.getAuthors().equals("")) {
+			if (!advancedSearchQuery.getAuthors().equals("")) {
 				criteria.add(Restrictions.like("authors",
-						"%" + bookSearch.getAuthors() + "%"));
+						"%" + advancedSearchQuery.getAuthors() + "%"));
 			}
-			if (!bookSearch.getPublisher().equals("")) {
+			if (!advancedSearchQuery.getPublisher().equals("")) {
 				criteria.add(Restrictions.like("publisher",
-						"%" + bookSearch.getPublisher() + "%"));
+						"%" + advancedSearchQuery.getPublisher() + "%"));
 			}
-			/*
-			 * if (bookSearch.getBookPageStart() != null &&
-			 * bookSearch.getBookPageEnd() != null)
-			 * criteria.add(Restrictions.between("pages",
-			 * bookSearch.getBookPageStart(), bookSearch.getBookPageEnd()));
-			 */
-			page.setGeneralItemsQuantity(criteria.list().size());
-			if (bookSearch.getOrder())
-				criteria.addOrder(Order.desc(bookSearch.getSort()));
+			if (searchParams.getBookPageStart() != null &&
+					searchParams.getBookPageEnd() != null) {
+			  criteria.add(Restrictions.between("pages",
+					  searchParams.getBookPageStart(), searchParams.getBookPageEnd())); 
+			  logger.info("PAGES {}", criteria.list());
+			}
+			 
+			if (searchParams.getOrder())
+				criteria.addOrder(Order.desc(searchParams.getOrderField()));
 			else
-				criteria.addOrder(Order.asc(bookSearch.getSort()));
-			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-					.setFirstResult(bookSearch.getLowBorder())
-					.setMaxResults(bookSearch.getHighBorder());
-			page.setBooks(criteria.list());
-	
-			return page;
+				criteria.addOrder(Order.asc(searchParams.getOrderField()));
+			
+			return criteria.list();
 		}
+
 
 }

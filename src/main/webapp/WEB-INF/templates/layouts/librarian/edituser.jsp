@@ -46,8 +46,15 @@
 							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libConfirmed"/></label>
 							    <div class="col-sm-10">
 							    	 <select name="confirm" class="form-control">
-				                		<option value="true">true</option>
+							    	 <c:if test="${user.confirm == true }">
+				                		<option value="true" selected="selected">true</option>
 				                		<option value="false">false</option>
+				                	 </c:if>	
+				                	  <c:if test="${user.confirm == false }">
+				                		<option value="true">true</option>
+				                		<option value="false" selected="selected">false</option>
+				                	 </c:if>	
+				                		
 				                	</select>
 							    </div>
 							 </div>
@@ -56,8 +63,14 @@
 							    <label for="inputEmail3" class="col-sm-2 control-label">SMS</label>
 							    <div class="col-sm-10">
 							    	 <select name="sms" class="form-control">
-				                		<option value="true">true</option>
+				                		<c:if test="${user.sms == true }">
+				                		<option value="true" selected="selected">true</option>
 				                		<option value="false">false</option>
+				                	 </c:if>	
+				                	  <c:if test="${user.sms == false }">
+				                		<option value="true">true</option>
+				                		<option value="false" selected="selected">false</option>
+				                	 </c:if>	
 				                	</select>
 							    </div>
 							 </div>

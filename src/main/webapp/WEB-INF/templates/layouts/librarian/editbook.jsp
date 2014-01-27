@@ -95,8 +95,9 @@
 							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libGenre"/></label>
 							    <div class="col-sm-10">
 							    	   <select name="genreId" class="form-control">
+							    	   <option value="genre">${book.genre}</option>
 					                    <c:forEach var="genre" items="${genre}">
-					                        <option value="${genre.getId()}">${genre.getDescription()}</option>
+					                        <option value="${genre.getGenreId()}">${genre.genreTranslation}</option>
 					                    </c:forEach>
 				                </select>
 							    </div>

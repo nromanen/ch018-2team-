@@ -1,12 +1,9 @@
 
-$(document)
-		.ready(
-				function() {
+$(document).ready(function() {
 					if ($(".calendar").size() == 0) {
 						$('#empty_orders_list').modal("show");
 					}
-					$(".calendar")
-							.each(
+					$(".calendar").each(
 									function() {
 										var changed = $(this).parent().find(
 												".changed").val();
@@ -18,8 +15,7 @@ $(document)
 										var rawMinDate = getDateInFormat(minDateLong);
 										var minDate = rawMinDate.split(" ");
 										console.log("minDate " + minDate);
-										var $orders = $(this).parent().find(
-												'.order');
+										var $orders = $(this).parent().find('.order');
 
 										/*
 										 * if(changed === 'true'){
@@ -53,52 +49,27 @@ $(document)
 																		.addClass(
 																				'xdsoft_disabled');
 															},
-															onSelectDate : function(
-																	current_time,
-																	$input) {
-																var days = getAvailableDays(
-																		current_time,
-																		$orders);
-																console
-																		.log(days);
-																var d = 'can order for '
-																		+ days
-																		+ 'days';
-																if ($(this)
-																		.find(
-																				$('.picker_notify'))
-																		.attr(
-																				'class') === undefined) {
-																	console
-																			.log($(this))
-																	var $div = $(
-																			'<div>',
+															onSelectDate : function(current_time, $input) {
+																var days = getAvailableDays(current_time, $orders);
+																console.log(days);
+																var d = 'can order for '+ days + 'days';
+																if ($(this).find($('.picker_notify'))
+																		.attr('class') === undefined) {
+																	var $div = $('<div>',
 																			{
 																				class : 'picker_notify',
 																				title : d,
 																				style : 'position : absolute; top: 0%; left: 50%; text-size:16px;'
 																			});
-																	$div
-																			.attr(
-																					'data-toggle',
-																					'tooltip');
-																	$div
-																			.appendTo($(this));
-																	$(
-																			'.picker_notify')
-																			.tooltip(
-																					'show');
+																	$div.attr('data-toggle', 'tooltip');
+																	$div.appendTo($(this));
+																	$('.picker_notify')
+																			.tooltip('show');
 
 																} else {
-																	$(
-																			'.picker_notify')
-																			.attr(
-																					'data-original-title',
-																					d)
-																			.tooltip(
-																					'fixTitle')
-																			.tooltip(
-																					'show');
+																	$('.picker_notify').attr('data-original-title',d)
+																			.tooltip('fixTitle')
+																			.tooltip('show');
 																}
 
 															},
@@ -136,7 +107,7 @@ $(document)
 
 function deleteOrder(orderId) {
 	$.ajax({
-		url : "/library/books/order/delete",
+		url : $('#path').attr('url') + "/books/order/delete",
 		type : "POST",
 		data : {
 			'orderId' : orderId
@@ -161,7 +132,7 @@ function deleteOrder(orderId) {
 function editOrder(orderId, date) {
 
 	$.ajax({
-		url : "/library/books/order/edit",
+		url : $('#path').attr('url') + "/books/order/edit",
 		type : "POST",
 		data : {
 			'orderId' : orderId,

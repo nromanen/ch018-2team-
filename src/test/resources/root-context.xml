@@ -1,0 +1,83 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+        xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+	
+		
+	
+	
+	<!-- <context:component-scan base-package="com.ch018.library" />  -->
+            
+	<context:annotation-config />
+
+  	<task:annotation-driven />
+  	
+	<bean id="bookServiceMock" name="bookServiceMock" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.service.BookService"/>
+ </bean>
+ 
+ <bean id="personServiceMock" name="personServiceMock" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.service.PersonService"/>
+ </bean>
+ 
+ <bean id="genreServiceMock" name="genreServiceMock" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.service.GenreService"/>
+ </bean>
+ 
+ <bean id="useServiceMock" name="useServiceMock" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.service.BookInUseService"/>
+ </bean>
+ 
+ <bean id="ordersServiceMock" name="ordersServiceMock" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.service.OrdersService"/>
+ </bean>
+
+<bean id="wishServiceMock" name="wishServiceMock" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.service.WishListService"/>
+ </bean>
+
+ <bean id="registratonValidatorMock" name="registratonValidatorMock" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.validation.RegistrationFormValidator"/>
+ </bean>
+
+<bean id="passwordValidatorMock" name="passwordValidatorMock" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.validation.PasswordValidator"/>
+ </bean>
+
+<bean id="pageContainer" name="pageContainer" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.helper.PageContainer"/>
+ </bean>
+ 
+ <bean id="searchParams" name="searchParams" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.helper.SearchParams"/>
+ </bean>
+
+ <bean id="simpleSearchQuery" name="simpleSearchQuery" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.helper.SimpleSearchQuery"/>
+ </bean>
+
+
+
+	<import resource="data.xml" />
+	<import resource="mail.xml" />
+	<import resource="security.xml" />
+    
+    
+
+	
+
+</beans>

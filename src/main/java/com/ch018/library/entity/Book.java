@@ -3,23 +3,29 @@ package com.ch018.library.entity;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 @Entity
 @Table(name = "books")
+@Proxy(lazy = false)
 public class Book implements Serializable {
 	
 		private static final int MAX_NAME = 255;
@@ -45,9 +51,13 @@ public class Book implements Serializable {
 		@Column(name = "authors")
 		private String authors;
 	
-		@ManyToOne()
+		/*@ManyToOne
 		@JoinColumn(name = "gid")
-		private Genre genre;
+		private Genre genreOld;*/
+		
+		@ManyToMany(fetch=FetchType.EAGER)
+		@JoinTable(name = "book_genre", joinColumns = {@JoinColumn(name = "bId")}, inverseJoinColumns = {@JoinColumn(name = "gid")})
+		private Set<GenreTranslations> genre;
 	
 		@NotNull
 		@Range(min = MIN_YEAR, max = MAX_YEAR)
@@ -201,14 +211,22 @@ public class Book implements Serializable {
 		public void setPersonsOrders(Set<Person> personsOrders) {
 			this.personsOrders = personsOrders;
 		}
-	
-		public Genre getGenre() {
+		
+		public Set<GenreTranslations> getGenre() {
 			return genre;
 		}
-	
-		public void setGenre(Genre genre) {
+		
+		public void setGenre(Set<GenreTranslations> genre) {
 			this.genre = genre;
 		}
+	
+		/*public Genre getGenreOld() {
+			return genreOld;
+		}
+	
+		public void setGenreOld(Genre genre) {
+			this.genreOld = genre;
+		}*/
 	
 		public int getBookcase() {
 			return bookcase;
@@ -250,27 +268,7 @@ public class Book implements Serializable {
 			this.personsWishes = personsWishes;
 		}
 	
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			if (this.title.equals(((Book) obj).getTitle())
-					&& this.getAuthors().equals(((Book) obj).getAuthors())
-					&& this.getPublisher().equals(((Book) obj).getPublisher())) {
-				return true;
-			}
-			return false;
-		}
-	
-		@Override
-		public int hashCode() {
-			return this.bId;
-		}
+		
 	
 		@Override
 		public String toString() {
@@ -280,8 +278,7 @@ public class Book implements Serializable {
 					+ description + ", bookcase=" + bookcase + ", shelf=" + shelf
 					+ ", term=" + term + ", img=" + img + ", currentQuantity="
 					+ currentQuantity + ", generalQuantity=" + generalQuantity
-					+ ", personsUse=" + personsUse + ", personsOrders="
-					+ personsOrders + ", personsWishes=" + personsWishes + "]";
+					 + "]";
 		}
 
 }

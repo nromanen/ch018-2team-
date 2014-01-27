@@ -45,18 +45,17 @@
 							    	<input type="text" class="form-control" name="pages" placeholder="<spring:message code="message.libPages"/>">
 							    </div>
 							 </div>
-				            
+
 				             <div class="form-group">
 							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libGenre"/></label>
 							    <div class="col-sm-10">
 							    	   <select name="genreId" class="form-control">
 					                    <c:forEach var="genre" items="${genre}">
-					                        <option value="${genre.getId()}">${genre.getDescription()}</option>
+					                        <option value="${genre.getGenreId()}">${genre.getGenreTranslation()}</option>
 					                    </c:forEach>
 				                </select>
 							    </div>
 							 </div>
-				              
 		
 						<div class="col-md-1 col-md-offset-10" style="margin-top:10px">
 							<input type="submit" class="btn btn-default btn-sm" value="<spring:message code="message.libSearch"/>">

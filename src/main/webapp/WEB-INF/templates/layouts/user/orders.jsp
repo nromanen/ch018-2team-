@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="row well">
 
+	<div id="path" url="${pageContext.request.contextPath}"></div>
+
 	<div class="col-md-2" id="left_main">
 		<div class="pull-left text-info">
 			<h3>Orders</h3>

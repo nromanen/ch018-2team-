@@ -1,5 +1,7 @@
 package com.ch018.library.controller;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.json.JSONObject;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ch018.library.service.PersonService;
 import com.ch018.library.validation.Password;
+import com.ch018.library.validation.PasswordValidator;
+import com.ch018.library.validation.RegistrationFormValidator;
 import com.ch018.library.validation.UserRegistrationForm;
 
 /**
@@ -42,22 +47,24 @@ public class RegisterController {
 		private BCryptPasswordEncoder encoder;
 	
 		@Autowired(required = true)
-		@Qualifier("registrationformvalidator")
-		private Validator validator;
+		//@Qualifier("registrationformvalidator")
+		private RegistrationFormValidator validator;
 	
 		@Autowired(required = true)
-		@Qualifier("passwordvalidator")
-		private Validator validatorPass;
+		//@Qualifier("passwordvalidator")
+		private PasswordValidator validatorPass;
 	
 		@RequestMapping(value = "/register", method = RequestMethod.POST)
 		@Secured({ "ROLE_ANONYMOUS" })
-		public ResponseEntity<String> addUser(@Valid @ModelAttribute UserRegistrationForm form, BindingResult result) {
+		public ResponseEntity<String> addUser(@Valid @ModelAttribute UserRegistrationForm form, BindingResult result, HttpServletRequest request) {
 			validator.validate(form, result);
 			if (result.hasErrors()) {
 				return new ResponseEntity<>(getErrors(result),
 						HttpStatus.BAD_REQUEST);
 			}
-			if (personService.register(form))
+			String path = request.getScheme() + "://" + request.getServerName() + ":"
+						+ String.valueOf(request.getServerPort())  + request.getContextPath();
+			if (personService.register(form, path))
 				return new ResponseEntity<>(new JSONObject().toString(),
 						HttpStatus.OK);
 			else
@@ -67,18 +74,21 @@ public class RegisterController {
 		}
 	
 		@RequestMapping(value = "/confirm", method = RequestMethod.GET)
-		public String confirmation(@RequestParam("key") String key) {
-	
-			if (personService.confirmMail(key))
+		public String confirmation(@RequestParam("key") String key, HttpServletRequest request) {
+			logger.info("Before confirm {}", SecurityContextHolder.getContext().getAuthentication());
+			if (personService.confirmMail(key, request)) {
+				logger.info("After confirm {}", SecurityContextHolder.getContext().getAuthentication());
 				return "redirect:/";
+			}
 			else
 				return "error";
 		}
 	
 		@RequestMapping(value = "/restore", method = RequestMethod.POST)
-		public ResponseEntity<String> restore(@RequestParam("email") String email) {
-	
-			if (personService.restoreSendEmail(email)) {
+		public ResponseEntity<String> restore(@RequestParam("email") String email, HttpServletRequest request) {
+			String path = request.getScheme() + "://" + request.getServerName() + ":"
+					+ String.valueOf(request.getServerPort())  + request.getContextPath();
+			if (personService.restoreSendEmail(email, path)) {
 				return new ResponseEntity<>(new JSONObject().toString(),
 						HttpStatus.OK);
 			}

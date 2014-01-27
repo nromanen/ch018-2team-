@@ -1,16 +1,26 @@
 package com.ch018.library.service;
 
 import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +55,10 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Autowired
 		private BookInUseService bookInUse;
+		
+		@Autowired
+		@Qualifier(value = "org.springframework.security.authenticationManager")
+	    protected AuthenticationManager authenticationManager;
 	
 		private Person personEdit;
 	
@@ -125,13 +139,16 @@ public class PersonServiceImpl implements PersonService {
 		public void updatePassword(Password password, Person person)
 				throws Exception {
 			if (!encoder.matches(password.getOldPass(), person.getPassword())) {
+				logger.info("person {}", person);
 				logger.error("passwords don't match during update");
 				throw new Exception("old password incorrect");
 			}
-			Authentication auth = new PreAuthenticatedAuthenticationToken(
-					person.getEmail(), encoder.encode(password.getNewPass()));
 			person.setPassword(encoder.encode(password.getNewPass()));
 			update(person);
+			Authentication auth = new PreAuthenticatedAuthenticationToken(
+					person.getEmail(), encoder.encode(password.getNewPass())
+					, Arrays.asList(new SimpleGrantedAuthority(person.getProle())));
+			
 			SecurityContextHolder.getContext().setAuthentication(auth);
 			logger.error("passwords for {} changed", person.getEmail());
 		}
@@ -169,7 +186,7 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Override
 		@Transactional
-		public void changeEmail(String email, Person person) throws Exception {
+		public void changeEmail(String email, Person person, String path) throws Exception {
 			try {
 				if (getByEmail(email) != null)
 					throw new Exception("email already in use");
@@ -179,7 +196,7 @@ public class PersonServiceImpl implements PersonService {
 				person.setMailKey(key);
 				update(person);
 				mailService.sendConfirmationMail("springytest@gmail.com",
-						"etenzor@gmail.com", "email change confirmation", key);
+						"etenzor@gmail.com", "email change confirmation", key, path);
 				Authentication auth = new PreAuthenticatedAuthenticationToken(
 						email, SecurityContextHolder.getContext()
 								.getAuthentication().getPrincipal());
@@ -193,7 +210,7 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Override
 		@Transactional
-		public boolean register(UserRegistrationForm form) {
+		public boolean register(UserRegistrationForm form, String path) {
 			Person person = new Person(form.getName(), form.getSurname(),
 					form.getEmail(), form.getPassword(), form.getCellPhone());
 			if (getByEmail(person.getEmail()) != null) {
@@ -203,11 +220,10 @@ public class PersonServiceImpl implements PersonService {
 			person.setProle("ROLE_USER");
 			person.setBooksAllowed(DEFAULT_BOOKS_ALLOWED);
 			person.setMultiBook(DEFAULT_BOOKS_ALLOWED);
-			String mailKey = encoder.encode(person.getEmail().concat(
-					String.valueOf(new Random().nextLong())));
+			String mailKey = getHashFromString(form.getEmail());
 			person.setMailKey(mailKey);
 			mailService.sendConfirmationMail("springytest@gmail.com",
-					"etenzor@gmail.com", "confirmation mail", person.getMailKey());
+					"etenzor@gmail.com", "confirmation mail", person.getMailKey(), path);
 			save(person);
 			logger.info("new user {} registered", person);
 			return true;
@@ -215,28 +231,40 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Override
 		@Transactional
-		public boolean confirmMail(String key) {
-			Person person = personDao.getPersonByKey(key);
-			if (person == null)
+		public boolean confirmMail(String key, HttpServletRequest request) {
+			try {
+				Person person = personDao.getPersonByKey(key);
+				if (person == null) {
+					logger.info("key not found in db");
+					return false;
+				}
+					
+				person.setMailConfirm(Boolean.TRUE);
+				person.setMailKey(null);
+				save(person);
+				Authentication token = 
+						new PreAuthenticatedAuthenticationToken(person.getEmail(), person.getPassword()
+						, Arrays.asList(new SimpleGrantedAuthority(person.getProle())));
+				SecurityContextHolder.getContext().setAuthentication(token);
+				
+				logger.info("person {} successfully confirm mail | auth {}", person, SecurityContextHolder.getContext());
+				return true;
+			} catch (Exception e) {
+				logger.info("Error in confirm {}", e.getMessage());
 				return false;
-			person.setMailConfirm(Boolean.TRUE);
-			person.setMailKey(null);
-			save(person);
-			logger.info("person {} successfully confirm mail", person);
-			return true;
+			}
 		}
 	
 		@Override
 		@Transactional
-		public boolean restoreSendEmail(String email) {
+		public boolean restoreSendEmail(String email, String path) {
 			Person person = getByEmail(email);
 			if (person != null) {
 	
-				String mailKey = encoder.encode(person.getEmail().concat(
-						String.valueOf(new Random().nextLong())));
+				String mailKey = getHashFromString(email);
 				person.setMailKey(mailKey);
 				mailService.sendRestoreMail("springytest@gmail.com",
-						"etenzor@gmail.com", person.getMailKey());
+						"etenzor@gmail.com", person.getMailKey(), path);
 				save(person);
 				logger.info("user {} restore pass mail send", person);
 				return true;
@@ -328,6 +356,28 @@ public class PersonServiceImpl implements PersonService {
 	
 			return books;
 	
+		}
+
+		@Override
+		public List<Person> orderByName() {
+			return personDao.orderByName();
+		}
+
+		@Override
+		public List<Person> orderBySurname() {
+			// TODO Auto-generated method stub
+			return personDao.orderBySurname();
+		}
+
+		@Override
+		public List<Person> orderByRating() {
+			// TODO Auto-generated method stub
+			return personDao.orderByRating();
+		}
+
+		@Override
+		public List<Person> pagination(int pageNumber) {
+			return personDao.pagination(pageNumber);
 		}
 
 }

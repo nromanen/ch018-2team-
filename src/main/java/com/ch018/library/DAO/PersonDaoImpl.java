@@ -4,6 +4,7 @@
  */
 package com.ch018.library.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -11,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -177,19 +179,19 @@ public class PersonDaoImpl implements PersonDao {
 			Criteria criteria = session.createCriteria(Person.class);
 	
 			if (!person.getName().equals("")) {
-				criteria.add(Restrictions.eq("name", person.getName()));
+				criteria.add(Restrictions.like("name", person.getName(), MatchMode.ANYWHERE));
 			}
 	
 			if (!person.getSurname().equals("")) {
-				criteria.add(Restrictions.eq("surname", person.getSurname()));
+				criteria.add(Restrictions.like("surname", person.getSurname(), MatchMode.ANYWHERE));
 			}
 	
 			if (!person.getEmail().equals("")) {
-				criteria.add(Restrictions.eq("email", person.getEmail()));
+				criteria.add(Restrictions.like("email", person.getEmail(), MatchMode.ANYWHERE));
 			}
 	
 			if (!person.getCellphone().equals("")) {
-				criteria.add(Restrictions.eq("cellphone", person.getCellphone()));
+				criteria.add(Restrictions.like("cellphone", person.getCellphone(), MatchMode.ANYWHERE));
 			}
 	
 			List<Person> users = criteria.list();
@@ -208,6 +210,73 @@ public class PersonDaoImpl implements PersonDao {
 				return null;
 			}
 	
+		}
+
+		@Override
+		public List<Person> orderByName() {
+			
+			Session session = factory.openSession();
+			Criteria criteria = session.createCriteria(Person.class);
+			criteria.addOrder(Order.asc("name"));
+			
+			List<Person> users = criteria.list();
+			
+			for (Person person : users) {
+				System.out.println(person.getName());
+			}
+			
+			return users;
+		}
+
+		@Override
+		public List<Person> orderBySurname() {
+
+			Session session = factory.openSession();
+			Criteria criteria = session.createCriteria(Person.class);
+			criteria.addOrder(Order.asc("surname"));
+			
+			List<Person> users = criteria.list();
+			
+			for (Person person : users) {
+				System.out.println(person.getName());
+			}
+			
+			return users;
+		}
+
+		@Override
+		public List<Person> orderByRating() {
+
+			Session session = factory.openSession();
+			Criteria criteria = session.createCriteria(Person.class);
+			criteria.addOrder(Order.asc("generalRating"));
+			
+			List<Person> users = criteria.list();
+			
+			for (Person person : users) {
+				System.out.println(person.getName());
+			}
+			
+			return users;
+		}
+
+		@Override
+		public List<Person> pagination(int pageNumber) {
+			int pageNumb = 1;
+			int pageSize = 2;
+			
+			Session session = factory.openSession();
+			Criteria criteria = session.createCriteria(Person.class);
+			criteria.setFirstResult((pageNumb - 1) * pageSize);
+			criteria.setMaxResults(pageSize);
+			
+			List<Person> users = criteria.list();
+			
+			for (Person person : users) {
+				System.out.println(person.getName());
+			}
+			
+			return users;
 		}
 
 }
