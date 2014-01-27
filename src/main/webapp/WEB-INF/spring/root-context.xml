@@ -29,11 +29,6 @@
       <aop:scoped-proxy/>
    	</bean>
    	
-   	<bean id="simpleSearchQuery" class="com.ch018.library.helper.SimpleSearchQuery" scope="session">
-      
-      <aop:scoped-proxy/>
-   	</bean>
-   	
    	<bean id="pageContainer" class="com.ch018.library.helper.PageContainer" scope="session">
       
       <aop:scoped-proxy/>

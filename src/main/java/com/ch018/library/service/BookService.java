@@ -10,11 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
-import com.ch018.library.helper.AdvancedSearchQuery;
-import com.ch018.library.helper.BookSearch;
-import com.ch018.library.helper.Page;
 import com.ch018.library.helper.SearchParams;
-import com.ch018.library.helper.SimpleSearchQuery;
 import com.ch018.library.validation.BookEditValidator;
 
 @Service
@@ -28,15 +24,16 @@ public interface BookService {
              List<Book> getBooksByAuthors(String authors);
              List<Book> getBooksByYear(int year);
              List<Book> getBooksByGenre(Genre genre);
-             List<Book> getBooksComplex(SimpleSearchQuery searchQuery, SearchParams searchParams);
+             List<Book> getBooksComplex(SearchParams searchParams);
              List<Book> getBooksByPublisher(String publisher);
              List<Book> getBooksByPagesEq(int pages);
              List<Book> advancedSearch(Book book);
              List<Book> simpleSearch(String query);
-             List<Book> getBooksComplexByParams(AdvancedSearchQuery advancedSearchQuery, SearchParams searchParams);
              Map<BooksInUse, Integer> getHolders(Book book);
              void update(BookEditValidator book, int genreId);
              HashMap<Book, String> getAllByLocale(Locale locale);
              HashMap<Book, String> getBooksByLocale(List<Book> book, Locale locale);
              HashMap<Book, String> getBookByLocale(Book book, Locale locale);
+             Integer getMinIntegerField(String field);
+             Integer getMaxIntegerField(String field);
 }

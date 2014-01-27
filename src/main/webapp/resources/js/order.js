@@ -1,6 +1,4 @@
-$(document)
-		.ready(
-				function() {
+$(document).ready(function() {
 
 					var isLimitReacher = $('#book_limit').val();
 					if (isLimitReacher === 'true')
@@ -11,9 +9,7 @@ $(document)
 					minD = getDateInFormat(tmpDate);
 					minDateSpl = minD.split(" ");
 
-					$('#datetimepicker')
-							.datetimepicker(
-									{
+					$('#datetimepicker').datetimepicker({
 										onGenerate : function(ct, $input) {
 											$(this)
 													.find(
@@ -21,15 +17,11 @@ $(document)
 													.addClass('xdsoft_disabled');
 
 										},
-										onSelectDate : function(current_time,
-												$input) {
-											var days = getAvailableDays(
-													current_time, $('.order'));
-											var d = 'can order for ' + days
-													+ 'days';
-											if ($(this).find(
-													$('#picker_notify')).attr(
-													'id') === undefined) {
+										onSelectDate : function(current_time, $input) {
+											var days = getAvailableDays(current_time, $('.order'));
+											var d = 'can order for ' + days + 'days';
+											console.log('can order for ' + days + 'days');
+											if ($(this).find($('#picker_notify')).attr('id') === undefined) {
 												console.log($(this));
 
 												var $div = $(
@@ -39,26 +31,18 @@ $(document)
 															title : d,
 															style : 'position : absolute; top: 0%; left: 50%; text-size:16px;'
 														});
-												$div.attr('data-toggle',
-														'tooltip');
+												$div.attr('data-toggle','tooltip');
 												$div.appendTo($(this));
-												$('#picker_notify').tooltip(
-														'show');
+												$('#picker_notify').tooltip('show');
 
 											} else {
-												console.log("before"
-														+ $('#picker_notify')
-																.attr('title'));
+												console.log("before" + $('#picker_notify').attr('title'));
 												//$('#picker_notify').attr('title', d);
 
-												$('#picker_notify')
-
-												.attr('data-original-title', d)
+												$('#picker_notify').attr('data-original-title', d)
 														.tooltip('fixTitle')
 														.tooltip('show');
-												console.log("after"
-														+ $('#picker_notify')
-																.attr('title'));
+												console.log("after"+ $('#picker_notify').attr('title'));
 											}
 
 										},
@@ -104,6 +88,11 @@ function makeOrder(bookId, time, url) {
 
 			$('#order_modal').modal('show');
 
+		},
+		error : function(xhr, status, error) {
+
+			$('#order_err').text(xhr.responseText);
+			$('#order_err').removeClass('hide');
 		}
 	});
 }
