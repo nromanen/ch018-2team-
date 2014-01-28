@@ -90,6 +90,10 @@
 	</div>
 	
 	</div>		
+	
+	
+	
+	
 </div>
 
 
@@ -98,7 +102,7 @@
 	function checkDelete()
 	{
 		$.ajax({
-			url: "/librarian/users/deleteuser,
+			url: "/librarian/users/deleteuser",
 			function(error){
 				if(error == "error")
 				{
@@ -129,7 +133,7 @@ function delete_user(){
 
 }
 function k(){
-    $("#d").modal();
+    $("#wish_modal").modal("show");
 }
 </script>
 
