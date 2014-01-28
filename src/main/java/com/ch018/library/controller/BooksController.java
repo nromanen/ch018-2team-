@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -59,9 +61,11 @@ public class BooksController {
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
         
+        private Boolean sortLocale = Boolean.FALSE;
+        
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(Model model) {
-        	logger.info("searchParamsStart: {}", searchParams);
+        	logger.info("searchParamsStart: {}", searchParams );
         	Page page;
         	searchParams.setDefaults();
         	pageContainer.recalculate(searchParams);
@@ -79,16 +83,27 @@ public class BooksController {
         		searchParams.init();
         		
         	}
-        	System.out.println(tmpParams.getFieldChanged() + " " + tmpParams.getOrderChanged());
-        	if(!tmpParams.getFieldChanged() && !tmpParams.getOrderChanged()) {
+        	if((!tmpParams.getFieldChanged() && !tmpParams.getOrderChanged())) {
         		
         		searchParams.update(tmpParams);
         		logger.info("search param GET after update {}", searchParams);
         		page = pageContainer.getPage(searchParams);
         		
-        	}else {
+        	} else if (sortLocale) {
+        		logger.info("in locale", searchParams);
         		searchParams.update(tmpParams);
+        		long timeS = System.currentTimeMillis();
+        		pageContainer.recalculateLocal(searchParams);
+        		logger.info("Local Sort time " + (System.currentTimeMillis() - timeS));
+        		page = pageContainer.getPage(searchParams);
+        	}
+        	else {
+        		
+        		searchParams.update(tmpParams);
+        		long timeS = System.currentTimeMillis();
             	pageContainer.recalculate(searchParams);
+            	logger.info("DB Sort time " + (System.currentTimeMillis() - timeS));
+            	
             	page = pageContainer.getPage(searchParams);
         	}
         	

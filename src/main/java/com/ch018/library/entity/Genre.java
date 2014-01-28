@@ -25,7 +25,7 @@ public class Genre implements Serializable {
        	@Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int id;
-
+       
         @Column(name = "description")
         private String description;
         
@@ -64,7 +64,8 @@ public class Genre implements Serializable {
             this.description = description;
         }
         
-        @Override
+        
+		@Override
         public boolean equals(Object other) {
             if (other == null) return false;
             if (other == this) return true;

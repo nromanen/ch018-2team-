@@ -28,3 +28,20 @@ ul li a{
 .my-error-class{
     color: red;
 }
+
+
+#search_panel, #pages, #years{
+	background: #EAEAEA;
+}
+
+#search_panel{
+	
+	border-radius: 10px;
+	
+}
+
+#search_panel  .row{
+	
+	padding: 0 10px;
+	
+}

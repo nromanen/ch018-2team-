@@ -33,6 +33,7 @@
       
       <aop:scoped-proxy/>
    	</bean>
+   	
 	
 	<import resource="data.xml" />
 	<import resource="security.xml"/>
