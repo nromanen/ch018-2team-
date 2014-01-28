@@ -21,7 +21,7 @@
 			<tiles:insertAttribute name="header" />
 		</div>
 
-		<div>
+		<div style="min-height : 640px">
 		<tiles:insertAttribute name="content" />
 		</div>
 		<tiles:insertAttribute name="footer" />

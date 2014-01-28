@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,10 +54,12 @@ public class OrderController {
 	@Autowired
 	private BookInUseService useService;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public String orderGet(@RequestParam("id") Integer bookId, Model model,
+	@RequestMapping(method = RequestMethod.GET, value = "{id}")
+	public String orderGet(@PathVariable(value = "id") Integer bookId, Model model,
 			Principal principal) {
-		
+		if(bookId == null) {
+			return "redirect:/books";
+		}
 		Book book = bookService.getBookById(bookId);
 		model.addAttribute("book", book);
 		if(principal == null) {

@@ -69,14 +69,14 @@ public class PageContainer {
 		return page;
 	}
 	
-	private void orderLocale(SearchParams searchParams) {
+	private void orderLocale(SearchParams searchParams)  {
 		final String field = searchParams.getOrderField();
 		final Boolean order = searchParams.getOrder();
 		
 		Comparator<Book> comparator = new Comparator<Book>() {
 			
 			@Override
-			public int compare(Book book1, Book book2) {
+			public int compare(Book book1, Book book2)  {
 				Field classField = null;
 				Object o1 = null;
 				Object o2 = null;
@@ -88,17 +88,9 @@ public class PageContainer {
 				} catch (Exception e) {
 					logger.error("during locale sort {}", e.getMessage());
 				}
-				if(o1 instanceof Number && o2 instanceof Number) {
-					Integer n1 = (Integer) o1;
-					Integer n2 = (Integer) o2;
-					if(!order) {
-						return n1.compareTo(n2);
-					} else {
-						return n2.compareTo(n1);
-					}
-				} else if (o1 instanceof String && o2 instanceof String) {
-					String n1 = (String) o1;
-					String n2 = (String) o2;
+				if(o1 instanceof Comparable && o2 instanceof Comparable) {
+					Comparable n1 = (Comparable) o1;
+					Comparable n2 = (Comparable) o2;
 					if(!order) {
 						return n1.compareTo(n2);
 					} else {

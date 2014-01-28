@@ -131,7 +131,7 @@
 				<div class="item" id="i${i}">
 					<div class="item-image">
 						<a
-							href="${pageContext.request.contextPath}/books/order?id=${book.bId}">
+							href="${pageContext.request.contextPath}/books/order/${book.bId}">
 							<img src="${book.img}" alt="" class="img-responsive">
 						</a>
 
@@ -158,7 +158,7 @@
 
 					<div class="pull-right">
 						<a
-							href="${pageContext.request.contextPath}/books/order?id=${book.bId}"
+							href="${pageContext.request.contextPath}/books/order/${book.bId}"
 							class="btn btn-info">More</a>
 
 					</div>
