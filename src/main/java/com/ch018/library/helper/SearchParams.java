@@ -80,7 +80,7 @@ public class SearchParams {
 	    		return;
 	    	}
 	    	page = params.getPage();
-	    	if(params.getPageSize() != DEFAULT_PAGE_SIZE)
+	    	if(params.getPageSize() != 0)
 	    		pageSize = params.getPageSize();
 	    	if(params.getFieldChanged()) 
 	    		orderField = params.getOrderField();

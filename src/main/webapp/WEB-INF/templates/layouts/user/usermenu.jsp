@@ -22,11 +22,18 @@
 </sec:authorize>
 
 <sec:authorize access="hasRole('ROLE_ANONYMOUS')">
-    <div class="nav navbar-nav navbar-left" style="margin-top: 5px;">
-        <form class="form-inline" role="form" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
+
+
+
+    <div class="nav navbar-nav navbar-right" style="margin : 10px 0 10px 0;">
+        <a href="#" data-toggle="popover" role="button" data-original-title="Login Form" id = "login_popover" class="btn btn-info btn-sm" style="margin-right: 20px;">Login</a>
+        <div class="hide" id="popover_content">
+        	<div class="">
+        	<form  role="form" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
             <div class="form-group">
                 <input  class="form-control" type="text" name="j_username" placeholder="Enter Email">
             </div>
+            
             <div class="form-group">
                 <input class="form-control" type="password" name="j_password" placeholder="Enter Password">
             </div>
@@ -42,25 +49,35 @@
 				</div>
 			</c:if>  
 			
-
-            <div class="row" style="margin-left: 5px;">
-
-                <label class="text-info">
+			
+            <div class="row" style="margin-left: 5px; padding-top: 10px;">
+					
+               		 <label class="text-info">
                     <input  type="checkbox" name="_spring_security_remember_me">
-                    <span><spring:message code="message.remember" />  
-                </label>
-
-                <label class="text-info" style="margin-left: 30px;">
-                    <span><a id="restore" class="text-info"><spring:message code="message.forgot"/></a>
-                </label>
+                    <span><spring:message code="message.remember" />  </span>
+                	</label>
+					
+                	<label class="text-info">
+                    <span><a id="restore" class="text-info"><spring:message code="message.forgot"/></a></span>
+                    </label>
+                    
+               
             </div>
-
-
+            
+           
         </form>
-    </div>
-    <div class="nav navbar-nav "  style="margin-top: 7px; margin-left: 30px;">
+        </div>
+        </div>
+        
+       
         <a href="${pageContext.request.contextPath}/register" type="submit" class="btn btn-success btn-sm"><spring:message code="message.registration" /></a>
+ 		
+ 		
+        
     </div>
+   
+    
+   
     <div class="clearfix"></div>
 
 

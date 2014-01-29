@@ -45,3 +45,7 @@ ul li a{
 	padding: 0 10px;
 	
 }
+
+.row.well{
+	min-height: 640px;
+}

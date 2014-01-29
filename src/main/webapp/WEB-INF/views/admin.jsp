@@ -8,12 +8,37 @@
         
         <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
          <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
+         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script> 
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+            	<div class="col-md-3">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<div class="panel-title">Admin Menu</div>
+					</div>
+					<div class="panel-body">
+						<ul class="nav nav-pills nav-stacked" id="nav_bar">
+							<li><a href="#users_tab" data-toggle="tab"
+								class="btn btn-default">Users</a></li>
+							<li><a href="#settings_tab" data-toggle="tab"
+								class="btn btn-default">System Settings</a></li>
+						</ul>
+					</div>
+
+				</div>
+			</div>
+                <div class="col-md-8">
+                
+                <div id="tab_content" class="tab-content">
+				<div id="users_tab" class="tab-pane fade active in">
+                <div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="panel-title">Users</div>
+							</div>
+							<div class="panel-body">
                     <ul class="list-group list-unstyled">
                         <li class="list-group-item">
                             <div class="row">
@@ -78,11 +103,45 @@
                         </li>
                         </c:forEach>
                     </ul>
+                    </div>
+                    </div>
+                    </div>
+                    <div id="settings_tab" class="tab-pane fade">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="panel-title">System Settings</div>
+							</div>
+							<div class="panel-body">
+								<form role="form"
+									action="${pageContext.request.contextPath}/admin/syssetings"
+									method="post">
+									<div class="checkbox">
+										<label> <c:choose>
+												<c:when test="${switcher}">
+													<input class="checkbox" type="checkbox" name="switcher"
+														checked="checked"> Local search disable
+                                                </c:when>
+												<c:otherwise>
+													<input class="checkbox" type="checkbox" name="switcher"
+														> Local search enable
+                                                </c:otherwise>
+											</c:choose>
+
+										</label>
+									</div>
+									<button type="submit" class="btn btn-warning btn-sm">Change</button>
+
+								</form>
+							</div>
+
+						</div>
+					</div>
                 </div>   
-                <div class="col-md-offset-10">
+                
+            </div>
+            <div class="col-md-1">
                     <a href="${pageContext.request.contextPath}/j_spring_security_logout">logout</a>
                 </div>
-            </div>
         </div>
     </body>
 </html>

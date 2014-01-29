@@ -42,7 +42,7 @@ public class OrdersDaoImpl implements OrdersDao {
 			try {
 				factory.getCurrentSession().delete(order);
 			} catch (Exception e) {
-				logger.error("during delete order {}", order);
+				logger.error("during delete order {}, {}", order, e.getMessage());
 			}
 		}
 	
@@ -93,7 +93,7 @@ public class OrdersDaoImpl implements OrdersDao {
 		@Override
 		public List<Orders> getOrderByDate(Date date) {
 			return factory.getCurrentSession().createCriteria(Orders.class)
-					.add(Restrictions.eq("date", date)).list();
+					.add(Restrictions.eq("orderDate", date)).list();
 		}
 	
 		@Override
@@ -123,7 +123,7 @@ public class OrdersDaoImpl implements OrdersDao {
 	
 			Date endDate = end.getTime();
 	
-			Session session = factory.openSession();
+			Session session = factory.getCurrentSession();
 	
 			Criteria criteria = session.createCriteria(Orders.class);
 			criteria.add(Restrictions.between("orderDate", startDate, endDate));

@@ -118,7 +118,8 @@ public class BookInUseServiceImpl implements BookInUseService {
 			booksOnHands += 1;
 			person.setMultiBook(booksOnHands);
 			personService.update(person);
-	
+			personService.countRating(person);
+			
 			Book book = bookInUse.getBook();
 			int quantity = book.getCurrentQuantity();
 			quantity += 1;

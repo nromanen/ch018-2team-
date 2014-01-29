@@ -69,7 +69,7 @@ public class PersonDaoImpl implements PersonDao {
 			try {
 				factory.getCurrentSession().update(person);
 			} catch (Exception e) {
-				logger.error("during update person {}", person);
+				logger.error("during update person {}, {}", person.getEmail(), e.getMessage());
 			}
 		}
 	

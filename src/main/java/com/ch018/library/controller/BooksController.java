@@ -26,6 +26,7 @@ import com.ch018.library.entity.Person;
 import com.ch018.library.helper.Page;
 import com.ch018.library.helper.PageContainer;
 import com.ch018.library.helper.SearchParams;
+import com.ch018.library.helper.Switch;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
@@ -58,10 +59,12 @@ public class BooksController {
         
         @Autowired
         private PageContainer pageContainer;
+        
+        @Autowired
+        private Switch switcher;
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
         
-        private Boolean sortLocale = Boolean.FALSE;
         
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(Model model) {
@@ -89,7 +92,7 @@ public class BooksController {
         		logger.info("search param GET after update {}", searchParams);
         		page = pageContainer.getPage(searchParams);
         		
-        	} else if (sortLocale) {
+        	} else if (switcher.getValue()) {
         		logger.info("in locale", searchParams);
         		searchParams.update(tmpParams);
         		long timeS = System.currentTimeMillis();

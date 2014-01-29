@@ -56,12 +56,18 @@ $(document).ready(function() {
 		
 		//pagesize
 			$('#pageSize > option').each(function() {
-
+				$(this).attr('url', path + '/books/search?page=1&pageSize=' + this.value);
 				if (this.value === $('#pagination_info').attr('pageSize')) {
 					$(this).attr('selected', 'selected');
-					return false;
 				}
 			});
+			
+			$('#pageSize').change(function () {
+				
+				location.href = $('#pageSize option:selected').attr('url');
+				
+			});
+			
 		//pagesize
 	
 		//page part

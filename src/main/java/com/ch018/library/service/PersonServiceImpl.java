@@ -168,19 +168,20 @@ public class PersonServiceImpl implements PersonService {
 		@Override
 		@Transactional
 		public Person countRating(Person person) {
-			int returnedInTime, returnedNotInTime;
+			int returnedInTime, returnedNotInTime, failedOrders;
 			double grade = 0;
 			int booksOnHands, gradeInt = 0;
 			returnedInTime = person.getTimelyReturn();
 			returnedNotInTime = person.getUntimekyReturn();
+			failedOrders = person.getFailedOrders();
 			if ((returnedInTime > 0) || (returnedNotInTime > 0)) {
 				grade = (double) returnedInTime
-						/ (returnedNotInTime + returnedInTime);
+						/ (returnedNotInTime + failedOrders + returnedInTime);
 				grade *= MAX_RATING;
 				gradeInt = (int) grade;
 			}
 			person.setGeneralRating(gradeInt);
-			update(person);
+			personDao.update(person);
 			return person;
 		}
 	

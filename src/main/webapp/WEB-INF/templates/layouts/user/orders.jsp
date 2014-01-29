@@ -31,7 +31,7 @@
 							<input type="hidden" class="orderDate"
 								value="${entry.key.orderDate.time}"> <input
 								class="calendar">
-							<button class="btn-info order_change_button">Change</button>
+							<button class="btn-info order_change_button" data-toggle="tooltip"  data-original-title="Date changed">Change</button>
 							<input class="changed" type="hidden"
 								value="${entry.key.getChanged()}">
 							<div class="alert alert-danger order_date_err hide"></div>

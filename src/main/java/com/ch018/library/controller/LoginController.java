@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.ch018.library.helper.Switch;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.PersonService;
 
@@ -27,6 +28,7 @@ public class LoginController {
         private PersonService pService;
         @Autowired
         private BookService bService;
+        
 
         @RequestMapping(value = "/")
         public String loginProcess(HttpServletRequest req, Authentication auth) {
@@ -50,6 +52,8 @@ public class LoginController {
         
         @RequestMapping(value = "/loginfail", method = RequestMethod.GET)
         public String loginFailProcess(Model model) {
+        	model.addAttribute("fail", true);
+        	System.out.println("FAIL");
             return "login";
         }
 
