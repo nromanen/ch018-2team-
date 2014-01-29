@@ -66,7 +66,7 @@ public class Scheduler {
         logger.info("Thread for untimelyReturn check started at {}", new Date());
     }
     
-    @Scheduled(cron = "0 35 2 ? * MON-FRI")
+    @Scheduled(cron = "0 21 14 ? * MON-FRI")
     public void checkOrders(){
         Runnable r = new Runnable() {
 

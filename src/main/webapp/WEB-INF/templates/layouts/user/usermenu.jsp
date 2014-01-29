@@ -26,7 +26,7 @@
 
 
     <div class="nav navbar-nav navbar-right" style="margin : 10px 0 10px 0;">
-        <a href="#" data-toggle="popover" role="button" data-original-title="Login Form" id = "login_popover" class="btn btn-info btn-sm" style="margin-right: 20px;">Login</a>
+        <a href="#" data-toggle="popover" role="button" data-original-title="Login Form" id = "login_popover" class="btn btn-info btn-sm" style="margin-right: 20px;"><spring:message code="message.singin" /></a>
         <div class="hide" id="popover_content">
         	<div class="">
         	<form  role="form" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">

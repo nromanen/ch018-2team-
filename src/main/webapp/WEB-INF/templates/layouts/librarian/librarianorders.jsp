@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" isELIgnored="false"
          pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
+<!--  <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -14,7 +14,7 @@
     <title>Librarian Orders</title>
 
 </head>
-<body>
+<body>-->
 <div id="one"> <h1>fuck this shit</h1></div>
 <div class="container" id="divContent">
 
@@ -71,7 +71,7 @@
 
     function tdid(){
 
-        $("#content1").load("/librarian/orders/searchById #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text()});
+        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/searchById #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text()});
 
     }
     function bl(){
@@ -95,6 +95,6 @@
     }
 
 </script>
-
+<!--  
 </body>
-</html>
+</html> -->

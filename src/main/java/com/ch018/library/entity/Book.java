@@ -49,7 +49,7 @@ public class Book implements Serializable {
 		@Column(name = "title", unique = true, nullable = false)
 		private String title;
 	
-		@NotEmpty
+		
 		@Size(max = MAX_NAME)
 		@Column(name = "authors")
 		private String authors;
@@ -67,7 +67,7 @@ public class Book implements Serializable {
 		@Column(name = "year_public")
 		private int year;
 	
-		@NotEmpty
+		
 		@Size(max = MAX_NAME)
 		@Column(name = "publisher")
 		private String publisher;
@@ -106,7 +106,7 @@ public class Book implements Serializable {
 		private int currentQuantity;
 	
 		@NotNull
-		@Range(min = 1, max = MAX_QUANTITY)
+		@Range(min = 0, max = MAX_QUANTITY)
 		@Column(name = "gen_quantity")
 		private Integer generalQuantity;
 		

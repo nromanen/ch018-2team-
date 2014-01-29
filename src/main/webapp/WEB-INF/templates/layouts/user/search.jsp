@@ -2,6 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles-extras"	prefix="tilesx"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 
 
@@ -12,7 +13,7 @@
             <li class="dropdown"><a href="#" data-toggle="dropdown"class="dropdown-toggle"><spring:message code="message.lang" /><b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="?lang=en">English</a></li>
-                    <li><a href="?lang=ua">Укр</a></li>
+                    <li><a href="?lang=ua">Українська</a></li>
 
                 </ul>
             </li>

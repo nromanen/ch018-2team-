@@ -157,7 +157,7 @@ public class OrdersServiceImpl implements OrdersService {
 		@Override
 		@Transactional
 		public void checkPersonOrders(Book book, Date returnDate) {
-			List<Orders> orders;
+			/*List<Orders> orders;
 			if (book.getCurrentQuantity() <= 0) {
 				orders = ordersDao.getOrdersForChanging(book, returnDate);
 				if (orders != null) {
@@ -168,7 +168,7 @@ public class OrdersServiceImpl implements OrdersService {
 								"etenzor@gmail.com", "order changed", order);
 					}
 				}
-			}
+			}*/
 		}
 	
 		@Override
