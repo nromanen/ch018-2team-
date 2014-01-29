@@ -3,30 +3,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" isELIgnored="false"
          pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js">
-    </script>
-
-    <title>Librarian Orders</title>
-
-</head>
-<body>
-<div id="one"> <h1>fuck this shit</h1></div>
 <div class="container" id="divContent">
 
     <div class="row">
 
         <div class="col-md-3 col-md-offset-1" style="margin-top: 30px" >
 
-            <a href="<c:url value="/librarian/orders"/>" class="btn btn-default btn-sm">All</a>
+            <a href="${pageContext.request.contextPath}/librarian/orders" class="btn btn-default btn-sm">All</a>
 
-            <a href="<c:url value="/librarian/orders/toissueinhour"/>" class="btn btn-default btn-sm">To issue hour</a>
+            <a href="${pageContext.request.contextPath}/librarian/orders/toissueinhour" class="btn btn-default btn-sm">To issue hour</a>
 
-            <a href="<c:url value="/librarian/orders/toissuetoday"/>" class="btn btn-default btn-sm">To issue today</a>
+            <a href="${pageContext.request.contextPath}/librarian/orders/toissuetoday" class="btn btn-default btn-sm">To issue today</a>
         </div>
 
         <div class="col-md-10 col-md-offset-1" style="margin-top: 10px">
@@ -57,7 +45,7 @@
                             <td width="30%">${order.orderDate}</td>
 
 
-                            <td><a href="<c:url value="/librarian/orders/issue?id=${order.id}"/>" style="color: #0E3846">Issue</a>
+                            <td><a href="${pageContext.request.contextPath}/librarian/orders/issue?id=${order.id}" style="color: #0E3846">Issue</a>
                         </tr>
                     </c:forEach>
                 </table>
@@ -71,7 +59,7 @@
 
     function tdid(){
 
-        $("#content1").load("/librarian/orders/searchById #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text()});
+        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/searchById #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text()});
 
     }
     function bl(){
@@ -95,6 +83,3 @@
     }
 
 </script>
-
-</body>
-</html>

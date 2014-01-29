@@ -5,7 +5,7 @@
 	<div class=row>
 			
 			<div class="col-md-3 col-md-offset-5" style="margin-top:30px">
-					<form  class="form-inline" role="form" name="search" action="<c:url value="/librarian/users/simplesearch" />" method="POST" >
+					<form  class="form-inline" role="form" name="search" action="${pageContext.request.contextPath}/librarian/users/simplesearch" method="POST" >
 						
 						 <div class="form-group">
 						
@@ -15,7 +15,7 @@
 						  	<span class="glyphicon glyphicon-search"></span>
 						</button>
 						
-						<a href="<c:url value="/librarian/users/advencedsearch"/>" class="btn btn-default">
+						<a href="${pageContext.request.contextPath}/librarian/users/advencedsearch" class="btn btn-default">
 							<span class="glyphicon glyphicon-cog"></span>
 						</a>
 					</form>  
@@ -68,12 +68,12 @@
 				                        <td>${user.multiBook} / ${user.booksAllowed}</td>
 				                        <td>${user.generalRating}/100</td>
 				                        
-				                    <td><a href="<c:url value="/librarian/users/edituser?id=${user.pid}"/>"  style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
+				                    <td><a href="${pageContext.request.contextPath}/librarian/users/edituser?id=${user.pid}"  style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
 
 
-				                        <a on id="deleta"  href="<c:url value="/librarian/users/deleteuser?id=${user.pid}"/>"   style="color: #0E3846"><spring:message code="message.libDelete"/>|</a>
+				                        <a onclick="jQuery:delete_user($(this).attr('nik'));" nik="/librarian/users/deleteuser?id=${user.pid}"     style="color: #0E3846"><em title="${pageContext.request.contextPath}/librarian/users/deleteuser?id=${user.pid}"></em><spring:message code="message.libDelete"/>|</a>
 
-				                        <a href="<c:url value="/librarian/users/readnow?id=${user.pid}"/>"  style="color: #0E3846">Books</a></td>
+				                        <a href="${pageContext.request.contextPath}/librarian/users/readnow?id=${user.pid}"  style="color: #0E3846">Books</a></td>
 				                </tr>
 				        </c:forEach>
 			   			</table>
@@ -82,54 +82,72 @@
 					
 				
 			</div>
-        <div id="d" onmouseover="jQuery:k();"> <h1>OLOLOLO</h1></div>
+
 		<div class="row">
 
 	<div class="col-md-1 col-md-offset-9" style="margin-top:10px">
-		<a href="<c:url value="/librarian/users/adduser"/>" class="btn btn-default btn-sm" role="button" style="background-color: #00A1A1 ; color: #FFFFFF"><spring:message code="message.libAddUser"/></a>
+		<a href="${pageContext.request.contextPath}/librarian/users/adduser" class="btn btn-default btn-sm" role="button" style="background-color: #00A1A1 ; color: #FFFFFF"><spring:message code="message.libAddUser"/></a>
 	</div>
 	
 	</div>		
 </div>
+<div id="er" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+                <p>Unable to delete the user. Reason: he has orders</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div id="su" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Success</h4>
+            </div>
+            <div class="modal-body">
+                <p>The user was deleted.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
 	
-	function checkDelete()
-	{
-		$.ajax({
-			url: "/librarian/users/deleteuser,
-			function(error){
-				if(error == "error")
-				{
-					 $(document).ready(function(){
-					        $('#deleteToolTip').popover();
-					    });
-				}	
-			}		
-		});
-	}
-	
+
 </script>
 <!--href="<c:url value="/librarian/users/deleteuser?id=${user.pid}"/>" -->
-
+<!--$("em").attr("title")  $("#su").modal("show")-->
 </div>		
 	</div>
 <script type="text/javascript">
-function delete_user(){
+function delete_user(nik){
     $.ajax({
-        url: '/librarian/users/deleteuser?id=${user.pid}',
+        url: nik,
         type: "get",
         cache: false,
-        success: function a(){
-             $("#deleta").showPopup()
-                jError('<b>Все норм</b>: Оляля.');},
-        error:  jError('<b>Все норм</b>: Оляля.')
+        success: alert(nik),
+        error:  $("#er").modal("show")
     });
 
 }
 function k(){
-    $("#d").modal();
+    $("#m").modal("show");
 }
 </script>
 
