@@ -150,7 +150,7 @@ public class BookServiceImpl implements BookService {
 
 		@Override
 		@Transactional
-		public void update(BookEditValidator book, int genreId) {
+		public void update(Book book, int genreId) {
 			
 			Book bookEdit;
 			bookEdit = getBookById(book.getbId());

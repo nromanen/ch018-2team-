@@ -33,6 +33,10 @@
       
       <aop:scoped-proxy/>
    	</bean>
+   	
+   	<bean id="switcher" class="com.ch018.library.helper.Switch" scope="singleton">
+   	</bean>
+   	
 	
 	<import resource="data.xml" />
 	<import resource="security.xml"/>

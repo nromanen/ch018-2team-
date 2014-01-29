@@ -121,6 +121,7 @@ public class Person implements Serializable {
 			this.cellphone = cellphone;
 		}
 	
+		
 		public int getPid() {
 			return pid;
 		}

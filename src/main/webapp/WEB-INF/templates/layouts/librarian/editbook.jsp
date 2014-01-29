@@ -7,12 +7,12 @@
 				
 					<div class="col-md-7">
 				  
-				        <form:form method="POST" commandName="book" class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">
+				        <form:form method="POST" commandName="book" action="${pageContext.request.contextPath}/librarian/books/editbook" class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">
 				            
 				          <form:input path="bId" type="hidden"/> 
 						  
 						 <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libTitle"/></label>
+							    <label  class="col-sm-2 control-label"><spring:message code="message.libTitle"/></label>
 							    <div class="col-sm-10">
 							    	 <form:input class="form-control" path="title"/>
 							    	 <form:errors path="title" cssClass="error" style="color: red;"/>
@@ -20,7 +20,7 @@
 						 </div> 
 						 
 						 <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libAuthors"/></label>
+							    <label  class="col-sm-2 control-label"><spring:message code="message.libAuthors"/></label>
 							    <div class="col-sm-10">
 							    	 <form:input class="form-control" path="authors"/>
 							    	 <form:errors path="authors" cssClass="error" style="color: red;"/>
@@ -28,7 +28,7 @@
 						 </div> 
 						 
 						 <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libYear"/></label>
+							    <label  class="col-sm-2 control-label"><spring:message code="message.libYear"/></label>
 							    <div class="col-sm-10">
 							    	   <form:input class="form-control" path="year"/>
 							    	   <form:errors path="year" cssClass="error" style="color: red;"/>
@@ -36,7 +36,7 @@
 						 </div> 
 						 
 						 <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libPublisher"/></label>
+							    <label  class="col-sm-2 control-label"><spring:message code="message.libPublisher"/></label>
 							    <div class="col-sm-10">
 							    	  <form:input class="form-control" path="publisher"/>
 							    	  <form:errors path="publisher" cssClass="error" style="color: red;"/>
@@ -44,7 +44,7 @@
 						 </div> 
 						 
 						 <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libPages"/></label>
+							    <label  class="col-sm-2 control-label"><spring:message code="message.libPages"/></label>
 							    <div class="col-sm-10">
 							       <form:input class="form-control" path="pages"/>
 							       <form:errors path="pages" cssClass="error" style="color: red;"/>
@@ -52,7 +52,7 @@
 						 </div> 
 						 
 						 <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libDescription"/></label>
+							    <label  class="col-sm-2 control-label"><spring:message code="message.libDescription"/></label>
 							    <div class="col-sm-10">
 							      <form:input class="form-control" path="description"/>
 							      <form:errors path="description" cssClass="error" style="color: red;"/>
@@ -60,7 +60,7 @@
 						 </div> 			         
 				         
 				         <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libImg"/></label>
+							    <label  class="col-sm-2 control-label"><spring:message code="message.libImg"/></label>
 							    <div class="col-sm-10">
 							       <form:input class="form-control" path="img"/>
 							       <form:errors path="img" cssClass="error" style="color: red;"/>
@@ -68,7 +68,7 @@
 						 </div> 
 						 
 						 <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libShelf"/></label>
+							    <label  class="col-sm-2 control-label"><spring:message code="message.libShelf"/></label>
 							    <div class="col-sm-10">
 							       <form:input class="form-control" path="shelf"/>
 							       <form:errors path="shelf" cssClass="error" style="color: red;"/> 
@@ -76,7 +76,7 @@
 						 </div>       
 				                 
 				         <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libTerm"/></label>
+							    <label  class="col-sm-2 control-label"><spring:message code="message.libTerm"/></label>
 							    <div class="col-sm-10">
 							        <form:input class="form-control" path="term"/>
 							        <form:errors path="term" cssClass="error" style="color: red;"/>
@@ -84,7 +84,7 @@
 						 </div>
 						 
 				         <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libGeneralQuantity"/></label>
+							    <label  class="col-sm-2 control-label"><spring:message code="message.libGeneralQuantity"/></label>
 							    <div class="col-sm-10">
 							        <form:input class="form-control" path="generalQuantity"/>
 							        <form:errors path="generalQuantity" cssClass="error" style="color: red;" />
@@ -92,12 +92,14 @@
 						 </div>    
 						   
 				          <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libGenre"/></label>
+							    <label  class="col-sm-2 control-label"><spring:message code="message.libGenre"/></label>
 							    <div class="col-sm-10">
 							    	   <select name="genreId" class="form-control">
-							    	   <option value="genre">${book.genre}</option>
+							    	   
 					                    <c:forEach var="genre" items="${genre}">
 					                        <option value="${genre.getGenreId()}">${genre.genreTranslation}</option>
+					                        <h5>${genre.getGenreId()}</h5>
+					                        <h5>${genre.genreTranslation}
 					                    </c:forEach>
 				                </select>
 							    </div>

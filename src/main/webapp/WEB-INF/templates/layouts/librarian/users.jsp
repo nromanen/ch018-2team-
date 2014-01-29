@@ -90,6 +90,10 @@
 	</div>
 	
 	</div>		
+	
+	
+	
+	
 </div>
 <div id="er" class="modal fade">
     <div class="modal-dialog">
@@ -146,8 +150,6 @@ function delete_user(nik){
     });
 
 }
-function k(){
-    $("#m").modal("show");
-}
+
 </script>
 

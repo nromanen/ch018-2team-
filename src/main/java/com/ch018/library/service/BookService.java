@@ -30,7 +30,7 @@ public interface BookService {
              List<Book> advancedSearch(Book book);
              List<Book> simpleSearch(String query);
              Map<BooksInUse, Integer> getHolders(Book book);
-             void update(BookEditValidator book, int genreId);
+             void update(Book book, int genreId);
              HashMap<Book, String> getAllByLocale(Locale locale);
              HashMap<Book, String> getBooksByLocale(List<Book> book, Locale locale);
              HashMap<Book, String> getBookByLocale(Book book, Locale locale);

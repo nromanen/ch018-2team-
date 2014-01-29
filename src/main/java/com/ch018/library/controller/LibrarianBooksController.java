@@ -119,7 +119,7 @@ public class LibrarianBooksController {
 		}
 		
 		@RequestMapping(value = "/editbook", method = RequestMethod.POST)
-		public String edit(@ModelAttribute("book") @Valid BookEditValidator book, BindingResult result, @RequestParam("id") int bookId,
+		public String edit(@ModelAttribute("book") @Valid Book book, BindingResult result,
 						   @RequestParam("genreId") Integer gid, Model model) throws Exception {
 			
 			if (result.hasErrors()) {
@@ -129,7 +129,7 @@ public class LibrarianBooksController {
 			} else {
 				bookService.update(book, gid);
 			}
-			//book.setGenre(genreService.getById(gid));
+			//book.setGenre(genreTranslService.getById(gid));
 			return "redirect:/librarian/books";
 		}
 		

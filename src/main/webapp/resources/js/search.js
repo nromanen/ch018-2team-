@@ -56,57 +56,61 @@ $(document).ready(function() {
 		
 		//pagesize
 			$('#pageSize > option').each(function() {
-
+				$(this).attr('url', path + '/books/search?page=1&pageSize=' + this.value);
 				if (this.value === $('#pagination_info').attr('pageSize')) {
 					$(this).attr('selected', 'selected');
-					return false;
 				}
 			});
+			
+			$('#pageSize').change(function () {
+				
+				location.href = $('#pageSize option:selected').attr('url');
+				
+			});
+			
 		//pagesize
 	
 		//page part
-		
 		if(page == 1 && pagesQuantity == 1) {
-			$('#first_page').removeClass('hide');
-			$('#first_page').addClass('disabled');
-		}
+			
+			}
 		else if(page > 1 && page == pagesQuantity) {
-			$('#first_page').removeClass('hide');
-			$('#first_page').children().attr('href', path + '/books/search?page=1');
+			$('.first_page').removeClass('hide');
+			$('.first_page').children().attr('href', path + '/books/search?page=1');
 			
-			$('#prev_page').removeClass('hide');
+			$('.prev_page').removeClass('hide');
 			var prev_page = page - 1;
-			$('#prev_page').children().attr('href', path + '/books/search?page=' + prev_page);
+			$('.prev_page').children().attr('href', path + '/books/search?page=' + prev_page);
 			
-			$('#last_page').removeClass('hide');
-			$('#last_page').addClass('disabled');
+			$('.last_page').removeClass('hide');
+			$('.last_page').addClass('disabled');
 		} 
 		else if (page == 1) {
-			$('#first_page').removeClass('hide');
-			$('#first_page').addClass('disabled');
+			$('.first_page').removeClass('hide');
+			$('.first_page').addClass('disabled');
 			
-			$('#next_page').removeClass('hide');
+			$('.next_page').removeClass('hide');
 			var next_page = page + 1;
-			$('#next_page').children().attr('href', path + '/books/search?page=' + next_page);
+			$('.next_page').children().attr('href', path + '/books/search?page=' + next_page);
 			
-			$('#last_page').removeClass('hide');
-			$('#last_page').children().attr('href', path + '/books/search?page=' + pagesQuantity);
+			$('.last_page').removeClass('hide');
+			$('.last_page').children().attr('href', path + '/books/search?page=' + pagesQuantity);
 		} else {
-			$('#first_page').removeClass('hide');
-			$('#first_page').children().attr('href', path + '/books/search?page=1');
+			$('.first_page').removeClass('hide');
+			$('.first_page').children().attr('href', path + '/books/search?page=1');
 			
-			$('#prev_page').removeClass('hide');
+			$('.prev_page').removeClass('hide');
 			var prev_page = page - 1;
-			$('#prev_page').children().attr('href', path + '/books/search?page=' + prev_page);
+			$('.prev_page').children().attr('href', path + '/books/search?page=' + prev_page);
 			
-			$('#current_page').removeClass('hide');
+			$('.current_page').removeClass('hide');
 			
-			$('#next_page').removeClass('hide');
+			$('.next_page').removeClass('hide');
 			var next_page = page + 1;
-			$('#next_page').children().attr('href', path + '/books/search?page=' + next_page);
+			$('.next_page').children().attr('href', path + '/books/search?page=' + next_page);
 			
-			$('#last_page').removeClass('hide');
-			$('#last_page').children().attr('href', path + '/books/search?page=' + pagesQuantity);
+			$('.last_page').removeClass('hide');
+			$('.last_page').children().attr('href', path + '/books/search?page=' + pagesQuantity);
 		}
 		
 		//page part

@@ -4,12 +4,28 @@ $.validator.addMethod('customphone', function(value, element) {
 
 $(document).ready(function() {
 	
+	
+	
+	//login popover
+	
+		$('#login_popover').popover({
+			html : true,
+			placement : 'bottom',
+			content:function(){
+					console.log('in popover');
+			        return $('#popover_content').html();
+			    }
+		});
+
+	
 
 	$('#reg_phone').mask("999-999-9999");
 
-	$('#restore').click(function() {
+	$('body').on('click', '#restore', function() {
+		console.log('aaa');
 		$('#forgot_pass').modal("show");
-	});
+    });
+	
 
 	$('#restore_mail_form').validate({
 		errorClass : "my-error-class",

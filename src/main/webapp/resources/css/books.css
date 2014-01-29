@@ -20,8 +20,8 @@ border-radius: 7px;
 .item-image img{
 	padding: 5px 20%;
 	width:auto;
-        height:auto;
-        max-height:180px !important;
+    
+    max-height:150px !important;
 	display: block;
 }
 .item-quantity{
@@ -46,7 +46,7 @@ border-radius: 7px;
     
    text-align: center;
    font-weight:bold;
-   font-size:16px;
+   font-size:14px;
    line-height:25px;
 }
 

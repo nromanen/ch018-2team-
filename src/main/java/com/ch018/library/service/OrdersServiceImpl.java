@@ -31,7 +31,7 @@ public class OrdersServiceImpl implements OrdersService {
 	
 		private static final int MAX_DAYS = 14;
 		private static final long MILLIS_IN_DAY = 24 * 3600 * 1000;
-		private static final long DIFF_TIME_IN_MILLIS = 10 * 60 * 1000;
+		private static final long DIFF_TIME_IN_MILLIS = 60 * 60 * 1000;
 		private static final int ADDITIONAL_DAY_IF_SAT = 2;
 	
 		private final Logger logger = LoggerFactory
@@ -119,11 +119,13 @@ public class OrdersServiceImpl implements OrdersService {
 		}
 	
 		@Override
+		@Transactional
 		public List<Orders> getOrdersToday() {
 			return ordersDao.getOrdersToday();
 		}
 	
 		@Override
+		@Transactional
 		public List<Orders> getOrdersInHour() {
 			return ordersDao.getOrdersInHour();
 		}
@@ -155,7 +157,7 @@ public class OrdersServiceImpl implements OrdersService {
 		@Override
 		@Transactional
 		public void checkPersonOrders(Book book, Date returnDate) {
-			List<Orders> orders;
+			/*List<Orders> orders;
 			if (book.getCurrentQuantity() <= 0) {
 				orders = ordersDao.getOrdersForChanging(book, returnDate);
 				if (orders != null) {
@@ -166,7 +168,7 @@ public class OrdersServiceImpl implements OrdersService {
 								"etenzor@gmail.com", "order changed", order);
 					}
 				}
-			}
+			}*/
 		}
 	
 		@Override

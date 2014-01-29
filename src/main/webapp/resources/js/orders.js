@@ -164,6 +164,12 @@ function editOrder(orderId, date) {
 				minDate : minD[0],
 				minTime : minD[1]
 			});
+			$btn.tooltip({
+				placement: 'bottom',
+				trigger: 'manual',
+				}).tooltip('show');
+			
+		
 
 		},
 		error : function(xhr, status, error) {
