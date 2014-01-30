@@ -31,7 +31,7 @@
 			<div class="col-md-12">
 				
 					<div class="col-md-12" style="margin-top:30px">
-					
+					   <div id="content1">
 						<table class="table table-hover table-striped table-bordered table-condensed">
 		     			   <thead>
 		         		       <tr>
@@ -43,9 +43,9 @@
 		                            <td>  <h5> <strong> <spring:message code="message.libEMail"/> </strong> </h5>  </td>
 		                            <td>  <h5> <strong> <spring:message code="message.libCellPhone"/> </strong> </h5>  </td>
 		                            <td>  <h5> <strong> <spring:message code="message.libConfirmed"/> </strong> </h5>  </td>
-		                            <td> <h5> <strong> <spring:message code="message.libSMS"/> </strong> </h5>  </td>    
+		                            <td> <h5> <strong> <spring:message code="message.libSMS"/> </strong> </h5>  </td>
 		                            <td>  <h5> <strong> <spring:message code="message.libReturnedOnTime"/> </strong> </h5>  </td>
-		                            <td>  <h5> <strong> <spring:message code="message.libReturnedLate"/> </strong> </h5>  </td> 
+		                            <td>  <h5> <strong> <spring:message code="message.libReturnedLate"/> </strong> </h5>  </td>
 		                            <td>  <h5> <strong> Books Available </strong> </h5>  </td>
 		                            <td> <a href="<c:url value="/librarian/users/orderbyrating"/>">
 		           	   	            <h5> <strong> <spring:message code="message.libRating"/></strong> </h5> </a>  </td>
@@ -71,15 +71,16 @@
 				                    <td><a href="${pageContext.request.contextPath}/librarian/users/edituser?id=${user.pid}"  style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
 
 
-				                        <a onclick="jQuery:delete_user($(this).attr('nik'));" nik="/librarian/users/deleteuser?id=${user.pid}"     style="color: #0E3846"><em title="${pageContext.request.contextPath}/librarian/users/deleteuser?id=${user.pid}"></em><spring:message code="message.libDelete"/>|</a>
+				                        <a onclick="jQuery:delete_user($(this).attr('nik'));" nik="/librarian/users/deleteuser?id=${user.pid}"     style="color: #0E3846"><spring:message code="message.libDelete"/>|</a>
 
 				                        <a href="${pageContext.request.contextPath}/librarian/users/readnow?id=${user.pid}"  style="color: #0E3846">Books</a></td>
 				                </tr>
 				        </c:forEach>
 			   			</table>
+                           </div>
 					</div>
 				
-					
+
 				
 			</div>
 
@@ -100,14 +101,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Error</h4>
+                <h4 class="modal-title">Message</h4>
             </div>
-            <div class="modal-body">
-                <p>Unable to delete the user. Reason: he has orders</p>
+            <div id="jik" class="modal-body">
+                <!--<p>Unable to delete the user. Reason: he has orders</p>  -->
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button hidden="false" id="buttonDelete" type="button" class="btn btn-primary">Delete Orders</button>
             </div>
         </div>
     </div>
@@ -145,8 +147,21 @@ function delete_user(nik){
         url: nik,
         type: "get",
         cache: false,
-        success: alert(nik),
-        error:  $("#er").modal("show")
+        success: function(data){
+            $("#buttonDelete").show();
+
+           if (data=="User was deleted") {
+               $("#content1").load("${pageContext.request.contextPath}/librarian/users/orderbyrating #content1");
+               $("#buttonDelete").hide();
+               $("#jik").load().text(data);
+               $("#er").modal("show");
+           }
+
+            $("#jik").load().text(data);
+            $("#er").modal("show");
+
+        }
+        //error:  $("#er").modal("show")
     });
 
 }

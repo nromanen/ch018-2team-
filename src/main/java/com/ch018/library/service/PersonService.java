@@ -1,17 +1,15 @@
 package com.ch018.library.service;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Service;
-
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
 import com.ch018.library.validation.Password;
 import com.ch018.library.validation.PersonEditValidator;
 import com.ch018.library.validation.PersonalInfo;
 import com.ch018.library.validation.UserRegistrationForm;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 /**
  *
  * @author Edd Arazian
@@ -19,7 +17,7 @@ import com.ch018.library.validation.UserRegistrationForm;
 @Service
 public interface PersonService {
         void save(Person person);
-        void delete(int id);
+        boolean delete(int id);
         void update(Person person);
         List<Person> getAll();
         Person getById(int id);

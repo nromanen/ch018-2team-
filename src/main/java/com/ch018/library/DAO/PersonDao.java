@@ -4,11 +4,10 @@
  */
 package com.ch018.library.DAO;
 
-import java.util.List;
-
+import com.ch018.library.entity.Person;
 import org.springframework.stereotype.Component;
 
-import com.ch018.library.entity.Person;
+import java.util.List;
 
 /**
  *
@@ -17,7 +16,7 @@ import com.ch018.library.entity.Person;
 @Component
 public interface PersonDao {   
     void save(Person person);
-    void delete(int id);
+    int delete(int id);
     void update(Person person);
     List<Person> getAll();
     Person getById(int id);

@@ -4,10 +4,9 @@
  */
 package com.ch018.library.DAO;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.ch018.library.entity.Person;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
@@ -19,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ch018.library.entity.Person;
+import java.util.List;
 
 /**
  * 
@@ -57,10 +56,20 @@ public class PersonDaoImpl implements PersonDao {
 		}
 	
 		@Override
-		public void delete(int id) {
-			Person person = (Person) factory.getCurrentSession().get(Person.class,
-					id);
-			factory.getCurrentSession().delete(person);
+		public int delete(int id) {
+            int deleted;
+            try {Query query = factory.getCurrentSession()
+                    .createQuery("delete from Person where id=:id")
+                    .setInteger("id", id);
+                deleted = query.executeUpdate();
+
+            }
+            catch (Exception e){
+                deleted=0;
+                System.out.println("EXC");
+                return deleted;}
+            System.out.println("NO EXC");
+            return deleted;
 	
 		}
 	

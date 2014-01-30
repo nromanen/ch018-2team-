@@ -1,13 +1,14 @@
 package com.ch018.library.controller;
 
-import java.util.List;
-import java.util.Locale;
-
-import javax.validation.Valid;
-
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Person;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.LanguageService;
+import com.ch018.library.service.PersonService;
+import com.ch018.library.validation.PersonEditValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.entity.Language;
-import com.ch018.library.entity.Person;
-import com.ch018.library.service.BookInUseService;
-import com.ch018.library.service.LanguageService;
-import com.ch018.library.service.PersonService;
-import com.ch018.library.validation.PersonEditValidator;
+import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/librarian/users")
@@ -137,7 +133,7 @@ public class LibrarianUsersController {
 		}
 	
 		@RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
-		public String deleteUser(@RequestParam("id") int id, Model model) throws Exception {
+		public ResponseEntity<String> deleteUser(@RequestParam("id") int id, Model model) throws Exception {
 			
 			/*
 			String error = "Error deleting books! This user has an order!";
@@ -150,10 +146,17 @@ public class LibrarianUsersController {
 				return "redirect:/librarian/users";
 			}
 			*/
-			personService.delete(id);
-			return "redirect:/librarian/users";
+
+            //personService.delete(id);
+            System.out.println("ID: "+id);
+            if (personService.delete(id))
+            return new ResponseEntity ("Unable to delete the user. Reason: he has orders", HttpStatus.OK);
+            return new ResponseEntity ("User was deleted", HttpStatus.OK);
+
+
 		}
-	
+
+
 		@RequestMapping(value = "/advencedsearch", method = RequestMethod.GET)
 		public String advencedSearch(Model model) throws Exception {
 			Person person = new Person();
