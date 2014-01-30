@@ -71,16 +71,18 @@ public class LibrarianBooksController {
 			Locale locale = LocaleContextHolder.getLocale();
 			
 			model.addAttribute("book", book);
-			model.addAttribute("genre", genreTranslService.getAllByLocale(locale.toString()));
+			model.addAttribute("genres", genreService.getAll());
 			return "librarian_books_add_book";
 		}
 		
 		@RequestMapping(value = "/addbook", method = RequestMethod.POST)
-		public String add(@ModelAttribute("book") @Valid Book book, BindingResult result, @RequestParam("genreId") Integer gid, Model model) throws Exception {
-			Set<GenreTranslations> genreTranslation = genreTranslService.getByGenreId(gid);
-			book.setGenre(genreTranslation);
+		public String add(@ModelAttribute @Valid Book book, BindingResult result,
+							@RequestParam("gid") Integer gid, Model model) throws Exception {
+			//Set<GenreTranslations> genreTranslation = genreTranslService.getByGenreId(gid);
+			//book.setGenre(genreTranslation);
+			book.setGenre(genreService.getById(gid));
 			if (result.hasErrors()) {
-				model.addAttribute("genre", genreTranslService.getAllByLocale(locale.toString()));
+				model.addAttribute("genre", genreService.getAll());
 				logger.info("Error Addind Book" + result.toString());
 				return "librarian_books_add_book";
 			} else {
@@ -109,25 +111,27 @@ public class LibrarianBooksController {
 		@RequestMapping(value = "/editbook", method = RequestMethod.GET)
 		public String edit(@RequestParam("id") int bookId, Model model) throws SQLException {
 			
-			locale = LocaleContextHolder.getLocale();
+			//locale = LocaleContextHolder.getLocale();
 			
 			Book book = bookService.getBookById(bookId);
 			
-			model.addAttribute("genres", genreTranslService.getAllByLocale(locale.toString()));
+			//model.addAttribute("genres", genreTranslService.getAllByLocale(locale.toString()));
 			model.addAttribute("book", bookService.getBookById(bookId));
+			model.addAttribute("genres", genreService.getAll());
 			return "librarian_books_edit_book";
 		}
 		
 		@RequestMapping(value = "/editbook", method = RequestMethod.POST)
-		public String edit(@ModelAttribute("book") @Valid Book book, BindingResult result,
-						   @RequestParam("genreId") Integer gid, Model model) throws Exception {
-			
+		public String edit(@ModelAttribute("book") @Valid Book book, @RequestParam("gid") Integer gid, BindingResult result,
+						    Model model) throws Exception {
+			Genre genre = genreService.getById(gid);
+			book.setGenre(genre);
 			if (result.hasErrors()) {
-				model.addAttribute("genre", genreService.getAll());
+				model.addAttribute("genres", genreService.getAll());
 				logger.info("Error editing book: " + result.toString());
 				return "librarian_books_edit_book";
 			} else {
-				bookService.update(book, gid);
+				bookService.update(book);
 			}
 			//book.setGenre(genreTranslService.getById(gid));
 			return "redirect:/librarian/books";

@@ -37,7 +37,7 @@
                             <td> <b> <spring:message code="message.libYear"/> </b> </td>
                             <td> <b> <spring:message code="message.libPublisher"/> </b> </td>
                             <td> <b> <spring:message code="message.libPages"/> </b> </td>
-                            <!-- <td> <b> <spring:message code="message.libGenre"/> </b> </td> -->
+                            <td> <b> <spring:message code="message.libGenre"/> </b> </td>
                             <td> <b> <spring:message code="message.libDescription"/> </b> </td>    
                             <td> <b> <spring:message code="message.libShelf"/> </b> </td>
                             <td> <b> <spring:message code="message.libTerm"/> </b> </td> 
@@ -56,7 +56,7 @@
 				                        <td>${book.year}</td>
 				                        <td>${book.publisher}</td>
 				                        <td>${book.pages}</td>
-				                        
+				                        <td>${book.genre.description}</td>
 				                        <td><textarea class="form-control" rows="2" style=" background:transparent;"> ${book.description} </textarea></td>
 				                        <td>${book.shelf}</td>
 				                        <td>${book.term}</td>

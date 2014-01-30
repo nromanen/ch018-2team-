@@ -189,10 +189,10 @@ public class BookDaoImpl implements BookDao {
 			}
 			
 			if (searchParams.getGenreId() > 0) {
-				//criteria.add(Restrictions.eq("genreOld.id", searchParams.getGenreId()));
-				criteria.createAlias("genre", "gen");
-				criteria.add(Restrictions.eq("gen.gid", searchParams.getGenreId()));
-				System.out.println("IN CRITERIA " + criteria.list() + " id = " + searchParams.getGenreId());
+				criteria.add(Restrictions.eq("genre.id", searchParams.getGenreId()));
+				//criteria.createAlias("genre", "gen");
+				//criteria.add(Restrictions.eq("gen.gid", searchParams.getGenreId()));
+				//System.out.println("IN CRITERIA " + criteria.list() + " id = " + searchParams.getGenreId());
 			}
 
 			if (searchParams.getChoosenPageStart() != null &&

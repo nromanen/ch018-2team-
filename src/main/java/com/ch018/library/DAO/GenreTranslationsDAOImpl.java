@@ -40,7 +40,7 @@ public class GenreTranslationsDAOImpl implements GenreTranslationDAO {
 	@Override
 	public String getDescription(Book book, Locale locale) {
 		
-		Set<GenreTranslations> genres = book.getGenre();
+		Set<GenreTranslations> genres = book.getGenreNew();
 		String translation = "";
 		
 		for (GenreTranslations genreTranslations : genres) {

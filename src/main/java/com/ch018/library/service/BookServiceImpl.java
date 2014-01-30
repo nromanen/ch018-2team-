@@ -179,7 +179,7 @@ public class BookServiceImpl implements BookService {
 			Set<GenreTranslations> genre;
 			
 			for (Book bk : book) {
-				genre = bk.getGenre();
+				genre = bk.getGenreNew();
 				localBooks.put(bk, genreTranslService.getDescription(bk, locale));
 			}
 			
@@ -195,7 +195,7 @@ public class BookServiceImpl implements BookService {
 			Set<GenreTranslations> genre;
 			
 			for (Book bk : book) {
-				genre = bk.getGenre();
+				genre = bk.getGenreNew();
 				localBooks.put(bk, genreTranslService.getDescription(bk, locale));
 			}
 			
