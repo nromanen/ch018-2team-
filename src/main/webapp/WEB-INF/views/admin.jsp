@@ -12,6 +12,7 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
     </head>
     <body>
+    <div id="path" path="${pageContext.request.contextPath}"></div>
         <div class="container">
             <div class="row">
             	<div class="col-md-3">
@@ -118,18 +119,18 @@
 									<div class="checkbox">
 										<label> <c:choose>
 												<c:when test="${switcher}">
-													<input class="checkbox" type="checkbox" name="switcher"
-														checked="checked"> Local search disable
+													<input id="switcher" class="checkbox" type="checkbox" name="switcher"
+														checked="checked"> Local search
                                                 </c:when>
 												<c:otherwise>
-													<input class="checkbox" type="checkbox" name="switcher"
-														> Local search enable
+													<input id="switcher" class="checkbox" type="checkbox" name="switcher"
+														> Local search
                                                 </c:otherwise>
 											</c:choose>
 
 										</label>
 									</div>
-									<button type="submit" class="btn btn-warning btn-sm">Change</button>
+									
 
 								</form>
 							</div>

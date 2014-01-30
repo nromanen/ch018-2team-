@@ -53,7 +53,6 @@ public class LoginController {
         @RequestMapping(value = "/loginfail", method = RequestMethod.GET)
         public String loginFailProcess(Model model) {
         	model.addAttribute("fail", true);
-        	System.out.println("FAIL");
             return "login";
         }
 

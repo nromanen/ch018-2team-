@@ -57,7 +57,7 @@
 			<div class="col-md-7" id="order_book_part">
 				<div class="row" id="book">
 					<div class="col-md-6" id="order_book_img">
-						<img class="img-responsive" src="${book.getImg()}">
+						<img class="img-responsive" src="${pageContext.request.contextPath}/${book.img}">
 					</div>
 					<div class="col-md-6" id="order_book_info">
 						<div class="row">
@@ -93,40 +93,46 @@
 					</sec:authorize>
 					
 					<sec:authorize access="isAuthenticated()">
-					<c:choose>
-						<c:when test="${inUse}">
-							<div class="alert alert-danger col-lg-6">You already use
-								that book</div>
-						</c:when>
-						<c:when test="${inOrders}">
-							<div class="alert alert-warning col-lg-6">You already
-								ordered that book</div>
-							<div class="clearfix"></div>
-
-
-							<a href="${pageContext.request.contextPath}/books/order/my"
-								class="btn btn-primary">View Orders</a>
-						</c:when>
-						<c:when test="${inWishList}">
-							<input type="hidden" id="minDate" value="${minDate}">
-							<input class="form-control" id="datetimepicker">
-							<input type="hidden" id="bookId" value="${book.getbId()}">
-							<div class="alert alert-info col-lg-6">Already in WishList</div>
-							<div class="clearfix"></div>
-							<button id="order_button" class="btn btn-info">Order</button>
-
-						</c:when>
-						<c:otherwise>
-							<input type="hidden" id="minDate" value="${minDate}">
-							<input class="form-control" id="datetimepicker">
-							<input type="hidden" id="bookId" value="${book.getbId()}">
-
-							<button id="order_button" class="btn btn-info">Order</button>
-
-							<button id="wish_button" class="btn btn-warning">Add To
-								WishList</button>
-						</c:otherwise>
-					</c:choose>
+			
+						<c:choose>
+							<c:when test="${days <= 0}">
+								<div class="alert alert-danger col-lg-6">Book  temporarily unavailable</div>
+							</c:when>
+							<c:when test="${inUse}">
+								<div class="alert alert-danger col-lg-6">You already use
+									that book</div>
+							</c:when>
+							<c:when test="${inOrders}">
+								<div class="alert alert-warning col-lg-6">You already
+									ordered that book</div>
+								<div class="clearfix"></div>
+	
+	
+								<a href="${pageContext.request.contextPath}/books/order/my"
+									class="btn btn-primary">View Orders</a>
+							</c:when>
+							<c:when test="${inWishList}">
+								<input type="hidden" id="minDate" value="${minDate}">
+								
+								<input class="form-control" id="datetimepicker">
+								
+								<input type="hidden" id="bookId" value="${book.getbId()}">
+								<div class="alert alert-info col-lg-6">Already in WishList</div>
+								<div class="clearfix"></div>
+								<button id="order_button" class="btn btn-info">Order</button>
+	
+							</c:when>
+							<c:otherwise>
+								<input type="hidden" id="minDate" value="${minDate}">
+								<input class="form-control" id="datetimepicker">
+								<input type="hidden" id="bookId" value="${book.getbId()}">
+	
+								<button id="order_button" class="btn btn-info btn-sm">Order</button>
+	
+								<button id="wish_button" class="btn btn-warning btn-sm">Add To
+									WishList</button>
+							</c:otherwise>
+				 	</c:choose>
 					<div class="clearfix"></div>
 					<div class="alert alert-danger hide" id="order_err"></div>
 
@@ -142,7 +148,8 @@
 										Notification</h4>
 								</div>
 								<div class="modal-body">
-									<h1>Congratulations! You've Ordered Book!</h1>
+									<h3>Congratulations! You've Ordered: </h3>
+									<h5>${book.getTitle()}</h5>
 								</div>
 								<div class="modal-footer">
 									<button type="button"
@@ -157,26 +164,10 @@
 						</div>
 					</div>
 
-
+				</sec:authorize>
 				</div>
 				
-
-				<div class="row" id="book_orders">
-
-					<c:if test="${orders != null and orders.size() != 0}">
-						<ul class="list-group list-unstyled">
-							<li class="list-group-item-heading dropdown">Book already
-								ordered for dates</li>
-							<c:forEach var="order" items="${orders}">
-								<li class="list-group-item">
-									<div class="tab-content text-warning">${order.orderDate}
-									</div>
-								</li>
-							</c:forEach>
-						</ul>
-					</c:if>
-				</div>
-				</sec:authorize>
+					
 				<div class="modal fade" id="wish_modal" tabindex="-1" role="dialog"
 					aria-labelledby="wish_modal_label" aria-hidden="true">
 					<div class="modal-dialog">
@@ -188,7 +179,8 @@
 									Notification</h4>
 							</div>
 							<div class="modal-body">
-								<h1>You've Added Book To WishList!</h1>
+								<h3>You've Added To WishList:</h3>
+								<h5>${book.getTitle()}</h5>
 							</div>
 							<div class="modal-footer">
 								<button type="button" onclick="location.href = '/library/books'"
@@ -207,10 +199,6 @@
 
 
 	</div>
-	<!--<div class="col-md-2" id="left_main">
-                    New Arrivals
-                </div>-->
-
 
 </div>
 

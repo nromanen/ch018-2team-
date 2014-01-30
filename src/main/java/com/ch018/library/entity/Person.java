@@ -92,9 +92,6 @@ public class Person implements Serializable {
 		@Column(name = "generalratio")
 		private double generalRating;
 	
-		@Column(name = "img")
-		private String img;
-	
 		@OneToMany(targetEntity = BooksInUse.class, mappedBy = "person")
 		private Set<Book> booksInUse = new HashSet<Book>();
 	
@@ -258,13 +255,7 @@ public class Person implements Serializable {
 			this.wishes = wishes;
 		}
 	
-		public String getImg() {
-			return img;
-		}
-	
-		public void setImg(String img) {
-			this.img = img;
-		}
+		
 	
 		public Integer getMultiBook() {
 			return multiBook;
@@ -328,7 +319,7 @@ public class Person implements Serializable {
 					+ multiBook + ", timelyReturn=" + timelyReturn
 					+ ", untimekyReturn=" + untimekyReturn + ", booksAllowed="
 					+ booksAllowed + ", failedOrders=" + failedOrders
-					+ ", generalRating=" + generalRating + ", img=" + img + "]";
+					+ ", generalRating=" + generalRating + "]";
 		}
 
 }

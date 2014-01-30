@@ -83,6 +83,7 @@ public class OrderController {
 				wishService.isPersonWishBook(person, book));
 		OrderDays minDate = ordersService.getMinOrderDate(book);
 		model.addAttribute("minDate", minDate.getMinOrderDate().getTime());
+		model.addAttribute("days", minDate.getDaysAvailable());
 		return "order";
 
 	}
@@ -96,6 +97,7 @@ public class OrderController {
 		
 		Person person = personService.getByEmail(principal.getName());
 		Date date = new Date(time);
+		logger.info("add order time {}", new Date(time));
 		try {
 			ordersService.addOrder(person, bookId, date);
 		} catch (Exception e) {

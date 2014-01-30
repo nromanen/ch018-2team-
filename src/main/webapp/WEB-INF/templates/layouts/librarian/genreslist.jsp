@@ -22,9 +22,9 @@
 				        <c:forEach items="${genres}" var="genre">
 				                <tr>
 				                        <td hidden="true">${genre.id}</td>
-				                        <td>${genre.genreTranslation}</td>
+				                        <td>${genre.description}</td>
 				                        <td>
-				                        <a href="<c:url value="/librarian/genres/delete?id=${genre.genreId}"/>" style="color: #0E3846"><spring:message code="message.libDelete"/></a>
+				                        <a href="<c:url value="/librarian/genres/delete?id=${genre.id}"/>" style="color: #0E3846"><spring:message code="message.libDelete"/></a>
 				                        </td>
 				                </tr>
 				        </c:forEach>

@@ -2,7 +2,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles-extras" prefix="tilesx" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <tilesx:useAttribute name="genres" />
 
 <div class="row well">
@@ -37,7 +37,7 @@
 					<option value="0">All Genres</option>
 					<c:forEach var="genre" items="${genres}">
 						
-						<option value="${genre.genreId}">${genre.genreTranslation}</option>
+						<option value="${genre.id}">${genre.description}</option>
 					</c:forEach>
 				</select>
 		
@@ -118,7 +118,10 @@
 			</c:when>
 		</c:choose>
 		
-		<c:set var="i" value="0" scope="page" />
+	<div>
+	
+	
+		<c:set var="i" value="1" scope="page" />
 		<c:forEach var="book" items="${page.books}">
 
 			<c:if test="${i mod 4 == 0}">
@@ -129,7 +132,7 @@
 					<div class="item-image">
 						<a
 							href="${pageContext.request.contextPath}/books/order/${book.bId}">
-							<img src="${book.img}" alt="" class="img-responsive">
+							<img src="${pageContext.request.contextPath}/${fn:substring(book.img, 0, (fn:length(book.img) - 4))}.gif" alt="" class="img-responsive">
 						</a>
 
 					</div>
@@ -162,12 +165,16 @@
 					<div class="clearfix"></div>
 				</div>
 			</div>
-			<c:set var="i" value="${i + 1}" scope="page" />
+			
 			<c:if test="${i mod 4 == 0}">
 				</div>
 			</c:if>
+			<c:set var="i" value="${i + 1}" scope="page" />
 			
 	</c:forEach>
+	
+	
+	</div>
 
 </div>
 

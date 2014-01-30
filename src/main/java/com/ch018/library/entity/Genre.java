@@ -29,7 +29,7 @@ public class Genre implements Serializable {
         @Column(name = "description")
         private String description;
         
-        @OneToMany(mappedBy = "genreOld")
+        @OneToMany(mappedBy = "genre")
         private Set<Book> books;
 
         public Genre() {
@@ -48,14 +48,7 @@ public class Genre implements Serializable {
             this.id = id;
         }
 
-        public Set<Book> getBooks() {
-            return books;
-        }
-
-        public void setBooks(Set<Book> books) {
-            this.books = books;
-        }
-
+        
         public String getDescription() {
             return description;
         }
@@ -65,6 +58,14 @@ public class Genre implements Serializable {
         }
         
         
+		public Set<Book> getBooks() {
+			return books;
+		}
+
+		public void setBooks(Set<Book> books) {
+			this.books = books;
+		}
+
 		@Override
         public boolean equals(Object other) {
             if (other == null) return false;

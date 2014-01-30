@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,16 +46,19 @@ public class AdminController {
         }
         
         @RequestMapping(value = "/syssetings", method = RequestMethod.POST)
-        public String changeSysSettings(@RequestParam(value = "switcher", required = false) String sw) {
+        public ResponseEntity<String> changeSysSettings(@RequestParam(value = "switcher", required = false) Boolean sw) {
         	if(sw == null) {
         		switcher.setValue(Boolean.FALSE);
-        		return "redirect:/admin";
+        		return new ResponseEntity<>("false", HttpStatus.OK);
         	}
-        	if(sw.equals("on"))
+        	if(sw) {
         		switcher.setValue(Boolean.TRUE);
-        	else
+        		return new ResponseEntity<>("true", HttpStatus.OK);
+        	}
+        	else {
         		switcher.setValue(Boolean.FALSE);
-        	return "redirect:/admin";
+        		return new ResponseEntity<>("false", HttpStatus.OK);
+        	}
         }
         
         @RequestMapping(value = "/delete", method = RequestMethod.POST)

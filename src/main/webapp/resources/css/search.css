@@ -1,8 +1,9 @@
   .autocomplete-suggestions {
-      width: 25% !important;
+      width : 25% !important;
        background: #FFF;
        z-index: 9999;
        display: block;
+       overflow: hidden;
    }
 .autocomplete-suggestion {
     padding: 5px 5px;

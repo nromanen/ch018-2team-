@@ -68,14 +68,14 @@ public class BooksController {
         
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(Model model) {
-        	logger.info("searchParamsStart: {}", searchParams );
-        	Page page;
-        	searchParams.setDefaults();
-        	pageContainer.recalculate(searchParams);
-        	page = pageContainer.getPage(searchParams);
-            model.addAttribute("page", page);
-            return "books";
+        	
+        	
+            model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", 4));
+            model.addAttribute("populars", bookService.getLastByField("ordersQuantity", 4));
+            logger.info("arrivals {}", bookService.getLastByField("arrivalDate", 4));
+            return "home";
         }
+        
         
         @RequestMapping(value = "/search", method = RequestMethod.GET)
         public String bookSearchGet(@ModelAttribute SearchParams tmpParams, Model model) {

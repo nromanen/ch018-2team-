@@ -53,14 +53,10 @@ public class Book implements Serializable {
 		@Size(max = MAX_NAME)
 		@Column(name = "authors")
 		private String authors;
-	
-		@ManyToOne
-		@JoinColumn(name = "gid")
-		private Genre genreOld;
 		
 		@ManyToMany(fetch=FetchType.EAGER)
 		@JoinTable(name = "book_genre", joinColumns = {@JoinColumn(name = "bId")}, inverseJoinColumns = {@JoinColumn(name = "gid")})
-		private Set<GenreTranslations> genre;
+		private Set<GenreTranslations> genreNew;
 	
 		@NotNull
 		@Range(min = MIN_YEAR, max = MAX_YEAR)
@@ -82,15 +78,16 @@ public class Book implements Serializable {
 		private String description;
 	
 		@Column(name = "bookcase")
-		// @OneToOne(targetEntity = BookCase.class)
-		// @JoinColumn(name = "caseid", referencedColumnName = "id")
 		private int bookcase;
+		
+		
+		@ManyToOne()
+		@JoinColumn(name = "gid")
+		private Genre genre;
 	
 		@NotNull
 		@Range(min = 1, max = MAX_SHELF)
 		@Column(name = "shelf")
-		// @OneToOne(targetEntity = BookCase.class)
-		// @JoinColumn(name = "shelfid", referencedColumnName = "shelfid")
 		private int shelf;
 	
 		@NotNull
@@ -99,7 +96,7 @@ public class Book implements Serializable {
 		private int term;
 	
 		@Column(name = "img")
-		private String img;
+		private String img = "http://placehold.it/480x480";
 	
 		@Range(min = 0)
 		@Column(name = "cur_quantity")
@@ -112,7 +109,10 @@ public class Book implements Serializable {
 		
 		@Column(name = "arrival_date")
 		@Temporal(TemporalType.TIMESTAMP)
-		private Date arrivalDate;
+		private Date arrivalDate = new Date();
+		
+		@Column(name = "orders_quantity")
+		private Integer ordersQuantity = 0;
 	
 		@OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
 		private Set<Person> personsUse;
@@ -131,161 +131,179 @@ public class Book implements Serializable {
 			title = b.getTitle();
 		}
 	
+		
+
 		public int getbId() {
 			return bId;
 		}
-	
+
 		public void setbId(int bId) {
 			this.bId = bId;
 		}
-	
+
 		public String getTitle() {
 			return title;
 		}
-	
-		public String getAuthors() {
-			return authors;
-		}
-	
-		public int getYear() {
-			return year;
-		}
-	
-		public String getPublisher() {
-			return publisher;
-		}
-	
-		public int getPages() {
-			return pages;
-		}
-	
-		public String getDescription() {
-			return description;
-		}
-	
-		public int getShelf() {
-			return shelf;
-		}
-	
-		public int getTerm() {
-			return term;
-		}
-	
+
 		public void setTitle(String title) {
 			this.title = title;
 		}
-	
+
+		public String getAuthors() {
+			return authors;
+		}
+
 		public void setAuthors(String authors) {
 			this.authors = authors;
 		}
-	
+
+		public Set<GenreTranslations> getGenreNew() {
+			return genreNew;
+		}
+
+		public void setGenre(Set<GenreTranslations> genreNew) {
+			this.genreNew = genreNew;
+		}
+
+		public int getYear() {
+			return year;
+		}
+
 		public void setYear(int year) {
 			this.year = year;
 		}
-	
+
+		public String getPublisher() {
+			return publisher;
+		}
+
 		public void setPublisher(String publisher) {
 			this.publisher = publisher;
 		}
-	
+
+		public int getPages() {
+			return pages;
+		}
+
 		public void setPages(int pages) {
 			this.pages = pages;
 		}
-	
+
+		public String getDescription() {
+			return description;
+		}
+
 		public void setDescription(String description) {
 			this.description = description;
 		}
-	
-		public void setShelf(int shelf) {
-			this.shelf = shelf;
-		}
-	
-		public void setTerm(int term) {
-			this.term = term;
-		}
-	
-		public Set<Person> getPersonsUse() {
-			return personsUse;
-		}
-	
-		public void setPersonsUse(Set<Person> personsUse) {
-			this.personsUse = personsUse;
-		}
-	
-		public Set<Person> getPersonsOrders() {
-			return personsOrders;
-		}
-	
-		public void setPersonsOrders(Set<Person> personsOrders) {
-			this.personsOrders = personsOrders;
-		}
-		
-		public Set<GenreTranslations> getGenre() {
-			return genre;
-		}
-		
-		public void setGenre(Set<GenreTranslations> genre) {
-			this.genre = genre;
-		}
-	
-		public Genre getGenreOld() {
-			return genreOld;
-		}
-	
-		public void setGenreOld(Genre genre) {
-			this.genreOld = genre;
-		}
-	
+
 		public int getBookcase() {
 			return bookcase;
 		}
-	
+
 		public void setBookcase(int bookcase) {
 			this.bookcase = bookcase;
 		}
-	
+
+		public Genre getGenre() {
+			return genre;
+		}
+
+		public void setGenre(Genre genre) {
+			this.genre = genre;
+		}
+
+		public int getShelf() {
+			return shelf;
+		}
+
+		public void setShelf(int shelf) {
+			this.shelf = shelf;
+		}
+
+		public int getTerm() {
+			return term;
+		}
+
+		public void setTerm(int term) {
+			this.term = term;
+		}
+
 		public String getImg() {
 			return img;
 		}
-	
+
 		public void setImg(String img) {
 			this.img = img;
 		}
-	
+
 		public int getCurrentQuantity() {
 			return currentQuantity;
 		}
-	
+
 		public void setCurrentQuantity(int currentQuantity) {
 			this.currentQuantity = currentQuantity;
 		}
-	
+
 		public Integer getGeneralQuantity() {
 			return generalQuantity;
 		}
-	
+
 		public void setGeneralQuantity(Integer generalQuantity) {
 			this.generalQuantity = generalQuantity;
 		}
-	
+
+		public Date getArrivalDate() {
+			return arrivalDate;
+		}
+
+		public void setArrivalDate(Date arrivalDate) {
+			this.arrivalDate = arrivalDate;
+		}
+
+		public Integer getOrdersQuantity() {
+			return ordersQuantity;
+		}
+
+		public void setOrdersQuantity(Integer ordersQuantity) {
+			this.ordersQuantity = ordersQuantity;
+		}
+
+		public Set<Person> getPersonsUse() {
+			return personsUse;
+		}
+
+		public void setPersonsUse(Set<Person> personsUse) {
+			this.personsUse = personsUse;
+		}
+
+		public Set<Person> getPersonsOrders() {
+			return personsOrders;
+		}
+
+		public void setPersonsOrders(Set<Person> personsOrders) {
+			this.personsOrders = personsOrders;
+		}
+
 		public Set<Person> getPersonsWishes() {
 			return personsWishes;
 		}
-	
+
 		public void setPersonsWishes(Set<Person> personsWishes) {
 			this.personsWishes = personsWishes;
 		}
-	
-		
-	
+
 		@Override
 		public String toString() {
-			return "Book [bId=" + bId + ", title=" + title + ", authors=" + authors
-					+ ", genre=" + genre + ", year=" + year + ", publisher="
-					+ publisher + ", pages=" + pages + ", description="
-					+ description + ", bookcase=" + bookcase + ", shelf=" + shelf
-					+ ", term=" + term + ", img=" + img + ", currentQuantity="
-					+ currentQuantity + ", generalQuantity=" + generalQuantity
-					 + "]";
+			return "Book [bId=" + bId + ", title=" + title + ", authors="
+					+ authors + ", genre=" + genre + ", year=" + year
+					+ ", publisher=" + publisher + ", pages=" + pages
+					+ ", bookcase=" + bookcase + ", shelf=" + shelf + ", term="
+					+ term + ", currentQuantity=" + currentQuantity
+					+ ", generalQuantity=" + generalQuantity + ", arrivalDate="
+					+ arrivalDate + ", ordersQuantity=" + ordersQuantity + "]";
 		}
+
+		
 
 }
