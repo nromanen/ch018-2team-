@@ -133,12 +133,6 @@
     </div>
 </div>
 
-<script type="text/javascript">
-	
-
-</script>
-<!--href="<c:url value="/librarian/users/deleteuser?id=${user.pid}"/>" -->
-<!--$("em").attr("title")  $("#su").modal("show")-->
 </div>		
 	</div>
 <script type="text/javascript">
@@ -151,7 +145,7 @@ function delete_user(nik){
             $("#buttonDelete").show();
 
            if (data=="User was deleted") {
-               $("#content1").load("${pageContext.request.contextPath}/librarian/users/orderbyrating #content1");
+               $("#content1").load("${pageContext.request.contextPath}/library/librarian/users/orderbyrating #content1");
                $("#buttonDelete").hide();
                $("#jik").load().text(data);
                $("#er").modal("show");

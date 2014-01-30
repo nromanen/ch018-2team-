@@ -42,13 +42,8 @@ public class LibrarianUsersController {
 	
 		@RequestMapping(value = "")
 		public String showAll(Model model) throws Exception {
-			
-			List<Person> person = personService.getAll();
-	
-			for (Person pers : person) {
-				personService.countRating(pers);
-			}
-			model.addAttribute("users", personService.pagination(FIRST_PAGE));
+
+			model.addAttribute("users", personService.getAll());
 			
 			//Locale locale = LocaleContextHolder.getLocale();
 	
