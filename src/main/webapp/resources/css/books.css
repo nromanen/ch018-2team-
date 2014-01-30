@@ -13,7 +13,7 @@ border-radius: 7px;
 
 
 .item-image{
-	max-height: 160px;
+	min-height: 160px;
         margin-bottom: 10px;
 }
 

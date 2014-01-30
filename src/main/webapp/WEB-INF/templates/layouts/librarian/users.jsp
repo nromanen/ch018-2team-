@@ -71,7 +71,7 @@
 				                    <td><a href="${pageContext.request.contextPath}/librarian/users/edituser?id=${user.pid}"  style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
 
 
-				                        <a onclick="jQuery:delete_user($(this).attr('nik'));" nik="/librarian/users/deleteuser?id=${user.pid}"     style="color: #0E3846"><spring:message code="message.libDelete"/>|</a>
+				                        <a onclick="jQuery:delete_user($(this).attr('nik'));" nik="${pageContext.request.contextPath}/librarian/users/deleteuser?id=${user.pid}"     style="color: #0E3846"><spring:message code="message.libDelete"/>|</a>
 
 				                        <a href="${pageContext.request.contextPath}/librarian/users/readnow?id=${user.pid}"  style="color: #0E3846">Books</a></td>
 				                </tr>

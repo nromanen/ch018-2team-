@@ -179,7 +179,7 @@ public class BookServiceImpl implements BookService {
 			Set<GenreTranslations> genre;
 			
 			for (Book bk : book) {
-				genre = bk.getGenre();
+				genre = bk.getGenreNew();
 				localBooks.put(bk, genreTranslService.getDescription(bk, locale));
 			}
 			
@@ -195,7 +195,7 @@ public class BookServiceImpl implements BookService {
 			Set<GenreTranslations> genre;
 			
 			for (Book bk : book) {
-				genre = bk.getGenre();
+				genre = bk.getGenreNew();
 				localBooks.put(bk, genreTranslService.getDescription(bk, locale));
 			}
 			
@@ -221,6 +221,12 @@ public class BookServiceImpl implements BookService {
 		@Transactional
 		public Integer getMaxIntegerField(String field) {
 			return bookDAO.getMaxIntegerField(field);
+		}
+
+		@Override
+		@Transactional
+		public List<Book> getLastByField(String field, int quantity) {
+			return bookDAO.getLastByField(field, quantity);
 		}
 
 		

@@ -32,7 +32,7 @@ public class GenreTranslations {
 	@Column(name = "value")
 	private String genreTranslation;
 	
-	@ManyToMany(mappedBy = "genre")
+	@ManyToMany(mappedBy = "genreNew")
 	private Set<Book> book;
 	
 	public GenreTranslations(){

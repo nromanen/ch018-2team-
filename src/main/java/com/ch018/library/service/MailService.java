@@ -74,7 +74,7 @@ public class MailService {
 			StringBuilder body = new StringBuilder(
 					"For password restore please click link : ");
 			body.append(path);
-			body.append("/library/restore/password?key=");
+			body.append("/restore/password?key=");
 			body.append(key);
 			sendMessage(from, to, subject, body.toString());
 		}

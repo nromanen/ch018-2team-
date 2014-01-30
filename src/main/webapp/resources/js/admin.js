@@ -14,11 +14,15 @@ $(document).ready(function() {
 		changeUserRole(userId, role);
 
 	});
+	
+	$('#switcher').change(function () {
+		changeSort($(this).is(':checked'));
+	});
 });
 
 function deleteUser(userId) {
 	$.ajax({
-		url : "admin/delete",
+		url : $('#path').attr('path') + "/admin/delete",
 		type : "POST",
 		data : {
 			'id' : userId
@@ -42,7 +46,7 @@ function deleteUser(userId) {
 
 function changeUserRole(userId, role) {
 	$.ajax({
-		url : "admin/change",
+		url : $('#path').attr('path') + "/admin/change",
 		type : "POST",
 		data : {
 			'id' : userId,
@@ -63,4 +67,32 @@ function changeUserRole(userId, role) {
 
 	});
 
+}
+
+function changeSort(state) {
+	$.ajax({
+		url : $('#path').attr('path') + "/admin/syssetings",
+		type : "POST",
+		data : {
+			'switcher' : state,
+		},
+		dataType : "json",
+		contentType : 'application/x-www-form-urlencoded',
+		mimeType : 'application/json',
+		success : function(data) {
+
+			//myOrders();
+			if(data === true)
+				$('#switcher').attr('checked', 'checked');
+			else
+				$('#switcher').attr('checked');
+
+		},
+		error : function() {
+			alert(data);
+			$('#switcher').attr('checked');
+		}
+
+	});
+	
 }

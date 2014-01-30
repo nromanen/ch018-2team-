@@ -3,6 +3,11 @@ $(document).ready(function() {
 					if ($(".calendar").size() == 0) {
 						$('#empty_orders_list').modal("show");
 					}
+					
+					$('body').click(function () {
+						$('.order_change_button').tooltip('destroy');
+					});
+					
 					$(".calendar").each(
 									function() {
 										var changed = $(this).parent().find(

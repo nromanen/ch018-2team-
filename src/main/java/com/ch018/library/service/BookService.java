@@ -36,4 +36,5 @@ public interface BookService {
              HashMap<Book, String> getBookByLocale(Book book, Locale locale);
              Integer getMinIntegerField(String field);
              Integer getMaxIntegerField(String field);
+             List<Book> getLastByField(String field, int quantity);
 }

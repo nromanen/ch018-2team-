@@ -67,13 +67,13 @@
 						Notification</h4>
 				</div>
 				<div class="modal-body">
-					<h2>Your WishList is empty yet</h2>
-					<h3>Try search in our collection</h3>
+					<h3>Your WishList is empty yet</h3>
+					<h4>Try search in <a href="${pageContext.request.contextPath}/books/search">our collection</a></h4>
 				</div>
 				<div class="modal-footer">
 
 					<button type="button"
-						onclick="location.href = '${pageContext.request.contextPath}//books'"
+						onclick="location.href = '${pageContext.request.contextPath}/books/search'"
 						class="btn btn-primary">View Books</button>
 				</div>
 			</div>

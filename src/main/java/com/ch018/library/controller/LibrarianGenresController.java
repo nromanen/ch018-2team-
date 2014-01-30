@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.GenreTranslations;
 import com.ch018.library.service.GenreService;
 import com.ch018.library.service.GenreTranslationService;
@@ -34,11 +35,11 @@ public class LibrarianGenresController {
 		
 		Locale locale = LocaleContextHolder.getLocale();
 		
-		List<GenreTranslations> genresByLocale = genreTranslationsServeice.getAllByLocale(locale.toString());
+		List<Genre> genresByLocale = genreService.getAll();
 		
-		for (GenreTranslations genreTranslations : genresByLocale) {
+		/*for (GenreTranslations genreTranslations : genresByLocale) {
 			System.out.println("Result: " + genreTranslations.getGenreTranslation());
-		}
+		}*/
 		
 		model.addAttribute("genres", genresByLocale);
 		
@@ -51,11 +52,11 @@ public class LibrarianGenresController {
 	}
 	
 	@RequestMapping(value = "/addgenre", method = RequestMethod.POST)
-	public String addGenre(@RequestParam("ukr") String ukr, @RequestParam("eng") String eng){
+	public String addGenre(@RequestParam( value = "ukr", required = false) String ukr, @RequestParam("eng") String eng){
 	
-		System.out.println("Result UKR: " + ukr);
+		//System.out.println("Result UKR: " + ukr);
 		System.out.println("Result ENG: " + eng);
-		int max = 1;
+		/*int max = 1;
 		Locale locale = LocaleContextHolder.getLocale();
 		List<GenreTranslations> genres = genreTranslationsServeice.getAllByLocale(locale.toString());
 		System.out.println(genres.size());
@@ -89,7 +90,11 @@ public class LibrarianGenresController {
 		genreENG.setGenreId(max);
 		genreENG.setGenreTranslation(eng);
 		genreENG.setLanguage(ENG);
-		genreTranslationsServeice.save(genreENG);
+		genreTranslationsServeice.save(genreENG);*/
+		
+		Genre genre = new Genre();
+		genre.setDescription(eng);
+		genreService.save(genre);
 		
 		return "redirect:/librarian/genres";
 	}
@@ -97,15 +102,8 @@ public class LibrarianGenresController {
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public String deleteGenre(@RequestParam("id") int id, Model model) throws Exception {
 		
-		try {
-			Set<GenreTranslations> genres = genreTranslationsServeice.getByGenreId(id);
-			
-			for (GenreTranslations genreTranslations : genres) {
-				genreTranslationsServeice.delete(genreTranslations);
-			}
-		} catch (Exception e) {
-			System.out.println("Error deleting genre!" + e);		
-		}
+		Genre genre = genreService.getById(id);
+		genreService.delete(genre);
 		
 		return "redirect:/librarian/genres";
 	}

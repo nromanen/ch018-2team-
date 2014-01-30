@@ -7,7 +7,7 @@
 
 
 <div class="col-lg-6">
-    <div style="margin: 0 0 0 -30px;">
+    <div >
 
         <ul class="navbar-form navbar-left navbar-nav list-unstyled">
             <li class="dropdown"><a href="#" data-toggle="dropdown"class="dropdown-toggle"><spring:message code="message.lang" /><b class="caret"></b></a>

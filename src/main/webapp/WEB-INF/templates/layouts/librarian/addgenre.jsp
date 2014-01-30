@@ -9,15 +9,10 @@
 					<div class="col-md-7">
 				       
 						<form:form method="POST" class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">
-							<div class="form-group">
-								    <label for="inputEmail3" class="col-sm-2 control-label">Українськa</label>
-								    <div class="col-sm-10">
-								    	 <input name="ukr" class="form-control"/> 
-								    </div>
-							 </div>  
+							
 							 
 							 <div class="form-group">
-								    <label for="inputEmail3" class="col-sm-2 control-label">English</label>
+								    <label for="inputEmail3" class="col-sm-2 control-label">Genre description</label>
 								    <div class="col-sm-10">
 								    	 <input name="eng" class="form-control"/> 
 								    </div>

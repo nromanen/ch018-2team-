@@ -21,6 +21,7 @@ $(document).ready(function() {
 											var days = getAvailableDays(current_time, $('.order'));
 											var d = 'can order for ' + days + 'days';
 											console.log('can order for ' + days + 'days');
+											console.log('choosen date = ' + currentTime);
 											if ($(this).find($('#picker_notify')).attr('id') === undefined) {
 												console.log($(this));
 
@@ -44,8 +45,10 @@ $(document).ready(function() {
 														.tooltip('show');
 												console.log("after"+ $('#picker_notify').attr('title'));
 											}
+											console.log('choosen date = ' + currentTime);
 
 										},
+										
 										format : 'Y/m/d H:i',
 										value : minD,
 										minDate : minDateSpl[0],
@@ -53,14 +56,13 @@ $(document).ready(function() {
 										allowTimes : [ '09:00', '10:00',
 												'11:00', '12:00', '14:00',
 												'15:00', '16:00' ],
-										validateOnBlur : true
+										
 									});
 					$('#order_button').click(
 							function() {
 
 								var bookId = $('#bookId').val();
-								var time = getLongFromFormatTime($(
-										'#datetimepicker').val());
+								var time = getLongFromFormatTime($('#datetimepicker').val());
 								makeOrder(bookId, time);
 
 							});

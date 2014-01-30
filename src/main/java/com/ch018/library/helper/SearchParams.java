@@ -1,12 +1,14 @@
 package com.ch018.library.helper;
 
+import java.io.Serializable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ch018.library.service.BookService;
 
 @Component
-public class SearchParams {
+public class SearchParams implements Serializable{
 
 		@Autowired
 		BookService bookService;
@@ -14,7 +16,7 @@ public class SearchParams {
 		private static final int DEFAULT_PAGE_SIZE = 12;
 	
 		private int page = 1;
-		private int pageSize = DEFAULT_PAGE_SIZE;
+		private Integer pageSize = DEFAULT_PAGE_SIZE;
 		private String orderField = "title";
 		private Boolean order = Boolean.FALSE;
 		
@@ -37,6 +39,7 @@ public class SearchParams {
 	    
 	    private Boolean fieldChanged = Boolean.FALSE;
 	    private Boolean orderChanged = Boolean.FALSE;
+	    private Boolean pageSizeChanged = Boolean.FALSE;
 	    
 
 	    public void init() {
@@ -80,7 +83,7 @@ public class SearchParams {
 	    		return;
 	    	}
 	    	page = params.getPage();
-	    	if(params.getPageSize() != 0)
+	    	if(params.getPageSizeChanged())
 	    		pageSize = params.getPageSize();
 	    	if(params.getFieldChanged()) 
 	    		orderField = params.getOrderField();
@@ -120,20 +123,21 @@ public class SearchParams {
 
 
 
-		public void setPage(int page) {
+		public void setPage(Integer page) {
 			this.page = page;
 		}
 
 
 
-		public int getPageSize() {
+		public Integer getPageSize() {
 			return pageSize;
 		}
 
 
 
-		public void setPageSize(int pageSize) {
+		public void setPageSize(Integer pageSize) {
 			this.pageSize = pageSize;
+			this.pageSizeChanged = Boolean.TRUE;
 		}
 
 
@@ -344,6 +348,16 @@ public class SearchParams {
 
 		public void setGeneralQuery(Boolean generalQuery) {
 			this.generalQuery = generalQuery;
+		}
+		
+		
+
+		public Boolean getPageSizeChanged() {
+			return pageSizeChanged;
+		}
+
+		public void setPageSizeChanged(Boolean pageSizeChanged) {
+			this.pageSizeChanged = pageSizeChanged;
 		}
 
 		@Override

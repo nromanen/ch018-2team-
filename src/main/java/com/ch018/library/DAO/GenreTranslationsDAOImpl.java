@@ -40,7 +40,7 @@ public class GenreTranslationsDAOImpl implements GenreTranslationDAO {
 	@Override
 	public String getDescription(Book book, Locale locale) {
 		
-		Set<GenreTranslations> genres = book.getGenre();
+		Set<GenreTranslations> genres = book.getGenreNew();
 		String translation = "";
 		
 		for (GenreTranslations genreTranslations : genres) {
@@ -77,8 +77,9 @@ public class GenreTranslationsDAOImpl implements GenreTranslationDAO {
 		
 		Session session = factory.openSession();
 		Criteria criteria = session.createCriteria(GenreTranslations.class);
-		criteria.add(Restrictions.eq("genreId", genreId));
+		criteria.add(Restrictions.eq("gid", genreId));
 		List<GenreTranslations> genrTransl = criteria.list();
+		System.out.println("GENRE " + genrTransl);
 		
 		Set<GenreTranslations> genreTransl = new HashSet<>();
 		for (GenreTranslations genreTranslations : genrTransl) {
