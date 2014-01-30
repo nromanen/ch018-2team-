@@ -23,7 +23,10 @@
 
 <sec:authorize access="hasRole('ROLE_ANONYMOUS')">
 
-
+	<div class="nav navbar-nav navbar-left" style="margin : 8px 0 10px 0;">
+	<a type="button" class="btn btn-default" href="${pageContext.request.contextPath}/books">Home</a>
+	 <a type="button" class="btn btn-default" href="${pageContext.request.contextPath}/books/search">Catalogue</a>
+	</div>
 
     <div class="nav navbar-nav navbar-right" style="margin : 10px 0 10px 0;">
         <a href="#" data-toggle="popover" role="button" data-original-title="Login Form" id = "login_popover" class="btn btn-info btn-sm" style="margin-right: 20px;"><spring:message code="message.singin" /></a>
@@ -57,7 +60,7 @@
                     <span><spring:message code="message.remember" />  </span>
                 	</label>
 					
-                	<label class="text-info">
+                	<label class="text-info" style="margin-left: 17px;">
                     <span><a id="restore" class="text-info"><spring:message code="message.forgot"/></a></span>
                     </label>
                     
@@ -94,13 +97,16 @@
                 <h4 class="modal-title" id="forgot_pass_label">Notification</h4>
             </div>
             <div class="modal-body">
-                <div class="text-info"><h2>For Restoring password input your email</h2></div>
+                <div class="text-info"><h3>For restoring password input your email</h3></div>
             </div>
             <div class="modal-footer">
                 <form id="restore_mail_form" action="${pageContext.request.contextPath}/restore" method="post">
+                <div class="form-group col-lg-8 col-lg-offset-2">
                     <input type="email" class="form-control" name="email" placeholder="Email">
-                    <p>
+                    </div>
+                    <div class="form-group col-lg-8 col-lg-offset-2">
                         <input id="restore_mail_form_submit" url="${pageContext.request.contextPath}/restore" type="submit" class="form-control btn btn-warning" value="Restore">
+                        </div>
                     <div id="forgot_error_mail_div" class="alert alert-danger hide">
                     </div>
                 </form>

@@ -37,7 +37,7 @@
                             <td> <b> <spring:message code="message.libYear"/> </b> </td>
                             <td> <b> <spring:message code="message.libPublisher"/> </b> </td>
                             <td> <b> <spring:message code="message.libPages"/> </b> </td>
-                            <td> <b> <spring:message code="message.libGenre"/> </b> </td>
+                            <!-- <td> <b> <spring:message code="message.libGenre"/> </b> </td> -->
                             <td> <b> <spring:message code="message.libDescription"/> </b> </td>    
                             <td> <b> <spring:message code="message.libShelf"/> </b> </td>
                             <td> <b> <spring:message code="message.libTerm"/> </b> </td> 
@@ -50,21 +50,21 @@
        			  		<c:set var = "locale" value="${locale}"/>  
 				        <c:forEach items="${books}" var="book">
 				                <tr>
-				                        <td hidden="true">${book.key.bId}</td>
-				                        <td>${book.key.title}</td>
-				                        <td>${book.key.authors}</td>
-				                        <td>${book.key.year}</td>
-				                        <td>${book.key.publisher}</td>
-				                        <td>${book.key.pages}</td>
-				                        <td>${book.value}</td>
-				                        <td><textarea class="form-control" rows="2" style=" background:transparent;"> ${book.key.description} </textarea></td>
-				                        <td>${book.key.shelf}</td>
-				                        <td>${book.key.term}</td>
-				                        <td>${book.key.currentQuantity}</td>
-				                        <td>${book.key.generalQuantity}</td>
-				                    <td><a href="<c:url value="/librarian/books/editbook?id=${book.key.bId}"/>" style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
-				                    <a href="<c:url value="/librarian/books/deletebook?id=${book.key.bId}"/>" style="color: #0E3846"><spring:message code="message.libDelete"/> |</a>
-				                     <a href="<c:url value="/librarian/books/holders?id=${book.key.bId}"/>"style="color: #0E3846"><spring:message code="message.libHolders"/></a></td>
+				                        <td hidden="true">${book.bId}</td>
+				                        <td>${book.title}</td>
+				                        <td>${book.authors}</td>
+				                        <td>${book.year}</td>
+				                        <td>${book.publisher}</td>
+				                        <td>${book.pages}</td>
+				                        
+				                        <td><textarea class="form-control" rows="2" style=" background:transparent;"> ${book.description} </textarea></td>
+				                        <td>${book.shelf}</td>
+				                        <td>${book.term}</td>
+				                        <td>${book.currentQuantity}</td>
+				                        <td>${book.generalQuantity}</td>
+				                    <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>" style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
+				                    <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>" style="color: #0E3846"><spring:message code="message.libDelete"/> |</a>
+				                     <a href="<c:url value="/librarian/books/holders?id=${book.bId}"/>"style="color: #0E3846"><spring:message code="message.libHolders"/></a></td>
 				                </tr>
 				        </c:forEach>
 			   </table>

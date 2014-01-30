@@ -28,5 +28,6 @@ public interface BookDao {
         List<Book> simpleSearch(String query);
         Integer getMinIntegerField(String field);
         Integer getMaxIntegerField(String field);
+        List<Book> getLastByField(String field, int quantity);
         
 }

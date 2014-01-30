@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
@@ -190,7 +191,8 @@ public class BookDaoImpl implements BookDao {
 			if (searchParams.getGenreId() > 0) {
 				//criteria.add(Restrictions.eq("genreOld.id", searchParams.getGenreId()));
 				criteria.createAlias("genre", "gen");
-				criteria.add(Restrictions.eq("gen.genreId", searchParams.getGenreId()));
+				criteria.add(Restrictions.eq("gen.gid", searchParams.getGenreId()));
+				System.out.println("IN CRITERIA " + criteria.list() + " id = " + searchParams.getGenreId());
 			}
 
 			if (searchParams.getChoosenPageStart() != null &&
@@ -235,5 +237,15 @@ public class BookDaoImpl implements BookDao {
 					.add(Projections.max(field))).uniqueResult();
 			return maxPages;
         }
+
+		@Override
+		public List<Book> getLastByField(String field, int quantity) {
+			Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
+			List<Book> books = (List<Book>) criteria.addOrder(Order.desc(field)).setMaxResults(quantity).list();
+			return books;
+		}
+
+		
+		
 		
 }

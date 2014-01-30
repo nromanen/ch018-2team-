@@ -96,9 +96,9 @@
 							    <div class="col-sm-10">
 							    	   <select name="genreId" class="form-control">
 							    	   
-					                    <c:forEach var="genre" items="${genre}">
-					                        <option value="${genre.getGenreId()}">${genre.genreTranslation}</option>
-					                        <h5>${genre.getGenreId()}</h5>
+					                    <c:forEach var="genre" items="${genres}">
+					                        <option value="${genre.id}">${genre.genreTranslation}</option>
+					                        <h5>${genre.id}</h5>
 					                        <h5>${genre.genreTranslation}
 					                    </c:forEach>
 				                </select>

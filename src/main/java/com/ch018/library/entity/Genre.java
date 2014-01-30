@@ -29,8 +29,8 @@ public class Genre implements Serializable {
         @Column(name = "description")
         private String description;
         
-        @OneToMany(mappedBy = "genreOld")
-        private Set<Book> books;
+        /*@OneToMany(mappedBy = "genreOld")
+        private Set<Book> books;*/
 
         public Genre() {
 
@@ -48,14 +48,7 @@ public class Genre implements Serializable {
             this.id = id;
         }
 
-        public Set<Book> getBooks() {
-            return books;
-        }
-
-        public void setBooks(Set<Book> books) {
-            this.books = books;
-        }
-
+        
         public String getDescription() {
             return description;
         }

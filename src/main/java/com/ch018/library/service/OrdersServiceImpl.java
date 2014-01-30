@@ -71,6 +71,10 @@ public class OrdersServiceImpl implements OrdersService {
 		@Transactional
 		public void save(Orders order) {
 			ordersDao.save(order);
+			Book book = order.getBook();
+			int ordersQuantity = book.getOrdersQuantity() + 1;
+			book.setOrdersQuantity(ordersQuantity);
+			bookDao.update(book);
 			if (wishService.isPersonWishBook(order.getPerson(), order.getBook()))
 				wishService.delete(wishService.getWishByPersonBook(
 						order.getPerson(), order.getBook()));

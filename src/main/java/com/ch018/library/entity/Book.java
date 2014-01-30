@@ -53,10 +53,6 @@ public class Book implements Serializable {
 		@Size(max = MAX_NAME)
 		@Column(name = "authors")
 		private String authors;
-	
-		@ManyToOne
-		@JoinColumn(name = "gid")
-		private Genre genreOld;
 		
 		@ManyToMany(fetch=FetchType.EAGER)
 		@JoinTable(name = "book_genre", joinColumns = {@JoinColumn(name = "bId")}, inverseJoinColumns = {@JoinColumn(name = "gid")})
@@ -99,7 +95,7 @@ public class Book implements Serializable {
 		private int term;
 	
 		@Column(name = "img")
-		private String img;
+		private String img = "http://placehold.it/480x480";
 	
 		@Range(min = 0)
 		@Column(name = "cur_quantity")
@@ -112,7 +108,10 @@ public class Book implements Serializable {
 		
 		@Column(name = "arrival_date")
 		@Temporal(TemporalType.TIMESTAMP)
-		private Date arrivalDate;
+		private Date arrivalDate = new Date();
+		
+		@Column(name = "orders_quantity")
+		private int ordersQuantity;
 	
 		@OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
 		private Set<Person> personsUse;
@@ -227,14 +226,6 @@ public class Book implements Serializable {
 			this.genre = genre;
 		}
 	
-		public Genre getGenreOld() {
-			return genreOld;
-		}
-	
-		public void setGenreOld(Genre genre) {
-			this.genreOld = genre;
-		}
-	
 		public int getBookcase() {
 			return bookcase;
 		}
@@ -277,15 +268,33 @@ public class Book implements Serializable {
 	
 		
 	
+		public Date getArrivalDate() {
+			return arrivalDate;
+		}
+
+		public void setArrivalDate(Date arrivalDate) {
+			this.arrivalDate = arrivalDate;
+		}
+
+		public int getOrdersQuantity() {
+			return ordersQuantity;
+		}
+
+		public void setOrdersQuantity(int ordersQuantity) {
+			this.ordersQuantity = ordersQuantity;
+		}
+
 		@Override
 		public String toString() {
-			return "Book [bId=" + bId + ", title=" + title + ", authors=" + authors
-					+ ", genre=" + genre + ", year=" + year + ", publisher="
-					+ publisher + ", pages=" + pages + ", description="
-					+ description + ", bookcase=" + bookcase + ", shelf=" + shelf
-					+ ", term=" + term + ", img=" + img + ", currentQuantity="
-					+ currentQuantity + ", generalQuantity=" + generalQuantity
-					 + "]";
+			return "Book [bId=" + bId + ", title=" + title + ", authors="
+					+ authors + ", genre=" + genre + ", year=" + year
+					+ ", publisher=" + publisher + ", pages=" + pages
+					+ ", bookcase=" + bookcase + ", shelf=" + shelf + ", term="
+					+ term + ", currentQuantity=" + currentQuantity
+					+ ", generalQuantity=" + generalQuantity + ", arrivalDate="
+					+ arrivalDate + ", ordersQuantity=" + ordersQuantity + "]";
 		}
+
+		
 
 }

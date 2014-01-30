@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<div class="row" id="content_bg">
+<div class="row well" >
 
 	<div id="acc_menu" class="col-md-3 col-md-offset-1">
 		<div class="panel panel-info">

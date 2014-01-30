@@ -77,8 +77,9 @@ public class GenreTranslationsDAOImpl implements GenreTranslationDAO {
 		
 		Session session = factory.openSession();
 		Criteria criteria = session.createCriteria(GenreTranslations.class);
-		criteria.add(Restrictions.eq("genreId", genreId));
+		criteria.add(Restrictions.eq("gid", genreId));
 		List<GenreTranslations> genrTransl = criteria.list();
+		System.out.println("GENRE " + genrTransl);
 		
 		Set<GenreTranslations> genreTransl = new HashSet<>();
 		for (GenreTranslations genreTranslations : genrTransl) {

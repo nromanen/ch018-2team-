@@ -58,7 +58,7 @@ public class LibrarianBooksController {
 			
 			locale = LocaleContextHolder.getLocale();
 			
-			model.addAttribute("books", bookService.getAllByLocale(locale));
+			model.addAttribute("books", bookService.getAll());
 			return "librarian_books";
 		}
 		
@@ -113,7 +113,7 @@ public class LibrarianBooksController {
 			
 			Book book = bookService.getBookById(bookId);
 			
-			model.addAttribute("genre", genreTranslService.getAllByLocale(locale.toString()));
+			model.addAttribute("genres", genreTranslService.getAllByLocale(locale.toString()));
 			model.addAttribute("book", bookService.getBookById(bookId));
 			return "librarian_books_edit_book";
 		}
@@ -152,10 +152,10 @@ public class LibrarianBooksController {
 			
 			List<Book> booksList = bookService.advancedSearch(book);
 			
-			HashMap<Book, String> books = bookService.getBooksByLocale(booksList, locale);
+			//HashMap<Book, String> books = bookService.getBooksByLocale(booksList, locale);
 			
-			if (books.size() > 0) {
-				model.addAttribute("books", books);
+			if (booksList.size() > 0) {
+				model.addAttribute("books", booksList);
 			} else {
 				model.addAttribute("books", bookService.getAll());
 			}
@@ -188,10 +188,10 @@ public class LibrarianBooksController {
 			
 			List<Book> booksList = bookService.simpleSearch(request);
 			
-			HashMap<Book, String> books = bookService.getBooksByLocale(booksList, locale);
+			//HashMap<Book, String> books = bookService.getBooksByLocale(booksList, locale);
 			
-			if (books.size() > 0) {
-				model.addAttribute("books", books);
+			if (booksList.size() > 0) {
+				model.addAttribute("books", booksList);
 			} else {
 				model.addAttribute("books", bookService.getAll());
 			}

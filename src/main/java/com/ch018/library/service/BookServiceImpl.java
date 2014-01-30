@@ -223,6 +223,12 @@ public class BookServiceImpl implements BookService {
 			return bookDAO.getMaxIntegerField(field);
 		}
 
+		@Override
+		@Transactional
+		public List<Book> getLastByField(String field, int quantity) {
+			return bookDAO.getLastByField(field, quantity);
+		}
+
 		
 }
 
