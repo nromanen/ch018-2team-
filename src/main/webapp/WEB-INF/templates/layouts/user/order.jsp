@@ -94,42 +94,45 @@
 					
 					<sec:authorize access="isAuthenticated()">
 			
-								<c:choose>
-						<c:when test="${inUse}">
-							<div class="alert alert-danger col-lg-6">You already use
-								that book</div>
-						</c:when>
-						<c:when test="${inOrders}">
-							<div class="alert alert-warning col-lg-6">You already
-								ordered that book</div>
-							<div class="clearfix"></div>
-
-
-							<a href="${pageContext.request.contextPath}/books/order/my"
-								class="btn btn-primary">View Orders</a>
-						</c:when>
-						<c:when test="${inWishList}">
-							<input type="hidden" id="minDate" value="${minDate}">
-							
-							<input class="form-control" id="datetimepicker">
-							
-							<input type="hidden" id="bookId" value="${book.getbId()}">
-							<div class="alert alert-info col-lg-6">Already in WishList</div>
-							<div class="clearfix"></div>
-							<button id="order_button" class="btn btn-info">Order</button>
-
-						</c:when>
-						<c:otherwise>
-							<input type="hidden" id="minDate" value="${minDate}">
-							<input class="form-control" id="datetimepicker">
-							<input type="hidden" id="bookId" value="${book.getbId()}">
-
-							<button id="order_button" class="btn btn-info btn-sm">Order</button>
-
-							<button id="wish_button" class="btn btn-warning btn-sm">Add To
-								WishList</button>
-						</c:otherwise>
-					</c:choose>
+						<c:choose>
+							<c:when test="${days <= 0}">
+								<div class="alert alert-danger col-lg-6">Book  temporarily unavailable</div>
+							</c:when>
+							<c:when test="${inUse}">
+								<div class="alert alert-danger col-lg-6">You already use
+									that book</div>
+							</c:when>
+							<c:when test="${inOrders}">
+								<div class="alert alert-warning col-lg-6">You already
+									ordered that book</div>
+								<div class="clearfix"></div>
+	
+	
+								<a href="${pageContext.request.contextPath}/books/order/my"
+									class="btn btn-primary">View Orders</a>
+							</c:when>
+							<c:when test="${inWishList}">
+								<input type="hidden" id="minDate" value="${minDate}">
+								
+								<input class="form-control" id="datetimepicker">
+								
+								<input type="hidden" id="bookId" value="${book.getbId()}">
+								<div class="alert alert-info col-lg-6">Already in WishList</div>
+								<div class="clearfix"></div>
+								<button id="order_button" class="btn btn-info">Order</button>
+	
+							</c:when>
+							<c:otherwise>
+								<input type="hidden" id="minDate" value="${minDate}">
+								<input class="form-control" id="datetimepicker">
+								<input type="hidden" id="bookId" value="${book.getbId()}">
+	
+								<button id="order_button" class="btn btn-info btn-sm">Order</button>
+	
+								<button id="wish_button" class="btn btn-warning btn-sm">Add To
+									WishList</button>
+							</c:otherwise>
+				 	</c:choose>
 					<div class="clearfix"></div>
 					<div class="alert alert-danger hide" id="order_err"></div>
 

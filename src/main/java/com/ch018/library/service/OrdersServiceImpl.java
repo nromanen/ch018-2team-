@@ -222,15 +222,19 @@ public class OrdersServiceImpl implements OrdersService {
 		public OrderDays getMinOrderDate(Book book) {
 	
 			int currentQuantity = book.getCurrentQuantity();
+			int generalQuantity = book.getGeneralQuantity();
 			long days = MAX_DAYS;
 			Date minDate = new Date();
 			Calendar calendar = Calendar.getInstance();
 			List<Orders> orders = ordersDao.getOrderByBook(book);
 			orders = excludeSelfOrders(orders);
 			
+			if(generalQuantity <= 0)
+				return new OrderDays(new Date(), 0);
+			
 			if (currentQuantity > 0 && orders.size() < currentQuantity) {
 				calendar.setTime(minDate);
-				//calendar.add(Calendar.DAY_OF_YEAR, 1);
+	
 				return new OrderDays(calendar.getTime(), MAX_DAYS);
 			} 
 			else if (currentQuantity <= 0 || orders.size() > currentQuantity) {
@@ -258,12 +262,16 @@ public class OrdersServiceImpl implements OrdersService {
 			if (orderDate.getTime() < (new Date().getTime() - DIFF_TIME_IN_MILLIS))
 				throw new Exception("Incorrect Date Choosen");
 			List<Orders> orders = ordersDao.getOrderByBook(book);
+			logger.info("orders {}", orders);
 			orders = excludeSelfOrders(orders);
+			logger.info("orders after {}", orders);
 			int days = MAX_DAYS;
 			long currentOrderDateInMillis = orderDate.getTime();
+			logger.info("current order {}", new Date(currentOrderDateInMillis));
 			for (Orders order : orders) {
 				long orderDateInMillis = order.getOrderDate().getTime();
 				if (currentOrderDateInMillis < orderDateInMillis) {
+					logger.info("current {}, order {}", new Date(currentOrderDateInMillis), new Date(orderDateInMillis));
 					Double daysRes = (double) (orderDateInMillis - currentOrderDateInMillis)
 							/ MILLIS_IN_DAY;
 					days = (int) Math.ceil(daysRes);
