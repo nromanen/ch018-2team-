@@ -70,4 +70,9 @@ public class LoginController {
         public String error404() {
             return "error404";
         }
+        
+        @RequestMapping(value = "/exception")
+        public String exception() {
+            return "exception";
+        }
 }

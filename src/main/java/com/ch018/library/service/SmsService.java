@@ -1,19 +1,19 @@
 package com.ch018.library.service;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriUtils;
-import org.springframework.web.util.UrlPathHelper;
+/**
+ * 
+ * @author Edd Arazian
+ *
+ */
 
 @Service
 public class SmsService {
@@ -47,11 +47,10 @@ public class SmsService {
 						connection.setRequestMethod(GET);
 						connection.setRequestProperty("User-Agent", USER_AGENT);
 						
-						try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-								FileWriter fw = new FileWriter(new File("D://sms.txt"), true)) {
+						try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
 							String responeLine;
 							while((responeLine = reader.readLine()) != null) {
-								fw.write("phone : " + PHONE + " " + responeLine + "\n");
+								logger.info("phone : " + PHONE + " " + responeLine + "\n");
 							}
 						} catch (Exception e) {
 							logger.error("during sms sending {}", e.getMessage());

@@ -3,7 +3,9 @@ package com.ch018.library.service;
 import com.ch018.library.DAO.BooksInUseDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,23 @@ public class BookInUseServiceImpl implements BookInUseService {
 
 		@Autowired
 		private BooksInUseDao useDao;
+		
 		@Autowired
 		private PersonService personService;
+		
 		@Autowired
 		private BookService bookService;
+		
+		@Autowired
+		private OrdersService orderService;
+		
+		@Autowired
+		private MailService mailService;
+		
+		@Autowired
+		private SmsService smsService;
+		
+		private static final long MILLIS_IN_DAY = 24*3600*1000;
 	
 		private final Logger logger = LoggerFactory
 				.getLogger(BookInUseServiceImpl.class);
@@ -100,7 +115,7 @@ public class BookInUseServiceImpl implements BookInUseService {
 		public void getBookBack(BooksInUse bookInUse) {
 	
 			Date now = new Date();
-	
+			List<Orders> orders;
 			Person person = bookInUse.getPerson();
 			int booksReturnedIntime = person.getTimelyReturn();
 			int booksReturnedNotIntime = person.getUntimekyReturn();
@@ -126,6 +141,18 @@ public class BookInUseServiceImpl implements BookInUseService {
 			book.setCurrentQuantity(quantity);
 			bookService.update(book);
 	
+			if((bookInUse.getReturnDate().getTime() - now.getTime()) >= (2*MILLIS_IN_DAY)) {
+				orders = orderService.getOrderByBook(book);
+				for(Orders order : orders) {
+					order.setChanged(true);
+					mailService.sendMailOrderChange("springytest@gmail.com", "etenzor@gmail.com", "Book Available Early", order);
+					if(person.isSms()) 
+						smsService.sendSms("book: " + order.getBook().getTitle() + " available earlier");
+						
+					orderService.update(order);
+				}
+			}
+				
 			delete(bookInUse);
 	
 		}

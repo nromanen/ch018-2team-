@@ -158,22 +158,6 @@ public class OrdersServiceImpl implements OrdersService {
 				return true;
 		}
 	
-		@Override
-		@Transactional
-		public void checkPersonOrders(Book book, Date returnDate) {
-			/*List<Orders> orders;
-			if (book.getCurrentQuantity() <= 0) {
-				orders = ordersDao.getOrdersForChanging(book, returnDate);
-				if (orders != null) {
-					for (Orders order : orders) {
-						order.setChanged(Boolean.TRUE);
-						ordersDao.update(order);
-						mailService.sendMailOrderChange("springytest@gmail.com",
-								"etenzor@gmail.com", "order changed", order);
-					}
-				}
-			}*/
-		}
 	
 		@Override
 		@Transactional
@@ -208,8 +192,6 @@ public class OrdersServiceImpl implements OrdersService {
 			mailService.sendEmailBookIssued("librairancv111@gmail.com",
 					"dmitry.sankovsky@gmail.com", "Book Orders", order, person,
 					book, bookInUse, term);
-			Date minDate = booksInUseService.getMinReturnDate(book);
-			checkPersonOrders(book, minDate);
 		}
 	
 		public boolean isAvailable() {
@@ -237,14 +219,16 @@ public class OrdersServiceImpl implements OrdersService {
 	
 				return new OrderDays(calendar.getTime(), MAX_DAYS);
 			} 
-			else if (currentQuantity <= 0 || orders.size() > currentQuantity) {
+			else if (currentQuantity <= 0 || orders.size() >= currentQuantity) {
 				minDate = booksInUseService.getMinReturnDate(book);
 			}
 	
 			for (Orders order : orders) {
 				days = (order.getOrderDate().getTime() - minDate.getTime())
 						/ MILLIS_IN_DAY;
-				if (days < 3) {
+				if (days > 1)
+					break;
+				else {
 					minDate = new Date(order.getOrderDate().getTime()
 							+ order.getDaysAmount() * MILLIS_IN_DAY);
 				}
@@ -274,7 +258,7 @@ public class OrdersServiceImpl implements OrdersService {
 					logger.info("current {}, order {}", new Date(currentOrderDateInMillis), new Date(orderDateInMillis));
 					Double daysRes = (double) (orderDateInMillis - currentOrderDateInMillis)
 							/ MILLIS_IN_DAY;
-					days = (int) Math.ceil(daysRes);
+					days = (int) Math.round(daysRes);
 					if (days <= 0)
 						throw new Exception("Incorrect Date Choosen");
 					else if (days > MAX_DAYS)
@@ -308,7 +292,8 @@ public class OrdersServiceImpl implements OrdersService {
 					book, orderDate, days);
 			mailService.sendMailWithOrder("springytest@gmail.com",
 					"etenzor@gmail.com", "order", order);
-			smsService.sendSms("new order " + order.getBook().getTitle());
+			if(person.isSms())
+				smsService.sendSms("new order for: " + order.getBook().getTitle());
 		}
 	
 		@Override
@@ -326,6 +311,7 @@ public class OrdersServiceImpl implements OrdersService {
 			}
 			order.setOrderDate(orderDate);
 			order.setDaysAmount(orderDays);
+			order.setChanged(false);
 			update(order);
 			logger.info("person {} edit order for book {} to date {} for {}  days",
 					person, book, orderDate, orderDays);

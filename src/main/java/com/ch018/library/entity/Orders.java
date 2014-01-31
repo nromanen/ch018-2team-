@@ -91,17 +91,7 @@ public class Orders implements Serializable {
         
         public Date getOrderDate() {
             return orderDate;
-        }
-
-        
-        public Boolean getChanged() {
-            return changed;
-        }
-
-        public void setChanged(Boolean changed) {
-            this.changed = changed;
-        }
-        
+        }        
         
 
         public void setOrderDate(Date orderDate) {

@@ -42,7 +42,7 @@ function getAvailableDays(current_time, $order) {
 	});
 	if (days > 14)
 		days = 14;
-	return Math.ceil(days);
+	return Math.round(days);
 
 }
 

@@ -29,11 +29,9 @@ public class OrdersDaoImpl implements OrdersDao {
 	
 		@Override
 		public void save(Orders order) {
-			try {
+			
 				factory.getCurrentSession().save(order);
-			} catch (Exception e) {
-				logger.error("during save order {}", order);
-			}
+			
 	
 		}
 	

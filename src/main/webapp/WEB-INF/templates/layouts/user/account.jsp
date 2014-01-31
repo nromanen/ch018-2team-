@@ -2,18 +2,19 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="row well" >
+	<div id="path" url="${pageContext.request.contextPath}"></div>
 
 	<div id="acc_menu" class="col-md-3 col-md-offset-1">
 		<div class="panel panel-info">
 			<div class="panel-heading">
-				<div class="panel-title">User</div>
+				<div class="panel-title"><spring:message code="message.user" /></div>
 			</div>
 			<div class="panel-body">
 				<ul class="nav nav-pills nav-stacked" id="nav_bar">
 					<li><a href="#personal_info_tab" data-toggle="tab"
-						class="btn btn-default">Personal Info</a></li>
+						class="btn btn-default"><spring:message code="message.personal" /></a></li>
 					<li><a href="#account_info_tab" data-toggle="tab"
-						class="btn btn-default">Account Settings</a></li>
+						class="btn btn-default"><spring:message code="message.accsettins" /></a></li>
 				</ul>
 			</div>
 
@@ -21,7 +22,7 @@
 
 		<div class="panel panel-info">
 			<div class="panel-heading">
-				<div class="panel-title">Rating</div>
+				<div class="panel-title"><spring:message code="message.rating" /></div>
 			</div>
 			<div class="panel-body">
 				<div class="progress">
@@ -41,7 +42,7 @@
 			<div id="personal_info_tab" class="tab-pane fade active in">
 				<div class="panel panel-info">
 					<div class="panel-heading">
-						<div class="panel-title">Personal Info</div>
+						<div class="panel-title"><spring:message code="message.personal" /></div>
 					</div>
 					<div class="panel-body">
 						<form id="info_form"
@@ -49,20 +50,20 @@
 							role="form" method="post">
 							<div class="form-group">
 
-								<label for="name_input">Name</label> <input name="name"
+								<label for="name_input"><spring:message code="message.libFirstName" /></label> <input name="name"
 									type="text" maxlength="30" class="form-control" id="name_input"
 									placeholder="Name" value="${person.name}" />
 
 							</div>
 							<div class="form-group">
-								<label for="surname_input">Surname</label> <input name="surname"
+								<label for="surname_input"><spring:message code="message.libLastName" /></label> <input name="surname"
 									type="text" maxlength="30" name="surname" class="form-control"
 									id="surname_input" placeholder="Surname"
 									value="${person.surname}" />
 
 							</div>
 							<div class="form-group">
-								<label for="phone_input">Phone Number</label> <input
+								<label for="phone_input"><spring:message code="message.libCellPhone" /></label> <input
 									id="acc_cellphone" name="cellphone" type="text" maxlength="13"
 									name="cellphone" class="form-control" id="phone_input"
 									placeholder="Phone Number" value="${person.cellphone}" />
@@ -72,17 +73,17 @@
 								<label> <c:choose>
 										<c:when test="${person.sms}">
 											<input class="checkbox" type="checkbox" name="sms"
-												checked="checked"> sms notification
+												checked="checked"> <spring:message code="message.libSMS" />
                                                 </c:when>
 										<c:otherwise>
 											<input class="checkbox" type="checkbox" name="sms"
-												checked="checked"> sms notification
+												> <spring:message code="message.libSMS" />
                                                 </c:otherwise>
 									</c:choose>
 
 								</label>
 							</div>
-							<button id="info_submit" type="submit" class="btn btn-success">Save</button>
+							<button id="info_submit" type="submit" class="btn btn-success"><spring:message code="message.save" /></button>
 							<div class="alert alert-danger hide" id="info_error"></div>
 							<div class="alert alert-success hide" id="info_success"></div>
 						</form>
@@ -95,7 +96,7 @@
 			<div id="account_info_tab" class="tab-pane fade">
 				<div class="panel panel-info">
 					<div class="panel-heading">
-						<div class="panel-title">Password Change</div>
+						<div class="panel-title"><spring:message code="message.passchange" /></div>
 					</div>
 					<div class="panel-body">
 						<form id="pass_form"
@@ -124,7 +125,7 @@
 
 
 							</div>
-							<button type="submit" class="btn btn-warning">Change</button>
+							<button type="submit" class="btn btn-warning"><spring:message code="message.change" /></button>
 							<div class="alert alert-danger hide" id="pass_error"></div>
 							<div class="alert alert-success hide" id="pass_success"></div>
 						</form>
@@ -133,7 +134,7 @@
 
 				<div class="panel panel-info">
 					<div class="panel-heading">
-						<div class="panel-title">Email Change</div>
+						<div class="panel-title"><spring:message code="message.emailchange" /></div>
 					</div>
 					<div class="panel-body">
 						<form id="email_form" role="form"
@@ -146,7 +147,7 @@
 									id="email_input" placeholder="New Email">
 
 							</div>
-							<button type="submit" class="btn btn-warning">Change</button>
+							<button type="submit" class="btn btn-warning"><spring:message code="message.change" /></button>
 							<div class="alert alert-danger hide" id="email_error"></div>
 							<div class="alert alert-success hide" id="email_success"></div>
 						</form>

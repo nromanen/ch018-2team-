@@ -8,9 +8,9 @@
 
 			<div class="panel panel-warning">
 				<div class="panel-heading">
-					<div class="panel-title">Login form</div>
+					<div class="panel-title"><spring:message code="message.singin" /></div>
 						<c:if test="${fail != null}" >
-							<div class="panel-title" style="color: red">Incorrect login/password entered</div>
+							<div class="panel-title" style="color: red"><spring:message code="message.incorrectLP" /></div>
 						</c:if>
 				</div>
 				<div class="panel-body">
@@ -51,7 +51,7 @@
                 <h4 class="modal-title" id="forgot_pass_label">Notification</h4>
             </div>
             <div class="modal-body">
-                <div class="text-info"><h6>For restoring password input your email</h6></div>
+                <div class="text-info"><h6><spring:message code="message.restore" /></h6></div>
             </div>
             <div class="modal-footer">
                 <form id="restore_mail_form" action="${pageContext.request.contextPath}/restore" method="post">
@@ -81,7 +81,7 @@
                 <h4 class="modal-title" id="forgot_mail_send_label">Limit Notification</h4>
             </div>
             <div class="modal-body">
-                <div class="text-info"><h4>Check your email for password restore details</h4></div>
+                <div class="text-info"><h4><spring:message code="message.restorecheck" /></h4></div>
 
             </div>
 

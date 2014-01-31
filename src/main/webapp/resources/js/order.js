@@ -21,7 +21,6 @@ $(document).ready(function() {
 											var days = getAvailableDays(current_time, $('.order'));
 											var d = 'can order for ' + days + 'days';
 											console.log('can order for ' + days + 'days');
-											console.log('choosen date = ' + currentTime);
 											if ($(this).find($('#picker_notify')).attr('id') === undefined) {
 												console.log($(this));
 
@@ -45,7 +44,7 @@ $(document).ready(function() {
 														.tooltip('show');
 												console.log("after"+ $('#picker_notify').attr('title'));
 											}
-											console.log('choosen date = ' + currentTime);
+											
 
 										},
 										

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="row well">
 	
 	<div id="path" url="${pageContext.request.contextPath}"></div>
@@ -38,14 +39,14 @@
 							Notification</h4>
 					</div>
 					<div class="modal-body">
-						<h1>You've reached the limit of books</h1>
-						<h3>Return books or delete some from orders</h3>
+						<h1><spring:message code="message.limit" /></h1>
+						<h3><spring:message code="message.limitreturn" /></h3>
 					</div>
 					<div class="modal-footer">
 
 						<button type="button"
-							onclick="location.href = '/library/books/order/my'"
-							class="btn btn-primary">View Orders</button>
+							onclick="location.href = '${pageContext.request.contextPath}/books/order/my'"
+							class="btn btn-primary"><spring:message code="message.vieworders" /></button>
 					</div>
 				</div>
 			</div>
@@ -62,22 +63,37 @@
 					<div class="col-md-6" id="order_book_info">
 						<div class="row">
 							<div class="text-info">
-								<b>Title: </b> ${book.getTitle()}
+								<b><spring:message code="message.libTitle" />: </b> ${book.title}
 							</div>
 						</div>
 						<div class="row">
 							<div class="text-info">
-								<b>Authors: </b>${book.getAuthors()}
+								<b><spring:message code="message.libAuthors" />: </b>${book.authors}
 							</div>
 						</div>
 						<div class="row">
 							<div class="text-info">
-								<b>Publisher: </b> ${book.getPublisher()}
+								<b><spring:message code="message.libPublisher" />: </b> ${book.publisher}
+							</div>
+						</div>
+						<div class="row">
+							<div class="text-info">
+								<b><spring:message code="message.libGenre" />: </b> ${book.genre.description}
+							</div>
+						</div>
+						<div class="row">
+							<div class="text-info">
+								<b><spring:message code="message.libPages" />: </b> ${book.pages}
+							</div>
+						</div>
+						<div class="row">
+							<div class="text-info">
+								<b><spring:message code="message.libYear" />: </b> ${book.year}
 							</div>
 						</div>
 						<div class="row" id="order_book_description">
 							<div class="text-info">
-								<b>Description: </b> ${book.getDescription()}
+								<b><spring:message code="message.libDescription" />: </b> ${book.description}
 							</div>
 						</div>
 					</div>
@@ -96,15 +112,13 @@
 			
 						<c:choose>
 							<c:when test="${days <= 0}">
-								<div class="alert alert-danger col-lg-6">Book  temporarily unavailable</div>
+								<div class="alert alert-danger col-lg-6"><spring:message code="message.bookunavailable" /></div>
 							</c:when>
 							<c:when test="${inUse}">
-								<div class="alert alert-danger col-lg-6">You already use
-									that book</div>
+								<div class="alert alert-danger col-lg-6"><spring:message code="message.bookuse" /></div>
 							</c:when>
 							<c:when test="${inOrders}">
-								<div class="alert alert-warning col-lg-6">You already
-									ordered that book</div>
+								<div class="alert alert-warning col-lg-6"><spring:message code="message.bookordered" /></div>
 								<div class="clearfix"></div>
 	
 	
@@ -117,7 +131,7 @@
 								<input class="form-control" id="datetimepicker">
 								
 								<input type="hidden" id="bookId" value="${book.getbId()}">
-								<div class="alert alert-info col-lg-6">Already in WishList</div>
+								<div class="alert alert-info col-lg-6"><spring:message code="message.bookinwish" /></div>
 								<div class="clearfix"></div>
 								<button id="order_button" class="btn btn-info">Order</button>
 	
@@ -127,10 +141,9 @@
 								<input class="form-control" id="datetimepicker">
 								<input type="hidden" id="bookId" value="${book.getbId()}">
 	
-								<button id="order_button" class="btn btn-info btn-sm">Order</button>
+								<button id="order_button" class="btn btn-info btn-sm"><spring:message code="message.order" /></button>
 	
-								<button id="wish_button" class="btn btn-warning btn-sm">Add To
-									WishList</button>
+								<button id="wish_button" class="btn btn-warning btn-sm"><spring:message code="message.addtowish" /></button>
 							</c:otherwise>
 				 	</c:choose>
 					<div class="clearfix"></div>
@@ -148,17 +161,17 @@
 										Notification</h4>
 								</div>
 								<div class="modal-body">
-									<h3>Congratulations! You've Ordered: </h3>
+									<h3><spring:message code="message.youordered" />: </h3>
 									<h5>${book.getTitle()}</h5>
 								</div>
 								<div class="modal-footer">
 									<button type="button"
-										onclick="location.href = '/library/books'"
+										onclick="location.href = '${pageContext.request.contextPath}/books'"
 										class="btn btn-info" data-dismiss="modal">Return to
 										books</button>
 									<button type="button"
-										onclick="location.href = '/library/books/order/my'"
-										class="btn btn-primary">View Orders</button>
+										onclick="location.href = '${pageContext.request.contextPath}/books/order/my'"
+										class="btn btn-primary"><spring:message code="message.vieworders" /></button>
 								</div>
 							</div>
 						</div>
@@ -179,16 +192,15 @@
 									Notification</h4>
 							</div>
 							<div class="modal-body">
-								<h3>You've Added To WishList:</h3>
+								<h3><spring:message code="message.addwish" />:</h3>
 								<h5>${book.getTitle()}</h5>
 							</div>
 							<div class="modal-footer">
-								<button type="button" onclick="location.href = '/library/books'"
-									class="btn btn-info" data-dismiss="modal">Return to
-									books</button>
+								<button type="button" onclick="location.href = '${pageContext.request.contextPath}/books'"
+									class="btn btn-info" data-dismiss="modal"><spring:message code="message.catalogue" /></button>
 								<button type="button"
-									onclick="location.href = '/library/books/wishlist/my'"
-									class="btn btn-primary">View WishList</button>
+									onclick="location.href = '${pageContext.request.contextPath}/books/wishlist/my'"
+									class="btn btn-primary"><spring:message code="message.viewwish" /></button>
 							</div>
 						</div>
 					</div>

@@ -211,6 +211,7 @@ public class PersonDaoImpl implements PersonDao {
 		@Override
 		public Person getPersonByKey(String key) {
 			try {
+				
 				return (Person) factory.getCurrentSession()
 						.createCriteria(Person.class)
 						.add(Restrictions.eq("mailKey", key)).uniqueResult();

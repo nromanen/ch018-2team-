@@ -107,6 +107,20 @@
         </filter>
      </appender>
      
+     <appender name="smsservice" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="logs/service/smsService.log" />
+        <param name="Append" value="true" />
+         <param name="MaxFileSize" value="1000KB"/>
+         <param name="MaxBackupIndex" value="2"/>
+        <layout class="org.apache.log4j.PatternLayout">
+          <param name="ConversionPattern" value="%d{ISO8601} [%5p] %m at %l%n"/>
+        </layout>           
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+            <param name="LevelMax" value="INFO"/>
+        </filter>
+     </appender>
+     
      <appender name="controller" class="org.apache.log4j.RollingFileAppender">
         <param name="File" value="logs/controller/controller.log" />
         <param name="Append" value="true" />
@@ -143,6 +157,11 @@
     
     <category name="com.ch018.library.service">
         <priority value="DEBUG"/>
+        <appender-ref ref="service" />
+    </category>
+    
+    <category name="com.ch018.library.smsservice">
+        <priority value="INFO"/>
         <appender-ref ref="service" />
     </category>
     

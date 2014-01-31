@@ -1,11 +1,15 @@
 package com.ch018.library.service;
 
+import javax.servlet.ServletContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
@@ -21,6 +25,9 @@ public class MailService {
 	
 		@Autowired
 		private MailSender mailSender;
+		
+		@Autowired
+		private ServletContext servletContext;
 	
 		private final Logger logger = LoggerFactory.getLogger(MailService.class);
 	
@@ -54,8 +61,7 @@ public class MailService {
 			body.append(order.getBook().getTitle());
 			body.append(" which you order on: ");
 			body.append(order.getOrderDate());
-			body.append(" not available please change date in your orders: ");
-			body.append(order.getOrderDate());
+			body.append(" available for early date you can change date in your orders: ");
 			sendMessage(from, to, subject, body.toString());
 		}
 	
@@ -76,6 +82,13 @@ public class MailService {
 			body.append(path);
 			body.append("/restore/password?key=");
 			body.append(key);
+			sendMessage(from, to, subject, body.toString());
+		}
+		
+		public void sendOrderFail(String from, String to, String subject, Orders order) {
+			StringBuilder body = new StringBuilder("Order for: ");
+			body.append(order.getBook().getTitle());
+			body.append(" deleted, because order date expired");
 			sendMessage(from, to, subject, body.toString());
 		}
 	

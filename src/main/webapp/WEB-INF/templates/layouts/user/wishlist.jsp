@@ -1,19 +1,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="row well">
 	
 	<div id="path" url="${pageContext.request.contextPath}"></div>
 
 	<div class="col-md-2" id="left_main">
 		<div class="pull-left text-info">
-			<h3>WishList</h3>
+			<h3><spring:message code="message.wishlistI" /></h3>
 		</div>
 	</div>
 	<div class="col-md-8" id="center_main">
 		<ul class="list-unstyled">
 			<li class="list-group-item">
 				<div class="row">
-					<div class="col-md-4">Title</div>
-					<div class="col-md-5">Available From</div>
+					<div class="col-md-4"><spring:message code="message.libTitle" /></div>
+					<div class="col-md-5"><spring:message code="message.available" /></div>
 					<div class="col-md-3"></div>
 				</div>
 			</li>
@@ -28,7 +29,7 @@
 							<input type="hidden" class="minDate"
 								value="${entry.value.minOrderDate.time}"> <input
 								type="text" class="calendar">
-							<button class="btn-info wish_confirm_button">Order</button>
+							<button class="btn-info wish_confirm_button"><spring:message code="message.order" /></button>
 							<div class="alert alert-danger wish_date_err hide"></div>
 							<div class="picker_info">
 								<c:forEach var="order" items="${entry.value.orders}">
@@ -39,7 +40,7 @@
 						</div>
 						<div class="col-md-3">
 							<input type="hidden" class="wishId" value="${entry.key.id}">
-							<button class="btn-danger wish_delete_button">Delete</button>
+							<button class="btn-danger wish_delete_button"><spring:message code="message.libDelete" /></button>
 						</div>
 					</div>
 				</li>
@@ -67,14 +68,14 @@
 						Notification</h4>
 				</div>
 				<div class="modal-body">
-					<h3>Your WishList is empty yet</h3>
-					<h4>Try search in <a href="${pageContext.request.contextPath}/books/search">our collection</a></h4>
+					<h3><spring:message code="message.wishempty" /></h3>
+					<h4><spring:message code="message.try" /> <a href="${pageContext.request.contextPath}/books/search"><spring:message code="message.catalogue" /></a></h4>
 				</div>
 				<div class="modal-footer">
 
 					<button type="button"
 						onclick="location.href = '${pageContext.request.contextPath}/books/search'"
-						class="btn btn-primary">View Books</button>
+						class="btn btn-primary"><spring:message code="message.catalogue" /></button>
 				</div>
 			</div>
 		</div>

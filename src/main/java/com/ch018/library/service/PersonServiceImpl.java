@@ -274,10 +274,15 @@ public class PersonServiceImpl implements PersonService {
 		@Transactional
 		public boolean restorePass(String key, Password password) {
 			Person person = personDao.getPersonByKey(key);
+			logger.info("person {} for pass change {}", person, key);
 			if (person != null) {
 				person.setPassword(encoder.encode(password.getNewPass()));
 				person.setMailKey(null);
 				save(person);
+				Authentication token = 
+						new PreAuthenticatedAuthenticationToken(person.getEmail(), person.getPassword()
+						, Arrays.asList(new SimpleGrantedAuthority(person.getProle())));
+				SecurityContextHolder.getContext().setAuthentication(token);
 				logger.info("person {} password changed", person);
 				return true;
 			}

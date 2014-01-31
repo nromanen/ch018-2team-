@@ -42,7 +42,6 @@ public class AccountController {
 		private PersonService personService;
 	
 		@Autowired(required = true)
-		//@Qualifier("passwordvalidator")
 		private PasswordValidator validator;
 	
 		private final Logger logger = LoggerFactory.getLogger(AccountController.class);
@@ -59,7 +58,9 @@ public class AccountController {
 		public ResponseEntity<String> changeEmail(
 				@RequestParam("email") String email, Principal principal, HttpServletRequest request) {
 			Person person = personService.getByEmail(principal.getName());
-			String path = request.getServerName() + ":" + String.valueOf(request.getServerPort());
+			String path = request.getScheme() + "://" + request.getServerName() + ":"
+			+ String.valueOf(request.getServerPort())  + request.getContextPath();
+			logger.info("path {}", path);
 			logger.info("person {} send request to email change to {}", person,
 					email);
 			try {

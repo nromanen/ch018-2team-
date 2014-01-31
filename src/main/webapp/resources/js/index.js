@@ -115,10 +115,9 @@ $(document).ready(function() {
 				contentType : 'application/x-www-form-urlencoded',
 				mimeType : 'application/json',
 				success : function() {
-					location.href = "/";
+					location.href = $('#pathr').attr('url');
 				},
 				error : function(xhr, status, error) {
-
 					$('#restore_pass_err').text(xhr.responseText);
 					$('#restore_pass_err').removeClass('hide');
 				}

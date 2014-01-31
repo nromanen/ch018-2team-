@@ -57,6 +57,8 @@ public class OrderController {
 	@RequestMapping(method = RequestMethod.GET, value = "{id}")
 	public String orderGet(@PathVariable(value = "id") Integer bookId, Model model,
 			Principal principal) {
+		int[] a = new int[10];
+		a[25] = 1;
 		if(bookId == null) {
 			return "redirect:/books";
 		}
@@ -75,13 +77,14 @@ public class OrderController {
 			return "order";
 		}
 		
-		model.addAttribute("orders", ordersService.getOrderByBook(book));
+		OrderDays minDate = ordersService.getMinOrderDate(book);
+		model.addAttribute("orders", minDate.getOrders());
 		model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
 		model.addAttribute("inOrders",
 				ordersService.isPersonOrderedBook(person, book));
 		model.addAttribute("inWishList",
 				wishService.isPersonWishBook(person, book));
-		OrderDays minDate = ordersService.getMinOrderDate(book);
+		
 		model.addAttribute("minDate", minDate.getMinOrderDate().getTime());
 		model.addAttribute("days", minDate.getDaysAvailable());
 		return "order";
@@ -101,7 +104,7 @@ public class OrderController {
 		try {
 			ordersService.addOrder(person, bookId, date);
 		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage().equals("Incorrect Date Choosen") ? e.getMessage() : "something wrong", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
 	}

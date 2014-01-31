@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ch018.library.DAO.GenreTranslationDAO;
 import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.GenreTranslations;
 
 @Service

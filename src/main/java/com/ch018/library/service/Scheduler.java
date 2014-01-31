@@ -33,6 +33,11 @@ public class Scheduler {
     @Autowired
     PersonService personService;
     
+    @Autowired
+    MailService mailService;
+    
+    @Autowired
+    SmsService smsService;
 
     @Scheduled(cron = "0 12 1 ? * MON-FRI")
     public void checkUsers(){
@@ -66,7 +71,7 @@ public class Scheduler {
         logger.info("Thread for untimelyReturn check started at {}", new Date());
     }
     
-    @Scheduled(cron = "0 21 14 ? * MON-FRI")
+    @Scheduled(cron = "0 29 4 ? * MON-FRI")
     public void checkOrders(){
         Runnable r = new Runnable() {
 
@@ -82,6 +87,9 @@ public class Scheduler {
 		        		person.setFailedOrders(++failed);
 		        		personService.countRating(person);
 		        		orderService.delete(order);
+		        		mailService.sendOrderFail("springytest@gmail.com", "etenzor@gmail.com", "failOrder", order);
+		        		if(person.isSms())
+		        			smsService.sendSms("You order date for" + order.getBook().getTitle() + " expired and order deleted");
 		        		logger.info("Order {} deleted", order);
 		        	}
 		        }
