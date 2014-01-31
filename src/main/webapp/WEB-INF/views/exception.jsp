@@ -15,7 +15,7 @@
                             <h1>Something Wrong</h1> 
                         </div>
                         <div class="panel-body">
-                            <h3>We already resolve problem.</h3>
+                            <h3>Stay calm. We are resolving problem...</h3>
                             <a class="btn btn-info" href="${pageContext.request.contextPath}/">Home</a>
                         </div>
                     </div>

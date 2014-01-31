@@ -74,6 +74,11 @@
   <constructor-arg value="com.ch018.library.service.LanguageService"/>
  </bean>
 
+<bean id="switcher" name="switcher"  class="org.mockito.Mockito" factory-method="mock">
+			 <constructor-arg value="com.ch018.library.helper.Switch"/>
+ </bean>
+   	
+
 
 	<import resource="data.xml" />
 	<import resource="mail.xml" />

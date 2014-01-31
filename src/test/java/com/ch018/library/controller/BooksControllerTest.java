@@ -74,6 +74,7 @@ public class BooksControllerTest {
 	public void setup() {
 		Mockito.reset(searchParams);
 		Mockito.reset(pageContainer);
+		Mockito.reset(bookService);
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		
 		Book book1 = new Book();
@@ -103,18 +104,20 @@ public class BooksControllerTest {
 	
 	@Test
 	public void booksNormalFlow() throws Exception {
-		Page page = new Page();
-		page.setBooks(books);
 		
-		when(pageContainer.getPage(searchParams)).thenReturn(page);
+		
+		when(bookService.getLastByField("arrivalDate", 4)).thenReturn(books);
+		
+		when(bookService.getLastByField("ordersQuantity", 4)).thenReturn(books);
 		
 		mockMvc.perform(get("/books"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("page"))
-			.andExpect(model().attribute("page", hasProperty("books")))
+			.andExpect(model().attributeExists("arrivals"))
+			.andExpect(model().attributeExists("populars"))
 			.andExpect(forwardedUrl("/WEB-INF/templates/base-template.jsp"));
 		
-		verify(pageContainer, times(1)).getPage(searchParams);
+		
+		
 		
 	}
 	

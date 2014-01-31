@@ -171,8 +171,12 @@ public class PersonServiceImpl implements PersonService {
 			returnedNotInTime = person.getUntimekyReturn();
 			failedOrders = person.getFailedOrders();
 			if ((returnedInTime > 0) || (returnedNotInTime > 0)) {
-				grade = (double) returnedInTime
-						/ (returnedNotInTime + failedOrders + returnedInTime);
+				try{
+					grade = (double) returnedInTime
+							/ (returnedNotInTime + failedOrders + returnedInTime);
+				} catch (Exception e) {
+					grade = 0;
+				}
 				grade *= MAX_RATING;
 				gradeInt = (int) grade;
 			}

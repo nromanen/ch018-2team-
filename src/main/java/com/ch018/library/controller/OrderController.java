@@ -57,8 +57,6 @@ public class OrderController {
 	@RequestMapping(method = RequestMethod.GET, value = "{id}")
 	public String orderGet(@PathVariable(value = "id") Integer bookId, Model model,
 			Principal principal) {
-		int[] a = new int[10];
-		a[25] = 1;
 		if(bookId == null) {
 			return "redirect:/books";
 		}
