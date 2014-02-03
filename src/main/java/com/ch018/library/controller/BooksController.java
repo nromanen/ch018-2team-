@@ -9,9 +9,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,10 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
-import com.ch018.library.helper.Page;
-import com.ch018.library.helper.PageContainer;
 import com.ch018.library.helper.SearchParams;
-import com.ch018.library.helper.Switch;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
@@ -56,12 +50,7 @@ public class BooksController {
         
         @Autowired
         private SearchParams searchParams;
-        
-        @Autowired
-        private PageContainer pageContainer;
-        
-        @Autowired
-        private Switch switcher;
+
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
         
@@ -79,58 +68,35 @@ public class BooksController {
         
         @RequestMapping(value = "/search", method = RequestMethod.GET)
         public String bookSearchGet(@ModelAttribute SearchParams tmpParams, Model model) {
-        	Page page;
-        	logger.info("search param GET {}", searchParams);
-        	logger.info("tmpParams GET {}", tmpParams);
+        	
+        	List<Book> books;
+        	
         	if(searchParams.isSlidersNull()) {
         		searchParams.init();
-        		
-        	}
-        	if((!tmpParams.getFieldChanged() && !tmpParams.getOrderChanged())) {
-        		
-        		searchParams.update(tmpParams);
-        		logger.info("search param GET after update {}", searchParams);
-        		page = pageContainer.getPage(searchParams);
-        		
-        	} else if (switcher.getValue()) {
-        		logger.info("in locale", searchParams);
-        		searchParams.update(tmpParams);
-        		long timeS = System.currentTimeMillis();
-        		pageContainer.recalculateLocal(searchParams);
-        		logger.info("Local Sort time " + (System.currentTimeMillis() - timeS));
-        		page = pageContainer.getPage(searchParams);
-        	}
-        	else {
-        		
-        		searchParams.update(tmpParams);
-        		long timeS = System.currentTimeMillis();
-            	pageContainer.recalculate(searchParams);
-            	logger.info("DB Sort time " + (System.currentTimeMillis() - timeS));
-            	
-            	page = pageContainer.getPage(searchParams);
         	}
         	
-        	if (page.getBooks().isEmpty() || page.getBooks() == null) {
+        	searchParams.update(tmpParams);
+        	
+        	books = bookService.getBooksComplex();
+        	
+        	if (books.isEmpty() || books == null) {
                 model.addAttribute("nothing", true);
             }
-            model.addAttribute("page", page);
+            model.addAttribute("books", books);
             return "books";
         }
 
         @RequestMapping(value = "/search", method = RequestMethod.POST)
         public String booksSearch(@ModelAttribute SearchParams tmpParams, Model model) {
-        	logger.info("tmpParams = {}", tmpParams);
-        	logger.info("searchParams = {}", searchParams);
-        	Page page;
-        	searchParams.update(tmpParams);
-        	logger.info("searchParams after update = {}", searchParams);
-        	pageContainer.recalculate(searchParams);
-        	page = pageContainer.getPage(searchParams);
 
-        	if (page.getBooks().isEmpty() || page.getBooks() == null) {
+        	searchParams.update(tmpParams);
+
+        	List<Book> books = bookService.getBooksComplex();
+
+        	if (books.isEmpty() || books == null) {
                 model.addAttribute("nothing", true);
             }
-            model.addAttribute("page", page);
+            model.addAttribute("books", books);
             return "books";
         }
 

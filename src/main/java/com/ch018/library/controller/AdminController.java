@@ -4,11 +4,10 @@ import java.util.Arrays;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ch018.library.controller.errors.IncorrectInput;
 import com.ch018.library.entity.Person;
-import com.ch018.library.helper.Switch;
+import com.ch018.library.helper.SearchParams;
+import com.ch018.library.helper.SearchParamsPerson;
 import com.ch018.library.service.PersonService;
 
 /**
@@ -25,41 +25,27 @@ import com.ch018.library.service.PersonService;
  */
 @Controller
 @RequestMapping(value = "/admin")
-@Secured({ "ROLE_ADMIN" })
 public class AdminController {
     
         @Autowired
         private PersonService personService;
         
         @Autowired
-        private Switch switcher;
+        private SearchParamsPerson searchParams;
 
         @RequestMapping(method = RequestMethod.GET)
-        public String admin(@RequestParam(value = "page", required = false) Integer page,
-        						@RequestParam(value = "orderField", required = false) String orderField,
-        						@RequestParam(value = "order", required = false) Boolean order, Model model) {
+        public String admin(@ModelAttribute SearchParamsPerson tmpSearchParams, Model model) {
         	
-            model.addAttribute("persons", personService.getAll());
+        	if(tmpSearchParams.getOrder() == null)
+        		searchParams.setDefaults();
+        	
+        	searchParams.update(tmpSearchParams);
+        	
+            model.addAttribute("persons", personService.getPersonsBySessionParams());
             model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_LIBRARIAN"));
-            model.addAttribute("switcher", switcher.getValue());
             return "admin";
         }
         
-        @RequestMapping(value = "/syssetings", method = RequestMethod.POST)
-        public ResponseEntity<String> changeSysSettings(@RequestParam(value = "switcher", required = false) Boolean sw) {
-        	if(sw == null) {
-        		switcher.setValue(Boolean.FALSE);
-        		return new ResponseEntity<>("false", HttpStatus.OK);
-        	}
-        	if(sw) {
-        		switcher.setValue(Boolean.TRUE);
-        		return new ResponseEntity<>("true", HttpStatus.OK);
-        	}
-        	else {
-        		switcher.setValue(Boolean.FALSE);
-        		return new ResponseEntity<>("false", HttpStatus.OK);
-        	}
-        }
         
         @RequestMapping(value = "/delete", method = RequestMethod.POST)
         public @ResponseBody String delete(@RequestParam("id") Integer id) throws IncorrectInput {

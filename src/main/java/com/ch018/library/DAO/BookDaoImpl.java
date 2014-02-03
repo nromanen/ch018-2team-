@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
@@ -28,6 +27,9 @@ public class BookDaoImpl implements BookDao {
 	
 		@Autowired
 		private SessionFactory factory;
+		
+		@Autowired
+		private SearchParams searchParams;
 	
 		@Override
 		public void save(Book book) {
@@ -161,7 +163,8 @@ public class BookDaoImpl implements BookDao {
 		}
 	
 		@Override
-		public List<Book> getBooksComplex(SearchParams searchParams) {
+		public List<Book> getBooksComplex() {
+			logger.info("book dao search {}", searchParams);
 			String query;
 			Criteria criteria = factory.getCurrentSession().createCriteria(
 					Book.class);
@@ -190,9 +193,6 @@ public class BookDaoImpl implements BookDao {
 			
 			if (searchParams.getGenreId() > 0) {
 				criteria.add(Restrictions.eq("genre.id", searchParams.getGenreId()));
-				//criteria.createAlias("genre", "gen");
-				//criteria.add(Restrictions.eq("gen.gid", searchParams.getGenreId()));
-				//System.out.println("IN CRITERIA " + criteria.list() + " id = " + searchParams.getGenreId());
 			}
 
 			if (searchParams.getChoosenPageStart() != null &&
@@ -213,6 +213,8 @@ public class BookDaoImpl implements BookDao {
 				criteria.addOrder(Order.desc(searchParams.getOrderField()));
 			else
 				criteria.addOrder(Order.asc(searchParams.getOrderField()));
+			
+			setBorders(criteria);
 			
 			return criteria.list();
 		}
@@ -245,7 +247,24 @@ public class BookDaoImpl implements BookDao {
 			return books;
 		}
 
-		
+		private void setBorders(Criteria criteria) {
+			int pageNum = searchParams.getPage();
+			int pageSize = searchParams.getPageSize();
+			int itemsQuantity = criteria.list().size();
+			int quantity = (int) Math.ceil((double) itemsQuantity / pageSize);
+			if(quantity == 0)
+				quantity = 1;
+			searchParams.setPagesQuantity(quantity);
+			if(pageNum > quantity) {
+				pageNum = 1;
+				searchParams.setPage(pageNum);
+			}
+			
+			int end = pageNum * pageSize;
+			int start = end - pageSize;
+			
+			criteria.setFirstResult(start).setMaxResults(end);
+		}
 		
 		
 }

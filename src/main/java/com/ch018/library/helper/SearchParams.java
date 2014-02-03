@@ -1,7 +1,11 @@
 package com.ch018.library.helper;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,15 +14,20 @@ import com.ch018.library.service.BookService;
 @Component
 public class SearchParams implements Serializable{
 
+
+		private static final long serialVersionUID = 1L;
+		
+		private final Logger logger = LoggerFactory.getLogger(SearchParams.class);
+
 		@Autowired
-		BookService bookService;
+		private BookService bookService;
 		
 		private static final int DEFAULT_PAGE_SIZE = 12;
 	
-		private int page = 1;
-		private Integer pageSize = DEFAULT_PAGE_SIZE;
-		private String orderField = "title";
-		private Boolean order = Boolean.FALSE;
+		private int page;
+		private Integer pageSize;
+		private String orderField;
+		private Boolean order;
 		
 	    private Integer yearStart;
 	    private Integer yearEnd;
@@ -37,9 +46,7 @@ public class SearchParams implements Serializable{
 	    private String publisher;
 	    private Integer genreId;
 	    
-	    private Boolean fieldChanged = Boolean.FALSE;
-	    private Boolean orderChanged = Boolean.FALSE;
-	    private Boolean pageSizeChanged = Boolean.FALSE;
+	    private Integer pagesQuantity;
 	    
 
 	    public void init() {
@@ -82,32 +89,23 @@ public class SearchParams implements Serializable{
 	    		query = params.getQuery();
 	    		return;
 	    	}
-	    	page = params.getPage();
-	    	if(params.getPageSizeChanged())
-	    		pageSize = params.getPageSize();
-	    	if(params.getFieldChanged()) 
-	    		orderField = params.getOrderField();
-	    	if(params.getOrderChanged())
-	    		order = params.getOrder();
-	    	if(params.getChoosenYearStart() != null)
-	    		choosenYearStart = params.getChoosenYearStart();
-	    	if(params.getChoosenYearEnd() != null)
-	    		choosenYearEnd = params.getChoosenYearEnd();
-	    	if(params.getChoosenPageStart() != null)
-	    		choosenPageStart = params.getChoosenPageStart();
-	    	if(params.getChoosenPageEnd() != null)
-	    		choosenPageEnd = params.getChoosenPageEnd();
-	    	if(params.getQuery() != null)
-	    		query = params.getQuery();
-	    	if(params.getTitle() != null)
-	    		title = params.getTitle();
-	    	if(params.getAuthors() != null)
-	    		authors = params.getAuthors();
-	    	if(params.getPublisher() != null)
-	    		publisher = params.getPublisher();
-	    	if(params.getGenreId() != null)
-	    		genreId = params.getGenreId();
-	    	
+	    	try {
+	    	Class<?> clazz = SearchParams.class;
+	    	Field[] fields = clazz.getDeclaredFields();
+	    	for(Field field : fields) {
+	    		if(Modifier.isFinal(field.getModifiers()) 
+	    					|| field.getDeclaredAnnotations().length > 0)
+	    			continue;
+	    		field.setAccessible(true);
+	    		Object o = field.get(params);
+	    		if(o != null) {
+	    			field.set(this, o);
+	    		}
+	    	}
+	    	} catch (Exception e) {
+	    		logger.error("during update {}" + e.getMessage());
+	    	}
+
 	    }
 	    
 	    
@@ -121,227 +119,98 @@ public class SearchParams implements Serializable{
 			return page;
 		}
 
-
-
-		public void setPage(Integer page) {
+		public void setPage(int page) {
 			this.page = page;
 		}
-
-
 
 		public Integer getPageSize() {
 			return pageSize;
 		}
 
-
-
 		public void setPageSize(Integer pageSize) {
 			this.pageSize = pageSize;
-			this.pageSizeChanged = Boolean.TRUE;
 		}
-
-
 
 		public String getOrderField() {
 			return orderField;
 		}
 
-
-
 		public void setOrderField(String orderField) {
 			this.orderField = orderField;
-			this.fieldChanged = Boolean.TRUE;
 		}
-
-
 
 		public Boolean getOrder() {
 			return order;
 		}
 
-
-
 		public void setOrder(Boolean order) {
 			this.order = order;
-			this.orderChanged = Boolean.TRUE;
 		}
-
-
 
 		public Integer getYearStart() {
 			return yearStart;
 		}
 
-
-
 		public void setYearStart(Integer yearStart) {
 			this.yearStart = yearStart;
 		}
-
-
 
 		public Integer getYearEnd() {
 			return yearEnd;
 		}
 
-
-
 		public void setYearEnd(Integer yearEnd) {
 			this.yearEnd = yearEnd;
 		}
-
-
 
 		public Integer getChoosenYearStart() {
 			return choosenYearStart;
 		}
 
-
-
 		public void setChoosenYearStart(Integer choosenYearStart) {
 			this.choosenYearStart = choosenYearStart;
 		}
-
-
 
 		public Integer getChoosenYearEnd() {
 			return choosenYearEnd;
 		}
 
-
-
 		public void setChoosenYearEnd(Integer choosenYearEnd) {
 			this.choosenYearEnd = choosenYearEnd;
 		}
-
-
 
 		public Integer getBookPageStart() {
 			return bookPageStart;
 		}
 
-
-
 		public void setBookPageStart(Integer bookPageStart) {
 			this.bookPageStart = bookPageStart;
 		}
-
-
 
 		public Integer getBookPageEnd() {
 			return bookPageEnd;
 		}
 
-
-
 		public void setBookPageEnd(Integer bookPageEnd) {
 			this.bookPageEnd = bookPageEnd;
 		}
-
-
 
 		public Integer getChoosenPageStart() {
 			return choosenPageStart;
 		}
 
-
-
 		public void setChoosenPageStart(Integer choosenPageStart) {
 			this.choosenPageStart = choosenPageStart;
 		}
-
-
 
 		public Integer getChoosenPageEnd() {
 			return choosenPageEnd;
 		}
 
-
-
 		public void setChoosenPageEnd(Integer choosenPageEnd) {
 			this.choosenPageEnd = choosenPageEnd;
 		}
 
-
-
-		public String getQuery() {
-			return query;
-		}
-
-
-
-		public void setQuery(String query) {
-			this.query = query;
-		}
-
-
-
-		public String getTitle() {
-			return title;
-		}
-
-
-
-		public void setTitle(String title) {
-			this.title = title;
-		}
-
-
-
-		public String getAuthors() {
-			return authors;
-		}
-
-
-
-		public void setAuthors(String authors) {
-			this.authors = authors;
-		}
-
-
-
-		public String getPublisher() {
-			return publisher;
-		}
-
-
-
-		public void setPublisher(String publisher) {
-			this.publisher = publisher;
-		}
-
-
-
-		public Integer getGenreId() {
-			return genreId;
-		}
-
-
-
-		public void setGenreId(Integer genreId) {
-			this.genreId = genreId;
-		}
-
-		
-
-		public Boolean getFieldChanged() {
-			return fieldChanged;
-		}
-
-		public void setFieldChanged(Boolean fieldChanged) {
-			this.fieldChanged = fieldChanged;
-		}
-
-		public Boolean getOrderChanged() {
-			return orderChanged;
-		}
-
-		public void setOrderChanged(Boolean orderChanged) {
-			this.orderChanged = orderChanged;
-		}
-
-		
-		
 		public Boolean getGeneralQuery() {
 			return generalQuery;
 		}
@@ -349,15 +218,53 @@ public class SearchParams implements Serializable{
 		public void setGeneralQuery(Boolean generalQuery) {
 			this.generalQuery = generalQuery;
 		}
-		
-		
 
-		public Boolean getPageSizeChanged() {
-			return pageSizeChanged;
+		public String getQuery() {
+			return query;
 		}
 
-		public void setPageSizeChanged(Boolean pageSizeChanged) {
-			this.pageSizeChanged = pageSizeChanged;
+		public void setQuery(String query) {
+			this.query = query;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public void setTitle(String title) {
+			this.title = title;
+		}
+
+		public String getAuthors() {
+			return authors;
+		}
+
+		public void setAuthors(String authors) {
+			this.authors = authors;
+		}
+
+		public String getPublisher() {
+			return publisher;
+		}
+
+		public void setPublisher(String publisher) {
+			this.publisher = publisher;
+		}
+
+		public Integer getGenreId() {
+			return genreId;
+		}
+
+		public void setGenreId(Integer genreId) {
+			this.genreId = genreId;
+		}
+
+		public Integer getPagesQuantity() {
+			return pagesQuantity;
+		}
+
+		public void setPagesQuantity(Integer pagesQuantity) {
+			this.pagesQuantity = pagesQuantity;
 		}
 
 		@Override
@@ -369,10 +276,14 @@ public class SearchParams implements Serializable{
 					+ ", choosenYearEnd=" + choosenYearEnd + ", bookPageStart="
 					+ bookPageStart + ", bookPageEnd=" + bookPageEnd
 					+ ", choosenPageStart=" + choosenPageStart
-					+ ", choosenPageEnd=" + choosenPageEnd + ", query=" + query
-					+ ", title=" + title + ", authors=" + authors
-					+ ", publisher=" + publisher + ", genreId=" + genreId + "]";
+					+ ", choosenPageEnd=" + choosenPageEnd + ", generalQuery="
+					+ generalQuery + ", query=" + query + ", title=" + title
+					+ ", authors=" + authors + ", publisher=" + publisher
+					+ ", genreId=" + genreId + ", pagesQuantity="
+					+ pagesQuantity + "]";
 		}
+
+		
 	    
 		
 }

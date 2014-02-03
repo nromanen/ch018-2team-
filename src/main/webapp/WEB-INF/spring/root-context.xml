@@ -28,13 +28,9 @@
       
       <aop:scoped-proxy/>
    	</bean>
-   	
-   	<bean id="pageContainer" class="com.ch018.library.helper.PageContainer" scope="session">
+   	<bean id="searchParamsPerson" class="com.ch018.library.helper.SearchParamsPerson" scope="session">
       
       <aop:scoped-proxy/>
-   	</bean>
-   	
-   	<bean id="switcher" class="com.ch018.library.helper.Switch" scope="singleton">
    	</bean>
    	
 	

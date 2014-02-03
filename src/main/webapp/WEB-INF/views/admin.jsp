@@ -43,22 +43,29 @@
                     <ul class="list-group list-unstyled">
                         <li class="list-group-item">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="text-center">
-                                        email
+                                        email <a href="${pageContext.request.contextPath}/admin?orderField=email&order=false">1</a>
+                                        <a href="${pageContext.request.contextPath}/admin?orderField=email&order=true">2</a>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="text-center">
-                                        user_role
+                                        name <a href="${pageContext.request.contextPath}/admin?orderField=name">1</a>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                
+                                <div class="col-md-2">
+                                    <div class="text-center">
+                                        user_role 
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
                                     <div class="text-center">
                                         change role
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="text-center">
                                         delete
                                     </div>
@@ -70,17 +77,22 @@
                         <c:forEach var="person" items="${persons}">
                             <li id="person_li_${person.getPid()}" class="list-group-item">
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="text-center">
                                             ${person.getEmail()}
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
+                                        <div class="text-center">
+                                            ${person.getName()}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
                                         <div class="text-center user_role">
                                             ${person.getProle()}
                                         </div>
                                     </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                         
                                             <select class="form-control col-md-5">
                                                 
@@ -92,7 +104,7 @@
                                             <button class="btn-warning  change_role" value="${person.getPid()}">Change</button> 
                                         
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="text-center">
                                             
                                             <button class="btn-danger" value="${person.getPid()}">Delete</button> 
@@ -101,9 +113,22 @@
                                     
                                 
                             </div>
+                          
                         </li>
                         </c:forEach>
                     </ul>
+                      <div class="row">
+								<div class="col-md-3 col-md-offset-6" >
+									<ul class='pagination' style="margin-left: 20px;">
+										<li  class=" first_page hide"><a href="#"><span>1</span></a></li>
+										<li  class=" prev_page hide"><a href="#"><span> &laquo; </span></a></li>
+										<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsPersons'].page}<span></a></li>
+										<li  class="next_page hide"><a href="#"><span> &raquo; </span></a></li>
+										<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsPersons'].pagesQuantity}</span></a></li>
+									</ul>
+								</div>
+	
+							</div>
                     </div>
                     </div>
                     </div>
@@ -113,26 +138,7 @@
 								<div class="panel-title">System Settings</div>
 							</div>
 							<div class="panel-body">
-								<form role="form"
-									action="${pageContext.request.contextPath}/admin/syssetings"
-									method="post">
-									<div class="checkbox">
-										<label> <c:choose>
-												<c:when test="${switcher}">
-													<input id="switcher" class="checkbox" type="checkbox" name="switcher"
-														checked="checked"> Local search
-                                                </c:when>
-												<c:otherwise>
-													<input id="switcher" class="checkbox" type="checkbox" name="switcher"
-														> Local search
-                                                </c:otherwise>
-											</c:choose>
-
-										</label>
-									</div>
-									
-
-								</form>
+								
 							</div>
 
 						</div>

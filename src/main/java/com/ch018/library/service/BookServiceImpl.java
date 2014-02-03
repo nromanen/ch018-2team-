@@ -1,5 +1,6 @@
 package com.ch018.library.service;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ import com.ch018.library.validation.BookEditValidator;
 @Service
 public class BookServiceImpl implements BookService {
 
-        @Autowired
+		@Autowired
         private BookDao bookDAO;
 
         @Autowired
@@ -110,8 +111,8 @@ public class BookServiceImpl implements BookService {
 
         @Override
         @Transactional
-        public List<Book> getBooksComplex(SearchParams searchParams) {
-        	List<Book> books = bookDAO.getBooksComplex(searchParams);
+        public List<Book> getBooksComplex() {
+        	List<Book> books = bookDAO.getBooksComplex();
             return books;
         }
 

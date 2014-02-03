@@ -3,15 +3,16 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles-extras" prefix="tilesx" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <tilesx:useAttribute name="genres" />
 
 <div class="row well">
 
-	<div id="pagination_info" page="${page.searchParams.page}" pageSize="${page.searchParams.pageSize}" pagesQuantity="${page.pagesQuantity}" orderField="${page.searchParams.orderField}" order="${page.searchParams.order}" 
-			path="${pageContext.request.contextPath}" genreId="${page.searchParams.genreId}" bookPageStart="${page.searchParams.bookPageStart}" bookPageEnd="${page.searchParams.bookPageEnd}"
-			yearStart="${page.searchParams.yearStart}" yearEnd="${page.searchParams.yearEnd}" choosenBookPageStart = "${page.searchParams.choosenPageStart}"
-			choosenBookPageEnd = "${page.searchParams.choosenPageEnd}" choosenYearStart = "${page.searchParams.choosenYearStart}"
-			choosenYearEnd = "${page.searchParams.choosenYearEnd}">
+	<div id="pagination_info" page="${sessionScope['scopedTarget.searchParams'].page}" pageSize="${sessionScope['scopedTarget.searchParams'].pageSize}" pagesQuantity="${sessionScope['scopedTarget.searchParams'].pagesQuantity}" orderField="${sessionScope['scopedTarget.searchParams'].orderField}" order="${sessionScope['scopedTarget.searchParams'].order}" 
+			path="${pageContext.request.contextPath}" genreId="${sessionScope['scopedTarget.searchParams'].genreId}" bookPageStart="${sessionScope['scopedTarget.searchParams'].bookPageStart}" bookPageEnd="${sessionScope['scopedTarget.searchParams'].bookPageEnd}"
+			yearStart="${sessionScope['scopedTarget.searchParams'].yearStart}" yearEnd="${sessionScope['scopedTarget.searchParams'].yearEnd}" choosenBookPageStart = "${sessionScope['scopedTarget.searchParams'].choosenPageStart}"
+			choosenBookPageEnd = "${sessionScope['scopedTarget.searchParams'].choosenPageEnd}" choosenYearStart = "${sessionScope['scopedTarget.searchParams'].choosenYearStart}"
+			choosenYearEnd = "${sessionScope['scopedTarget.searchParams'].choosenYearEnd}">
 			
 		</div>
 
@@ -21,15 +22,15 @@
 		
 		<div class="row">
 			<label for="title"><spring:message code="message.libTitle" />:</label> 
-				<input class="form-control input-sm" type="text" id="title" value="${page.searchParams.title}">
+				<input class="form-control input-sm" type="text" id="title" value="${sessionScope['scopedTarget.searchParams'].title}">
 		</div>
 		<div class="row">
 			<label for="authors"><spring:message code="message.libAuthors" />:</label> 
-				<input class="form-control input-sm" type="text" id="authors" value="${page.searchParams.authors}">
+				<input class="form-control input-sm" type="text" id="authors" value="${sessionScope['scopedTarget.searchParams'].authors}">
 		</div>
 		<div class="row">
 			<label for="publisher"><spring:message code="message.libPublisher" />:</label> 
-				<input class="form-control input-sm" type="text" id="publisher" value="${page.searchParams.publisher}">
+				<input class="form-control input-sm" type="text" id="publisher" value="${sessionScope['scopedTarget.searchParams'].publisher}">
 		</div>
 		<div class="row">
 			<label for="genreId"><spring:message code="message.libGenre" />:</label> 
@@ -101,9 +102,9 @@
 		<ul class='pagination'>
 			<li  class=" first_page hide"><a href="#"><span>1</span></a></li>
 			<li  class=" prev_page hide"><a href="#"><span> &laquo; </span></a></li>
-			<li  class="current_page disabled hide"><a href="#"><span>${page.searchParams.page}<span></a></li>
+			<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParams'].page}<span></a></li>
 			<li  class="next_page hide"><a href="#"><span> &raquo; </span></a></li>
-			<li  class="last_page hide"><a href="#"><span>${page.pagesQuantity}</span></a></li>
+			<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParams'].pagesQuantity}</span></a></li>
 		</ul>
 	</div>
 
@@ -122,7 +123,7 @@
 	
 	
 		<c:set var="i" value="1" scope="page" />
-		<c:forEach var="book" items="${page.books}">
+		<c:forEach var="book" items="${books}">
 
 			<c:if test="${i mod 4 == 0}">
 				<div class="row" id="${i}">
@@ -186,9 +187,9 @@
 		<ul class='pagination' style="margin-left: 20px;">
 			<li  class=" first_page hide"><a href="#"><span>1</span></a></li>
 			<li  class=" prev_page hide"><a href="#"><span> &laquo; </span></a></li>
-			<li  class="current_page disabled hide"><a href="#"><span>${page.searchParams.page}<span></a></li>
+			<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParams'].page}<span></a></li>
 			<li  class="next_page hide"><a href="#"><span> &raquo; </span></a></li>
-			<li  class="last_page hide"><a href="#"><span>${page.pagesQuantity}</span></a></li>
+			<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParams'].pagesQuantity}</span></a></li>
 		</ul>
 	</div>
 	
