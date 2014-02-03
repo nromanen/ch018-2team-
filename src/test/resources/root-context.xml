@@ -78,9 +78,6 @@
 			 <constructor-arg value="com.ch018.library.helper.Switch"/>
  </bean>
    	
-
-
-	<import resource="data.xml" />
 	<import resource="mail.xml" />
 	<import resource="security.xml" />
     
