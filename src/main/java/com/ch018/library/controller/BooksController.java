@@ -71,6 +71,10 @@ public class BooksController {
         	
         	List<Book> books;
         	
+        	if(!searchParams.isInit()) {
+        		searchParams.setDefaults();
+        	}
+        	
         	if(searchParams.isSlidersNull()) {
         		searchParams.init();
         	}

@@ -56,6 +56,10 @@ public class SearchParamsPerson {
 	    	}
 
 	    }
+		
+		public Boolean isInit() {
+			return page != null && pageSize != null && order != null && orderField != null;
+		}
 	
 		public Integer getPage() {
 			return page;

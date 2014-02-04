@@ -10,8 +10,14 @@
          <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
          <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script> 
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
+        
     </head>
     <body>
+    <div id="pagination_info" page="${sessionScope['scopedTarget.searchParamsPerson'].page}" pageSize="${sessionScope['scopedTarget.searchParamsPerson'].pageSize}" pagesQuantity="${sessionScope['scopedTarget.searchParamsPerson'].pagesQuantity}" orderField="${sessionScope['scopedTarget.searchParamsPerson'].orderField}" order="${sessionScope['scopedTarget.searchParamsPerson'].order}" 
+			path="${pageContext.request.contextPath}" >
+			
+		</div>
+		
     <div id="path" path="${pageContext.request.contextPath}"></div>
         <div class="container">
             <div class="row">
@@ -122,9 +128,9 @@
 									<ul class='pagination' style="margin-left: 20px;">
 										<li  class=" first_page hide"><a href="#"><span>1</span></a></li>
 										<li  class=" prev_page hide"><a href="#"><span> &laquo; </span></a></li>
-										<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsPersons'].page}<span></a></li>
+										<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsPerson'].page}<span></a></li>
 										<li  class="next_page hide"><a href="#"><span> &raquo; </span></a></li>
-										<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsPersons'].pagesQuantity}</span></a></li>
+										<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsPerson'].pagesQuantity}</span></a></li>
 									</ul>
 								</div>
 	

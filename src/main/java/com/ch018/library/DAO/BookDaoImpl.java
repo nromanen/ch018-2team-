@@ -215,7 +215,7 @@ public class BookDaoImpl implements BookDao {
 				criteria.addOrder(Order.asc(searchParams.getOrderField()));
 			
 			setBorders(criteria);
-			
+			logger.info("SIZE = {}", criteria.list().size());
 			return criteria.list();
 		}
 	
@@ -251,19 +251,12 @@ public class BookDaoImpl implements BookDao {
 			int pageNum = searchParams.getPage();
 			int pageSize = searchParams.getPageSize();
 			int itemsQuantity = criteria.list().size();
-			int quantity = (int) Math.ceil((double) itemsQuantity / pageSize);
+			int quantity =  itemsQuantity / pageSize;
 			if(quantity == 0)
-				quantity = 1;
+				quantity = 10;
 			searchParams.setPagesQuantity(quantity);
-			if(pageNum > quantity) {
-				pageNum = 1;
-				searchParams.setPage(pageNum);
-			}
-			
-			int end = pageNum * pageSize;
-			int start = end - pageSize;
-			
-			criteria.setFirstResult(start).setMaxResults(end);
+			criteria.setFirstResult((pageNum - 1) * pageSize);
+			criteria.setMaxResults(pageSize);
 		}
 		
 		

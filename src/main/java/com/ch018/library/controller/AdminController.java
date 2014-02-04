@@ -36,10 +36,10 @@ public class AdminController {
         @RequestMapping(method = RequestMethod.GET)
         public String admin(@ModelAttribute SearchParamsPerson tmpSearchParams, Model model) {
         	
-        	if(tmpSearchParams.getOrder() == null)
+        	if(!searchParams.isInit())
         		searchParams.setDefaults();
-        	
-        	searchParams.update(tmpSearchParams);
+        	else
+        		searchParams.update(tmpSearchParams);
         	
             model.addAttribute("persons", personService.getPersonsBySessionParams());
             model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_LIBRARIAN"));

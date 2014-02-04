@@ -24,7 +24,7 @@ public class SearchParams implements Serializable{
 		
 		private static final int DEFAULT_PAGE_SIZE = 12;
 	
-		private int page;
+		private Integer page;
 		private Integer pageSize;
 		private String orderField;
 		private Boolean order;
@@ -82,6 +82,9 @@ public class SearchParams implements Serializable{
 		    genreId = 0;
 	    }
 	    
+	    public Boolean isInit() {
+			return page != null && pageSize != null && order != null && orderField != null;
+		}
 	    
 	    public void update(SearchParams params) {
 	    	if(params.getGeneralQuery()) {
@@ -115,11 +118,11 @@ public class SearchParams implements Serializable{
 	    }
 
 
-		public int getPage() {
+		public Integer getPage() {
 			return page;
 		}
 
-		public void setPage(int page) {
+		public void setPage(Integer page) {
 			this.page = page;
 		}
 
