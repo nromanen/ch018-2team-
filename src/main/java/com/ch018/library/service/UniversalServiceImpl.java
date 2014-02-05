@@ -17,7 +17,7 @@ public class UniversalServiceImpl<T> implements UniversalService<T> {
 	
 	@Override
 	@Transactional
-	public List<T> getPaginatedResult(SearchParams searchParams, Class<?> entity) {
+	public List<T> getPaginatedResult(SearchParams searchParams, Class<T> entity) {
 		return universalDao.getPaginatedResult(searchParams, entity);
 	}
 

@@ -8,7 +8,9 @@ import java.lang.annotation.Target;
 
 @Target(value = ElementType.FIELD)
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface Skip {
+public @interface Ordinary {
+
+	boolean onlyCopy() default false;
 
 	
 }

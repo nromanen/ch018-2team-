@@ -9,7 +9,7 @@ import com.ch018.library.util.SearchParams;
 @Repository
 public interface UniversalDao <T> {
 
-	List<T> getPaginatedResult(SearchParams searchParams, Class<?> entity);
+	List<T> getPaginatedResult(SearchParams searchParams, Class<T> entity);
 	
 	
 }

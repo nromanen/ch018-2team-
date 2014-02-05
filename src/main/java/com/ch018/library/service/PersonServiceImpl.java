@@ -379,11 +379,6 @@ public class PersonServiceImpl implements PersonService {
 			return personDao.orderByRating();
 		}
 
-		@Override
-		@Transactional
-		public List<Person> getPersonsBySessionParams() {
-			return personDao.getPersonsBySessionParams();
-		}
 		
 		
 

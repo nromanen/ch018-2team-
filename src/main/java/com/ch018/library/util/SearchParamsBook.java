@@ -1,59 +1,64 @@
 package com.ch018.library.util;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ch018.library.service.BookService;
+import com.ch018.library.util.annotation.Affect;
 import com.ch018.library.util.annotation.Between;
 import com.ch018.library.util.annotation.ComplexType;
+import com.ch018.library.util.annotation.Ordinary;
 import com.ch018.library.util.annotation.SimpleSearch;
-import com.ch018.library.util.annotation.Skip;
 
 public class SearchParamsBook extends SearchParams implements Serializable {
 
 	
 		
-		
+
 		private final Logger logger = LoggerFactory.getLogger(SearchParams.class);
 	
+
 		@Autowired
 		private BookService bookService;
 		
-		@Skip
+
 		private Integer yearStart;
-		@Skip
+
 	    private Integer yearEnd;
+	    @Ordinary(onlyCopy = true)
 	    @Between(name = "year", value = "start")
 	    private Integer choosenYearStart;
+	    @Ordinary(onlyCopy = true)
 	    @Between(name = "year", value = "end")
 	    private Integer choosenYearEnd;
 	    
-	    @Skip
+
 	    private Integer bookPageStart;
-	    @Skip
+
 	    private Integer bookPageEnd;
+	    @Ordinary(onlyCopy = true)
 	    @Between(name = "pages", value = "start")
 	    private Integer choosenPageStart;
+	    @Ordinary(onlyCopy = true)
 	    @Between(name = "pages", value = "end")
 	    private Integer choosenPageEnd;
 	    
-	    @Skip
+
 	    private Boolean generalQuery = Boolean.FALSE;
 	    
+	    @Ordinary(onlyCopy = true)
 	    @SimpleSearch(entityFields = {"title", "authors", "publisher"})
 	    private String query;
+	    @Ordinary
 	    private String title;
+	    @Ordinary
 	    private String authors;
+	    @Ordinary
 	    private String publisher;
-	    
+	    @Ordinary(onlyCopy = true)
 	    @ComplexType(entityField = "id")
 	    private Integer genre;
 	    
@@ -104,26 +109,7 @@ public class SearchParamsBook extends SearchParams implements Serializable {
 	    	super.update(params);
 	    }
 	    
-	    public void copy(SearchParams params) {
-	    	
-	    	Field[] fields = this.getClass().getDeclaredFields();
-	    	Field[] superFields = this.getClass().getSuperclass().getDeclaredFields();
-	    	List<Field> allFields = new ArrayList<Field>(Arrays.asList(fields));
-	    	allFields.addAll(Arrays.asList(superFields));
-	    	for(Field field : allFields) {
-	    		if(!Modifier.isFinal(field.getModifiers()) || !Modifier.isStatic(field.getModifiers())
-    					|| field.isAnnotationPresent(ComplexType.class)) {
-		    		field.setAccessible(true);
-		    		try {
-		    			field.set(this, params.getClass().getMethod("get" + Character.toUpperCase(field.getName().charAt(0))
-		    																+ field.getName().substring(1)).invoke(params));
-		    		} catch (Exception e) {
-		    			System.out.println("During copy " + e.getMessage());
-		    		}
-	    		}
-	    	}
-	    	
-	    }
+	    
 	    
 	    public boolean isSlidersNull() {
 	    	return bookPageStart == null || bookPageStart == null 

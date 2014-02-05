@@ -275,49 +275,6 @@ public class PersonDaoImpl implements PersonDao {
 			return users;
 		}
 
-		@Override
-		public List<Person> getPersonsBySessionParams() {
-			logger.info("person dao search {}", searchParams);
-			String query;
-			Criteria criteria = factory.getCurrentSession().createCriteria(
-					Person.class);
-			
-			if(searchParams.getEmail() != null) {
-				query = "%" + searchParams.getEmail() + "%";
-				criteria.add(Restrictions.like("email", query));
-			}
-			
-			if(searchParams.getName() != null) {
-				query = "%" + searchParams.getName() + "%";
-				criteria.add(Restrictions.like("name", query));
-			}
-			
-			if(searchParams.getSurname() != null) {
-				query = "%" + searchParams.getSurname() + "%";
-				criteria.add(Restrictions.like("surname", query));
-			}
-
-			if (searchParams.getOrder())
-				criteria.addOrder(Order.desc(searchParams.getOrderField()));
-			else
-				criteria.addOrder(Order.asc(searchParams.getOrderField()));
-			
-			setBorders(criteria);
-			
-			return criteria.list();
-		}
-		
-		private void setBorders(Criteria criteria) {
-			int pageNum = searchParams.getPage();
-			int pageSize = searchParams.getPageSize();
-			int itemsQuantity = criteria.list().size();
-			int quantity =  itemsQuantity / pageSize;
-			if(quantity == 0)
-				quantity = 10;
-			searchParams.setPagesQuantity(quantity);
-			criteria.setFirstResult((pageNum - 1) * pageSize);
-			criteria.setMaxResults(pageSize);
-		}
 		
 }
 

@@ -10,6 +10,6 @@ import com.ch018.library.util.SearchParams;
 @Service
 public interface UniversalService<T> {
 
-	List<T> getPaginatedResult(SearchParams searchParams, Class<?> entity);
+	List<T> getPaginatedResult(SearchParams searchParams, Class<T> entity);
 	
 }

@@ -37,8 +37,17 @@
       <aop:scoped-proxy/>
    	</bean>
    	
+   	<bean id="pageContainer" class="com.ch018.library.util.PageContainer" scope="session">
+      
+      <aop:scoped-proxy/>
+   	</bean>
+   	
    	<bean id="reflectionUtils" class="com.ch018.library.util.ReflectionUtils" scope="singleton">
       
+   	</bean>
+   	
+   	
+   	<bean id="switcher" class="com.ch018.library.util.Switch" scope="singleton">
    	</bean>
 	
 	<import resource="data.xml" />

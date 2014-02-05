@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -46,32 +47,59 @@
 								<div class="panel-title">Users</div>
 							</div>
 							<div class="panel-body">
+							<div class="row">
+								<div class="col-md-3 ">
+			
+									<label for="sortby"><spring:message code="message.sortby" />:</label>
+									<select id="sortby" name="sortby" class="form-control input-sm">
+										<option value="email" order="false"><spring:message code="message.libEMail" /> (A-Z)</option>
+										<option value="email" order="true"><spring:message code="message.libEMail" /> (Z-A)</option>
+									</select>
+				
+							</div>
+								<div class="col-md-3">
+								<label for="pageSize">Persons on page:</label> 
+									<select id="pageSize" class="form-control input-sm" type="text">
+											<option value="3">3</option>
+											<option value="6">6</option>
+											<option value="12">12</option>
+											<option value="48">48</option>
+									</select>
+								</div>
+								<div class="col-md-6">
+									<form class="form-inline" action="${pageContext.request.contextPath}/admin" method="get">
+										<div class="col-lg-8">
+										<label for="search_input"></label> 
+											<input id="search_input" name="email" class="form-control input-sm" type="text">${sessionScope['scopedTarget.searchParamsPerson'].email}
+										</div>
+										<div class="col-lg-4">
+										<label for="search_input"></label> 
+											<input class="form-control input-sm" type="submit" value="Search">
+										</div>
+										
+									</form>
+								</div>
+								</div>
+								
                     <ul class="list-group list-unstyled">
                         <li class="list-group-item">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="text-center">
-                                        email <a href="${pageContext.request.contextPath}/admin?orderField=email&order=false">1</a>
-                                        <a href="${pageContext.request.contextPath}/admin?orderField=email&order=true">2</a>
+                                        email
                                     </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="text-center">
-                                        name <a href="${pageContext.request.contextPath}/admin?orderField=name">1</a>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-2">
+                                </div>      
+                                <div class="col-md-3">
                                     <div class="text-center">
                                         user_role 
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="text-center">
                                         change role
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="text-center">
                                         delete
                                     </div>
@@ -83,22 +111,17 @@
                         <c:forEach var="person" items="${persons}">
                             <li id="person_li_${person.getPid()}" class="list-group-item">
                                 <div class="row">
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="text-center">
                                             ${person.getEmail()}
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="text-center">
-                                            ${person.getName()}
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="text-center user_role">
                                             ${person.getProle()}
                                         </div>
                                     </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                         
                                             <select class="form-control col-md-5">
                                                 
@@ -110,7 +133,7 @@
                                             <button class="btn-warning  change_role" value="${person.getPid()}">Change</button> 
                                         
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="text-center">
                                             
                                             <button class="btn-danger" value="${person.getPid()}">Delete</button> 
@@ -124,7 +147,7 @@
                         </c:forEach>
                     </ul>
                       <div class="row">
-								<div class="col-md-3 col-md-offset-6" >
+								<div class="col-md-4 col-md-offset-4" >
 									<ul class='pagination' style="margin-left: 20px;">
 										<li  class=" first_page hide"><a href="#"><span>1</span></a></li>
 										<li  class=" prev_page hide"><a href="#"><span> &laquo; </span></a></li>
@@ -144,17 +167,37 @@
 								<div class="panel-title">System Settings</div>
 							</div>
 							<div class="panel-body">
-								
+								<form role="form"
+									action="${pageContext.request.contextPath}/admin/syssetings"
+									method="post">
+									<div class="checkbox">
+										<label> <c:choose>
+												<c:when test="${switcher}">
+													<input id="switcher" class="checkbox" type="checkbox" name="switcher"
+														checked="checked"> Local search
+                                                </c:when>
+												<c:otherwise>
+													<input id="switcher" class="checkbox" type="checkbox" name="switcher"
+														> Local search
+                                                </c:otherwise>
+											</c:choose>
+
+										</label>
+									</div>
+
+
+								</form>
 							</div>
 
 						</div>
 					</div>
+					</div>
                 </div>   
-                
-            </div>
-            <div class="col-md-1">
+                <div class="col-md-1">
                     <a href="${pageContext.request.contextPath}/j_spring_security_logout">logout</a>
                 </div>
+            </div>
+            
         </div>
     </body>
 </html>

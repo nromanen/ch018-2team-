@@ -26,8 +26,10 @@ import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.service.UniversalService;
+import com.ch018.library.util.PageContainer;
 import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsBook;
+import com.ch018.library.util.Switch;
 /**
  * 
  * @author Edd Arazian
@@ -55,7 +57,13 @@ public class BooksController {
         private SearchParamsBook searchParams;
         
         @Autowired
+        private Switch switcher;
+        
+        @Autowired
         private UniversalService<Book> universalService;
+        
+        @Autowired
+        private PageContainer<Book> pageContainer;
 
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
@@ -75,7 +83,7 @@ public class BooksController {
         @RequestMapping(value = "/search", method = RequestMethod.GET)
         public String bookSearchGet(@ModelAttribute SearchParamsBook tmpParams, Model model) {
         	
-        	List<Book> books;
+        	List<Book> books = null;
         	
         	if(!searchParams.isInit()) {
         		searchParams.setDefaults();
@@ -85,10 +93,27 @@ public class BooksController {
         		searchParams.init();
         	}
         	
-        	searchParams.update(tmpParams);
-        	logger.info("searchParams before {}", searchParams);
-        	books = universalService.getPaginatedResult(searchParams, Book.class);//bookService.getBooksComplex(searchParams);
-        	logger.info("search results {}", books);
+        	if(switcher.getSwitcher()) {
+        		if(searchParams.isOnlyPageChangedOrSize(tmpParams)) {
+        			logger.info("only page");
+        			searchParams.update(tmpParams);
+        			books = pageContainer.getItemsPart(searchParams, Book.class);
+        		} else if(searchParams.isSortingFieldsChanged(tmpParams)){
+        			searchParams.update(tmpParams);
+        			pageContainer.recalculateLocal(searchParams, Book.class);
+        			books = pageContainer.getItemsPart(searchParams, Book.class);	
+        		} else {
+            			searchParams.update(tmpParams);
+                		books = universalService.getPaginatedResult(searchParams, Book.class);
+                		pageContainer.setItems(books);
+                		books = pageContainer.getItemsPart(searchParams, Book.class);
+        		}
+        	} else {
+        		searchParams.update(tmpParams);	
+            	
+            	books = universalService.getPaginatedResult(searchParams, Book.class);
+        	}
+
         	if (books.isEmpty() || books == null) {
                 model.addAttribute("nothing", true);
             }
@@ -98,10 +123,16 @@ public class BooksController {
 
         @RequestMapping(value = "/search", method = RequestMethod.POST)
         public String booksSearch(@ModelAttribute SearchParamsBook tmpParams, Model model) {
-        	logger.info("tmpParams before {}", tmpParams);
+
+        	List<Book> books = null;
+        	
         	searchParams.update(tmpParams);
-        	logger.info("searchParams before {}", searchParams);
-        	List<Book> books = universalService.getPaginatedResult(searchParams, Book.class);
+        	logger.info("searchParams before pag {}", searchParams);
+        	books = universalService.getPaginatedResult(searchParams, Book.class);
+        	
+        	if(switcher.getSwitcher()) {
+        		pageContainer.setItems(books);
+        	}
 
         	if (books.isEmpty() || books == null) {
                 model.addAttribute("nothing", true);

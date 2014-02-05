@@ -1,9 +1,14 @@
 package com.ch018.library.controller;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +18,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ch018.library.DAO.UniversalDao;
 import com.ch018.library.controller.errors.IncorrectInput;
+import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
+import com.ch018.library.service.UniversalService;
+import com.ch018.library.util.PageContainer;
 import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsPerson;
+import com.ch018.library.util.Switch;
 
 /**
  *
@@ -27,23 +37,75 @@ import com.ch018.library.util.SearchParamsPerson;
 @RequestMapping(value = "/admin")
 public class AdminController {
     
+		private Logger logger = LoggerFactory.getLogger(AdminController.class);
+	
         @Autowired
         private PersonService personService;
         
         @Autowired
+        private UniversalService<Person> universalservice;
+        
+        @Autowired
         private SearchParamsPerson searchParams;
+        
+        @Autowired
+        PageContainer<Person> pageContainer;
+        
+        @Autowired
+        private Switch switcher;
 
         @RequestMapping(method = RequestMethod.GET)
         public String admin(@ModelAttribute SearchParamsPerson tmpSearchParams, Model model) {
         	
+        	List<Person> persons = null;
+        	
         	if(!searchParams.isInit())
         		searchParams.setDefaults();
-        	else
-        		searchParams.update(tmpSearchParams);
         	
-            model.addAttribute("persons", personService.getPersonsBySessionParams());
+        	System.out.println(searchParams.isOnlyPageChangedOrSize(tmpSearchParams) + " " + searchParams.isSortingFieldsChanged(tmpSearchParams));
+        	System.out.println(switcher.getSwitcher());
+        	
+        	if(switcher.getSwitcher()) {
+        		if(searchParams.isOnlyPageChangedOrSize(tmpSearchParams)) {
+        			logger.info("only page");
+        			searchParams.update(tmpSearchParams);
+        			persons = pageContainer.getItemsPart(searchParams, Person.class);
+        		} else if(searchParams.isSortingFieldsChanged(tmpSearchParams)) {
+        			searchParams.update(tmpSearchParams);
+        			pageContainer.recalculateLocal(searchParams, Person.class);
+        			persons = pageContainer.getItemsPart(searchParams, Person.class);	
+        		} else {
+        			searchParams.update(tmpSearchParams);
+            		persons = universalservice.getPaginatedResult(searchParams, Person.class);
+            		pageContainer.setItems(persons);
+            		persons = pageContainer.getItemsPart(searchParams, Person.class);
+        		}
+        	} else {
+        		searchParams.update(tmpSearchParams);
+        		persons = universalservice.getPaginatedResult(searchParams, Person.class);
+        	}
+        	
+            model.addAttribute("persons", persons);
             model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_LIBRARIAN"));
+            model.addAttribute("switcher", switcher.getSwitcher());
             return "admin";
+        }
+        
+        @RequestMapping(value = "/syssetings", method = RequestMethod.POST)
+        public ResponseEntity<String> changeSysSettings(@RequestParam(value = "switcher", required = false) Boolean sw) {
+        	logger.info("switcher = {}", switcher.getSwitcher());
+        	if(sw == null) {
+        		switcher.setSwitcher(Boolean.FALSE);
+        		return new ResponseEntity<>("false", HttpStatus.OK);
+        	}
+        	if(sw) {
+        		switcher.setSwitcher(Boolean.TRUE);
+        		return new ResponseEntity<>("true", HttpStatus.OK);
+        	}
+        	else {
+        		switcher.setSwitcher(Boolean.FALSE);
+        		return new ResponseEntity<>("false", HttpStatus.OK);
+        	}
         }
         
         
