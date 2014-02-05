@@ -17,14 +17,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ch018.library.DAO.UniversalDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
-import com.ch018.library.helper.SearchParams;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PersonService;
+import com.ch018.library.service.UniversalService;
+import com.ch018.library.util.SearchParams;
+import com.ch018.library.util.SearchParamsBook;
 /**
  * 
  * @author Edd Arazian
@@ -49,7 +52,10 @@ public class BooksController {
         private BookInUseService useService;
         
         @Autowired
-        private SearchParams searchParams;
+        private SearchParamsBook searchParams;
+        
+        @Autowired
+        private UniversalService<Book> universalService;
 
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
@@ -67,7 +73,7 @@ public class BooksController {
         
         
         @RequestMapping(value = "/search", method = RequestMethod.GET)
-        public String bookSearchGet(@ModelAttribute SearchParams tmpParams, Model model) {
+        public String bookSearchGet(@ModelAttribute SearchParamsBook tmpParams, Model model) {
         	
         	List<Book> books;
         	
@@ -80,9 +86,9 @@ public class BooksController {
         	}
         	
         	searchParams.update(tmpParams);
-        	
-        	books = bookService.getBooksComplex();
-        	
+        	logger.info("searchParams before {}", searchParams);
+        	books = universalService.getPaginatedResult(searchParams, Book.class);//bookService.getBooksComplex(searchParams);
+        	logger.info("search results {}", books);
         	if (books.isEmpty() || books == null) {
                 model.addAttribute("nothing", true);
             }
@@ -91,16 +97,17 @@ public class BooksController {
         }
 
         @RequestMapping(value = "/search", method = RequestMethod.POST)
-        public String booksSearch(@ModelAttribute SearchParams tmpParams, Model model) {
-
+        public String booksSearch(@ModelAttribute SearchParamsBook tmpParams, Model model) {
+        	logger.info("tmpParams before {}", tmpParams);
         	searchParams.update(tmpParams);
-
-        	List<Book> books = bookService.getBooksComplex();
+        	logger.info("searchParams before {}", searchParams);
+        	List<Book> books = universalService.getPaginatedResult(searchParams, Book.class);
 
         	if (books.isEmpty() || books == null) {
                 model.addAttribute("nothing", true);
             }
             model.addAttribute("books", books);
+            logger.info("searchParams after {}", searchParams);
             return "books";
         }
 

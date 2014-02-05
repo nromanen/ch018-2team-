@@ -8,11 +8,11 @@
 
 <div class="row well">
 
-	<div id="pagination_info" page="${sessionScope['scopedTarget.searchParams'].page}" pageSize="${sessionScope['scopedTarget.searchParams'].pageSize}" pagesQuantity="${sessionScope['scopedTarget.searchParams'].pagesQuantity}" orderField="${sessionScope['scopedTarget.searchParams'].orderField}" order="${sessionScope['scopedTarget.searchParams'].order}" 
-			path="${pageContext.request.contextPath}" genreId="${sessionScope['scopedTarget.searchParams'].genreId}" bookPageStart="${sessionScope['scopedTarget.searchParams'].bookPageStart}" bookPageEnd="${sessionScope['scopedTarget.searchParams'].bookPageEnd}"
-			yearStart="${sessionScope['scopedTarget.searchParams'].yearStart}" yearEnd="${sessionScope['scopedTarget.searchParams'].yearEnd}" choosenBookPageStart = "${sessionScope['scopedTarget.searchParams'].choosenPageStart}"
-			choosenBookPageEnd = "${sessionScope['scopedTarget.searchParams'].choosenPageEnd}" choosenYearStart = "${sessionScope['scopedTarget.searchParams'].choosenYearStart}"
-			choosenYearEnd = "${sessionScope['scopedTarget.searchParams'].choosenYearEnd}">
+	<div id="pagination_info" page="${sessionScope['scopedTarget.searchParamsBook'].page}" pageSize="${sessionScope['scopedTarget.searchParamsBook'].pageSize}" pagesQuantity="${sessionScope['scopedTarget.searchParamsBook'].pagesQuantity}" orderField="${sessionScope['scopedTarget.searchParamsBook'].orderField}" order="${sessionScope['scopedTarget.searchParamsBook'].order}" 
+			path="${pageContext.request.contextPath}" genreId="${sessionScope['scopedTarget.searchParamsBook'].genre}" bookPageStart="${sessionScope['scopedTarget.searchParamsBook'].bookPageStart}" bookPageEnd="${sessionScope['scopedTarget.searchParamsBook'].bookPageEnd}"
+			yearStart="${sessionScope['scopedTarget.searchParamsBook'].yearStart}" yearEnd="${sessionScope['scopedTarget.searchParamsBook'].yearEnd}" choosenBookPageStart = "${sessionScope['scopedTarget.searchParamsBook'].choosenPageStart}"
+			choosenBookPageEnd = "${sessionScope['scopedTarget.searchParamsBook'].choosenPageEnd}" choosenYearStart = "${sessionScope['scopedTarget.searchParamsBook'].choosenYearStart}"
+			choosenYearEnd = "${sessionScope['scopedTarget.searchParamsBook'].choosenYearEnd}">
 			
 		</div>
 
@@ -22,15 +22,15 @@
 		
 		<div class="row">
 			<label for="title"><spring:message code="message.libTitle" />:</label> 
-				<input class="form-control input-sm" type="text" id="title" value="${sessionScope['scopedTarget.searchParams'].title}">
+				<input class="form-control input-sm" type="text" id="title" value="${sessionScope['scopedTarget.searchParamsBook'].title}">
 		</div>
 		<div class="row">
 			<label for="authors"><spring:message code="message.libAuthors" />:</label> 
-				<input class="form-control input-sm" type="text" id="authors" value="${sessionScope['scopedTarget.searchParams'].authors}">
+				<input class="form-control input-sm" type="text" id="authors" value="${sessionScope['scopedTarget.searchParamsBook'].authors}">
 		</div>
 		<div class="row">
 			<label for="publisher"><spring:message code="message.libPublisher" />:</label> 
-				<input class="form-control input-sm" type="text" id="publisher" value="${sessionScope['scopedTarget.searchParams'].publisher}">
+				<input class="form-control input-sm" type="text" id="publisher" value="${sessionScope['scopedTarget.searchParamsBook'].publisher}">
 		</div>
 		<div class="row">
 			<label for="genreId"><spring:message code="message.libGenre" />:</label> 
@@ -102,9 +102,9 @@
 		<ul class='pagination'>
 			<li  class=" first_page hide"><a href="#"><span>1</span></a></li>
 			<li  class=" prev_page hide"><a href="#"><span> &laquo; </span></a></li>
-			<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParams'].page}<span></a></li>
+			<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsBook'].page}<span></a></li>
 			<li  class="next_page hide"><a href="#"><span> &raquo; </span></a></li>
-			<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParams'].pagesQuantity}</span></a></li>
+			<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsBook'].pagesQuantity}</span></a></li>
 		</ul>
 	</div>
 
@@ -187,9 +187,9 @@
 		<ul class='pagination' style="margin-left: 20px;">
 			<li  class=" first_page hide"><a href="#"><span>1</span></a></li>
 			<li  class=" prev_page hide"><a href="#"><span> &laquo; </span></a></li>
-			<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParams'].page}<span></a></li>
+			<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsBook'].page}<span></a></li>
 			<li  class="next_page hide"><a href="#"><span> &raquo; </span></a></li>
-			<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParams'].pagesQuantity}</span></a></li>
+			<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsBook'].pagesQuantity}</span></a></li>
 		</ul>
 	</div>
 	

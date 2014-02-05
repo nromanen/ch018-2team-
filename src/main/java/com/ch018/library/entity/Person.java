@@ -18,7 +18,7 @@ import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.ch018.library.helper.Roles;
+import com.ch018.library.util.Roles;
 
 /**
  * 

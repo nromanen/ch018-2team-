@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ch018.library.controller.errors.IncorrectInput;
 import com.ch018.library.entity.Person;
-import com.ch018.library.helper.SearchParams;
-import com.ch018.library.helper.SearchParamsPerson;
 import com.ch018.library.service.PersonService;
+import com.ch018.library.util.SearchParams;
+import com.ch018.library.util.SearchParamsPerson;
 
 /**
  *

@@ -20,7 +20,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.GenreTranslations;
-import com.ch018.library.helper.SearchParams;
+import com.ch018.library.util.SearchParams;
 import com.ch018.library.validation.BookEditValidator;
 
 @Service
@@ -111,8 +111,8 @@ public class BookServiceImpl implements BookService {
 
         @Override
         @Transactional
-        public List<Book> getBooksComplex() {
-        	List<Book> books = bookDAO.getBooksComplex();
+        public List<Book> getBooksComplex(SearchParams searchParams) {
+        	List<Book> books = bookDAO.getBooksComplex(searchParams);
             return books;
         }
 

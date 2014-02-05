@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ch018.library.entity.Person;
-import com.ch018.library.helper.SearchParamsPerson;
+import com.ch018.library.util.SearchParamsPerson;
 
 /**
  * 

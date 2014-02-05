@@ -24,15 +24,22 @@
 	
 	<context:component-scan base-package="com.ch018.library" />
 	
-	<bean id="searchParams" class="com.ch018.library.helper.SearchParams" scope="session">
+	<!-- <bean id="searchParams" class="com.ch018.library.util.SearchParams" scope="session">
+      
+      <aop:scoped-proxy/>
+   	</bean> -->
+   	<bean id="searchParamsBook" class="com.ch018.library.util.SearchParamsBook" scope="session">
       
       <aop:scoped-proxy/>
    	</bean>
-   	<bean id="searchParamsPerson" class="com.ch018.library.helper.SearchParamsPerson" scope="session">
+   	<bean id="searchParamsPerson" class="com.ch018.library.util.SearchParamsPerson" scope="session">
       
       <aop:scoped-proxy/>
    	</bean>
    	
+   	<bean id="reflectionUtils" class="com.ch018.library.util.ReflectionUtils" scope="singleton">
+      
+   	</bean>
 	
 	<import resource="data.xml" />
 	<import resource="security.xml"/>

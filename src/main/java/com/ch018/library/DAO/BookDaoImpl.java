@@ -18,7 +18,9 @@ import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
-import com.ch018.library.helper.SearchParams;
+import com.ch018.library.util.SearchParams;
+import com.ch018.library.util.SearchParamsBook;
+import com.ch018.library.util.SearchParamsPerson;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -28,9 +30,7 @@ public class BookDaoImpl implements BookDao {
 		@Autowired
 		private SessionFactory factory;
 		
-		@Autowired
-		private SearchParams searchParams;
-	
+		
 		@Override
 		public void save(Book book) {
 			try {
@@ -163,7 +163,9 @@ public class BookDaoImpl implements BookDao {
 		}
 	
 		@Override
-		public List<Book> getBooksComplex() {
+		public List<Book> getBooksComplex(SearchParams tmpSearchParams) {
+
+				SearchParamsBook searchParams = (SearchParamsBook) tmpSearchParams;
 			logger.info("book dao search {}", searchParams);
 			String query;
 			Criteria criteria = factory.getCurrentSession().createCriteria(
@@ -191,8 +193,8 @@ public class BookDaoImpl implements BookDao {
 				criteria.add(Restrictions.like("publisher", query));
 			}
 			
-			if (searchParams.getGenreId() > 0) {
-				criteria.add(Restrictions.eq("genre.id", searchParams.getGenreId()));
+			if (searchParams.getGenre() > 0) {
+				criteria.add(Restrictions.eq("genre.id", searchParams.getGenre()));
 			}
 
 			if (searchParams.getChoosenPageStart() != null &&
@@ -214,7 +216,17 @@ public class BookDaoImpl implements BookDao {
 			else
 				criteria.addOrder(Order.asc(searchParams.getOrderField()));
 			
-			setBorders(criteria);
+			int pageNum = searchParams.getPage();
+			int pageSize = searchParams.getPageSize();
+			int itemsQuantity = criteria.list().size();
+			int quantity =  itemsQuantity / pageSize;
+			if(quantity == 0)
+				quantity = 10;
+			searchParams.setPagesQuantity(quantity);
+			criteria.setFirstResult((pageNum - 1) * pageSize);
+			criteria.setMaxResults(pageSize);
+			
+			
 			logger.info("SIZE = {}", criteria.list().size());
 			return criteria.list();
 		}
@@ -247,17 +259,6 @@ public class BookDaoImpl implements BookDao {
 			return books;
 		}
 
-		private void setBorders(Criteria criteria) {
-			int pageNum = searchParams.getPage();
-			int pageSize = searchParams.getPageSize();
-			int itemsQuantity = criteria.list().size();
-			int quantity =  itemsQuantity / pageSize;
-			if(quantity == 0)
-				quantity = 10;
-			searchParams.setPagesQuantity(quantity);
-			criteria.setFirstResult((pageNum - 1) * pageSize);
-			criteria.setMaxResults(pageSize);
-		}
 		
 		
 }
