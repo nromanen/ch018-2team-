@@ -4,11 +4,13 @@ package com.ch018.library.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -64,6 +66,9 @@ public class BooksController {
         
         @Autowired
         private PageContainer<Book> pageContainer;
+        
+        @Autowired
+        MessageSource messageSource;
 
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
@@ -72,7 +77,7 @@ public class BooksController {
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(Model model) {
         	
-        	
+        	System.out.println(messageSource.getMessage("message.ordersI", new Object[] {"new"}, "fail", Locale.ENGLISH));
             model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", 4));
             model.addAttribute("populars", bookService.getLastByField("ordersQuantity", 4));
             logger.info("arrivals {}", bookService.getLastByField("arrivalDate", 4));
