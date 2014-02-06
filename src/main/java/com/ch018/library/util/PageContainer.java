@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ch018.library.entity.Book;
-import com.ch018.library.service.UniversalService;
+import com.ch018.library.service.PaginationService;
 import com.ch018.library.util.annotation.Between;
 import com.ch018.library.util.annotation.ComplexType;
 import com.ch018.library.util.annotation.SimpleSearch;
@@ -28,10 +28,10 @@ public class PageContainer<T> {
 		private List<T> items;
 		
 		@Autowired
-		private UniversalService<T> universalService;
+		private PaginationService<T> paginationService;
 		
 		@Autowired
-		private ReflectionUtils reflectionUtils;
+		private PaginationUtils paginationUtils;
 		
 		public List<T> getItemsPart(SearchParams searchParams, Class<T> clazz) {
 			logger.info("items before {}", items);
@@ -61,7 +61,7 @@ public class PageContainer<T> {
 		
 		
 		public void recalculate(SearchParams searchParams, Class<T> clazz) {
-			items = universalService.getPaginatedResult(searchParams, clazz);
+			items = paginationService.getPaginatedResult(searchParams, clazz);
 		}
 		
 		public void recalculateLocal(SearchParams search, Class<T> entity) {

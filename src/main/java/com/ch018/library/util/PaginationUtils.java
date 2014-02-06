@@ -22,9 +22,9 @@ import com.ch018.library.util.annotation.ComplexType;
 import com.ch018.library.util.annotation.Ordinary;
 import com.ch018.library.util.annotation.SimpleSearch;
 
-public class ReflectionUtils {
+public class PaginationUtils {
 
-		private final Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
+		private final Logger logger = LoggerFactory.getLogger(PaginationUtils.class);
 	
 		@Autowired
 		Switch switcher;
@@ -86,7 +86,6 @@ public class ReflectionUtils {
 					Object o = field.get(searchParams);
 					if(o != null && ((int) o) != 0) {
 						String entityField = field.getAnnotation(ComplexType.class).entityField();
-						System.out.println("GENRE " + o + " FIELD " + entityField);
 						criteria.add(Restrictions.eq(field.getName() + "." + entityField , o));
 					}
 				} catch (Exception e) {

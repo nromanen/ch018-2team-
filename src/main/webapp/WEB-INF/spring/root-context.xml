@@ -24,10 +24,6 @@
 	
 	<context:component-scan base-package="com.ch018.library" />
 	
-	<!-- <bean id="searchParams" class="com.ch018.library.util.SearchParams" scope="session">
-      
-      <aop:scoped-proxy/>
-   	</bean> -->
    	<bean id="searchParamsBook" class="com.ch018.library.util.SearchParamsBook" scope="session">
       
       <aop:scoped-proxy/>
@@ -42,7 +38,7 @@
       <aop:scoped-proxy/>
    	</bean>
    	
-   	<bean id="reflectionUtils" class="com.ch018.library.util.ReflectionUtils" scope="singleton">
+   	<bean id="paginationUtils" class="com.ch018.library.util.PaginationUtils" scope="singleton">
       
    	</bean>
    	

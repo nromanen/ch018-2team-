@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ch018.library.DAO.UniversalDao;
+import com.ch018.library.DAO.PaginationDao;
 import com.ch018.library.controller.errors.IncorrectInput;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.PersonService;
-import com.ch018.library.service.UniversalService;
+import com.ch018.library.service.PaginationService;
 import com.ch018.library.util.PageContainer;
 import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsPerson;
@@ -43,7 +43,7 @@ public class AdminController {
         private PersonService personService;
         
         @Autowired
-        private UniversalService<Person> universalservice;
+        private PaginationService<Person> paginationService;
         
         @Autowired
         private SearchParamsPerson searchParams;
@@ -59,31 +59,10 @@ public class AdminController {
         	
         	List<Person> persons = null;
         	
-        	if(!searchParams.isInit())
-        		searchParams.setDefaults();
+        	if(!searchParams.isMainFieldsEmpty())
+        		searchParams.setMainFieldsDefault();
         	
-        	System.out.println(searchParams.isOnlyPageChangedOrSize(tmpSearchParams) + " " + searchParams.isSortingFieldsChanged(tmpSearchParams));
-        	System.out.println(switcher.getSwitcher());
-        	
-        	if(switcher.getSwitcher()) {
-        		if(searchParams.isOnlyPageChangedOrSize(tmpSearchParams)) {
-        			logger.info("only page");
-        			searchParams.update(tmpSearchParams);
-        			persons = pageContainer.getItemsPart(searchParams, Person.class);
-        		} else if(searchParams.isSortingFieldsChanged(tmpSearchParams)) {
-        			searchParams.update(tmpSearchParams);
-        			pageContainer.recalculateLocal(searchParams, Person.class);
-        			persons = pageContainer.getItemsPart(searchParams, Person.class);	
-        		} else {
-        			searchParams.update(tmpSearchParams);
-            		persons = universalservice.getPaginatedResult(searchParams, Person.class);
-            		pageContainer.setItems(persons);
-            		persons = pageContainer.getItemsPart(searchParams, Person.class);
-        		}
-        	} else {
-        		searchParams.update(tmpSearchParams);
-        		persons = universalservice.getPaginatedResult(searchParams, Person.class);
-        	}
+        	persons = paginationService.getPaginatedResult(searchParams, tmpSearchParams, Person.class);
         	
             model.addAttribute("persons", persons);
             model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_LIBRARIAN"));

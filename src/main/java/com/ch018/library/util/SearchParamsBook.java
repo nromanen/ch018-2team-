@@ -74,9 +74,9 @@ public class SearchParamsBook extends SearchParams implements Serializable {
 		    genre = 0;
 	    }
 	    
-	    public void setDefaults() {
+	    public void setMainFieldsDefault() {
 
-	    	super.setDefaults();
+	    	super.setMainFieldsDefault();
 	    	
 	    	setOrderField("title");
 	    	
@@ -101,7 +101,7 @@ public class SearchParamsBook extends SearchParams implements Serializable {
 	    public void update(SearchParams params) {
 	    	SearchParamsBook tmpParams = (SearchParamsBook) params;
 	    	if(tmpParams.getGeneralQuery()) {
-	    		this.setDefaults();
+	    		this.setMainFieldsDefault();
 	    		query = tmpParams.getQuery();
 	    		return;
 	    	}

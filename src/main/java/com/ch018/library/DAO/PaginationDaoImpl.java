@@ -9,21 +9,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ch018.library.util.ReflectionUtils;
+import com.ch018.library.util.PaginationUtils;
 import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.Switch;
 
 @Repository
-public class UniversalDaoImpl<T> implements UniversalDao<T> {
+public class PaginationDaoImpl<T> implements PaginationDao<T> {
 
 	
-	private final Logger logger = LoggerFactory.getLogger(UniversalDao.class);
+	private final Logger logger = LoggerFactory.getLogger(PaginationDao.class);
 	
 	@Autowired
 	SessionFactory factory;
 	
 	@Autowired
-	ReflectionUtils reflectionUtils;
+	PaginationUtils paginationUtils;
 	
 	
 	@Override
@@ -31,7 +31,7 @@ public class UniversalDaoImpl<T> implements UniversalDao<T> {
 		
 		Criteria criteria = factory.getCurrentSession().createCriteria(entity);
 		
-		reflectionUtils.fillCriteria(criteria, search);
+		paginationUtils.fillCriteria(criteria, search);
 		
 		return  criteria.list();
 	}

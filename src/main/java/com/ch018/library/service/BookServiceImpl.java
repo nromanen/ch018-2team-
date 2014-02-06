@@ -109,12 +109,12 @@ public class BookServiceImpl implements BookService {
         }
 
 
-        @Override
+       /* @Override
         @Transactional
         public List<Book> getBooksComplex(SearchParams searchParams) {
         	List<Book> books = bookDAO.getBooksComplex(searchParams);
             return books;
-        }
+        }*/
 
 		@Override
 		public List<Book> advancedSearch(Book book) {

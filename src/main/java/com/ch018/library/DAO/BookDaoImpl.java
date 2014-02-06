@@ -162,7 +162,7 @@ public class BookDaoImpl implements BookDao {
 			}
 		}
 	
-		@Override
+		/*@Override
 		public List<Book> getBooksComplex(SearchParams tmpSearchParams) {
 
 				SearchParamsBook searchParams = (SearchParamsBook) tmpSearchParams;
@@ -230,7 +230,7 @@ public class BookDaoImpl implements BookDao {
 			logger.info("SIZE = {}", criteria.list().size());
 			return criteria.list();
 		}
-	
+	*/
 	
 		@Override
 		public Integer getMinIntegerField(String field) {

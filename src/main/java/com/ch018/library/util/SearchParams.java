@@ -23,7 +23,7 @@ public abstract class SearchParams implements Serializable{
 
 
 		@Autowired
-		ReflectionUtils reflectionUtils;
+		PaginationUtils paginationUtils;
 		
 
 		public static final int DEFAULT_PAGE_SIZE = 12;
@@ -40,11 +40,11 @@ public abstract class SearchParams implements Serializable{
 		private Integer pagesQuantity;
 	    
 	    
-	    public Boolean isInit() {
-			return page != null && pageSize != null && order != null && orderField != null;
+	    public Boolean isMainFieldsEmpty() {
+			return page == null || pageSize == null || order == null || orderField == null;
 		}
 	    
-	    public void setDefaults() {
+	    public void setMainFieldsDefault() {
 	    	page = 1;
 	    	pageSize = DEFAULT_PAGE_SIZE;
 	    	order = false;

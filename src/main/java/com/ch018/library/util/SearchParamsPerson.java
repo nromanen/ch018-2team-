@@ -17,9 +17,9 @@ public class SearchParamsPerson extends SearchParams implements Serializable {
 		private String email;
 		
 	
-		public void setDefaults() {
+		public void setMainFieldsDefault() {
 	    	
-			super.setDefaults();
+			super.setMainFieldsDefault();
 			
 	    	setOrderField("email");
 	    	

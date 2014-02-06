@@ -47,11 +47,9 @@ public class RegisterController {
 		private BCryptPasswordEncoder encoder;
 	
 		@Autowired(required = true)
-		//@Qualifier("registrationformvalidator")
 		private RegistrationFormValidator validator;
 	
 		@Autowired(required = true)
-		//@Qualifier("passwordvalidator")
 		private PasswordValidator validatorPass;
 	
 		@RequestMapping(value = "/register", method = RequestMethod.POST)

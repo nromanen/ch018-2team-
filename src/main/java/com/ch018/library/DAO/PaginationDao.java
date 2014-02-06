@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.ch018.library.util.SearchParams;
 
 @Repository
-public interface UniversalDao <T> {
+public interface PaginationDao <T> {
 
 	List<T> getPaginatedResult(SearchParams searchParams, Class<T> entity);
 	

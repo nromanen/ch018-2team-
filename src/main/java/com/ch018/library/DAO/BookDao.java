@@ -20,7 +20,7 @@ public interface BookDao {
         List<Book> getBooksByTitle(String title);
         List<Book> getBooksByAuthors(String authors);
         List<Book> getBooksByYear(int year);
-        List<Book> getBooksComplex(SearchParams searchParams);
+        //List<Book> getBooksComplex(SearchParams searchParams);
         List<Book> getBooksByPublisher(String publisher);
         List<Book> getBooksByPagesEq(int pages);
         List<Book> getBooksByGenre(Genre genre);
