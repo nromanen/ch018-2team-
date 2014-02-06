@@ -48,7 +48,7 @@ public class LibrarianUsersController {
 			for (Person pers : person) {
 				personService.countRating(pers);
 			}
-			//model.addAttribute("users", personService.pagination(FIRST_PAGE));
+			model.addAttribute("users", person);
 			
 			//Locale locale = LocaleContextHolder.getLocale();
 	
