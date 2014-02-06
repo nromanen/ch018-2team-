@@ -167,7 +167,7 @@ $(document).ready(function() {
 				    		choosenYearStart : minYear,
 				    		choosenYearEnd : maxYear,
 							pageSize : pageSize,
-							genreId : genreId,
+							genre : genreId,
 							page : 1
 						}, url);
 				    	

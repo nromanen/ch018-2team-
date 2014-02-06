@@ -15,6 +15,9 @@ $(document).ready(function() {
 
 	});
 	
+	$('#switcher').change(function () {
+		changeSort($(this).is(':checked'));
+	});
 	
 	var path = $('#pagination_info').attr('path');
 	var orderField = $('#pagination_info').attr('orderField');
@@ -67,6 +70,38 @@ $(document).ready(function() {
 	
 	//page part
 	
+	//sortby part
+	$('#sortby > option').each(function() {
+		console.log($(this).attr('order'));
+		$(this).attr('url', path + '/admin?page=1&orderField=' + this.value + '&order=' + $(this).attr('order'));
+		if(this.value === orderField && $(this).attr('order') === order) {
+			$(this).attr('selected', 'selected');
+		}
+	});
+	
+	$('#sortby').change(function () {
+		
+		location.href = $('#sortby option:selected').attr('url');
+		
+	});
+	//sortby part
+	
+	//pagesize
+	$('#pageSize > option').each(function() {
+		$(this).attr('url', path + '/admin?page=1&pageSize=' + this.value);
+		if (this.value === $('#pagination_info').attr('pageSize')) {
+			$(this).attr('selected', 'selected');
+		}
+	});
+	
+	$('#pageSize').change(function () {
+		
+		location.href = $('#pageSize option:selected').attr('url');
+		
+	});
+	
+	//pagesize
+	
 });
 
 function deleteUser(userId) {
@@ -112,6 +147,34 @@ function changeUserRole(userId, role) {
 		},
 		error : function() {
 			alert("error");
+		}
+
+	});
+
+}
+
+function changeSort(state) {
+	$.ajax({
+		url : $('#path').attr('path') + "/admin/syssetings",
+		type : "POST",
+		data : {
+			'switcher' : state,
+		},
+		dataType : "json",
+		contentType : 'application/x-www-form-urlencoded',
+		mimeType : 'application/json',
+		success : function(data) {
+
+			//myOrders();
+			if(data === true)
+				$('#switcher').attr('checked', 'checked');
+			else
+				$('#switcher').attr('checked');
+
+		},
+		error : function() {
+			alert(data);
+			$('#switcher').attr('checked');
 		}
 
 	});
