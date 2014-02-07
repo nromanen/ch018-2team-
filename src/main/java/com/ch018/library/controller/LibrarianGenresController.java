@@ -2,7 +2,6 @@ package com.ch018.library.controller;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -13,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ch018.library.entity.Genre;
-import com.ch018.library.entity.GenreTranslations;
 import com.ch018.library.service.GenreService;
-import com.ch018.library.service.GenreTranslationService;
 
 @Controller
 @RequestMapping(value = "/librarian/genres")
@@ -24,8 +21,7 @@ public class LibrarianGenresController {
 	@Autowired
 	private GenreService genreService;
 	
-	@Autowired
-	private GenreTranslationService genreTranslationsServeice;
+
 	
 	private final String ENG = "en";
 	private final String UKR = "ua";

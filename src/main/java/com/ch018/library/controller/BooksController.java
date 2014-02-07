@@ -1,16 +1,30 @@
 package com.ch018.library.controller;
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertySource;
+import org.springframework.core.env.PropertySources;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,14 +32,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
 
 import com.ch018.library.DAO.PaginationDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.GenreTranslations;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
+import com.ch018.library.service.GenreTranslationsService;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.service.PaginationService;
 import com.ch018.library.util.PageContainer;
@@ -70,14 +88,38 @@ public class BooksController {
         @Autowired
         MessageSource messageSource;
 
+        @Autowired
+        ApplicationContext ctx;
+        
+        @Autowired
+        GenreTranslationsService gtrans;
+
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
+        
         
         
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(Model model) {
         	
-        	System.out.println(messageSource.getMessage("message.ordersI", new Object[] {"new"}, "fail", Locale.ENGLISH));
+        	
+        	/*for(Genre genre : genreService.getAll()) {
+        		GenreTranslations gtE = new GenreTranslations();
+        		gtE.setGenre(genre);
+        		gtE.setDescription(genre.getDescription() + " EN");
+        		gtE.setLocale("en");
+        		
+        		gtrans.save(gtE);
+        		
+        		GenreTranslations gtU = new GenreTranslations();
+        		gtU.setGenre(genre);
+        		gtU.setDescription(genre.getDescription() + " UA");
+        		gtU.setLocale("ua");
+        		
+        		gtrans.save(gtU);
+        	}
+        	*/
+        	
             model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", 4));
             model.addAttribute("populars", bookService.getLastByField("ordersQuantity", 4));
             logger.info("arrivals {}", bookService.getLastByField("arrivalDate", 4));
@@ -104,6 +146,7 @@ public class BooksController {
                 model.addAttribute("nothing", true);
             }
             model.addAttribute("books", books);
+            model.addAttribute("num", 1);
             return "books";
         }
 

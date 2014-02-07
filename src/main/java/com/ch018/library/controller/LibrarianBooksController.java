@@ -1,13 +1,9 @@
 package com.ch018.library.controller;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -26,12 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
-import com.ch018.library.entity.GenreTranslations;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
-import com.ch018.library.service.GenreTranslationService;
-import com.ch018.library.validation.BookEditValidator;
 
 @Controller
 @RequestMapping(value = "/librarian/books")
@@ -46,8 +39,7 @@ public class LibrarianBooksController {
 		@Autowired
 		private BookInUseService bookInUseService;
 		
-		@Autowired
-		private GenreTranslationService genreTranslService;
+
 		
 		final Logger logger = LoggerFactory.getLogger(LibrarianBooksController.class);
 		
@@ -142,7 +134,7 @@ public class LibrarianBooksController {
 			locale = LocaleContextHolder.getLocale();
 			Book book = new Book();
 			model.addAttribute("book", book);
-			model.addAttribute("genre", genreTranslService.getAllByLocale(locale.toString()));
+			model.addAttribute("genre", genreService.getAll());
 			return "librarian_books_advanced_search";
 		}
 		
@@ -150,9 +142,6 @@ public class LibrarianBooksController {
 		public String advancedSearch(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("genreId") Integer gid, Model model) throws Exception {
 			
 			locale = LocaleContextHolder.getLocale();
-			
-			Set<GenreTranslations> genreTranslations = genreTranslService.getByGenreId(gid);
-			book.setGenre(genreTranslations);
 			
 			List<Book> booksList = bookService.advancedSearch(book);
 			

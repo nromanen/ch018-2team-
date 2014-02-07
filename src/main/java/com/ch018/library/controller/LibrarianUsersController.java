@@ -1,11 +1,9 @@
 package com.ch018.library.controller;
 
-import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.entity.Person;
-import com.ch018.library.service.BookInUseService;
-import com.ch018.library.service.LanguageService;
-import com.ch018.library.service.PersonService;
-import com.ch018.library.validation.PersonEditValidator;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
-import java.util.List;
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Person;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.PersonService;
+import com.ch018.library.validation.PersonEditValidator;
 
 @Controller
 @RequestMapping(value = "/librarian/users")
@@ -37,8 +38,7 @@ public class LibrarianUsersController {
 		@Autowired
 		private BCryptPasswordEncoder encoder;
 		
-		@Autowired
-		private LanguageService langService;
+
 	
 		@RequestMapping(value = "")
 		public String showAll(Model model) throws Exception {

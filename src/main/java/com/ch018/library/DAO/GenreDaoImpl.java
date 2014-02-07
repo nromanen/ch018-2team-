@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Genre;
@@ -59,7 +60,17 @@ public class GenreDaoImpl implements GenreDao {
 
         @Override
         public List<Genre> getAll() {
-            return factory.getCurrentSession().createCriteria(Genre.class).list();
+        	String local = LocaleContextHolder.getLocale().getLanguage();
+    		
+        	
+        	
+            List<Genre> genres = factory.getCurrentSession().createCriteria(Genre.class, "genre")
+            		.createAlias("genre.translations", "gt")
+            		.add(Restrictions.eq("gt.locale", local))
+            		.list();
+            for(Genre g : genres)
+            	System.out.println(g);
+            return genres;
         }
 
         @Override

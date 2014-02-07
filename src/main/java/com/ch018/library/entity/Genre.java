@@ -29,9 +29,12 @@ public class Genre implements Serializable {
         @Column(name = "description")
         private String description;
         
-        @OneToMany(mappedBy = "genre")
+        @OneToMany(mappedBy = "genre", fetch = FetchType.LAZY)
         private Set<Book> books;
 
+        @OneToMany(mappedBy = "genre")
+        private Set<GenreTranslations> translations;
+        
         public Genre() {
 
         }
@@ -64,6 +67,16 @@ public class Genre implements Serializable {
 
 		public void setBooks(Set<Book> books) {
 			this.books = books;
+		}
+		
+		
+
+		public Set<GenreTranslations> getTranslations() {
+			return translations;
+		}
+
+		public void setTranslations(Set<GenreTranslations> translations) {
+			this.translations = translations;
 		}
 
 		@Override
