@@ -208,4 +208,39 @@ public class OrdersDaoImpl implements OrdersDao {
 	
 		}
 
+		@Override
+		public List<Orders> getOrdersBetweenDates(Book book, Date firstDate, Date secondDate) {
+			List<Orders> orders = factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("book", book))
+					.add(Restrictions.between("orderDate", firstDate, secondDate)).addOrder(Order.asc("orderDate")).list();
+			if(orders == null)
+				return new ArrayList<>();
+			return orders;
+		}
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }

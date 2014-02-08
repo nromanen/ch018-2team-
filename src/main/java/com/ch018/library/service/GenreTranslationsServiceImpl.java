@@ -28,6 +28,8 @@ public class GenreTranslationsServiceImpl implements GenreTranslationsService {
 		return genreTranslationsDao.getTranslationById(id);
 	}
 
+
+
 	
 	
 }

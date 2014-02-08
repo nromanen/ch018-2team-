@@ -7,17 +7,14 @@ $(document).ready(function() {
 					tmpDate = $('#minDate').val();
 
 					minD = getDateInFormat(tmpDate);
-					minDateSpl = minD.split(" ");
+					minDateSplit = minD.split(" ");
 
 					$('#datetimepicker').datetimepicker({
 										onGenerate : function(ct, $input) {
-											$(this)
-													.find(
-															'.xdsoft_date.xdsoft_weekend')
-													.addClass('xdsoft_disabled');
-
+											$(this).find('.xdsoft_date.xdsoft_weekend').addClass('xdsoft_disabled');
 										},
 										onSelectDate : function(current_time, $input) {
+										
 											var days = getAvailableDays(current_time, $('.order'));
 											var d = 'can order for ' + days + 'days';
 											console.log('can order for ' + days + 'days');
@@ -47,18 +44,67 @@ $(document).ready(function() {
 											
 
 										},
-										
+										onChangeMonth : function (month, $input) {
+											console.log("month = " + month.getMonth() + " input = " + $input);
+											
+											$.ajax({
+												url : $('#path').attr('url') + "/books/order/getAdditionalOrders",
+												type : "POST",
+												data : {
+													'bookId' : $('#bookId').val(),
+													'month' : month.getMonth(),
+													'year' : month.getFullYear()
+												},
+												dataType : "json",
+												contentType : 'application/x-www-form-urlencoded',
+												mimeType : 'application/json',
+
+												success : function(data) {
+													$('#orders').empty();
+													var $orders = $('#orders');
+													$.each(data.orders, function(index, value) {
+														console.log(value.days + " " + value.orderDate);
+														var $order = $('<div>', {class : 'order'});
+														$order.attr('start', value.orderDate);
+														$order.attr('days', value.days);
+														$order.appendTo($orders);
+														
+													});
+													//var week = getWeekEnds($('.order'));
+													
+													$('#datetimepicker').datetimepicker('reload');
+												
+													
+													/*$.each(week, function(index, value) {
+														var splited = value.split('.');
+														var day = splited[0];
+														if(day.substring(0, 1) === '0')
+															day = day.substring(1);
+														var month = splited[1];
+														if(month.substring(0, 1) === '0')
+															month = month.substring(1);
+														var year = splited[2];
+														//$('.xdsoft_calendar').find('td[data-date=' + day + '][data-month=' + month + '][data-year=' + year + ']').addClass('.xdsoft_disabled');
+														//console.log($('td[data-date=' + 15 + '][data-month=' + 1 + '][data-year=' + 2014 + ']').attr('class'));
+														//console.log('td[data-date=' + day + '][data-month=' + month + '][data-year=' + year + ']');
+													});*/
+													
+												}
+											});
+											
+											
+											
+										},
 										format : 'Y/m/d H:i',
 										value : minD,
-										minDate : minDateSpl[0],
+										minDate : minDateSplit[0],
 										weekends : getWeekEnds($('.order')),
 										allowTimes : [ '09:00', '10:00',
 												'11:00', '12:00', '14:00',
 												'15:00', '16:00' ],
 										
 									});
-					$('#order_button').click(
-							function() {
+					$('#order_button').click(function() {
 
 								var bookId = $('#bookId').val();
 								var time = getLongFromFormatTime($('#datetimepicker').val());

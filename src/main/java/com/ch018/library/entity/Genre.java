@@ -32,7 +32,7 @@ public class Genre implements Serializable {
         @OneToMany(mappedBy = "genre", fetch = FetchType.LAZY)
         private Set<Book> books;
 
-        @OneToMany(mappedBy = "genre")
+        @OneToMany(mappedBy = "genre", fetch = FetchType.LAZY)
         private Set<GenreTranslations> translations;
         
         public Genre() {

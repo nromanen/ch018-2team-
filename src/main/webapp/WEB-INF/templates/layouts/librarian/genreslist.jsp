@@ -25,6 +25,7 @@
 				                        <td>${genre.description}</td>
 				                        <td>
 				                        <a href="<c:url value="/librarian/genres/delete?id=${genre.id}"/>" style="color: #0E3846"><spring:message code="message.libDelete"/></a>
+				                        
 				                        </td>
 				                </tr>
 				        </c:forEach>

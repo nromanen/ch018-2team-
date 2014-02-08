@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
 	
-	
 	//pagination part_start
 	
 		var path = $('#pagination_info').attr('path');

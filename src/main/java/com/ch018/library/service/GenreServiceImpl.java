@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ch018.library.DAO.GenreDao;
+import com.ch018.library.DAO.GenreTranslationsDao;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.GenreTranslations;
+import com.ch018.library.exceptions.EmptyGenreException;
+import com.ch018.library.exceptions.GenreAlreadyExists;
 
 /**
  *
@@ -18,6 +22,10 @@ public class GenreServiceImpl implements GenreService {
     
         @Autowired
         private GenreDao genreDao;
+        
+        @Autowired 
+        private GenreTranslationsDao translationDao;
+        
 
         @Override
         @Transactional
@@ -40,6 +48,7 @@ public class GenreServiceImpl implements GenreService {
         @Override
         @Transactional
         public void delete(Genre genre) {
+        	translationDao.deleteByGenreId(genre.getId());
             genreDao.delete(genre);
         }
 
@@ -60,4 +69,44 @@ public class GenreServiceImpl implements GenreService {
         public Genre getByDescription(String description) {
             return genreDao.getByDescription(description);
         }
+
+		@Override
+		@Transactional
+		public void addGenre(String eng, String ukr) throws Exception {
+			
+
+			if(eng == null || eng.equals(""))
+				throw new EmptyGenreException();
+			
+			if(ukr == null || ukr.equals(""))
+				ukr = eng;
+
+			if(getByDescription(eng) != null)
+				throw new GenreAlreadyExists();
+			
+			Genre genre = new Genre();
+			GenreTranslations engTranslation = new GenreTranslations();
+			GenreTranslations ukrTranslation = new GenreTranslations();
+			
+			genre.setDescription(eng);
+			
+			save(genre);
+			
+			System.out.println(genre.getId());
+			
+			engTranslation.setDescription(eng);
+			engTranslation.setLocale("en");
+			engTranslation.setGenre(genre);
+			
+			translationDao.save(engTranslation);
+			
+			ukrTranslation.setDescription(ukr);
+			ukrTranslation.setLocale("ua");
+			ukrTranslation.setGenre(genre);
+			
+			translationDao.save(ukrTranslation);
+				
+		}
+        
+        
 }

@@ -1,6 +1,7 @@
 package com.ch018.library.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +61,7 @@ public class OrderController {
 		if(bookId == null) {
 			return "redirect:/books";
 		}
+		
 		Book book = bookService.getBookById(bookId);
 		model.addAttribute("book", book);
 		if(principal == null) {
@@ -149,6 +151,24 @@ public class OrderController {
 		json.put("date", date);
 		json.put("minDate", minDate.getMinOrderDate().getTime());
 		return new ResponseEntity<>(json.toString(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/getAdditionalOrders")
+	public ResponseEntity<String> getAdditionalOrders(@RequestParam("bookId") Integer bookId, @RequestParam("month") Integer month,
+															@RequestParam("year") Integer year) {
+		Book book = bookService.getBookById(bookId);
+		List<Orders> orders = ordersService.getOrdersForPeriodFromMonth(book, month, year, 1);
+		JSONObject jsonOrders = new JSONObject();
+		List<JSONObject> jsons = new ArrayList<>();
+		for(Orders order : orders) {
+			JSONObject jsonOrder = new JSONObject();
+			jsonOrder.put("orderDate", order.getOrderDate().getTime());
+			jsonOrder.put("days", order.getDaysAmount());
+			jsons.add(jsonOrder);
+		}
+		jsonOrders.put("orders", jsons);
+		
+		return new ResponseEntity<>(jsonOrders.toString(), HttpStatus.OK);
 	}
 
 }

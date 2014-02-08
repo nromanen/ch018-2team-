@@ -10,4 +10,6 @@ public interface GenreTranslationsService {
 	void save(GenreTranslations genreTranslations);
 	
 	String getTranslationById(int id);
+	
+
 }

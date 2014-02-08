@@ -1,4 +1,4 @@
-package com.ch018.library.util;
+package com.ch018.library.interceptor;
 
 import java.io.Serializable;
 
@@ -23,7 +23,13 @@ public class Intercept extends EmptyInterceptor {
 		if(entity instanceof Genre) {
 			
 			Genre genre = (Genre) entity;
-			state[1] = translationService.getTranslationById(genre.getId());
+			int i = 0;
+			for(String str : propertyNames) {
+				if(str.equals("description"))
+					break;
+				i++;
+			}
+			state[i] = translationService.getTranslationById(genre.getId());
 
 
 

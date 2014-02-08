@@ -698,6 +698,9 @@
 						while( start.getDay()!=options.dayOfWeekStart )
 							start.setDate(start.getDate()-1);
 
+						//set week
+						this.weekends = getWeekEnds($('.order'));
+						
 						//generate calendar
 						table+='<table><thead><tr>';
 

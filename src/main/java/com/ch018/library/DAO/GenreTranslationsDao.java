@@ -9,5 +9,9 @@ public interface GenreTranslationsDao {
 
 	void save(GenreTranslations genreTranslations);
 
+	void deleteByGenreId(int id);
+	
 	String getTranslationById(int id);
+
+	String getTranslationById(int id, String locale);
 }

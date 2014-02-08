@@ -66,7 +66,7 @@ public class BookDaoImpl implements BookDao {
 	
 		@Override
 		public Book getBookById(int id) {
-			return (Book) factory.getCurrentSession().get(Book.class, id);
+			return (Book) factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.eq("bId", id)).uniqueResult();//get(Book.class, id);
 		}
 	
 		@Override

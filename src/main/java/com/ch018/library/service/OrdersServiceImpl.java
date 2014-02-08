@@ -1,5 +1,6 @@
 package com.ch018.library.service;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -208,7 +209,8 @@ public class OrdersServiceImpl implements OrdersService {
 			long days = MAX_DAYS;
 			Date minDate = new Date();
 			Calendar calendar = Calendar.getInstance();
-			List<Orders> orders = ordersDao.getOrderByBook(book);
+			List<Orders> orders = ordersDao.getOrderByBook(book);;
+			
 			orders = excludeSelfOrders(orders);
 			
 			if(generalQuantity <= 0)
@@ -222,17 +224,24 @@ public class OrdersServiceImpl implements OrdersService {
 			else if (currentQuantity <= 0 || orders.size() >= currentQuantity) {
 				minDate = booksInUseService.getMinReturnDate(book);
 			}
-	
-			for (Orders order : orders) {
-				days = (order.getOrderDate().getTime() - minDate.getTime())
-						/ MILLIS_IN_DAY;
-				if (days > 1)
-					break;
-				else {
-					minDate = new Date(order.getOrderDate().getTime()
-							+ order.getDaysAmount() * MILLIS_IN_DAY);
+			//int loopCount = 3;
+			//for(int i = 0; i < loopCount; i++) {
+				//orders = getOrdersForPeriodFromMonth(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR), 2);
+			
+				for (Orders order : orders) {
+					days = (order.getOrderDate().getTime() - minDate.getTime())
+							/ MILLIS_IN_DAY;
+					if (days > 1)
+						break;
+					else {
+						minDate = new Date(order.getOrderDate().getTime()
+								+ order.getDaysAmount() * MILLIS_IN_DAY);
+					}
 				}
-			}
+			calendar.setTime(minDate);
+			//}
+			orders = getOrdersForPeriodFromMonth(book, calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR), 1);
+			logger.info("ORDERS {}", orders.size() );
 			calendar.setTime(minDate);
 			calendar.add(Calendar.DAY_OF_YEAR, 1);
 			return new OrderDays(minDate, days, orders);
@@ -385,4 +394,33 @@ public class OrdersServiceImpl implements OrdersService {
 			return excluded;
 		}
 
+		@Override
+		@Transactional
+		public List<Orders> getOrdersForPeriodFromMonth(Book book, int month, int year,
+				int monthsAmount) {
+			Calendar currentDate = Calendar.getInstance();
+			Calendar choosenDate = Calendar.getInstance();
+			Calendar nextMonth = Calendar.getInstance();
+
+			if(currentDate.get(Calendar.MONTH) != month || currentDate.get(Calendar.YEAR) != year) {
+				choosenDate.set(year, month, 1, 0, 0, 0);
+			} else {
+				choosenDate = currentDate;
+			}
+			nextMonth = (Calendar) choosenDate.clone();
+			logger.info("nextMonth before {}", nextMonth.getTime());
+			nextMonth.add(Calendar.MONTH, monthsAmount);
+			logger.info("nextMonth after {}", nextMonth.getTime());
+			nextMonth.set(Calendar.DAY_OF_MONTH, nextMonth.getActualMaximum(Calendar.DAY_OF_MONTH));
+			logger.info("nextMonth after2 {}", nextMonth.getTime());
+			
+			Date firstDate = choosenDate.getTime();
+			Date secondDate = nextMonth.getTime();
+			logger.info("Between {} - {}", firstDate, secondDate);
+			return ordersDao.getOrdersBetweenDates(book, firstDate, secondDate);
+		}
+
+		
+		
+		
 }

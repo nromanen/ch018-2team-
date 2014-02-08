@@ -61,21 +61,13 @@ public class GenreDaoImpl implements GenreDao {
         @Override
         public List<Genre> getAll() {
         	String local = LocaleContextHolder.getLocale().getLanguage();
-    		
-        	
-        	
-            List<Genre> genres = factory.getCurrentSession().createCriteria(Genre.class, "genre")
-            		.createAlias("genre.translations", "gt")
-            		.add(Restrictions.eq("gt.locale", local))
-            		.list();
-            for(Genre g : genres)
-            	System.out.println(g);
+            List<Genre> genres = factory.getCurrentSession().createCriteria(Genre.class).list();
             return genres;
         }
 
         @Override
         public Genre getById(int id) {
-            return (Genre) factory.getCurrentSession().get(Genre.class, id);
+            return (Genre) factory.getCurrentSession().createCriteria(Genre.class).add(Restrictions.eq("id", id)).uniqueResult();
         }
 
         @Override
