@@ -3,10 +3,12 @@ package com.ch018.library.service;
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import com.ch018.library.exceptions.UserAlreadyExists;
 import com.ch018.library.validation.Password;
 import com.ch018.library.validation.PersonEditValidator;
 import com.ch018.library.validation.PersonalInfo;
 import com.ch018.library.validation.UserRegistrationForm;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.List;
@@ -211,11 +214,11 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Override
 		@Transactional
-		public boolean register(UserRegistrationForm form, String path) {
+		public Person register(UserRegistrationForm form, String path) throws Exception {
 			Person person = new Person(form.getName(), form.getSurname(),
 					form.getEmail(), form.getPassword(), form.getCellPhone());
 			if (getByEmail(person.getEmail()) != null) {
-				return false;
+				throw new UserAlreadyExists();
 			}
 			person.setPassword(encoder.encode(person.getPassword()));
 			person.setProle("ROLE_USER");
@@ -227,7 +230,7 @@ public class PersonServiceImpl implements PersonService {
 					"etenzor@gmail.com", "confirmation mail", person.getMailKey(), path);
 			save(person);
 			logger.info("new user {} registered", person);
-			return true;
+			return person;
 		}
 	
 		@Override

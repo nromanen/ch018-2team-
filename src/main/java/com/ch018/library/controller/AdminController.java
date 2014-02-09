@@ -59,7 +59,7 @@ public class AdminController {
         	
         	List<Person> persons = null;
         	
-        	if(!searchParams.isMainFieldsEmpty())
+        	if(searchParams.isMainFieldsEmpty())
         		searchParams.setMainFieldsDefault();
         	
         	persons = paginationService.getPaginatedResult(searchParams, tmpSearchParams, Person.class);

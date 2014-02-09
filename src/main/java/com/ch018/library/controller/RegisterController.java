@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ch018.library.exceptions.UserAlreadyExists;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.validation.Password;
 import com.ch018.library.validation.PasswordValidator;
@@ -39,6 +40,8 @@ public class RegisterController {
 
 		private final Logger logger = LoggerFactory
 				.getLogger(RegisterController.class);
+		
+		private final static String SOMETHING_WRONG = "Something wrong. Stay Calm. We resolving problem...";
 	
 		@Autowired
 		private PersonService personService;
@@ -62,13 +65,14 @@ public class RegisterController {
 			}
 			String path = request.getScheme() + "://" + request.getServerName() + ":"
 						+ String.valueOf(request.getServerPort())  + request.getContextPath();
-			if (personService.register(form, path))
-				return new ResponseEntity<>(new JSONObject().toString(),
-						HttpStatus.OK);
-			else
-				return new ResponseEntity<>("problems with registration",
-						HttpStatus.BAD_REQUEST);
-	
+			try {
+				personService.register(form, path);
+			} catch (UserAlreadyExists e) {
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			} catch (Exception e) {
+				return new ResponseEntity<>(SOMETHING_WRONG, HttpStatus.BAD_REQUEST);
+			}
+			return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
 		}
 	
 		@RequestMapping(value = "/confirm", method = RequestMethod.GET)

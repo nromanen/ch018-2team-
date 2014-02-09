@@ -180,6 +180,7 @@ $(document).ready(function() {
 				    $('#search_field').autocomplete({
 						serviceUrl : $('#search_field').attr('url') +  "/books/autocomplete",
 						minChars : 2
+						
 
 					});
 

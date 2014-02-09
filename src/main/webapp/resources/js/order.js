@@ -123,7 +123,12 @@ function makeOrder(bookId, time, url) {
 
 		},
 		error : function(xhr, status, error) {
+			if(xhr.responseText === 'You already ordered this book') {
+				$('#wish_button').addClass('hide');
+				$('#order_button').addClass('hide');
+				$('#datetimepicker').addClass('hide');
 
+			}
 			$('#order_err').text(xhr.responseText);
 			$('#order_err').removeClass('hide');
 		}
@@ -196,6 +201,11 @@ function getMinDate() {
 			$inner.appendTo($mindate);
 			$inner.attr('date', getDateInFormat(data.minDate));
 	
+		},
+		error : function(xhr, status, error) {
+
+			$('#order_err').text(xhr.responseText);
+			$('#order_err').removeClass('hide');
 		}
 	});	
 };

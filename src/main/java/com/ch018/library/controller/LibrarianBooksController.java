@@ -114,7 +114,7 @@ public class LibrarianBooksController {
 		}
 		
 		@RequestMapping(value = "/editbook", method = RequestMethod.POST)
-		public String edit(@ModelAttribute("book") @Valid Book book, @RequestParam("gid") Integer gid, BindingResult result,
+		public String edit(@RequestParam("gid") Integer gid, @Valid @ModelAttribute  Book book, BindingResult result,
 						    Model model) throws Exception {
 			Genre genre = genreService.getById(gid);
 			book.setGenre(genre);
@@ -125,7 +125,6 @@ public class LibrarianBooksController {
 			} else {
 				bookService.update(book);
 			}
-			//book.setGenre(genreTranslService.getById(gid));
 			return "redirect:/librarian/books";
 		}
 		

@@ -26,11 +26,11 @@
 
 				<li class="list-group-item" id="wish_li_${wish.id}">
 					<div class="row">
-						<div class="col-md-4">${wish.book.title}</div>
+						<div class="col-md-4" style="max-width: 90%; overflow:  hidden;">${wish.book.title}</div>
 						<div class="col-md-5">
 							<input type="hidden" class="wishId" value="${wish.id}">
 							<input type="hidden" class="bookId" value="${wish.book.bId}">
-							<input	type="text" class="calendar" value="choose date">
+							<input	type="text" class="calendar" value="<spring:message code="message.available" />">
 							<button class="btn-info wish_confirm_button"><spring:message code="message.order" /></button>
 							<div class="alert alert-danger wish_date_err hide"></div>
 						</div>

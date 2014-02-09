@@ -36,7 +36,7 @@
 
 							<input type="hidden" class="order_id" value="${order.id}"> <input type="hidden" class="minDate" value="">
 							<input type="hidden" class="orderDate" value="${order.orderDate.time}" > 
-							<input class="calendar" bid="${order.book.bId}" value="choose new date">
+							<input class="calendar" bid="${order.book.bId}" value="<spring:message code="message.available" />">
 							<button class="btn-info order_change_button" data-toggle="tooltip"  data-original-title="<spring:message code="message.changed" />"><spring:message code="message.change" /></button>
 							<input class="changed" type="hidden" value="${order.changed}">
 							<div class="alert alert-danger order_date_err hide"></div>

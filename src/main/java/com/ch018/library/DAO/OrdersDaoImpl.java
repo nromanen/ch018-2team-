@@ -31,8 +31,8 @@ public class OrdersDaoImpl implements OrdersDao {
 	
 		@Override
 		public void save(Orders order) {
-			
 				factory.getCurrentSession().save(order);
+
 			
 	
 		}

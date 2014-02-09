@@ -31,10 +31,12 @@ $(document).ready(function() {
 															},
 															onChangeMonth: function( currentDateTime ){
 
-																getOrders(currentDateTime, bid),
-																this.setOptions({
-																	value : '',
-																	weekends: getWeekEnds($('.order'))
+																var _this = this;
+																$.when(getOrders(currentDateTime, bid)).done(function (){
+																	_this.setOptions({
+																		value : '',
+																		weekends: getWeekEnds($('.order'))
+																	});
 																});
 
 															},

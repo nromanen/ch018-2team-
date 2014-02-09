@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.HibernateException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ import com.ch018.library.controller.errors.IncorrectInput;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import com.ch018.library.exceptions.BookUnavailableException;
+import com.ch018.library.exceptions.IncorrectDateException;
+import com.ch018.library.exceptions.TooManyOrdersException;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
@@ -44,6 +48,8 @@ public class OrderController {
 
 	final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
+	private final static String SOMETHING_WRONG = "Something wrong. Stay Calm. We resolving problem...";
+	
 	@Autowired
 	private BookService bookService;
 	@Autowired
@@ -76,21 +82,11 @@ public class OrderController {
 			model.addAttribute("inUse", true);
 			return "order";
 		}
-		Date minDate = null;
-		try {
-			minDate = ordersService.getMinOrderDate(book);
-		} catch (Exception e) {
-			
-		}
-		//model.addAttribute("orders", minDate.getOrders());
 		model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
 		model.addAttribute("inOrders",
 				ordersService.isPersonOrderedBook(person, book));
 		model.addAttribute("inWishList",
 				wishService.isPersonWishBook(person, book));
-		
-		model.addAttribute("minDate", minDate.getTime());
-		//model.addAttribute("days", minDate.getDaysAvailable());
 		return "order";
 
 	}
@@ -107,8 +103,10 @@ public class OrderController {
 		logger.info("add order time {}", new Date(time));
 		try {
 			ordersService.addOrder(person, bookId, date);
+		} catch (IncorrectDateException | HibernateException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage().equals("Incorrect Date Choosen") ? e.getMessage() : "something wrong", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(SOMETHING_WRONG, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
 	}
@@ -118,11 +116,7 @@ public class OrderController {
 	public String myOrders(Model model, Principal principal) {
 		Person person = personService.getByEmail(principal.getName());
 		List<Orders> orders = ordersService.getOrderByPerson(person);
-		/*Map<Orders, OrderDays> ordersMinDates = new HashMap<>();
-		for (Orders order : orders) {
-			ordersMinDates.put(order,
-					ordersService.getMinOrderDate(order.getBook()));
-		}*/
+
 		model.addAttribute("orders", orders);
 		return "orders";
 
@@ -138,16 +132,17 @@ public class OrderController {
 
 	@RequestMapping(value = "/edit")
 	@Secured({ "ROLE_USER" })
-	public ResponseEntity<String> editOrder(
-			@RequestParam("orderId") Integer orderId,
-			@RequestParam("date") Long date, Principal principal)
-			throws IncorrectInput {
+	public ResponseEntity<String> editOrder(@RequestParam("orderId") Integer orderId,
+													@RequestParam("date") Long date, Principal principal)
+													throws IncorrectInput {
 		Person person = personService.getByEmail(principal.getName());
 		Orders order;
 		try {
 			order = ordersService.editOrder(person, orderId, new Date(date));
+		} catch (IncorrectDateException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+			return new ResponseEntity<>(SOMETHING_WRONG, HttpStatus.BAD_REQUEST);
 		}
 		JSONObject json = new JSONObject();
 		json.put("orderId", orderId);
@@ -181,8 +176,10 @@ public class OrderController {
 		Date date = null;
 		try {
 			date = ordersService.getMinOrderDate(book);
-		} catch (Exception e) {
+		} catch (TooManyOrdersException | BookUnavailableException | IncorrectDateException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<>(SOMETHING_WRONG, HttpStatus.BAD_REQUEST);
 		}
 		JSONObject minDate = new JSONObject();
 		minDate.put("minDate", date.getTime());
