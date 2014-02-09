@@ -30,7 +30,7 @@ public interface OrdersService {
          int getBookIdByPerson(Person person);   
          boolean isPersonOrderedBook(Person person, Book book);
          boolean isLimitReached(Person person);
-         OrderDays getMinOrderDate(Book book);
+         Date getMinOrderDate(Book book) throws Exception;
          int getCorrectAmountOfOrderDays(Book book, Date orderDate) throws Exception;
          void addOrder(Person person, int bookId, Date orderDate) throws Exception;
          Orders editOrder(Person person, int orderId, Date orderDate) throws Exception;

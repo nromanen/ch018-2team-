@@ -1,5 +1,5 @@
 /**
- * @preserve jQuery DateTimePicker plugin v2.1.8
+ * @preserve jQuery DateTimePicker plugin v2.1.9
  * @homepage http://xdsoft.net/jqplugins/datetimepicker/
  * (c) 2014, Chupurnov Valeriy.
  */
@@ -93,6 +93,14 @@
 				],
 				dayOfWeek: [
 					"日", "一","二","三","四","五","六"
+				]
+			},
+			se:{ // Swedish
+				months: [
+					"Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September","Oktober", "November", "December"
+				],
+				dayOfWeek: [
+					"Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"
 				]
 			}
 		},
@@ -273,7 +281,7 @@
 			ZKEY = 90,
 			YKEY = 89,
 			ctrlDown	=	false,
-			options = ($.isPlainObject(opt)||!opt)?$.extend({},default_options,opt):$.extend({},default_options),
+			options = ($.isPlainObject(opt)||!opt)?$.extend(true,{},default_options,opt):$.extend({},default_options),
 			createDateTimePicker = function( input ) {
 				var datetimepicker = $('<div '+(options.id?'id="'+options.id+'"':'')+' '+(options.style?'style="'+options.style+'"':'')+' class="xdsoft_datetimepicker xdsoft_noselect '+options.className+'"></div>'),
 					xdsoft_copyright = $('<div class="xdsoft_copyright"><a target="_blank" href="http://xdsoft.net/jqplugins/datetimepicker/">xdsoft.net</a></div>'),
@@ -339,7 +347,7 @@
 
 				// set options
 				datetimepicker.setOptions = function( _options ) {
-					options = $.extend({},options,_options);
+					options = $.extend(true,{},options,_options);
 					if( (options.open||options.opened)&&(!options.inline) ) {
 						input.trigger('open.xdsoft');
 					}
@@ -545,7 +553,6 @@
 					var _this = this;
 					_this.now = function() {
 						var d = new Date();
-						
 						if( options.yearOffset )
 							d.setFullYear(d.getFullYear()+options.yearOffset);
 						return d;
@@ -572,18 +579,18 @@
 					};
 
 					_this.nextMonth = function() {
-						
 						var month = _this.currentTime.getMonth()+1;
-						
 						if( month==12 ) {
 							_this.currentTime.setFullYear(_this.currentTime.getFullYear()+1);
 							month = 0;
 						}
-						
-						
+						_this.currentTime.setDate(
+							Math.min(
+								Date.daysInMonth[month],
+								_this.currentTime.getDate()
+							)
+						)
 						_this.currentTime.setMonth(month);
-						
-						
 						options.onChangeMonth&&options.onChangeMonth.call&&options.onChangeMonth.call(datetimepicker,_xdsoft_datetime.currentTime,datetimepicker.data('input'));
 						datetimepicker.trigger('xchange.xdsoft');
 						return month;
@@ -595,6 +602,12 @@
 							_this.currentTime.setFullYear(_this.currentTime.getFullYear()-1);
 							month = 11;
 						}
+						_this.currentTime.setDate(
+							Math.min(
+								Date.daysInMonth[month],
+								_this.currentTime.getDate()
+							)
+						)
 						_this.currentTime.setMonth(month);
 						options.onChangeMonth&&options.onChangeMonth.call&&options.onChangeMonth.call(datetimepicker,_xdsoft_datetime.currentTime,datetimepicker.data('input'));
 						datetimepicker.trigger('xchange.xdsoft');
@@ -697,39 +710,7 @@
 							today = _xdsoft_datetime.now();
 						while( start.getDay()!=options.dayOfWeekStart )
 							start.setDate(start.getDate()-1);
-						
-						//set week
-						
-						/*$.ajax({
-							url : $('#path').attr('url') + "/books/order/getAdditionalOrders",
-							type : "POST",
-							data : {
-								'bookId' : $('#bookId').val(),
-								'time' : _xdsoft_datetime.currentTime.getTime(),
-								'date' : _xdsoft_datetime.currentTime
-							},
-							dataType : "json",
-							contentType : 'application/x-www-form-urlencoded',
-							mimeType : 'application/json',
 
-							success : function(data) {
-								$('#orders').empty();
-								var $orders = $('#orders');
-								$.each(data.orders, function(index, value) {
-									console.log(value.days + " " + value.orderDate);
-									var $order = $('<div>', {class : 'order'});
-									$order.attr('start', value.orderDate);
-									$order.attr('days', value.days);
-									$order.appendTo($orders);
-									
-								});
-							}
-						});	
-						
-						options.weekends = getWeekEnds($('.order'));*/
-						
-						//end 
-				
 						//generate calendar
 						table+='<table><thead><tr>';
 
@@ -847,7 +828,6 @@
 						monthselect.children().eq(0).html(opt);
 						$(this).trigger('generate.xdsoft');
 						event.stopPropagation();
-						
 					})
 					.on('afterOpen.xdsoft',function() {
 						if( options.timepicker && timebox.find('.xdsoft_current').length ) {
@@ -870,8 +850,8 @@
 							return false;
 
 						currentTime.setFullYear( $this.data('year') );
-						currentTime.setMonth( $this.data('month') );
 						currentTime.setDate( $this.data('date') );
+						currentTime.setMonth( $this.data('month') );
 						datetimepicker.trigger('select.xdsoft',[currentTime]);
 
 						input.val( _xdsoft_datetime.str() );
@@ -971,7 +951,7 @@
 				});
 				var setPos = function() {
 					var offset = datetimepicker.data('input').offset(), top = offset.top+datetimepicker.data('input')[0].offsetHeight-1, left = offset.left;
-					if( top+datetimepicker[0].offsetHeight>$(window).height() )
+					if( top+datetimepicker[0].offsetHeight>$(window).height()+$(window).scrollTop() )
 						top = offset.top-datetimepicker[0].offsetHeight+1;
 					if( left+datetimepicker[0].offsetWidth>$(window).width() )
 						left = offset.left-datetimepicker[0].offsetWidth+datetimepicker.data('input')[0].offsetWidth;
@@ -1070,7 +1050,6 @@
 					$([window,document.body]).off('mousedown.xdsoft');
 					input.unmousewheel&&input.unmousewheel();
 				}
-				
 			};
 		$(document)
 			.off('keydown.xdsoftctrl keyup.xdsoftctrl')
@@ -1103,7 +1082,6 @@
 								datetimepicker.data('changed',false);
 							datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
 						break;
-						
 					}
 				}else{
 					datetimepicker

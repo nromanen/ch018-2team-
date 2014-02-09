@@ -49,3 +49,7 @@ ul li a{
 .row.well{
 	min-height: 640px;
 }
+
+#left_main{
+	margin-left: 50px;
+}

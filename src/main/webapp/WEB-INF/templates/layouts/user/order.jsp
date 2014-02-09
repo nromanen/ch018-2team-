@@ -7,7 +7,7 @@
 
 	<sec:authorize access="isAuthenticated()">
 	<div id="picker_date">
-		<div id="min_date" value="${minDate}"></div>
+		<div id="min_date"></div>
 		<div id="disabled_dates" value="${disabled}"></div>
 		<div id="allow_times"></div>
 		<div id="orders">
@@ -125,7 +125,7 @@
 									class="btn btn-primary">View Orders</a>
 							</c:when>
 							<c:when test="${inWishList}">
-								<input type="hidden" id="minDate" value="${minDate}">
+								<!-- <input type="hidden" id="minDate" value="${minDate}">  -->
 								
 								<input class="form-control" id="datetimepicker">
 								
@@ -136,8 +136,8 @@
 	
 							</c:when>
 							<c:otherwise>
-								<input type="hidden" id="minDate" value="${minDate}">
-								<input class="form-control" id="datetimepicker">
+								<!-- <input type="hidden" id="minDate" value="${minDate}">  -->
+								<input class="form-control" id="datetimepicker" value="choose date">
 								<input type="hidden" id="bookId" value="${book.getbId()}">
 	
 								<button id="order_button" class="btn btn-info btn-sm"><spring:message code="message.order" /></button>

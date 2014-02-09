@@ -4,6 +4,10 @@
 	
 	<div id="path" url="${pageContext.request.contextPath}"></div>
 
+	<div id="picker_info">
+		<div id="orders"></div>
+		<div id="min_date"></div>
+	</div>
 	<div class="col-md-2" id="left_main">
 		<div class="pull-left text-info">
 			<h3><spring:message code="message.wishlistI" /></h3>
@@ -18,28 +22,20 @@
 					<div class="col-md-3"></div>
 				</div>
 			</li>
-			<c:forEach var="entry" items="${map}">
+			<c:forEach var="wish" items="${wishes}">
 
-				<li class="list-group-item" id="wish_li_${entry.key.id}">
+				<li class="list-group-item" id="wish_li_${wish.id}">
 					<div class="row">
-						<div class="col-md-4">${entry.key.book.title}</div>
+						<div class="col-md-4">${wish.book.title}</div>
 						<div class="col-md-5">
-							<input type="hidden" class="wishId" value="${entry.key.id}">
-							<input type="hidden" class="bookId" value="${entry.key.book.bId}">
-							<input type="hidden" class="minDate"
-								value="${entry.value.minOrderDate.time}"> <input
-								type="text" class="calendar">
+							<input type="hidden" class="wishId" value="${wish.id}">
+							<input type="hidden" class="bookId" value="${wish.book.bId}">
+							<input	type="text" class="calendar" value="choose date">
 							<button class="btn-info wish_confirm_button"><spring:message code="message.order" /></button>
 							<div class="alert alert-danger wish_date_err hide"></div>
-							<div class="picker_info">
-								<c:forEach var="order" items="${entry.value.orders}">
-									<div class="order" start="${order.orderDate.time}"
-										days="${order.daysAmount}"></div>
-								</c:forEach>
-							</div>
 						</div>
 						<div class="col-md-3">
-							<input type="hidden" class="wishId" value="${entry.key.id}">
+							<input type="hidden" class="wishId" value="${wish.id}">
 							<button class="btn-danger wish_delete_button"><spring:message code="message.libDelete" /></button>
 						</div>
 					</div>

@@ -76,8 +76,12 @@ public class OrderController {
 			model.addAttribute("inUse", true);
 			return "order";
 		}
-		
-		OrderDays minDate = ordersService.getMinOrderDate(book);
+		Date minDate = null;
+		try {
+			minDate = ordersService.getMinOrderDate(book);
+		} catch (Exception e) {
+			
+		}
 		//model.addAttribute("orders", minDate.getOrders());
 		model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
 		model.addAttribute("inOrders",
@@ -85,7 +89,7 @@ public class OrderController {
 		model.addAttribute("inWishList",
 				wishService.isPersonWishBook(person, book));
 		
-		model.addAttribute("minDate", minDate.getMinOrderDate().getTime());
+		model.addAttribute("minDate", minDate.getTime());
 		//model.addAttribute("days", minDate.getDaysAvailable());
 		return "order";
 
@@ -114,12 +118,12 @@ public class OrderController {
 	public String myOrders(Model model, Principal principal) {
 		Person person = personService.getByEmail(principal.getName());
 		List<Orders> orders = ordersService.getOrderByPerson(person);
-		Map<Orders, OrderDays> ordersMinDates = new HashMap<>();
+		/*Map<Orders, OrderDays> ordersMinDates = new HashMap<>();
 		for (Orders order : orders) {
 			ordersMinDates.put(order,
 					ordersService.getMinOrderDate(order.getBook()));
-		}
-		model.addAttribute("ordersMinDates", ordersMinDates);
+		}*/
+		model.addAttribute("orders", orders);
 		return "orders";
 
 	}
@@ -146,10 +150,9 @@ public class OrderController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
 		}
 		JSONObject json = new JSONObject();
-		OrderDays minDate = ordersService.getMinOrderDate(order.getBook());
 		json.put("orderId", orderId);
-		json.put("date", date);
-		json.put("minDate", minDate.getMinOrderDate().getTime());
+		json.put("date", order.getOrderDate().getTime());
+		json.put("days", order.getDaysAmount());
 		return new ResponseEntity<>(json.toString(), HttpStatus.OK);
 	}
 	
@@ -172,4 +175,18 @@ public class OrderController {
 		return new ResponseEntity<>(jsonOrders.toString(), HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/getMinOrderDate")
+	public ResponseEntity<String> getMinOrderDate(@RequestParam("bookId") Integer bookId) {
+		Book book = bookService.getBookById(bookId);
+		Date date = null;
+		try {
+			date = ordersService.getMinOrderDate(book);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		JSONObject minDate = new JSONObject();
+		minDate.put("minDate", date.getTime());
+		return new ResponseEntity<>(minDate.toString(), HttpStatus.OK);
+	}
+	
 }

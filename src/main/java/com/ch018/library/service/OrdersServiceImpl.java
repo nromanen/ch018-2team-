@@ -32,7 +32,7 @@ public class OrdersServiceImpl implements OrdersService {
 	
 		private static final int MAX_DAYS = 14;
 		private static final long MILLIS_IN_DAY = 24 * 3600 * 1000;
-		private static final long DIFF_TIME_IN_MILLIS = 60 * 60 * 1000;
+		private static final long DIFF_TIME_IN_MILLIS = 3600 * 1000;
 		private static final int ADDITIONAL_DAY_IF_SAT = 2;
 		private static final int MAX_TRIES_FOR_ORDER_FINDING = 12;
 		
@@ -203,23 +203,23 @@ public class OrdersServiceImpl implements OrdersService {
 	
 		@Override
 		@Transactional
-		public OrderDays getMinOrderDate(Book book) {
+		public Date getMinOrderDate(Book book) throws Exception {
 	
 			int currentQuantity = book.getCurrentQuantity();
 			int generalQuantity = book.getGeneralQuantity();
 			long days = MAX_DAYS;
 			logger.info("before shift");
-			Date minDate = shiftIfWeekend(new Date());
+			Date minDate = correctDate(new Date());
 			Calendar calendar = Calendar.getInstance();
 			List<Orders> orders = null;
 			long ordersAmount = ordersDao.getOrdersCount(book);
 			
 			
 			if(generalQuantity <= 0)
-				return new OrderDays(new Date(), 0);
+				throw new Exception("unavailable");
 			
 			if (currentQuantity > 0 && ordersAmount < currentQuantity) {
-				return new OrderDays(minDate, MAX_DAYS);
+				return minDate;//new OrderDays(minDate, MAX_DAYS);
 			} 
 			else if (currentQuantity <= 0) {
 				minDate = booksInUseService.getMinReturnDate(book);
@@ -231,13 +231,15 @@ public class OrdersServiceImpl implements OrdersService {
 				orders = getOrdersForPeriodFromMonth(book, calendar.getTime());
 				logger.info("loop #{} with orders {}", loopCount, orders);
 				if(orders.isEmpty()) {
-					return new OrderDays(minDate, MAX_DAYS, orders);
+					return minDate;//new OrderDays(minDate, MAX_DAYS, orders);
 				}
 				for (Orders order : orders) {
 					days = (order.getOrderDate().getTime() - minDate.getTime())
 							/ MILLIS_IN_DAY;
-					if (days > 1)
-						return new OrderDays(minDate, days, orders);
+					if (days > 1) //&& days <= MAX_DAYS)
+						return minDate;//new OrderDays(minDate, days, orders);
+					/*else if(days > MAX_DAYS)
+						return new OrderDays(minDate, MAX_DAYS, orders);*/
 					else {
 						minDate = new Date(order.getOrderDate().getTime()
 								+ order.getDaysAmount() * MILLIS_IN_DAY);
@@ -247,7 +249,7 @@ public class OrdersServiceImpl implements OrdersService {
 			calendar.add(Calendar.MONTH, 2);
 			}
 			
-			return new OrderDays(new Date(), 0);
+			throw new Exception("to many orders");
 	
 		}
 	
@@ -255,7 +257,7 @@ public class OrdersServiceImpl implements OrdersService {
 		@Transactional
 		public int getCorrectAmountOfOrderDays(Book book, Date orderDate)
 				throws Exception {
-			if (orderDate.getTime() < (new Date().getTime() - DIFF_TIME_IN_MILLIS))
+			if (orderDate.getTime() < (new Date().getTime() + DIFF_TIME_IN_MILLIS))
 				throw new Exception("Incorrect Date Choosen");
 			List<Orders> orders = getOrdersForPeriodFromMonth(book, orderDate);
 			logger.info("orders {}", orders);
@@ -294,6 +296,7 @@ public class OrdersServiceImpl implements OrdersService {
 		public void addOrder(Person person, int bookId, Date orderDate)
 				throws Exception {
 			Book book = bookService.getBookById(bookId);
+			orderDate = correctDate(orderDate);
 			int days;
 			try {
 				days = getCorrectAmountOfOrderDays(book, orderDate);
@@ -317,6 +320,7 @@ public class OrdersServiceImpl implements OrdersService {
 	
 			Orders order = getOrderByID(orderId);
 			Book book = order.getBook();
+			orderDate = correctDate(orderDate);
 			int orderDays;
 			try {
 				orderDays = getCorrectAmountOfOrderDays(book, orderDate);
@@ -333,7 +337,7 @@ public class OrdersServiceImpl implements OrdersService {
 	
 		}
 		
-		private Date shiftIfWeekend(Date date) {
+		private Date correctDate(Date date) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
 			logger.info("shifted date before = {}", calendar.getTime());
@@ -341,6 +345,8 @@ public class OrdersServiceImpl implements OrdersService {
 				calendar.add(Calendar.DATE, 2);
 			else if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
 				calendar.add(Calendar.DATE, 1);
+			if(calendar.get(Calendar.HOUR_OF_DAY) > 16 || calendar.get(Calendar.HOUR_OF_DAY) < 8)
+				calendar.set(Calendar.HOUR_OF_DAY, 11);
 			logger.info("shifted date = {}", calendar.getTime());
 			return calendar.getTime();
 		}

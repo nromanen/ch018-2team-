@@ -24,6 +24,12 @@ function getLongFromFormatTime(formatTime) {
 	date.setHours(timePart[0]);
 	date.setMinutes(0);
 	date.setSeconds(0);
+	if(date.getTime() < new Date().getTime() + 2*3600*1000) {
+		console.log("changing..");
+		date.setHours(new Date().getHours() + 2);
+		console.log(date);
+	}
+	console.log(date);
 	return date.getTime();
 
 }
@@ -47,6 +53,7 @@ function getAvailableDays(current_time, $order) {
 }
 
 function getWeekEnds($order) {
+	console.log("in getWeekEnds");
 	var weekend = [];
 	$order.each(function() {
 		var start = $(this).attr('start');

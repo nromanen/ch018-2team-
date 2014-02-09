@@ -3,29 +3,12 @@ $(document).ready(function() {
 						$('#empty_wish_list').modal("show");
 					}
 					$(".calendar").each(function() {
-										var $parent = $(this).parent();
-										var minDateLong = $parent.find(
-												$('.minDate')).val();
-										if (minDateLong < new Date().getTime())
-											minDateLong = new Date().getTime();
-										var minDate = getDateInFormat(
-												minDateLong).split(" ");
-										var $orders = $(this).parent().find('.order');
-										console.log("wish calendar start " + minDate);
-										$(this)
-												.datetimepicker(
-														{
-															onGenerate : function(
-																	ct, $input) {
-																$(this)
-																		.find(
-																				'.xdsoft_date.xdsoft_weekend')
-																		.addClass(
-																				'xdsoft_disabled');
+						var bid = $(this).parent().find('.bookId').val();
+										$(this).datetimepicker({
+															onGenerate : function(ct, $input) {
+																$(this).find('.xdsoft_date.xdsoft_weekend').addClass('xdsoft_disabled');
 															},
-															onSelectDate : function(
-																	current_time,
-																	$input) {
+															onSelectDate : function(current_time, $input) {
 																var days = getAvailableDays(current_time,$orders);
 																var d = 'can order for '+ days + 'days';
 																if ($(this).find($('.picker_notify')).attr('class') === undefined) {
@@ -46,11 +29,35 @@ $(document).ready(function() {
 																			.tooltip('show');
 																}
 															},
+															onChangeMonth: function( currentDateTime ){
+
+																getOrders(currentDateTime, bid),
+																this.setOptions({
+																	value : '',
+																	weekends: getWeekEnds($('.order'))
+																});
+
+															},
+															onShow : function(currentDateTime) {
+																
+																var _this = this;
+															 $.when(getMinDate(bid), getOrders(currentDateTime, bid)).done(function(){
+																 var date = $('#min_date_inner').attr('date');
+																 _this.setOptions({
+																		value : date,
+																		minDate : date.split(" ")[0],
+																		weekends: getWeekEnds($('.order'))
+																	});
+															 }); 
+															
+															
+															 
+															},
 															format : 'Y/m/d H:i',
-															value : minDate[0]
+															/*value : minDate[0]
 																	+ " "
 																	+ minDate[1],
-															minDate : minDate[0],
+															minDate : minDate[0],*/
 															allowTimes : [
 																	'09:00',
 																	'10:00',
@@ -59,7 +66,7 @@ $(document).ready(function() {
 																	'14:00',
 																	'15:00',
 																	'16:00' ],
-															weekends : getWeekEnds($orders)
+															//weekends : getWeekEnds($orders)
 														});
 
 									});
@@ -69,9 +76,15 @@ $(document).ready(function() {
 						deleteWish(wishId);
 					});
 					$('.wish_confirm_button').click(function() {
-						var date = getLongFromFormatTime($(this).prev().val());
-						var wishId = $(this).parent().find($('.wishId')).val();
-						var bookId = $(this).parent().find($('.bookId')).val();
+						var $parent = $(this).parent();
+						var $calendar = $parent.find('.calendar');
+						var date = getLongFromFormatTime($calendar.val());
+						if(isNaN(date)) {
+							$calendar.datetimepicker('show');
+							return;
+						}
+						var wishId = $parent.find($('.wishId')).val();
+						var bookId = $parent.find($('.bookId')).val();
 
 						confirmWish(wishId, bookId, date);
 					});
@@ -125,3 +138,53 @@ function confirmWish(wishId, bookId, date) {
 		}
 	});
 }
+
+function getOrders(date, bid) {
+	return $.ajax({
+		url : $('#path').attr('url') + "/books/order/getAdditionalOrders",
+		type : "POST",
+		data : {
+			'bookId' : bid,
+			'time' : date.getTime(),
+		},
+		dataType : "json",
+		contentType : 'application/x-www-form-urlencoded',
+		mimeType : 'application/json',
+
+		success : function(data) {
+			$('#orders').empty();
+			var $orders = $('#orders');
+			$.each(data.orders, function(index, value) {
+				console.log(value.days + " " + value.orderDate);
+				var $order = $('<div>', {class : 'order'});
+				$order.attr('start', value.orderDate);
+				$order.attr('days', value.days);
+				$order.appendTo($orders);
+				
+			});
+		}
+	});	
+}
+
+function getMinDate(bookid) {
+	return $.ajax({
+		url : $('#path').attr('url') + "/books/order/getMinOrderDate",
+		type : "POST",
+		data : {
+			'bookId' : bookid,
+		},
+		dataType : "json",
+		contentType : 'application/x-www-form-urlencoded',
+		mimeType : 'application/json',
+
+		success : function(data) {
+	
+			var $mindate = $('#min_date');		
+			$mindate.empty();	
+			$inner = $('<div>', {id: 'min_date_inner'});		
+			$inner.appendTo($mindate);
+			$inner.attr('date', getDateInFormat(data.minDate));
+	
+		}
+	});	
+};
