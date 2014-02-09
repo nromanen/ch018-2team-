@@ -60,7 +60,6 @@ function getWeekEnds($order) {
 			var day = date.getDate().toString().length === 1 ? "0"
 					+ date.getDate() : date.getDate();
 			week = day + "." + month + "." + date.getFullYear();
-			console.log(week);
 			weekend.push(week);
 			dateInMillis = date.getTime() + (24 * 3600 * 1000);
 			date = new Date(dateInMillis);

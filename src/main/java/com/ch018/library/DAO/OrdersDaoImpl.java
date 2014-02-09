@@ -9,10 +9,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
@@ -209,12 +211,21 @@ public class OrdersDaoImpl implements OrdersDao {
 		}
 
 		@Override
-		public List<Orders> getOrdersBetweenDates(Book book, Date firstDate, Date secondDate) {
-			List<Orders> orders = factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("book", book))
+		public List<Orders> getOrdersBetweenDatesWithoutPerson(Person person, Book book, Date firstDate, Date secondDate) {
+ 
+			List<Orders> orders =  factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("book", book))
+					.add(Restrictions.ne("person", person))
 					.add(Restrictions.between("orderDate", firstDate, secondDate)).addOrder(Order.asc("orderDate")).list();
+			logger.info("orders between {} - {} = {} for book {}", firstDate, secondDate, orders, book);
 			if(orders == null)
 				return new ArrayList<>();
 			return orders;
+		}
+
+		@Override
+		public long getOrdersCount(Book book) {
+			return (long) factory.getCurrentSession().createCriteria(Orders.class)
+								.setProjection(Projections.rowCount()).uniqueResult();
 		}
 
 		

@@ -151,7 +151,7 @@ public class Orders implements Serializable {
 
 		@Override
 		public String toString() {
-			return "Orders [id=" + id + ", person=" + person + ", book=" + book
+			return "Orders [id=" + id + ", person=" + person.getPid() + ", book=" + book.getbId()
 					+ ", orderDate=" + orderDate + ", changed=" + changed
 					+ ", daysAmount=" + daysAmount + "]";
 		}

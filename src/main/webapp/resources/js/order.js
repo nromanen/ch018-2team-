@@ -44,56 +44,31 @@ $(document).ready(function() {
 											
 
 										},
-										onChangeMonth : function (month, $input) {
-											console.log("month = " + month.getMonth() + " input = " + $input);
-											
-											$.ajax({
-												url : $('#path').attr('url') + "/books/order/getAdditionalOrders",
-												type : "POST",
-												data : {
-													'bookId' : $('#bookId').val(),
-													'month' : month.getMonth(),
-													'year' : month.getFullYear()
-												},
-												dataType : "json",
-												contentType : 'application/x-www-form-urlencoded',
-												mimeType : 'application/json',
-
-												success : function(data) {
-													$('#orders').empty();
-													var $orders = $('#orders');
-													$.each(data.orders, function(index, value) {
-														console.log(value.days + " " + value.orderDate);
-														var $order = $('<div>', {class : 'order'});
-														$order.attr('start', value.orderDate);
-														$order.attr('days', value.days);
-														$order.appendTo($orders);
-														
-													});
-													//var week = getWeekEnds($('.order'));
-													
-													$('#datetimepicker').datetimepicker('reload');
-												
-													
-													/*$.each(week, function(index, value) {
-														var splited = value.split('.');
-														var day = splited[0];
-														if(day.substring(0, 1) === '0')
-															day = day.substring(1);
-														var month = splited[1];
-														if(month.substring(0, 1) === '0')
-															month = month.substring(1);
-														var year = splited[2];
-														//$('.xdsoft_calendar').find('td[data-date=' + day + '][data-month=' + month + '][data-year=' + year + ']').addClass('.xdsoft_disabled');
-														//console.log($('td[data-date=' + 15 + '][data-month=' + 1 + '][data-year=' + 2014 + ']').attr('class'));
-														//console.log('td[data-date=' + day + '][data-month=' + month + '][data-year=' + year + ']');
-													});*/
-													
-												}
+										onChangeMonth : function (date, $input) {
+											//console.log("month = " + date.getMonth() + " input = " + $input);
+											getOrders(date);
+											this.setOptions({
+												weekends : getWeekEnds($('.order'))
 											});
+											/*console.log($('#datetimepicker').data('xdsoft_datetimepicker').data('xdsoft_datetime'));
+											$('td').each(function () {
+												console.log($(this).attr('data-date') + ' ' + $(this).attr('data-month') + ' ' + $(this).attr('data-year'));
+											});*/
+													
+										},
+
+										onShow : function(date) {
+											console.log("opened" + date);
+											getOrders(date);
+										},
+										onClose : function(date) {
+											console.log("after close date " + date);
+										},
+										onChangeDateTime : function(date) {
 											
-											
-											
+											/*$('td').each(function () {
+												console.log($(this).attr('data-date') + ' ' + $(this).attr('data-month') + ' ' + $(this).attr('data-year'));
+											});*/
 										},
 										format : 'Y/m/d H:i',
 										value : minD,
@@ -162,4 +137,31 @@ function addToWishList(bookId, url) {
 		}
 
 	});
+}
+
+function getOrders(date) {
+	$.ajax({
+		url : $('#path').attr('url') + "/books/order/getAdditionalOrders",
+		type : "POST",
+		data : {
+			'bookId' : $('#bookId').val(),
+			'time' : date.getTime(),
+		},
+		dataType : "json",
+		contentType : 'application/x-www-form-urlencoded',
+		mimeType : 'application/json',
+
+		success : function(data) {
+			$('#orders').empty();
+			var $orders = $('#orders');
+			$.each(data.orders, function(index, value) {
+				console.log(value.days + " " + value.orderDate);
+				var $order = $('<div>', {class : 'order'});
+				$order.attr('start', value.orderDate);
+				$order.attr('days', value.days);
+				$order.appendTo($orders);
+				
+			});
+		}
+	});	
 }

@@ -34,7 +34,8 @@ public class OrdersServiceImpl implements OrdersService {
 		private static final long MILLIS_IN_DAY = 24 * 3600 * 1000;
 		private static final long DIFF_TIME_IN_MILLIS = 60 * 60 * 1000;
 		private static final int ADDITIONAL_DAY_IF_SAT = 2;
-	
+		private static final int MAX_TRIES_FOR_ORDER_FINDING = 12;
+		
 		private final Logger logger = LoggerFactory
 				.getLogger(OrdersServiceImpl.class);
 	
@@ -190,8 +191,8 @@ public class OrdersServiceImpl implements OrdersService {
 			bookInUse.setPerson(order.getPerson());
 			bookInUse.setReturnDate(date);
 			booksInUseService.save(bookInUse);
-			mailService.sendEmailBookIssued("librairancv111@gmail.com",
-					"dmitry.sankovsky@gmail.com", "Book Orders", order, person,
+			mailService.sendEmailBookIssued("springytest@gmail.com",
+					"etenzor@gmail.com", "Book Orders", order, person,
 					book, bookInUse, term);
 		}
 	
@@ -207,44 +208,46 @@ public class OrdersServiceImpl implements OrdersService {
 			int currentQuantity = book.getCurrentQuantity();
 			int generalQuantity = book.getGeneralQuantity();
 			long days = MAX_DAYS;
-			Date minDate = new Date();
+			logger.info("before shift");
+			Date minDate = shiftIfWeekend(new Date());
 			Calendar calendar = Calendar.getInstance();
-			List<Orders> orders = ordersDao.getOrderByBook(book);;
+			List<Orders> orders = null;
+			long ordersAmount = ordersDao.getOrdersCount(book);
 			
-			orders = excludeSelfOrders(orders);
 			
 			if(generalQuantity <= 0)
 				return new OrderDays(new Date(), 0);
 			
-			if (currentQuantity > 0 && orders.size() < currentQuantity) {
-				calendar.setTime(minDate);
-	
-				return new OrderDays(calendar.getTime(), MAX_DAYS);
+			if (currentQuantity > 0 && ordersAmount < currentQuantity) {
+				return new OrderDays(minDate, MAX_DAYS);
 			} 
-			else if (currentQuantity <= 0 || orders.size() >= currentQuantity) {
+			else if (currentQuantity <= 0) {
 				minDate = booksInUseService.getMinReturnDate(book);
 			}
-			//int loopCount = 3;
-			//for(int i = 0; i < loopCount; i++) {
-				//orders = getOrdersForPeriodFromMonth(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR), 2);
-			
+			int loopCount = 0;
+			calendar.setTime(minDate);
+			logger.info("time before loop {}", calendar.getTime());
+			while(loopCount++ < MAX_TRIES_FOR_ORDER_FINDING) {
+				orders = getOrdersForPeriodFromMonth(book, calendar.getTime());
+				logger.info("loop #{} with orders {}", loopCount, orders);
+				if(orders.isEmpty()) {
+					return new OrderDays(minDate, MAX_DAYS, orders);
+				}
 				for (Orders order : orders) {
 					days = (order.getOrderDate().getTime() - minDate.getTime())
 							/ MILLIS_IN_DAY;
 					if (days > 1)
-						break;
+						return new OrderDays(minDate, days, orders);
 					else {
 						minDate = new Date(order.getOrderDate().getTime()
 								+ order.getDaysAmount() * MILLIS_IN_DAY);
+						logger.info("minDate == {}", minDate);
 					}
 				}
-			calendar.setTime(minDate);
-			//}
-			orders = getOrdersForPeriodFromMonth(book, calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR), 1);
-			logger.info("ORDERS {}", orders.size() );
-			calendar.setTime(minDate);
-			calendar.add(Calendar.DAY_OF_YEAR, 1);
-			return new OrderDays(minDate, days, orders);
+			calendar.add(Calendar.MONTH, 2);
+			}
+			
+			return new OrderDays(new Date(), 0);
 	
 		}
 	
@@ -254,26 +257,28 @@ public class OrdersServiceImpl implements OrdersService {
 				throws Exception {
 			if (orderDate.getTime() < (new Date().getTime() - DIFF_TIME_IN_MILLIS))
 				throw new Exception("Incorrect Date Choosen");
-			List<Orders> orders = ordersDao.getOrderByBook(book);
+			List<Orders> orders = getOrdersForPeriodFromMonth(book, orderDate);
 			logger.info("orders {}", orders);
-			orders = excludeSelfOrders(orders);
+			//orders = excludeSelfOrders(orders);
 			logger.info("orders after {}", orders);
 			int days = MAX_DAYS;
 			long currentOrderDateInMillis = orderDate.getTime();
 			logger.info("current order {}", new Date(currentOrderDateInMillis));
 			for (Orders order : orders) {
 				long orderDateInMillis = order.getOrderDate().getTime();
-				if (currentOrderDateInMillis < orderDateInMillis) {
+				logger.info("before comparing orders current {} exist {}", new Date(currentOrderDateInMillis), new Date(orderDateInMillis));
+				if (currentOrderDateInMillis < orderDateInMillis ) {
 					logger.info("current {}, order {}", new Date(currentOrderDateInMillis), new Date(orderDateInMillis));
 					Double daysRes = (double) (orderDateInMillis - currentOrderDateInMillis)
 							/ MILLIS_IN_DAY;
 					days = (int) Math.round(daysRes);
 					if (days <= 0)
 						throw new Exception("Incorrect Date Choosen");
-					else if (days > MAX_DAYS)
+					else if (days > MAX_DAYS) 
 						days = MAX_DAYS;
 					break;
-				}
+				} else if(currentOrderDateInMillis > orderDateInMillis && (currentOrderDateInMillis < orderDateInMillis + order.getDaysAmount()*MILLIS_IN_DAY))
+					throw new Exception("Incorrect Date Choosen");
 			}
 			return checkForWeekend(orderDate, days);
 		}
@@ -326,6 +331,18 @@ public class OrdersServiceImpl implements OrdersService {
 					person, book, orderDate, orderDays);
 			return order;
 	
+		}
+		
+		private Date shiftIfWeekend(Date date) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			logger.info("shifted date before = {}", calendar.getTime());
+			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
+				calendar.add(Calendar.DATE, 2);
+			else if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+				calendar.add(Calendar.DATE, 1);
+			logger.info("shifted date = {}", calendar.getTime());
+			return calendar.getTime();
 		}
 	
 		private int checkForWeekend(Date orderDate, int days) {
@@ -381,7 +398,7 @@ public class OrdersServiceImpl implements OrdersService {
 			return answerList;
 		}
 
-		@Transactional
+		/*@Transactional
 		private List<Orders> excludeSelfOrders(List<Orders> orders) {
 			String email = SecurityContextHolder.getContext().getAuthentication().getName();
 			Person person = personService.getByEmail(email);
@@ -392,12 +409,42 @@ public class OrdersServiceImpl implements OrdersService {
 				excluded.add(order);
 			}
 			return excluded;
-		}
+		}*/
 
 		@Override
 		@Transactional
-		public List<Orders> getOrdersForPeriodFromMonth(Book book, int month, int year,
-				int monthsAmount) {
+		public List<Orders> getOrdersForPeriodFromMonth(Book book, Date date) {
+			String email = SecurityContextHolder.getContext().getAuthentication().getName();
+			Person person = personService.getByEmail(email);
+			Calendar current = Calendar.getInstance();
+			Calendar choosenMonth = Calendar.getInstance();
+			Calendar previousMonth = Calendar.getInstance();
+			Calendar nextMonth = Calendar.getInstance();
+			
+			choosenMonth.setTime(date);
+			if((choosenMonth.get(Calendar.MONTH) == current.get(Calendar.MONTH)) 
+						&& (choosenMonth.get(Calendar.YEAR) == current.get(Calendar.YEAR))) {
+				previousMonth = (Calendar) choosenMonth.clone();
+			} else {
+				choosenMonth.set(Calendar.DATE, 15);
+				previousMonth = (Calendar) choosenMonth.clone();
+				previousMonth.add(Calendar.MONTH, -1);
+			}
+
+			nextMonth = (Calendar) choosenMonth.clone();
+			nextMonth.add(Calendar.MONTH, 1);
+			
+			Date firstDate = previousMonth.getTime();
+			Date secondDate = nextMonth.getTime();
+			
+			return ordersDao.getOrdersBetweenDatesWithoutPerson(person, book, firstDate, secondDate);
+			
+			
+			/*logger.info("for period month : {} , year : {}", month, year);
+			if(month == -1) {
+				month = 12;
+				year--;
+			}
 			Calendar currentDate = Calendar.getInstance();
 			Calendar choosenDate = Calendar.getInstance();
 			Calendar nextMonth = Calendar.getInstance();
@@ -407,6 +454,7 @@ public class OrdersServiceImpl implements OrdersService {
 			} else {
 				choosenDate = currentDate;
 			}
+			logger.info("choosen before {}", choosenDate.getTime());
 			nextMonth = (Calendar) choosenDate.clone();
 			logger.info("nextMonth before {}", nextMonth.getTime());
 			nextMonth.add(Calendar.MONTH, monthsAmount);
@@ -417,7 +465,9 @@ public class OrdersServiceImpl implements OrdersService {
 			Date firstDate = choosenDate.getTime();
 			Date secondDate = nextMonth.getTime();
 			logger.info("Between {} - {}", firstDate, secondDate);
-			return ordersDao.getOrdersBetweenDates(book, firstDate, secondDate);
+			String email = SecurityContextHolder.getContext().getAuthentication().getName();
+			Person person = personService.getByEmail(email);
+			return ordersDao.getOrdersBetweenDatesWithoutPerson(person, book, firstDate, secondDate);*/
 		}
 
 		

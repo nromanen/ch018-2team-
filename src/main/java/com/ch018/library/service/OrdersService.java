@@ -38,6 +38,6 @@ public interface OrdersService {
          List<Orders> getOrdersByBookTitle(List<Orders> orders, String title);
          List<Orders> getOrdersByPersonSurname(List<Orders> orders,String surname);
          List<Orders> getOrdersByOrdersId(List<Orders> orders,int id);
-         List<Orders> getOrdersForPeriodFromMonth(Book book, int month, int year, int monthsAmount);
+         List<Orders> getOrdersForPeriodFromMonth(Book book, Date date);
 
 }

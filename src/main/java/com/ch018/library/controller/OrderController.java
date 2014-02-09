@@ -78,7 +78,7 @@ public class OrderController {
 		}
 		
 		OrderDays minDate = ordersService.getMinOrderDate(book);
-		model.addAttribute("orders", minDate.getOrders());
+		//model.addAttribute("orders", minDate.getOrders());
 		model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
 		model.addAttribute("inOrders",
 				ordersService.isPersonOrderedBook(person, book));
@@ -86,7 +86,7 @@ public class OrderController {
 				wishService.isPersonWishBook(person, book));
 		
 		model.addAttribute("minDate", minDate.getMinOrderDate().getTime());
-		model.addAttribute("days", minDate.getDaysAvailable());
+		//model.addAttribute("days", minDate.getDaysAvailable());
 		return "order";
 
 	}
@@ -154,10 +154,11 @@ public class OrderController {
 	}
 	
 	@RequestMapping(value = "/getAdditionalOrders")
-	public ResponseEntity<String> getAdditionalOrders(@RequestParam("bookId") Integer bookId, @RequestParam("month") Integer month,
-															@RequestParam("year") Integer year) {
+	public ResponseEntity<String> getAdditionalOrders(@RequestParam("bookId") Integer bookId,
+															@RequestParam("time") Long time) {
 		Book book = bookService.getBookById(bookId);
-		List<Orders> orders = ordersService.getOrdersForPeriodFromMonth(book, month, year, 1);
+		Date date = new Date(time);
+		List<Orders> orders = ordersService.getOrdersForPeriodFromMonth(book, date);
 		JSONObject jsonOrders = new JSONObject();
 		List<JSONObject> jsons = new ArrayList<>();
 		for(Orders order : orders) {
@@ -167,7 +168,7 @@ public class OrderController {
 			jsons.add(jsonOrder);
 		}
 		jsonOrders.put("orders", jsons);
-		
+
 		return new ResponseEntity<>(jsonOrders.toString(), HttpStatus.OK);
 	}
 
