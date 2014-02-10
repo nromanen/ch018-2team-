@@ -96,10 +96,11 @@ public class LibrarianReturnController {
         System.out.println("Title:"+title+"Surname:"+surname);
         if (surname.compareTo("Surname")!=0) surnameSearch++;
         if (title.compareTo("Title")!=0) titleSearch++;
-        if (surnameSearch==1&&titleSearch==0) model.addAttribute("booksInUse",booksInUseService.getAll());
-        if (surnameSearch==0&&titleSearch==1) model.addAttribute("booksInUse",booksInUseService.getAll());
-        //System.out.println("!!!"+booksInUseService.getAll());
-        //if (surnameSearch==1&&titleSearch==1) model.addAttribute("inuse",);
+        if (surnameSearch==1&&titleSearch==0) model.addAttribute("booksInUse",booksInUseService.getBooksInUseByPersonSurname(surname));
+        if (surnameSearch==0&&titleSearch==1) model.addAttribute("booksInUse",booksInUseService.getBooksInUseByBookTitle(title));
+
+        //System.out.println("!!!"+booksInUseService.getBooksInUseByPersonSurname(surname));
+        if (surnameSearch==1&&titleSearch==1) model.addAttribute("booksInUse",booksInUseService.getBooksInUseByPersonSurnameAndBookTitle(booksInUseService.getBooksInUseByBookTitle(title),surname));
 
         return "librarian_toreturn";
     }

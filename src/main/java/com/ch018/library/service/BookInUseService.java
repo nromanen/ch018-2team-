@@ -1,13 +1,12 @@
 package com.ch018.library.service;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -28,4 +27,9 @@ public interface BookInUseService {
         boolean isPersonHaveBook(Person person, Book book);
         void getBookBack(BooksInUse bookInUse);
         List<BooksInUse> getBooksInUseByReturnDateLe(Date date);
+        List<BooksInUse> getBooksInUseByBookTitle(String title);
+        List<BooksInUse> getBooksInUseByPersonSurname(String surname);
+        List<BooksInUse> getBooksInUseByPersonSurnameAndBookTitle(List<BooksInUse> list,String surname);
+
+
 }

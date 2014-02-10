@@ -71,7 +71,7 @@
 				                    <td><a href="${pageContext.request.contextPath}/librarian/users/edituser?id=${user.pid}"  style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
 
 
-				                        <a onclick="jQuery:delete_user($(this).attr('nik'));" nik="${pageContext.request.contextPath}/librarian/users/deleteuser?id=${user.pid}"     style="color: #0E3846"><spring:message code="message.libDelete"/>|</a>
+				                        <!-- jquery:shure()--><a onclick="jQuery:delete_user($(this).attr('nik'));" nik="${pageContext.request.contextPath}/librarian/users/deleteuser?id=${user.pid}"     style="color: #0E3846; cursor:pointer"><spring:message code="message.libDelete"/>|</a>
 
 				                        <a href="${pageContext.request.contextPath}/librarian/users/readnow?id=${user.pid}"  style="color: #0E3846">Books</a></td>
 				                </tr>
@@ -120,18 +120,21 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Success</h4>
+                <h4 class="modal-title">Message</h4>
             </div>
             <div class="modal-body">
-                <p>The user was deleted.</p>
+                <p>r u shure?</p>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button id="buttonDelete" type="button" class="btn btn-primary">Delete Orders</button>
             </div>
         </div>
     </div>
 </div>
+
+
 
 </div>		
 	</div>
@@ -143,7 +146,7 @@ function delete_user(nik){
         cache: false,
         success: function(data){
             $("#buttonDelete").show();
-
+            $("#su").modal("hide")
            if (data=="User was deleted") {
                $("#content1").load("${pageContext.request.contextPath}/library/librarian/users/orderbyrating #content1");
                $("#buttonDelete").hide();
@@ -159,6 +162,9 @@ function delete_user(nik){
     });
 
 }
-
+ function shure(nik){
+  $("#su").modal("show");
+   $("#buttonDelete").click(delete_user(nik));
+ }
 </script>
 

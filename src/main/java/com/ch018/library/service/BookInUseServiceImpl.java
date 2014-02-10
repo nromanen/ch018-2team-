@@ -1,6 +1,7 @@
 package com.ch018.library.service;
 
 import com.ch018.library.DAO.BooksInUseDao;
+import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,8 +28,11 @@ public class BookInUseServiceImpl implements BookInUseService {
 		private PersonService personService;
 		@Autowired
 		private BookService bookService;
-	
-		private final Logger logger = LoggerFactory
+        @Autowired
+        private PersonDao personDao;
+
+
+    private final Logger logger = LoggerFactory
 				.getLogger(BookInUseServiceImpl.class);
 	
 		@Override
@@ -137,6 +142,50 @@ public class BookInUseServiceImpl implements BookInUseService {
 			return useDao.getBooksInUseByReturnDateLe(date);
 	
 		}
+
+        @Override
+        @Transactional
+        public List<BooksInUse> getBooksInUseByBookTitle(String title) {
+            logger.info("in service");
+
+            List<Book> allBooks = bookService.getBooksByTitle(title);
+            List<BooksInUse> allBooksInUse = useDao.getAll();
+            List<BooksInUse> answerList = new ArrayList<>();
+            for (Book book:allBooks){
+                for (BooksInUse booksInUse:allBooksInUse)
+                if (book.getbId()==booksInUse.getBook().getbId()) answerList.add(booksInUse);
+            }
+            return answerList;
+
+        }
+        @Override
+        @Transactional
+        public List<BooksInUse> getBooksInUseByPersonSurname(String surname){
+            logger.info("in service");
+
+            List<Person> allPersons = personDao.getPersonsBySurname(surname);
+            List<BooksInUse> allBooksInUse = useDao.getAll();
+            List<BooksInUse> answerList = new ArrayList<>();
+            for (Person person:allPersons){
+                for (BooksInUse booksInUse:allBooksInUse)
+                    if (person.getPid()==booksInUse.getPerson().getPid()) answerList.add(booksInUse);
+            }
+            return answerList;
+        }
+        @Override
+        @Transactional
+        public List<BooksInUse> getBooksInUseByPersonSurnameAndBookTitle(List<BooksInUse> list,String surname){
+            List<BooksInUse> answerList = new ArrayList<>();
+            List<BooksInUse> persons = getBooksInUseByPersonSurname(surname);
+            for (BooksInUse title:list){
+                for (BooksInUse srname:persons )
+             if (title.getId()==srname.getId()) answerList.add(srname);
+         }
+            //System.out.println("!!"+list);
+            //System.out.println("!!!"+answerList);
+            return answerList;
+        }
+
 
 
 

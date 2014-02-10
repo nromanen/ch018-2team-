@@ -209,5 +209,9 @@ public class OrdersDaoImpl implements OrdersDao {
 			// id)).list().get(0);
 	
 		}
+        @Override
+        public List<Orders> testCriteria(String title, String surname){
+            factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq())
+        }
 
 }

@@ -1,9 +1,8 @@
 package com.ch018.library.DAO;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Person;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.entity.Person;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -170,4 +169,5 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 			calendar.set(Calendar.MILLISECOND, 0);
 			return calendar.getTime();
 		}
+
 }

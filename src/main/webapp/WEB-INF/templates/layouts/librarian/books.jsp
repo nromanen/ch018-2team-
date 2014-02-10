@@ -28,8 +28,7 @@
 			
 				<div class="col-md-12">
 				<table class="table table-hover table-striped table-bordered table-condensed">
-				
-     			   <thead>
+
          		       <tr>
            	                
            	   	            <td> <b> <spring:message code="message.libTitle"/> </b> </td>
@@ -46,8 +45,11 @@
                             <td> <b> <spring:message code="message.libOptions"/> </b> </td>
                	         
                		   </tr>
-       			 </thead>
-       			  		<c:set var = "locale" value="${locale}"/>  
+                    </table>
+                    <div id="content1" class="table table-hover table-striped  table-condensed">
+                        <table id="downTable" border="1" width="80%" class="table table-hover table-striped table-bordered table-condensed">
+
+                        <c:set var = "locale" value="${locale}"/>
 				        <c:forEach items="${books}" var="book">
 				                <tr>
 				                        <td hidden="true">${book.bId}</td>
@@ -57,7 +59,7 @@
 				                        <td>${book.publisher}</td>
 				                        <td>${book.pages}</td>
 				                        <td>${book.genre.description}</td>
-				                        <td><textarea class="form-control" rows="2" style=" background:transparent;"> ${book.description} </textarea></td>
+				                        <td><textarea nik="${book.bId}" id="${book.bId}" class="form-control" rows="2" style=" background:transparent;" onkeyup="jQuery:saveChanges($(this).attr('nik'));"> ${book.description} </textarea></td>
 				                        <td>${book.shelf}</td>
 				                        <td>${book.term}</td>
 				                        <td>${book.currentQuantity}</td>
@@ -68,6 +70,7 @@
 				                </tr>
 				        </c:forEach>
 			   </table>
+               </div>
 			   </div>
 			   
 					
@@ -83,3 +86,6 @@
 			</div>			
 			
 		</div>
+<script type="text/javascript">
+
+</script>

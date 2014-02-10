@@ -1,14 +1,13 @@
 package com.ch018.library.DAO;
 
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+import java.util.List;
 
 
 @Repository
@@ -29,6 +28,7 @@ public interface OrdersDao {
         int getBookIdByPerson(Person person);
         boolean isPersonOrderedBook(Person person, Book book);
         List<Orders> getOrdersForChanging(Book book, Date returnDate);
-        List<Orders> getOrderByIDList(int id); 
+        List<Orders> getOrderByIDList(int id);
+        List<Orders> testCriteria(String title, String surname);
 
 }
