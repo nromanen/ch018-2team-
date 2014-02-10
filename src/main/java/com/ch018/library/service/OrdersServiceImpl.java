@@ -37,7 +37,7 @@ public class OrdersServiceImpl implements OrdersService {
 		private static final long MILLIS_IN_DAY = 24 * 3600 * 1000;
 		private static final long DIFF_TIME_IN_MILLIS = 3600 * 1000;
 		private static final int ADDITIONAL_DAY_IF_SAT = 2;
-		private static final int MAX_TRIES_FOR_ORDER_FINDING = 12;
+		private static final int MAX_TRIES_FOR_ORDER_FINDING = 6;
 		
 		private final Logger logger = LoggerFactory
 				.getLogger(OrdersServiceImpl.class);
