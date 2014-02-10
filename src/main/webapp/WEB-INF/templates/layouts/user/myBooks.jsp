@@ -1,9 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="row well">
 
 	<div class="col-md-2" id="left_main">
 		<div class="pull-left text-info">
-			<h3>Books In Use</h3>
+			<h3><spring:message code="message.use" /></h3>
 		</div>
 	</div>
 
@@ -14,9 +15,9 @@
 
 			<li class="list-group-item">
 				<div class="row">
-					<div class="col-md-5">Title</div>
-					<div class="col-md-4">Return Date</div>
-					<div class="col-md-3">Days To Return</div>
+					<div class="col-md-5"><spring:message code="message.libTitle" /></div>
+					<div class="col-md-4"><spring:message code="message.returndate" /></div>
+					<div class="col-md-3"><spring:message code="message.daystoreturn" /></div>
 				</div>
 			</li>
 			<c:forEach var="use" items="${uses}">

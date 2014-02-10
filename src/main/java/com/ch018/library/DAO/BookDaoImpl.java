@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
@@ -19,7 +18,9 @@ import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
-import com.ch018.library.helper.SearchParams;
+import com.ch018.library.util.SearchParams;
+import com.ch018.library.util.SearchParamsBook;
+import com.ch018.library.util.SearchParamsPerson;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -28,7 +29,8 @@ public class BookDaoImpl implements BookDao {
 	
 		@Autowired
 		private SessionFactory factory;
-	
+		
+		
 		@Override
 		public void save(Book book) {
 			try {
@@ -64,7 +66,7 @@ public class BookDaoImpl implements BookDao {
 	
 		@Override
 		public Book getBookById(int id) {
-			return (Book) factory.getCurrentSession().get(Book.class, id);
+			return (Book) factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.eq("bId", id)).uniqueResult();//get(Book.class, id);
 		}
 	
 		@Override
@@ -160,8 +162,11 @@ public class BookDaoImpl implements BookDao {
 			}
 		}
 	
-		@Override
-		public List<Book> getBooksComplex(SearchParams searchParams) {
+		/*@Override
+		public List<Book> getBooksComplex(SearchParams tmpSearchParams) {
+
+				SearchParamsBook searchParams = (SearchParamsBook) tmpSearchParams;
+			logger.info("book dao search {}", searchParams);
 			String query;
 			Criteria criteria = factory.getCurrentSession().createCriteria(
 					Book.class);
@@ -188,11 +193,8 @@ public class BookDaoImpl implements BookDao {
 				criteria.add(Restrictions.like("publisher", query));
 			}
 			
-			if (searchParams.getGenreId() > 0) {
-				criteria.add(Restrictions.eq("genre.id", searchParams.getGenreId()));
-				//criteria.createAlias("genre", "gen");
-				//criteria.add(Restrictions.eq("gen.gid", searchParams.getGenreId()));
-				//System.out.println("IN CRITERIA " + criteria.list() + " id = " + searchParams.getGenreId());
+			if (searchParams.getGenre() > 0) {
+				criteria.add(Restrictions.eq("genre.id", searchParams.getGenre()));
 			}
 
 			if (searchParams.getChoosenPageStart() != null &&
@@ -214,9 +216,21 @@ public class BookDaoImpl implements BookDao {
 			else
 				criteria.addOrder(Order.asc(searchParams.getOrderField()));
 			
+			int pageNum = searchParams.getPage();
+			int pageSize = searchParams.getPageSize();
+			int itemsQuantity = criteria.list().size();
+			int quantity =  itemsQuantity / pageSize;
+			if(quantity == 0)
+				quantity = 10;
+			searchParams.setPagesQuantity(quantity);
+			criteria.setFirstResult((pageNum - 1) * pageSize);
+			criteria.setMaxResults(pageSize);
+			
+			
+			logger.info("SIZE = {}", criteria.list().size());
 			return criteria.list();
 		}
-	
+	*/
 	
 		@Override
 		public Integer getMinIntegerField(String field) {
@@ -245,7 +259,6 @@ public class BookDaoImpl implements BookDao {
 			return books;
 		}
 
-		
 		
 		
 }

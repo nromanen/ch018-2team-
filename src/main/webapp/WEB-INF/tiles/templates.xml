@@ -7,7 +7,7 @@
     
     
     
-    <definition name="search" preparer="genres" template="/WEB-INF/templates/layouts/user/search.jsp"></definition>
+    <definition name="search" template="/WEB-INF/templates/layouts/user/search.jsp"></definition>
     <definition name="usermenu" preparer="orders" template="/WEB-INF/templates/layouts/user/usermenu.jsp"></definition>
     
     <definition name="user-header" template="/WEB-INF/templates/layouts/user/user-header-template.jsp">
@@ -181,6 +181,8 @@
     
      <definition name="librarian_add_genre" extends="base-template">
         <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="style-js-main" value="/WEB-INF/templates/layouts/librarian/librarian_main_css_js.jsp" />      
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/librarian/addgenre_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/addgenre.jsp" />
     </definition>
 

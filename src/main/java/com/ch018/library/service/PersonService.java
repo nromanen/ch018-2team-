@@ -33,7 +33,7 @@ public interface PersonService {
         List<Person> simpleSearch(String request);
         List<Person> advancedSearch(Person person);
         Person countRating(Person person); 
-        boolean register(UserRegistrationForm form, String path);
+        Person register(UserRegistrationForm form, String path) throws Exception;
         boolean confirmMail(String key, HttpServletRequest request);
         boolean restoreSendEmail(String email, String path);
         boolean isKeyValid(String key);
@@ -44,5 +44,4 @@ public interface PersonService {
         List<Person> orderByName();
         List<Person> orderBySurname();
         List<Person> orderByRating();
-        List<Person> pagination(int pageNumber);
 }

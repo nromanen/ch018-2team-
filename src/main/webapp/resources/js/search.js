@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
 	
-	
 	//pagination part_start
 	
 		var path = $('#pagination_info').attr('path');
@@ -167,7 +166,7 @@ $(document).ready(function() {
 				    		choosenYearStart : minYear,
 				    		choosenYearEnd : maxYear,
 							pageSize : pageSize,
-							genreId : genreId,
+							genre : genreId,
 							page : 1
 						}, url);
 				    	
@@ -181,6 +180,7 @@ $(document).ready(function() {
 				    $('#search_field').autocomplete({
 						serviceUrl : $('#search_field').attr('url') +  "/books/autocomplete",
 						minChars : 2
+						
 
 					});
 

@@ -24,12 +24,12 @@
 <sec:authorize access="hasRole('ROLE_ANONYMOUS')">
 
 	<div class="nav navbar-nav navbar-left" style="margin : 8px 0 10px 0;">
-	<a type="button" class="btn btn-default" href="${pageContext.request.contextPath}/books">Home</a>
-	 <a type="button" class="btn btn-default" href="${pageContext.request.contextPath}/books/search">Catalogue</a>
+	<a type="button" class="btn btn-default" href="${pageContext.request.contextPath}/books"><spring:message code="message.home" /></a>
+	 <a type="button" class="btn btn-default" href="${pageContext.request.contextPath}/books/search"><spring:message code="message.catalogue" /></a>
 	</div>
 
     <div class="nav navbar-nav navbar-right" style="margin : 10px 0 10px 0;">
-        <a href="#" data-toggle="popover" role="button" data-original-title="Login Form" id = "login_popover" class="btn btn-info btn-sm" style="margin-right: 20px;"><spring:message code="message.singin" /></a>
+        <a href="#" data-toggle="popover" role="button" data-original-title="<spring:message code="message.singin" />" id = "login_popover" class="btn btn-info btn-sm" style="margin-right: 20px;"><spring:message code="message.singin" /></a>
         <div class="hide" id="popover_content">
         	<div class="">
         	<form  role="form" action="${pageContext.request.contextPath}/j_spring_security_check" method="post">
@@ -47,7 +47,7 @@
 			<c:if test="${param.fail != null}">  
 	    		<div id="login_error" class="row" style="margin-left: 5px">
 					<div  style="font-size: 16px; color: red">
-						Incorrect login/password entered
+						<spring:message code="message.incorrectLP" />
 					</div>
 				</div>
 			</c:if>  
@@ -97,7 +97,7 @@
                 <h4 class="modal-title" id="forgot_pass_label">Notification</h4>
             </div>
             <div class="modal-body">
-                <div class="text-info"><h3>For restoring password input your email</h3></div>
+                <div class="text-info"><h3><spring:message code="message.restore" /></h3></div>
             </div>
             <div class="modal-footer">
                 <form id="restore_mail_form" action="${pageContext.request.contextPath}/restore" method="post">
@@ -106,7 +106,8 @@
                     </div>
                     <div class="form-group col-lg-8 col-lg-offset-2">
                         <input id="restore_mail_form_submit" url="${pageContext.request.contextPath}/restore" type="submit" class="form-control btn btn-warning" value="Restore">
-                        </div>
+                        </div class="form-group col-lg-8 col-lg-offset-2">
+                        <div class="clearfix"></div>
                     <div id="forgot_error_mail_div" class="alert alert-danger hide">
                     </div>
                 </form>
@@ -127,7 +128,7 @@
                 <h4 class="modal-title" id="forgot_mail_send_label">Limit Notification</h4>
             </div>
             <div class="modal-body">
-                <div class="text-info"><h3>Check your email for password restore details</h3></div>
+                <div class="text-info"><h3><spring:message code="message.restorecheck" /></h3></div>
 
             </div>
 

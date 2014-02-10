@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.ch018.library.helper.Switch;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.PersonService;
 
@@ -69,5 +68,10 @@ public class LoginController {
         @RequestMapping(value = "/errors/404")
         public String error404() {
             return "error404";
+        }
+        
+        @RequestMapping(value = "/exception")
+        public String exception() {
+            return "exception";
         }
 }

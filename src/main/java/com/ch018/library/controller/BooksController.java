@@ -1,17 +1,30 @@
 package com.ch018.library.controller;
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.MessageSource;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertySource;
+import org.springframework.core.env.PropertySources;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,18 +32,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
 
+import com.ch018.library.DAO.PaginationDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.GenreTranslations;
 import com.ch018.library.entity.Person;
-import com.ch018.library.helper.Page;
-import com.ch018.library.helper.PageContainer;
-import com.ch018.library.helper.SearchParams;
-import com.ch018.library.helper.Switch;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
+import com.ch018.library.service.GenreTranslationsService;
 import com.ch018.library.service.PersonService;
+import com.ch018.library.service.PaginationService;
+import com.ch018.library.util.PageContainer;
+import com.ch018.library.util.SearchParams;
+import com.ch018.library.util.SearchParamsBook;
+import com.ch018.library.util.Switch;
 /**
  * 
  * @author Edd Arazian
@@ -55,20 +74,33 @@ public class BooksController {
         private BookInUseService useService;
         
         @Autowired
-        private SearchParams searchParams;
-        
-        @Autowired
-        private PageContainer pageContainer;
+        private SearchParamsBook searchParams;
         
         @Autowired
         private Switch switcher;
+        
+        @Autowired
+        private PaginationService<Book> paginationService;
+        
+        @Autowired
+        private PageContainer<Book> pageContainer;
+        
+        @Autowired
+        MessageSource messageSource;
+
+        @Autowired
+        ApplicationContext ctx;
+        
+        @Autowired
+        GenreTranslationsService gtrans;
+
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
         
         
+        
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(Model model) {
-        	
         	
             model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", 4));
             model.addAttribute("populars", bookService.getLastByField("ordersQuantity", 4));
@@ -78,59 +110,46 @@ public class BooksController {
         
         
         @RequestMapping(value = "/search", method = RequestMethod.GET)
-        public String bookSearchGet(@ModelAttribute SearchParams tmpParams, Model model) {
-        	Page page;
-        	logger.info("search param GET {}", searchParams);
-        	logger.info("tmpParams GET {}", tmpParams);
-        	if(searchParams.isSlidersNull()) {
-        		searchParams.init();
-        		
-        	}
-        	if((!tmpParams.getFieldChanged() && !tmpParams.getOrderChanged())) {
-        		
-        		searchParams.update(tmpParams);
-        		logger.info("search param GET after update {}", searchParams);
-        		page = pageContainer.getPage(searchParams);
-        		
-        	} else if (switcher.getValue()) {
-        		logger.info("in locale", searchParams);
-        		searchParams.update(tmpParams);
-        		long timeS = System.currentTimeMillis();
-        		pageContainer.recalculateLocal(searchParams);
-        		logger.info("Local Sort time " + (System.currentTimeMillis() - timeS));
-        		page = pageContainer.getPage(searchParams);
-        	}
-        	else {
-        		
-        		searchParams.update(tmpParams);
-        		long timeS = System.currentTimeMillis();
-            	pageContainer.recalculate(searchParams);
-            	logger.info("DB Sort time " + (System.currentTimeMillis() - timeS));
-            	
-            	page = pageContainer.getPage(searchParams);
+        public String bookSearchGet(@ModelAttribute SearchParamsBook tmpParams, Model model) {
+        	
+        	List<Book> books = null;
+        	
+        	if(searchParams.isMainFieldsEmpty()) {
+        		searchParams.setMainFieldsDefault();
         	}
         	
-        	if (page.getBooks().isEmpty() || page.getBooks() == null) {
+        	if(searchParams.isSlidersNull()) {
+        		searchParams.init();
+        	}
+        	
+        	books = paginationService.getPaginatedResult(searchParams, tmpParams, Book.class);
+
+        	if (books.isEmpty() || books == null) {
                 model.addAttribute("nothing", true);
             }
-            model.addAttribute("page", page);
+            model.addAttribute("books", books);
+            model.addAttribute("num", 1);
             return "books";
         }
 
         @RequestMapping(value = "/search", method = RequestMethod.POST)
-        public String booksSearch(@ModelAttribute SearchParams tmpParams, Model model) {
-        	logger.info("tmpParams = {}", tmpParams);
-        	logger.info("searchParams = {}", searchParams);
-        	Page page;
-        	searchParams.update(tmpParams);
-        	logger.info("searchParams after update = {}", searchParams);
-        	pageContainer.recalculate(searchParams);
-        	page = pageContainer.getPage(searchParams);
+        public String booksSearch(@ModelAttribute SearchParamsBook tmpParams, Model model) {
 
-        	if (page.getBooks().isEmpty() || page.getBooks() == null) {
+        	List<Book> books = null;
+        	
+        	searchParams.update(tmpParams);
+        	logger.info("searchParams before pag {}", searchParams);
+        	books = paginationService.getPaginatedResult(searchParams, Book.class);
+        	
+        	if(switcher.getSwitcher()) {
+        		pageContainer.setItems(books);
+        	}
+
+        	if (books.isEmpty() || books == null) {
                 model.addAttribute("nothing", true);
             }
-            model.addAttribute("page", page);
+            model.addAttribute("books", books);
+            logger.info("searchParams after {}", searchParams);
             return "books";
         }
 

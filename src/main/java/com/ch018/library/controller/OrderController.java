@@ -1,11 +1,11 @@
 package com.ch018.library.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.hibernate.HibernateException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,9 @@ import com.ch018.library.controller.errors.IncorrectInput;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
-import com.ch018.library.helper.OrderDays;
+import com.ch018.library.exceptions.BookUnavailableException;
+import com.ch018.library.exceptions.IncorrectDateException;
+import com.ch018.library.exceptions.TooManyOrdersException;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
@@ -43,6 +45,8 @@ public class OrderController {
 
 	final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
+	private final static String SOMETHING_WRONG = "Something wrong. Stay Calm. We resolving problem...";
+	
 	@Autowired
 	private BookService bookService;
 	@Autowired
@@ -60,6 +64,7 @@ public class OrderController {
 		if(bookId == null) {
 			return "redirect:/books";
 		}
+		
 		Book book = bookService.getBookById(bookId);
 		model.addAttribute("book", book);
 		if(principal == null) {
@@ -74,16 +79,11 @@ public class OrderController {
 			model.addAttribute("inUse", true);
 			return "order";
 		}
-		
-		model.addAttribute("orders", ordersService.getOrderByBook(book));
 		model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
 		model.addAttribute("inOrders",
 				ordersService.isPersonOrderedBook(person, book));
 		model.addAttribute("inWishList",
 				wishService.isPersonWishBook(person, book));
-		OrderDays minDate = ordersService.getMinOrderDate(book);
-		model.addAttribute("minDate", minDate.getMinOrderDate().getTime());
-		model.addAttribute("days", minDate.getDaysAvailable());
 		return "order";
 
 	}
@@ -100,8 +100,10 @@ public class OrderController {
 		logger.info("add order time {}", new Date(time));
 		try {
 			ordersService.addOrder(person, bookId, date);
-		} catch (Exception e) {
+		} catch (IncorrectDateException | HibernateException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<>(SOMETHING_WRONG, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
 	}
@@ -111,12 +113,8 @@ public class OrderController {
 	public String myOrders(Model model, Principal principal) {
 		Person person = personService.getByEmail(principal.getName());
 		List<Orders> orders = ordersService.getOrderByPerson(person);
-		Map<Orders, OrderDays> ordersMinDates = new HashMap<>();
-		for (Orders order : orders) {
-			ordersMinDates.put(order,
-					ordersService.getMinOrderDate(order.getBook()));
-		}
-		model.addAttribute("ordersMinDates", ordersMinDates);
+
+		model.addAttribute("orders", orders);
 		return "orders";
 
 	}
@@ -131,23 +129,58 @@ public class OrderController {
 
 	@RequestMapping(value = "/edit")
 	@Secured({ "ROLE_USER" })
-	public ResponseEntity<String> editOrder(
-			@RequestParam("orderId") Integer orderId,
-			@RequestParam("date") Long date, Principal principal)
-			throws IncorrectInput {
+	public ResponseEntity<String> editOrder(@RequestParam("orderId") Integer orderId,
+													@RequestParam("date") Long date, Principal principal)
+													throws IncorrectInput {
 		Person person = personService.getByEmail(principal.getName());
 		Orders order;
 		try {
 			order = ordersService.editOrder(person, orderId, new Date(date));
+		} catch (IncorrectDateException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+			return new ResponseEntity<>(SOMETHING_WRONG, HttpStatus.BAD_REQUEST);
 		}
 		JSONObject json = new JSONObject();
-		OrderDays minDate = ordersService.getMinOrderDate(order.getBook());
 		json.put("orderId", orderId);
-		json.put("date", date);
-		json.put("minDate", minDate.getMinOrderDate().getTime());
+		json.put("date", order.getOrderDate().getTime());
+		json.put("days", order.getDaysAmount());
 		return new ResponseEntity<>(json.toString(), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/getAdditionalOrders")
+	public ResponseEntity<String> getAdditionalOrders(@RequestParam("bookId") Integer bookId,
+															@RequestParam("time") Long time) {
+		Book book = bookService.getBookById(bookId);
+		Date date = new Date(time);
+		List<Orders> orders = ordersService.getOrdersForPeriodFromMonth(book, date);
+		JSONObject jsonOrders = new JSONObject();
+		List<JSONObject> jsons = new ArrayList<>();
+		for(Orders order : orders) {
+			JSONObject jsonOrder = new JSONObject();
+			jsonOrder.put("orderDate", order.getOrderDate().getTime());
+			jsonOrder.put("days", order.getDaysAmount());
+			jsons.add(jsonOrder);
+		}
+		jsonOrders.put("orders", jsons);
 
+		return new ResponseEntity<>(jsonOrders.toString(), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/getMinOrderDate")
+	public ResponseEntity<String> getMinOrderDate(@RequestParam("bookId") Integer bookId) {
+		Book book = bookService.getBookById(bookId);
+		Date date = null;
+		try {
+			date = ordersService.getMinOrderDate(book);
+		} catch (TooManyOrdersException | BookUnavailableException | IncorrectDateException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<>(SOMETHING_WRONG, HttpStatus.BAD_REQUEST);
+		}
+		JSONObject minDate = new JSONObject();
+		minDate.put("minDate", date.getTime());
+		return new ResponseEntity<>(minDate.toString(), HttpStatus.OK);
+	}
+	
 }

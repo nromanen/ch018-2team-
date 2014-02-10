@@ -35,6 +35,6 @@ public interface PersonDao {
     List<Person> orderByName();
     List<Person> orderBySurname();
     List<Person> orderByRating();
-    List<Person> pagination(int pageNumber);
+
     		
 }

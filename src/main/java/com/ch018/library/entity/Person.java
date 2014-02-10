@@ -18,7 +18,7 @@ import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.ch018.library.helper.Roles;
+import com.ch018.library.util.Roles;
 
 /**
  * 
@@ -73,7 +73,7 @@ public class Person implements Serializable {
 		private String mailKey;
 	
 		@Column(name = "multi")
-		private Integer multiBook;
+		private Integer multiBook = 0;
 	
 		@Column(name = "timelyreturn")
 		private int timelyReturn;

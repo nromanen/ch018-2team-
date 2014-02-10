@@ -1,38 +1,22 @@
 package com.ch018.library.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
-import com.ch018.library.helper.Page;
-import com.ch018.library.helper.PageContainer;
-import com.ch018.library.helper.SearchParams;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.PersonService;
-
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.junit.Assert.*;
+import com.ch018.library.util.SearchParams;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:servlet-context.xml", "classpath:root-context.xml"})
@@ -50,11 +34,7 @@ public class BooksControllerTest {
 	private BookInUseService useService;
 	
 	@Autowired
-    private SearchParams searchParams;
-	
-    @Autowired
-    private PageContainer pageContainer;
-    
+    private SearchParams searchParams;    
 
 	@Autowired
 	private WebApplicationContext wac;
@@ -63,17 +43,17 @@ public class BooksControllerTest {
 	
 	List<Book> books;
 	
-	Page page;
 	
 	List<BooksInUse> uses;
 	
 	Person person;
 	
-	
+	/*
 	@Before
 	public void setup() {
 		Mockito.reset(searchParams);
 		Mockito.reset(pageContainer);
+		Mockito.reset(bookService);
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		
 		Book book1 = new Book();
@@ -103,18 +83,20 @@ public class BooksControllerTest {
 	
 	@Test
 	public void booksNormalFlow() throws Exception {
-		Page page = new Page();
-		page.setBooks(books);
 		
-		when(pageContainer.getPage(searchParams)).thenReturn(page);
+		
+		when(bookService.getLastByField("arrivalDate", 4)).thenReturn(books);
+		
+		when(bookService.getLastByField("ordersQuantity", 4)).thenReturn(books);
 		
 		mockMvc.perform(get("/books"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("page"))
-			.andExpect(model().attribute("page", hasProperty("books")))
+			.andExpect(model().attributeExists("arrivals"))
+			.andExpect(model().attributeExists("populars"))
 			.andExpect(forwardedUrl("/WEB-INF/templates/base-template.jsp"));
 		
-		verify(pageContainer, times(1)).getPage(searchParams);
+		
+		
 		
 	}
 	
@@ -289,6 +271,6 @@ public class BooksControllerTest {
 		assertEquals(response, str);
 		
 	}
-	
+	*/
 
 }

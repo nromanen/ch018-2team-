@@ -91,17 +91,7 @@ public class Orders implements Serializable {
         
         public Date getOrderDate() {
             return orderDate;
-        }
-
-        
-        public Boolean getChanged() {
-            return changed;
-        }
-
-        public void setChanged(Boolean changed) {
-            this.changed = changed;
-        }
-        
+        }        
         
 
         public void setOrderDate(Date orderDate) {
@@ -161,7 +151,7 @@ public class Orders implements Serializable {
 
 		@Override
 		public String toString() {
-			return "Orders [id=" + id + ", person=" + person + ", book=" + book
+			return "Orders [id=" + id + ", person=" + person.getPid() + ", book=" + book.getbId()
 					+ ", orderDate=" + orderDate + ", changed=" + changed
 					+ ", daysAmount=" + daysAmount + "]";
 		}
