@@ -13,21 +13,17 @@ $(document).ready(function() {
 						var orderDateInMillis = $(this).attr('val');
 						console.log('orderdate = ' + orderDateInMillis);
 						$(this).text(getDateInFormat(Number(orderDateInMillis)));
+						
+						var returnDateInMillis = Number($(this).next().attr('val'));
+						var days = (returnDateInMillis - Number(orderDateInMillis)) / (24 * 3600 * 1000);
+						$(this).next().text(Math.round(days));
+						
 					});
 					
 					$(".calendar").each(
 									function() {
 										var changed = $(this).parent().find(
 												".changed").val();
-										var orderDateLong = $(this).prev()
-												.val();
-										var minDateLong = $(this).parent()
-												.find($('.minDate')).val();
-										var orderDate = getDateInFormat(orderDateLong);
-										var rawMinDate = getDateInFormat(minDateLong);
-										var minDate = rawMinDate.split(" ");
-										console.log("minDate " + minDate);
-										var $orders = $(this).parent().find('.order');
 										var bid = $(this).attr('bid');
 										console.log("bid " + bid);
 										/*
@@ -106,7 +102,7 @@ $(document).ready(function() {
 															},
 															
 															format : 'Y/m/d H:i',
-															value : orderDate,
+															//value : orderDate,
 															//minDate : minDate[0],
 															allowTimes : [
 																	'09:00',
@@ -191,7 +187,7 @@ function editOrder(orderId, date) {
 			var $order_date = $li.find(".order_date");
 			var $days = $li.find(".days");
 			var minD = getDateInFormat(data.minDate).split(" ");
-			var currentDate = getDateInFormat(data.date);
+			var currentDate = getDateInFormat(Number(data.orderDate));
 			$order_date.text(currentDate);
 			console.log("days " + $days.attr('class'));
 			$days.text(data.days);
@@ -240,8 +236,8 @@ function getOrders(date, bid) {
 			$.each(data.orders, function(index, value) {
 				console.log(value.days + " " + value.orderDate);
 				var $order = $('<div>', {class : 'order'});
-				$order.attr('start', value.orderDate);
-				$order.attr('days', value.days);
+				$order.attr('orderDate', value.orderDate);
+				$order.attr('returnDate', value.returnDate);
 				$order.appendTo($orders);
 				
 			});

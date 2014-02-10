@@ -2,8 +2,9 @@ function getDateInFormat(tmpDate) {
 
 	var date = new Date(Number(tmpDate));
 
-	var month = date.getMonth().toString().length === 1 ? "0"
-			+ (date.getMonth() + 1) : date.getMonth();
+	var month = (date.getMonth() + 1).toString().length === 1 ? "0"
+			+ (date.getMonth() + 1) : date.getMonth() + 1;
+			console.log("MONTH " + month);
 	var day = date.getDate().toString().length === 1 ? "0" + date.getDate()
 			: date.getDate();
 	var hours = date.getHours().toString().length === 1 ? "0" + date.getHours()
@@ -39,7 +40,7 @@ function getAvailableDays(current_time, $order) {
 	var time = current_time.getTime();
 	var days = 14;
 	$order.each(function() {
-		var order_time = $(this).attr('start');
+		var order_time = $(this).attr('orderDate');
 		if (time < order_time) {
 			days = (order_time - time) / (24 * 3600 * 1000);
 			console.log("days in conv " + days);
@@ -56,14 +57,16 @@ function getWeekEnds($order) {
 	console.log("in getWeekEnds");
 	var weekend = [];
 	$order.each(function() {
-		var start = $(this).attr('start');
-		var days = $(this).attr('days');
-		var dateInMillis = Number(start);
-		var date = new Date(dateInMillis);
+		var orderDate = $(this).attr('orderDate');
+		var returnDate = $(this).attr('returnDate');
+		var orderDateInMillis = Number(orderDate);
+		var returnDateInMillis = Number(returnDate);
+		var days = (returnDateInMillis - orderDateInMillis) / (24 * 3600 * 1000);
+		var date = new Date(orderDateInMillis);
 
 		for (var i = 1; i < days; i++) {
-			var month = date.getMonth().toString().length === 1 ? "0"
-					+ (date.getMonth() + 1) : date.getMonth();
+			var month = (date.getMonth() + 1).toString().length === 1 ? "0"
+					+ (date.getMonth() + 1) : date.getMonth() + 1;
 			var day = date.getDate().toString().length === 1 ? "0"
 					+ date.getDate() : date.getDate();
 			week = day + "." + month + "." + date.getFullYear();

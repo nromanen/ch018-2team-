@@ -41,8 +41,9 @@ public class Orders implements Serializable {
         @Column(name = "changed")
         private boolean changed;
         
-        @Column(name = "daysamount")
-        private long daysAmount;
+        @Column(name = "return_date")
+        @Temporal(TemporalType.TIMESTAMP)
+        private Date returnDate;
         
         public Orders() {
                 
@@ -55,11 +56,11 @@ public class Orders implements Serializable {
                 this.changed = false;
         }
 
-        public Orders(Person person, Book book, Date orderDate, long daysAmount) {
+        public Orders(Person person, Book book, Date orderDate, Date returnDate) {
             this.person = person;
             this.book = book;
             this.orderDate = orderDate;
-            this.daysAmount = daysAmount;
+            this.returnDate = returnDate;
         }
         
         public int getId() {
@@ -106,13 +107,15 @@ public class Orders implements Serializable {
             this.changed = changed;
         }
 
-        public long getDaysAmount() {
-            return daysAmount;
-        }
+        
 
-        public void setDaysAmount(long daysAmount) {
-            this.daysAmount = daysAmount;
-        }
+		public Date getReturnDate() {
+			return returnDate;
+		}
+
+		public void setReturnDate(Date returnDate) {
+			this.returnDate = returnDate;
+		}
 
 		@Override
 		public int hashCode() {
@@ -153,7 +156,7 @@ public class Orders implements Serializable {
 		public String toString() {
 			return "Orders [id=" + id + ", person=" + person.getPid() + ", book=" + book.getbId()
 					+ ", orderDate=" + orderDate + ", changed=" + changed
-					+ ", daysAmount=" + daysAmount + "]";
+					+ ", returnDate=" + returnDate + "]";
 		}
 
         

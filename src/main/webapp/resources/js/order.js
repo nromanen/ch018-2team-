@@ -64,9 +64,10 @@ $(document).ready(function() {
 							var _this = this;
 						 $.when(getMinDate(), getOrders(currentDateTime)).done(function(){
 							 var date = $('#min_date_inner').attr('date');
+							 console.log("Date = " + date);
 							 _this.setOptions({
 									value : date,
-									minDate : date.split(" ")[0],
+									minDate : date,
 									weekends: getWeekEnds($('.order'))
 								});
 						 }); 
@@ -181,10 +182,9 @@ function getOrders(date) {
 			$('#orders').empty();
 			var $orders = $('#orders');
 			$.each(data.orders, function(index, value) {
-				console.log(value.days + " " + value.orderDate);
 				var $order = $('<div>', {class : 'order'});
-				$order.attr('start', value.orderDate);
-				$order.attr('days', value.days);
+				$order.attr('orderDate', value.orderDate);
+				$order.attr('returnDate', value.returnDate);
 				$order.appendTo($orders);
 				
 			});

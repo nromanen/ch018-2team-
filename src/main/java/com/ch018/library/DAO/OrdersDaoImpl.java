@@ -8,9 +8,11 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -213,18 +215,46 @@ public class OrdersDaoImpl implements OrdersDao {
 		@Override
 		public List<Orders> getOrdersBetweenDatesWithoutPerson(Person person, Book book, Date firstDate, Date secondDate) {
  
+			Calendar tmpDate = Calendar.getInstance();
+			tmpDate.setTime(firstDate);
+			tmpDate.set(Calendar.DATE, tmpDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+			Date endOfFirstMonth = tmpDate.getTime();
+			
+			logger.info("first {} end {} second {}", firstDate, endOfFirstMonth, secondDate);
+			
+			Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
+			criteria.add(Restrictions.ne("person", person));
+			
+			Criterion returnDateExp = Restrictions.between("returnDate", firstDate, endOfFirstMonth);
+			Criterion orderDateExp = Restrictions.between("orderDate", firstDate, secondDate);
+			
+			criteria.add(Restrictions.or(returnDateExp, orderDateExp));
+			
+			criteria.addOrder(Order.asc("orderDate"));
+			
+			List<Orders> orders = criteria.list();
+			
+			if(orders == null)
+				orders = new ArrayList<>();
+			
+			return orders;
+			
+			
+			/*
 			List<Orders> orders =  factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("book", book))
 					.add(Restrictions.ne("person", person))
 					.add(Restrictions.between("orderDate", firstDate, secondDate)).addOrder(Order.asc("orderDate")).list();
 			logger.info("orders between {} - {} = {} for book {}", firstDate, secondDate, orders, book);
 			if(orders == null)
 				return new ArrayList<>();
-			return orders;
+			return orders;*/
 		}
 
 		@Override
-		public long getOrdersCount(Book book) {
+		public long getOrdersCountWithoutPerson(Book book, Person person) {
 			return (long) factory.getCurrentSession().createCriteria(Orders.class)
+								.add(Restrictions.ne("person", person))
+								.add(Restrictions.eq("book", book))
 								.setProjection(Projections.rowCount()).uniqueResult();
 		}
 

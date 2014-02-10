@@ -143,23 +143,28 @@ public class OrderController {
 		}
 		JSONObject json = new JSONObject();
 		json.put("orderId", orderId);
-		json.put("date", order.getOrderDate().getTime());
-		json.put("days", order.getDaysAmount());
+		json.put("orderDate", order.getOrderDate().getTime());
+		int days = (int) (order.getReturnDate().getTime() - order.getOrderDate().getTime()) / (24 * 3600 * 1000);
+		json.put("days", days);
 		return new ResponseEntity<>(json.toString(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/getAdditionalOrders")
 	public ResponseEntity<String> getAdditionalOrders(@RequestParam("bookId") Integer bookId,
 															@RequestParam("time") Long time) {
+		List<Orders> orders = new ArrayList<>();
 		Book book = bookService.getBookById(bookId);
-		Date date = new Date(time);
-		List<Orders> orders = ordersService.getOrdersForPeriodFromMonth(book, date);
+		long ordersCount = ordersService.getOrdersCountWithoutPerson(book);
+		if(ordersCount >= book.getCurrentQuantity()) {
+			Date date = new Date(time);
+			orders = ordersService.getOrdersForPeriodFromMonth(book, date);
+		}
 		JSONObject jsonOrders = new JSONObject();
 		List<JSONObject> jsons = new ArrayList<>();
 		for(Orders order : orders) {
 			JSONObject jsonOrder = new JSONObject();
 			jsonOrder.put("orderDate", order.getOrderDate().getTime());
-			jsonOrder.put("days", order.getDaysAmount());
+			jsonOrder.put("returnDate", order.getReturnDate().getTime());
 			jsons.add(jsonOrder);
 		}
 		jsonOrders.put("orders", jsons);

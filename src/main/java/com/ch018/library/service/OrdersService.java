@@ -38,5 +38,6 @@ public interface OrdersService {
          List<Orders> getOrdersByPersonSurname(List<Orders> orders,String surname);
          List<Orders> getOrdersByOrdersId(List<Orders> orders,int id);
          List<Orders> getOrdersForPeriodFromMonth(Book book, Date date);
+         long getOrdersCountWithoutPerson(Book book);
 
 }

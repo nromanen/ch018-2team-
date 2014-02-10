@@ -23,6 +23,7 @@ public class LibrarianOrdersController {
 		private static final String VALIDATION_FAILED = "Term must be between 1 and 70";
 		private static final int MIN_ISUUE = 1;
 		private static final int MAX_ISSUE = 70;
+		private static final long MILLIS_IN_DAY = 24 * 3600 * 1000;
 		
 		@Autowired
 		private OrdersService ordersService;
@@ -55,7 +56,7 @@ public class LibrarianOrdersController {
 			Orders order = ordersService.getOrderByID(id);
 			
 			model.addAttribute("order", order);
-			model.addAttribute("term", order.getDaysAmount());
+			model.addAttribute("term", (order.getReturnDate().getTime() - order.getOrderDate().getTime())/MILLIS_IN_DAY);
 			
 			return "librarian_orders_issue";
 		}
@@ -71,7 +72,7 @@ public class LibrarianOrdersController {
 			} catch (Exception e) {
 				
 				model.addAttribute("order", ordersService.getOrderByID(id));
-				model.addAttribute("term", order.getDaysAmount());
+				model.addAttribute("term", (order.getReturnDate().getTime() - order.getOrderDate().getTime())/MILLIS_IN_DAY);
 				model.addAttribute("validation", "Please, enter correct value!");
 				return "librarian_orders_issue";
 			}
@@ -82,7 +83,7 @@ public class LibrarianOrdersController {
 				return "redirect:/librarian/orders";
 			} else {
 				model.addAttribute("order", ordersService.getOrderByID(id));
-				model.addAttribute("term", order.getDaysAmount());
+				model.addAttribute("term", (order.getReturnDate().getTime() - order.getOrderDate().getTime())/MILLIS_IN_DAY);
 				model.addAttribute("validation", VALIDATION_FAILED);
 				return "librarian_orders_issue";
 			}

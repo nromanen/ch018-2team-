@@ -159,8 +159,8 @@ function getOrders(date, bid) {
 			$.each(data.orders, function(index, value) {
 				console.log(value.days + " " + value.orderDate);
 				var $order = $('<div>', {class : 'order'});
-				$order.attr('start', value.orderDate);
-				$order.attr('days', value.days);
+				$order.attr('orderDate', value.orderDate);
+				$order.attr('returnDate', value.returnDate);
 				$order.appendTo($orders);
 				
 			});

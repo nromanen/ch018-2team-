@@ -31,7 +31,7 @@
 					<div class="row">
 						<div class="col-md-3" style="max-width: 90%; overflow:  hidden;">${order.book.title}</div>
 						<div class="col-md-2 order_date" val="${order.orderDate.time}"></div>
-						<div class="col-md-1 days">${order.daysAmount}</div>
+						<div class="col-md-1 return_date" val="${order.returnDate.time}"></div>
 						<div class="col-md-4">
 
 							<input type="hidden" class="order_id" value="${order.id}"> <input type="hidden" class="minDate" value="">
