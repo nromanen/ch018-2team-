@@ -130,7 +130,7 @@ public class BookInUseServiceImpl implements BookInUseService {
 			}
 	
 			booksOnHands = person.getMultiBook();
-			booksOnHands += 1;
+			booksOnHands -= 1;
 			person.setMultiBook(booksOnHands);
 			personService.update(person);
 			personService.countRating(person);

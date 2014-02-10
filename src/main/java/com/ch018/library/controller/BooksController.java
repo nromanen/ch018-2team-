@@ -102,24 +102,6 @@ public class BooksController {
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(Model model) {
         	
-        	
-        	/*for(Genre genre : genreService.getAll()) {
-        		GenreTranslations gtE = new GenreTranslations();
-        		gtE.setGenre(genre);
-        		gtE.setDescription(genre.getDescription() + " EN");
-        		gtE.setLocale("en");
-        		
-        		gtrans.save(gtE);
-        		
-        		GenreTranslations gtU = new GenreTranslations();
-        		gtU.setGenre(genre);
-        		gtU.setDescription(genre.getDescription() + " UA");
-        		gtU.setLocale("ua");
-        		
-        		gtrans.save(gtU);
-        	}
-        	*/
-        	
             model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", 4));
             model.addAttribute("populars", bookService.getLastByField("ordersQuantity", 4));
             logger.info("arrivals {}", bookService.getLastByField("arrivalDate", 4));

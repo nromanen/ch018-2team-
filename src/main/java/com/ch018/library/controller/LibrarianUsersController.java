@@ -90,7 +90,6 @@ public class LibrarianUsersController {
 				System.out.println("Errors Adding User" + result.toString());
 				return "librarian_add_user";
 			} else {
-				user.setMultiBook(user.getBooksAllowed());
 				user.setMailConfirm(true);
 				user.setConfirm(true);
 				String password = encoder.encode(user.getPassword());

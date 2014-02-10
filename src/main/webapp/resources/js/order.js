@@ -78,7 +78,7 @@ $(document).ready(function() {
 						
 						format : 'Y/m/d H:i',
 						//value : minD,
-						minDate : minDateSplit[0],
+						//minDate : minDateSplit[0],
 						weekends : getWeekEnds($('.order')),
 						allowTimes : [ '09:00', '10:00',
 								'11:00', '12:00', '14:00',
@@ -150,6 +150,16 @@ function addToWishList(bookId, url) {
 
 			$('#wish_modal').modal('show');
 
+		},
+		error : function(xhr, status, error) {
+			if(xhr.responseText === 'Book already in WishList') {
+				$('#wish_button').addClass('hide');
+				$('#order_button').addClass('hide');
+				$('#datetimepicker').addClass('hide');
+
+			}
+			$('#order_err').text(xhr.responseText);
+			$('#order_err').removeClass('hide');
 		}
 
 	});

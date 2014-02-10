@@ -127,7 +127,7 @@
 							<c:when test="${inWishList}">
 								<!-- <input type="hidden" id="minDate" value="${minDate}">  -->
 								
-								<input class="form-control" id="datetimepicker">
+								<input class="form-control" id="datetimepicker" value="<spring:message code="message.available" />">
 								
 								<input type="hidden" id="bookId" value="${book.getbId()}">
 								<div class="alert alert-info col-lg-6"><spring:message code="message.bookinwish" /></div>
@@ -137,7 +137,7 @@
 							</c:when>
 							<c:otherwise>
 								<!-- <input type="hidden" id="minDate" value="${minDate}">  -->
-								<input class="form-control" id="datetimepicker" value="choose date">
+								<input class="form-control" id="datetimepicker" value="<spring:message code="message.available" />">
 								<input type="hidden" id="bookId" value="${book.getbId()}">
 	
 								<button id="order_button" class="btn btn-info btn-sm"><spring:message code="message.order" /></button>

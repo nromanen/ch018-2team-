@@ -1,6 +1,5 @@
 package com.ch018.library.service;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,7 +25,6 @@ import com.ch018.library.entity.Person;
 import com.ch018.library.exceptions.BookUnavailableException;
 import com.ch018.library.exceptions.IncorrectDateException;
 import com.ch018.library.exceptions.TooManyOrdersException;
-import com.ch018.library.util.OrderDays;
 
 /**
  * 
@@ -173,7 +171,7 @@ public class OrdersServiceImpl implements OrdersService {
 	
 			int booksOnHands = person.getMultiBook();
 	
-			person.setMultiBook(--booksOnHands);
+			person.setMultiBook(++booksOnHands);
 	
 			personService.update(person);
 	

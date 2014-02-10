@@ -73,7 +73,7 @@ public class Person implements Serializable {
 		private String mailKey;
 	
 		@Column(name = "multi")
-		private Integer multiBook;
+		private Integer multiBook = 0;
 	
 		@Column(name = "timelyreturn")
 		private int timelyReturn;

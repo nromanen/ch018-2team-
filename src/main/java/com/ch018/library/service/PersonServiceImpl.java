@@ -223,7 +223,6 @@ public class PersonServiceImpl implements PersonService {
 			person.setPassword(encoder.encode(person.getPassword()));
 			person.setProle("ROLE_USER");
 			person.setBooksAllowed(DEFAULT_BOOKS_ALLOWED);
-			person.setMultiBook(DEFAULT_BOOKS_ALLOWED);
 			String mailKey = getHashFromString(form.getEmail());
 			person.setMailKey(mailKey);
 			mailService.sendConfirmationMail("springytest@gmail.com",
