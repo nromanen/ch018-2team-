@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import com.ch018.library.exceptions.BookUnavailableException;
 
 /**
  *
@@ -17,7 +18,6 @@ import com.ch018.library.entity.Person;
 public interface OrdersService {
          void save(Orders order);
          void delete(Orders order);
-         void update(int id, Date newDate);
          void update(Orders order);
          List<Orders> getAll();
          List<Orders> getOrderByPerson(Person person);
@@ -39,5 +39,6 @@ public interface OrdersService {
          List<Orders> getOrdersByOrdersId(List<Orders> orders,int id);
          List<Orders> getOrdersForPeriodFromMonth(Book book, Date date);
          long getOrdersCountWithoutPerson(Book book);
+         int getMaxIssueDays(Orders order) throws BookUnavailableException;
 
 }

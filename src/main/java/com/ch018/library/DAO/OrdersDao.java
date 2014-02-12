@@ -16,7 +16,6 @@ public interface OrdersDao {
 
         void save(Orders order);
         void delete(Orders order);
-        void update(int id, Date newDate);
         void update(Orders order);
         List<Orders> getAll();
         List<Orders> getOrderByPerson(Person person);
@@ -24,12 +23,13 @@ public interface OrdersDao {
         List<Orders> getOrderByDate(Date date);
         Orders getOrderByID(int id);
         List<Orders> getOrdersToday();
+        List<Orders> getOrdersTodayWithoutPerson(Book book, Person person);
         List<Orders> getOrdersInHour();
         int getBookIdByPerson(Person person);
         boolean isPersonOrderedBook(Person person, Book book);
         List<Orders> getOrdersForChanging(Book book, Date returnDate);
-        List<Orders> getOrderByIDList(int id); 
         List<Orders> getOrdersBetweenDatesWithoutPerson(Person person, Book book, Date firstDate, Date secondDate);
         long getOrdersCountWithoutPerson(Book book, Person person);
+        Orders getFirstOrderAfterDateWithoutPerson(Date date, Person person);
 
 }

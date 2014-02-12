@@ -112,7 +112,7 @@ public class SearchParamsBook extends SearchParams implements Serializable {
 	    
 	    
 	    public boolean isSlidersNull() {
-	    	return bookPageStart == null || bookPageStart == null 
+	    	return bookPageStart == null || bookPageEnd == null 
 	    			|| yearStart == null || yearEnd == null || genre == null;
 	    }
 

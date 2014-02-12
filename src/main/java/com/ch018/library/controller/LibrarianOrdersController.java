@@ -3,6 +3,7 @@ package com.ch018.library.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,12 +52,17 @@ public class LibrarianOrdersController {
 		
 		
 		@RequestMapping(value = "/issue", method = RequestMethod.GET)
-		public String issueGet(@RequestParam("id") int id, Model model) throws Exception {
+		public String issueGet(@RequestParam("id") int id, Model model){
 			
 			Orders order = ordersService.getOrderByID(id);
-			
+			int maxIssueDays = 0;
+			try {
+				maxIssueDays = ordersService.getMaxIssueDays(order);
+			} catch (Exception e) {
+				System.out.println("UNAVAIL");
+			}
 			model.addAttribute("order", order);
-			model.addAttribute("term", (order.getReturnDate().getTime() - order.getOrderDate().getTime())/MILLIS_IN_DAY);
+			model.addAttribute("term", maxIssueDays);
 			
 			return "librarian_orders_issue";
 		}

@@ -55,8 +55,8 @@
 		<div style="margin: 5px;"></div>
 		<div class="row">
 			<p>
-				<label for="years"><spring:message code="message.yearrange" />:</label> <input type="text"
-					id="years" style="border: 0; color: #f6931f; font-weight: bold;">
+				<label for="years"><spring:message code="message.yearrange" />:</label>
+				 <input type="text" id="years" style="border: 0; color: #f6931f; font-weight: bold;">
 			</p>
 
 			<div id="years-range"></div>

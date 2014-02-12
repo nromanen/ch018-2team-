@@ -25,6 +25,7 @@ import com.ch018.library.entity.Person;
 import com.ch018.library.exceptions.BookUnavailableException;
 import com.ch018.library.exceptions.IncorrectDateException;
 import com.ch018.library.exceptions.TooManyOrdersException;
+import com.ch018.library.util.Constans;
 
 /**
  * 
@@ -89,12 +90,6 @@ public class OrdersServiceImpl implements OrdersService {
 		@Transactional
 		public void delete(Orders order) {
 			ordersDao.delete(order);
-		}
-	
-		@Override
-		@Transactional
-		public void update(int id, Date newDate) {
-			ordersDao.update(id, newDate);
 		}
 	
 		@Override
@@ -469,9 +464,79 @@ public class OrdersServiceImpl implements OrdersService {
 		public long getOrdersCountWithoutPerson(Book book) {
 			String email = SecurityContextHolder.getContext().getAuthentication().getName();
 			Person person = personDao.getByEmail(email);
+			logger.info("person {}", person);
 			return ordersDao.getOrdersCountWithoutPerson(book, person);
 		}
 
+		@Override
+		@Transactional
+		public int getMaxIssueDays(Orders order) throws BookUnavailableException {
+			Book book = order.getBook();
+			Person person = order.getPerson();
+			Date orderDate = order.getOrderDate();
+			Date returnDate = order.getReturnDate();
+			int currentBookQuantity = book.getCurrentQuantity();
+			long ordersQuantity = ordersDao.getOrdersCountWithoutPerson(book, person);
+			int maxIssueDays = 0;
+			logger.info("isOrderDay {}", isOrderDateToday(orderDate));
+			if (isOrderDateToday(orderDate)) {
+				
+				if(currentBookQuantity <= 0)
+					throw new BookUnavailableException();
+				
+				if(currentBookQuantity > ordersQuantity)
+					return Constans.MAX_ISSUE_PERIOD;
+				
+				Orders nextOrder = ordersDao.getFirstOrderAfterDateWithoutPerson(returnDate, person);
+				
+				if(nextOrder == null)
+					return Constans.MAX_ISSUE_PERIOD;
+				
+				maxIssueDays = Math.round((nextOrder.getOrderDate().getTime() - orderDate.getTime()) / Constans.MILLIS_IN_DAY);
+
+				
+			} else {
+				
+				orderDate = new Date();
+				
+				List<Orders> ordersForToday = ordersDao.getOrdersTodayWithoutPerson(book, person);
+				
+				if(ordersForToday.isEmpty() && currentBookQuantity > ordersQuantity) {
+					return Constans.MAX_ISSUE_PERIOD;
+				}
+				else if(!ordersForToday.isEmpty() || currentBookQuantity <= ordersQuantity) {
+					Orders nextOrder = ordersDao.getFirstOrderAfterDateWithoutPerson(orderDate, person);
+					logger.info("next order = {}", nextOrder);
+					if(nextOrder == null)
+						return Constans.MAX_ISSUE_PERIOD;
+					
+					maxIssueDays = Math.round((nextOrder.getOrderDate().getTime() - orderDate.getTime()) / Constans.MILLIS_IN_DAY);
+					
+				}
+				
+			}
+				
+			return maxIssueDays;
+			
+		}
+
+		
+		private boolean isOrderDateToday(Date orderDate) {
+			Calendar today = Calendar.getInstance();
+			Calendar order = Calendar.getInstance();
+			order.setTime(orderDate);
+			
+			int todayDay = today.get(Calendar.DAY_OF_YEAR);
+			int todayMonth = today.get(Calendar.MONTH);
+			int todayYear = today.get(Calendar.YEAR);
+			
+			int orderDay = order.get(Calendar.DAY_OF_YEAR);
+			int orderMonth = order.get(Calendar.MONTH);
+			int orderYear = order.get(Calendar.YEAR);
+			
+			return todayDay == orderDay && todayMonth == orderMonth && todayYear == orderYear;
+		}
+		
 		
 		
 		

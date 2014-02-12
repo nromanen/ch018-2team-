@@ -175,10 +175,9 @@
 							</div>
 						</div>
 					</div>
-
+				
 				</sec:authorize>
 				</div>
-				
 					
 				<div class="modal fade" id="wish_modal" tabindex="-1" role="dialog"
 					aria-labelledby="wish_modal_label" aria-hidden="true">
