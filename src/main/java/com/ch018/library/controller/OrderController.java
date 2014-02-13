@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,14 +26,20 @@ import com.ch018.library.controller.errors.IncorrectInput;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import com.ch018.library.entity.Rate;
+import com.ch018.library.exceptions.BookAlreadyRatedException;
 import com.ch018.library.exceptions.BookUnavailableException;
 import com.ch018.library.exceptions.IncorrectDateException;
 import com.ch018.library.exceptions.TooManyOrdersException;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
+import com.ch018.library.service.PaginationService;
 import com.ch018.library.service.PersonService;
+import com.ch018.library.service.RateService;
+import com.ch018.library.service.RateServiceImpl;
 import com.ch018.library.service.WishListService;
+import com.ch018.library.util.SearchParamsRate;
 
 /**
  * 
@@ -57,6 +64,12 @@ public class OrderController {
 	private WishListService wishService;
 	@Autowired
 	private BookInUseService useService;
+	@Autowired
+	private RateService rateService;
+	@Autowired
+	private SearchParamsRate searchParams;
+	@Autowired
+	private PaginationService<Rate> paginationService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "{id}")
 	public String orderGet(@PathVariable(value = "id") Integer bookId, Model model,
@@ -80,10 +93,9 @@ public class OrderController {
 			return "order";
 		}
 		model.addAttribute("inUse", useService.isPersonHaveBook(person, book));
-		model.addAttribute("inOrders",
-				ordersService.isPersonOrderedBook(person, book));
-		model.addAttribute("inWishList",
-				wishService.isPersonWishBook(person, book));
+		model.addAttribute("inOrders", ordersService.isPersonOrderedBook(person, book));
+		model.addAttribute("inWishList", wishService.isPersonWishBook(person, book));
+		model.addAttribute("rate", rateService.getRate(person, book));
 		return "order";
 
 	}
@@ -187,5 +199,50 @@ public class OrderController {
 		minDate.put("minDate", date.getTime());
 		return new ResponseEntity<>(minDate.toString(), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/addRate")
+	public ResponseEntity<String> addRate(@ModelAttribute Rate rate, @RequestParam("bookId") Integer bookId) {
+
+		
+		try {
+			rateService.addRate(rate, bookId);
+		} catch (BookAlreadyRatedException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+		}
+		
+		JSONObject responseJson = new JSONObject();
+		responseJson.put("score", rate.getScore());
+		return new ResponseEntity<>(responseJson.toString(), HttpStatus.OK);		
+	}
+	
+	@RequestMapping(value = "/getComments")
+	public ResponseEntity<String> getComments(@ModelAttribute SearchParamsRate tmpSearchParams) {
+		logger.info("tmpS = {}", tmpSearchParams.getBook());
+		
+		if(searchParams.isMainFieldsEmpty())
+			searchParams.setMainFieldsDefault();
+		
+		List<Rate> rates = paginationService.getPaginatedResult(searchParams, tmpSearchParams, Rate.class);
+		
+		JSONObject ratesJson = new JSONObject();
+		List<JSONObject> arrayJsons = new ArrayList<>();
+		for(Rate rate : rates) {
+			JSONObject json = new JSONObject();
+			json.put("name", rate.getPerson().getName());
+			json.put("surname", rate.getPerson().getSurname());
+			json.put("score", rate.getScore());
+			json.put("message", rate.getMessage());
+			
+			arrayJsons.add(json);
+		}
+		
+		ratesJson.put("comments", arrayJsons);
+		ratesJson.put("pagesQuantity", searchParams.getPagesQuantity());
+		
+		return new ResponseEntity<String>(ratesJson.toString(), HttpStatus.OK);
+		
+		
+	}
+	
 	
 }

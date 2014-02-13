@@ -3,23 +3,19 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="row well">
 	
-	<div id="path" url="${pageContext.request.contextPath}"></div>
-
 	<sec:authorize access="isAuthenticated()">
 	<div id="picker_date">
 		<div id="min_date"></div>
 		<div id="disabled_dates" value="${disabled}"></div>
 		<div id="allow_times"></div>
-		<div id="orders">
-		
-		</div>
+		<div id="orders"></div>
 
 	</div>
 	</sec:authorize>
-
-	<!--<div class="col-md-2" id="left_main">
-                    New Arrivals
-                </div>-->
+	
+	<div id="path" url="${pageContext.request.contextPath}"></div>
+	<div id="bid" value="${book.bId}"></div>
+	<div id="pagination_info" page="${sessionScope['scopedTarget.searchParamsRate'].page}" pagesQuantity = "${sessionScope['scopedTarget.searchParamsRate'].pagesQuantity}"></div>
 
 	<div class="col-md-12" id="center_main">
 
@@ -97,9 +93,9 @@
 						</div>
 					</div>
 				</div>
-				
-					<div class="row" style="margin-top: 20px;" id="rate_area">
-						<div class="col-md-8 " id=>
+				<sec:authorize access="isAuthenticated()">
+					<div class="row" style="margin-top: 20px;" id="rate_area" rated="${rate.id}" score="${rate.score}" message="${rate.message}">
+						<div class="col-md-8 ">
 							<div class="panel panel-info" id="rate_panel">
 	                    		<div class="panel-heading">
 	                        		<div id="rate_area_title" class="panel-title">Leave comment about book</div>    	
@@ -108,11 +104,11 @@
 	                    		<div class="form-group">
 	                            	<form id="rate_form" role="form">
 	                                	<div class="form-group">
-	    									<div id="stars"></div>
+	    									<div id="rate"></div>
 	  									</div>
-	                                
+	                                	<input type="hidden" name="bookId" value="${book.bId}">
 	                                	<div class="form-group">
-	                                		<textarea class="form-control" name="message" maxlength="250" style="resize: none;" ></textarea>
+	                                		<textarea id="rate_form_textarea" class="form-control" name="message" maxlength="250" style="resize: none;" ></textarea>
 	                            		</div>
 	                            		<button id="rate_form_submit" type="submit" class="btn btn-default">Submit</button>
 	                            		
@@ -124,6 +120,7 @@
 						</div>
 					</div>
 				</div>
+				</sec:authorize>
 				
 			</div>
 			
@@ -157,7 +154,7 @@
 								
 								<input class="form-control" id="datetimepicker" value="<spring:message code="message.available" />">
 								
-								<input type="hidden" id="bookId" value="${book.getbId()}">
+								<!--<input type="hidden" id="bookId" value="${book.getbId()}">-->
 								<div class="alert alert-info col-lg-6"><spring:message code="message.bookinwish" /></div>
 								<div class="clearfix"></div>
 								<button id="order_button" class="btn btn-info">Order</button>
@@ -166,7 +163,7 @@
 							<c:otherwise>
 								<!-- <input type="hidden" id="minDate" value="${minDate}">  -->
 								<input class="form-control" id="datetimepicker" value="<spring:message code="message.available" />">
-								<input type="hidden" id="bookId" value="${book.getbId()}">
+								<!--<input type="hidden" id="bookId" value="${book.getbId()}">-->
 	
 								<button id="order_button" class="btn btn-info btn-sm"><spring:message code="message.order" /></button>
 	
@@ -214,30 +211,8 @@
 	                        		<div class="panel-title"><a id="view_comments" href="">View comments</a></div>    	
 	                    		</div>
 	                    	<div id="comments_panel_body" class="panel-body " style="display : none; height: 300px; overflow: scroll; overflow-x:hidden;">
-	                    		<div class="list-group">
-  									<div class="list-group-item">
-    									<h5 class="list-group-item-heading">Name Surname <div class="raty" data-number="5" data-score="2"></h5>
-    									<p class="list-group-item-text">Awesome Book!</p>
-  									</div>
-  									<div class="list-group-item">
-    									<h5 class="list-group-item-heading">Name Surname *****</h5>
-    									<p class="list-group-item-text">Awesome Book!</p>
-  									</div>
-  									<div class="list-group-item">
-    									<h5 class="list-group-item-heading">Name Surname *****</h5>
-    									<p class="list-group-item-text">Awesome Book!</p>
-  									</div>
-  									<div class="list-group-item">
-    									<h5 class="list-group-item-heading">Name Surname *****</h5>
-    									<p class="list-group-item-text">Awesome Book!</p>
-  									</div>
-  									<div class="list-group-item">
-    									<h5 class="list-group-item-heading">Name Surname *****</h5>
-    									<p class="list-group-item-text">Awesome Book!</p>
-  									</div>
-  									<div class="list-group-item">
-    									<h5 class="list-group-item-heading">Load More</h5>
-  									</div>
+	                    		<div id="comments_list_group" class="list-group">
+  									
 								</div>
 	                    	</div>
 						</div>

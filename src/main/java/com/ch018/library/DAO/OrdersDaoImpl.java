@@ -229,10 +229,11 @@ public class OrdersDaoImpl implements OrdersDao {
 		}
 
 		@Override
-		public Orders getFirstOrderAfterDateWithoutPerson(Date date, Person person) {
+		public Orders getFirstOrderAfterDateWithoutPerson(Date date, Person person, Book book) {
 			
 			Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
 			criteria.add(Restrictions.ne("person", person));
+			criteria.add(Restrictions.eq("book", book));
 			criteria.addOrder(Order.asc("orderDate"));
 			criteria.add(Restrictions.gt("orderDate", date));
 			criteria.setFirstResult(0).setMaxResults(1);

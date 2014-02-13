@@ -262,6 +262,23 @@ public class Book implements Serializable {
 		public void setOrdersQuantity(Integer ordersQuantity) {
 			this.ordersQuantity = ordersQuantity;
 		}
+		
+
+		public Float getRating() {
+			return rating;
+		}
+
+		public void setRating(Float rating) {
+			this.rating = rating;
+		}
+
+		public Integer getVotes() {
+			return votes;
+		}
+
+		public void setVotes(Integer votes) {
+			this.votes = votes;
+		}
 
 		public Set<Person> getPersonsUse() {
 			return personsUse;

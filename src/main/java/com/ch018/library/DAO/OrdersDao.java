@@ -30,6 +30,6 @@ public interface OrdersDao {
         List<Orders> getOrdersForChanging(Book book, Date returnDate);
         List<Orders> getOrdersBetweenDatesWithoutPerson(Person person, Book book, Date firstDate, Date secondDate);
         long getOrdersCountWithoutPerson(Book book, Person person);
-        Orders getFirstOrderAfterDateWithoutPerson(Date date, Person person);
+        Orders getFirstOrderAfterDateWithoutPerson(Date date, Person person, Book book);
 
 }

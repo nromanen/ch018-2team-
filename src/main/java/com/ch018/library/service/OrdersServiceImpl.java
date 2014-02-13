@@ -487,7 +487,7 @@ public class OrdersServiceImpl implements OrdersService {
 				if(currentBookQuantity > ordersQuantity)
 					return Constans.MAX_ISSUE_PERIOD;
 				
-				Orders nextOrder = ordersDao.getFirstOrderAfterDateWithoutPerson(returnDate, person);
+				Orders nextOrder = ordersDao.getFirstOrderAfterDateWithoutPerson(returnDate, person, book);
 				
 				if(nextOrder == null)
 					return Constans.MAX_ISSUE_PERIOD;
@@ -505,7 +505,7 @@ public class OrdersServiceImpl implements OrdersService {
 					return Constans.MAX_ISSUE_PERIOD;
 				}
 				else if(!ordersForToday.isEmpty() || currentBookQuantity <= ordersQuantity) {
-					Orders nextOrder = ordersDao.getFirstOrderAfterDateWithoutPerson(orderDate, person);
+					Orders nextOrder = ordersDao.getFirstOrderAfterDateWithoutPerson(orderDate, person, book);
 					logger.info("next order = {}", nextOrder);
 					if(nextOrder == null)
 						return Constans.MAX_ISSUE_PERIOD;

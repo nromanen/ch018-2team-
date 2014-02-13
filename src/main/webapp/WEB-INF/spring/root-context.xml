@@ -33,6 +33,11 @@
       <aop:scoped-proxy/>
    	</bean>
    	
+   	<bean id="searchParamsRate" class="com.ch018.library.util.SearchParamsRate" scope="session">
+      
+      <aop:scoped-proxy/>
+   	</bean>
+   	
    	<bean id="pageContainer" class="com.ch018.library.util.PageContainer" scope="session">
       
       <aop:scoped-proxy/>

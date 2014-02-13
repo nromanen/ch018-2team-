@@ -2,11 +2,27 @@ $(document).ready(function() {
 	
 	
 					//raty part
+						var $rate_area = $('#rate_area');
+						if($rate_area.attr('rated') != '') {
+							$('#rate').raty({
+								readOnly : true,
+								path: $('#path').attr('url')  + '/resources/js/img',
+								half: true,
+								score: $rate_area.attr('score')
+							});
+							$('#rate_form_textarea').text($rate_area.attr('message'));
+							$('#rate_form_textarea').attr('disabled', 'disabled');
+							$('#rate_form_submit').addClass('hide');
+							$('#rate_area_title').text('Your comment');
+						} else {
+							$('#rate').raty({
+								path : $('#path').attr('url')  + '/resources/js/img',
+								half : true,
+							});
+							
+						}
 	
-						$('#stars').raty({
-							path: $('#path').attr('url')  + '/resources/js/img',
-						});
-						
+	
 						$('.raty').each(function () {
 							$(this).raty({
 								path: $('#path').attr('url')  + '/resources/js/img',
@@ -21,12 +37,24 @@ $(document).ready(function() {
 					//comments
 						
 						$('#view_comments').click(function(e) {
+							
+							
+							
 							e.preventDefault();
-							if($(this).text() === 'Hide comments')
+							if($(this).text() === 'Hide comments') {
 								$(this).text('View comments');
-							else
+								$('#comments_list_group').empty();
+							}
+							else {
 								$(this).text('Hide comments');
+								loadComments();
+							}
 							$('#comments_panel_body').toggle();
+						});
+						
+						$('body').on('click', '#load_more_button', function (e) {
+							e.preventDefault();
+							loadMoreComments();
 						});
 						
 					//comments	
@@ -130,7 +158,7 @@ $(document).ready(function() {
 					
 					$('#order_button').click(function() {
 
-								var bookId = $('#bookId').val();
+								var bookId = $('#bid').attr('value');
 								var time = getLongFromFormatTime($('#datetimepicker').val());
 								if(isNaN(time)){
 									$('#datetimepicker').datetimepicker('show');
@@ -141,7 +169,7 @@ $(document).ready(function() {
 							});
 
 					$('#wish_button').click(function() {
-						var bookId = $('#bookId').val();
+						var bookId = $('#bid').attr('value');
 						addToWishList(bookId);
 					});
 
@@ -212,7 +240,7 @@ function getOrders(date) {
 		url : $('#path').attr('url') + "/books/order/getAdditionalOrders",
 		type : "POST",
 		data : {
-			'bookId' : $('#bookId').val(),
+			'bookId' : $('#bid').attr('value'),
 			'time' : date.getTime(),
 		},
 		dataType : "json",
@@ -238,20 +266,20 @@ function getMinDate() {
 		url : $('#path').attr('url') + "/books/order/getMinOrderDate",
 		type : "POST",
 		data : {
-			'bookId' : $('#bookId').val(),
+			'bookId' : $('#bid').attr('value'),
 		},
 		dataType : "json",
 		contentType : 'application/x-www-form-urlencoded',
 		mimeType : 'application/json',
 
 		success : function(data) {
-	
+			console.log('new date ' + new Date(data.minDate));
 			var $mindate = $('#min_date');		
 			$mindate.empty();	
 			$inner = $('<div>', {id: 'min_date_inner'});		
-			$inner.appendTo($mindate);
+			
 			$inner.attr('date', getDateInFormat(data.minDate));
-	
+			$inner.appendTo($mindate);
 		},
 		error : function(xhr, status, error) {
 
@@ -263,7 +291,7 @@ function getMinDate() {
 
 function sendVote(data) {
 	$.ajax({
-		url : $('#path').attr('url') + "/order/addRate",
+		url : $('#path').attr('url') + "/books/order/addRate",
 		type : "POST",
 		data : data,
 		dataType : "json",
@@ -272,7 +300,15 @@ function sendVote(data) {
 
 		success : function(data) {
 	
-			
+			$('#rate_form_submit').addClass('hide');
+			$('#rate_area_title').text('Your comment');
+			$('#rate').raty({
+				readOnly : true,
+				path: $('#path').attr('url')  + '/resources/js/img',
+				half: true,
+				score: data.score
+			});
+			$('#rate_form_textarea').attr('disabled', 'disabled');
 	
 		},
 		error : function(xhr, status, error) {
@@ -282,3 +318,135 @@ function sendVote(data) {
 		}
 	});	
 };
+
+function loadComments(){
+	console.log('bid' + $('#bid').attr('value'));
+	$.ajax({
+		url : $('#path').attr('url') + "/books/order/getComments",
+		type : "POST",
+		dataType : "json",
+		data : {
+			'book' : $('#bid').attr('value'),
+			'page' : 1
+		},
+		contentType : 'application/x-www-form-urlencoded',
+		mimeType : 'application/json',
+
+		success : function(data) {
+			
+			
+			
+			$.each(data.comments , function (indx, val) {
+				var $list_group_item = $('<div>', {class : 'list-group-item'});
+				var $list_group_item_heading = $('<h5>', {class : 'list-group-item-heading'});
+				var $list_group_item_text = $('<div>', {class : 'list-group-item-text'});
+				var $div_name = $('<div>', {class : 'user_name'});
+				var $div_raty = $('<div>', {class : 'raty'});
+				$div_raty.attr('data-number', '5');
+				$div_raty.raty({
+					readOnly : true,
+					path: $('#path').attr('url')  + '/resources/js/img',
+					half: true,
+					score: val.score
+				});
+				$div_name.text(val.name + " " + val.surname);
+				$list_group_item_text.text(val.message);
+				
+				$div_name.appendTo($list_group_item_heading);
+				$div_raty.appendTo($list_group_item_heading);
+				
+				$list_group_item_heading.appendTo($list_group_item);
+				$list_group_item_text.appendTo($list_group_item);
+				
+				$list_group_item.appendTo($('#comments_list_group'));
+			});
+			var $list_group_item = $('<div>', {class : 'list-group-item'});
+			var $list_group_item_heading_more = $('<h5>', {class : 'list-group-item-heading', id : 'load_more_li'});
+			var $a = $('<a>', {id : 'load_more_button', href : ''});
+			$a.text('load more');
+			$a.appendTo($list_group_item_heading_more);
+			$list_group_item_heading_more.appendTo($list_group_item);
+			$list_group_item.appendTo($('#comments_list_group'));
+			
+			
+			
+	
+		},
+		error : function(xhr, status, error) {
+
+			$('#rate_err').text(xhr.responseText);
+			$('#rate_err').removeClass('hide');
+		}
+	});	
+	
+};
+
+function loadMoreComments() {
+	var page = Number($('#pagination_info').attr('page')) + 1;
+	
+	$('#pagination_info').attr('page', page);
+	$.ajax({
+		url : $('#path').attr('url') + "/books/order/getComments",
+		type : "POST",
+		dataType : "json",
+		data : {
+			'book' : $('#bid').attr('value'),
+			'page' : page
+		},
+		contentType : 'application/x-www-form-urlencoded',
+		mimeType : 'application/json',
+
+		success : function(data) {
+			
+			$('#comments_list_group').find('#load_more_li').parent().remove();
+			
+			$.each(data.comments , function (indx, val) {
+				var $list_group_item = $('<div>', {class : 'list-group-item'});
+				var $list_group_item_heading = $('<h5>', {class : 'list-group-item-heading'});
+				var $list_group_item_text = $('<div>', {class : 'list-group-item-text'});
+				var $div_name = $('<div>', {class : 'user_name'});
+				var $div_raty = $('<div>', {class : 'raty'});
+				$div_raty.attr('data-number', '5');
+				$div_raty.raty({
+					readOnly : true,
+					path: $('#path').attr('url')  + '/resources/js/img',
+					half: true,
+					score: val.score
+				});
+				$div_name.text(val.name + " " + val.surname);
+				$list_group_item_text.text(val.message);
+				
+				$div_name.appendTo($list_group_item_heading);
+				$div_raty.appendTo($list_group_item_heading);
+				
+				$list_group_item_heading.appendTo($list_group_item);
+				$list_group_item_text.appendTo($list_group_item);
+				
+				$list_group_item.appendTo($('#comments_list_group'));
+			});
+			var page = Number($('#pagination_info').attr('page')) + 1;
+			var pagesQuantity = data.pagesQuantity;//Number($('#pagination_info').attr('pagesQuantity'));
+			if(page > pagesQuantity) {
+				
+			} else {
+			
+			var $list_group_item = $('<div>', {class : 'list-group-item'});
+			var $list_group_item_heading_more = $('<h5>', {class : 'list-group-item-heading', id : 'load_more_li'});
+			var $a = $('<a>', {id : 'load_more_button', href : ''});
+			$a.text('load more');
+			$a.appendTo($list_group_item_heading_more);
+			$list_group_item_heading_more.appendTo($list_group_item);
+			$list_group_item.appendTo($('#comments_list_group'));
+			}
+			
+			
+			
+	
+		},
+		error : function(xhr, status, error) {
+
+			$('#rate_err').text(xhr.responseText);
+			$('#rate_err').removeClass('hide');
+		}
+	});	
+}

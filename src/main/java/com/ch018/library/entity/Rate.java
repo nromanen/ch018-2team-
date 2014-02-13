@@ -37,8 +37,8 @@ public class Rate implements Serializable {
         @JoinColumn(name = "bid", referencedColumnName = "bid")
         private Book book;
         
-        @Column(name = "rate")
-        private Float rate;
+        @Column(name = "score")
+        private Float score;
         
         @Column(name = "message")
         private String message;
@@ -71,12 +71,12 @@ public class Rate implements Serializable {
 			this.book = book;
 		}
 
-		public Float getRate() {
-			return rate;
+		public Float getScore() {
+			return score;
 		}
 
-		public void setRate(Float rate) {
-			this.rate = rate;
+		public void setScore(Float rate) {
+			this.score = rate;
 		}
 
 		public String getMessage() {
@@ -98,7 +98,7 @@ public class Rate implements Serializable {
 		@Override
 		public String toString() {
 			return "Rate [id=" + id + ", person=" + person.getEmail() + ", book=" + book.getTitle()
-					+ ", rate=" + rate + ", message=" + message + ", rateDate="
+					+ ", score=" + score + ", message=" + message + ", rateDate="
 					+ rateDate + "]";
 		}
         
