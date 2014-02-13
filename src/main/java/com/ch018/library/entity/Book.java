@@ -88,7 +88,7 @@ public class Book implements Serializable {
 		private int term;
 	
 		@Column(name = "img")
-		private String img = "http://placehold.it/480x480";
+		private String img = "resources/img/default.jpg";
 	
 		@Range(min = 0)
 		@Column(name = "cur_quantity")
@@ -105,6 +105,12 @@ public class Book implements Serializable {
 		
 		@Column(name = "orders_quantity")
 		private Integer ordersQuantity = 0;
+		
+		@Column(name = "rating")
+		Float rating = 0F;
+		
+		@Column(name = "votes")
+		Integer votes = 0;
 	
 		@OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
 		private Set<Person> personsUse;
@@ -114,6 +120,9 @@ public class Book implements Serializable {
 	
 		@OneToMany(targetEntity = WishList.class, mappedBy = "book")
 		private Set<Person> personsWishes;
+		
+		@OneToMany(mappedBy = "book")
+		private Set<Rate> rates;
 	
 		public Book() {
 	
@@ -276,6 +285,16 @@ public class Book implements Serializable {
 
 		public void setPersonsWishes(Set<Person> personsWishes) {
 			this.personsWishes = personsWishes;
+		}
+		
+		
+
+		public Set<Rate> getRates() {
+			return rates;
+		}
+
+		public void setRates(Set<Rate> rates) {
+			this.rates = rates;
 		}
 
 		@Override

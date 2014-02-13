@@ -1,5 +1,46 @@
 $(document).ready(function() {
+	
+	
+					//raty part
+	
+						$('#stars').raty({
+							path: $('#path').attr('url')  + '/resources/js/img',
+						});
+						
+						$('.raty').each(function () {
+							$(this).raty({
+								path: $('#path').attr('url')  + '/resources/js/img',
+								readOnly : true,
+								score : $(this).attr('data-score'),
+								
+							});
+						});
+	
+					//raty part
+						
+					//comments
+						
+						$('#view_comments').click(function(e) {
+							e.preventDefault();
+							if($(this).text() === 'Hide comments')
+								$(this).text('View comments');
+							else
+								$(this).text('Hide comments');
+							$('#comments_panel_body').toggle();
+						});
+						
+					//comments	
 					
+					//vote_form
+						
+						$('#rate_form_submit').click(function (e) {
+							e.preventDefault();
+							var data = $('#rate_form').serialize();
+							sendVote(data);
+						});
+						
+					//vote_form
+						
 					var isLimitReacher = $('#book_limit').val();
 					if (isLimitReacher === 'true')
 						$('#book_limit_modal').modal('show');
@@ -220,4 +261,24 @@ function getMinDate() {
 	});	
 };
 
+function sendVote(data) {
+	$.ajax({
+		url : $('#path').attr('url') + "/order/addRate",
+		type : "POST",
+		data : data,
+		dataType : "json",
+		contentType : 'application/x-www-form-urlencoded',
+		mimeType : 'application/json',
 
+		success : function(data) {
+	
+			
+	
+		},
+		error : function(xhr, status, error) {
+
+			$('#rate_err').text(xhr.responseText);
+			$('#rate_err').removeClass('hide');
+		}
+	});	
+};

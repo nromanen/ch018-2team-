@@ -97,6 +97,34 @@
 						</div>
 					</div>
 				</div>
+				
+					<div class="row" style="margin-top: 20px;" id="rate_area">
+						<div class="col-md-8 " id=>
+							<div class="panel panel-info" id="rate_panel">
+	                    		<div class="panel-heading">
+	                        		<div id="rate_area_title" class="panel-title">Leave comment about book</div>    	
+	                    		</div>
+	                    	<div class="panel-body">
+	                    		<div class="form-group">
+	                            	<form id="rate_form" role="form">
+	                                	<div class="form-group">
+	    									<div id="stars"></div>
+	  									</div>
+	                                
+	                                	<div class="form-group">
+	                                		<textarea class="form-control" name="message" maxlength="250" style="resize: none;" ></textarea>
+	                            		</div>
+	                            		<button id="rate_form_submit" type="submit" class="btn btn-default">Submit</button>
+	                            		
+	                                	<div id="rate_err" class="alert alert-danger hide">
+	                                	</div>
+	                            	</form>
+	                        	</div>
+	                    	</div>
+						</div>
+					</div>
+				</div>
+				
 			</div>
 			
 			<div class="col-md-5" id="order_order_wish_part">
@@ -177,6 +205,43 @@
 					</div>
 				
 				</sec:authorize>
+				</div>
+				
+				<div class="row" style="margin-top: 40px;">
+				
+					<div class="panel panel-info">
+	                    		<div class="panel-heading">
+	                        		<div class="panel-title"><a id="view_comments" href="">View comments</a></div>    	
+	                    		</div>
+	                    	<div id="comments_panel_body" class="panel-body " style="display : none; height: 300px; overflow: scroll; overflow-x:hidden;">
+	                    		<div class="list-group">
+  									<div class="list-group-item">
+    									<h5 class="list-group-item-heading">Name Surname <div class="raty" data-number="5" data-score="2"></h5>
+    									<p class="list-group-item-text">Awesome Book!</p>
+  									</div>
+  									<div class="list-group-item">
+    									<h5 class="list-group-item-heading">Name Surname *****</h5>
+    									<p class="list-group-item-text">Awesome Book!</p>
+  									</div>
+  									<div class="list-group-item">
+    									<h5 class="list-group-item-heading">Name Surname *****</h5>
+    									<p class="list-group-item-text">Awesome Book!</p>
+  									</div>
+  									<div class="list-group-item">
+    									<h5 class="list-group-item-heading">Name Surname *****</h5>
+    									<p class="list-group-item-text">Awesome Book!</p>
+  									</div>
+  									<div class="list-group-item">
+    									<h5 class="list-group-item-heading">Name Surname *****</h5>
+    									<p class="list-group-item-text">Awesome Book!</p>
+  									</div>
+  									<div class="list-group-item">
+    									<h5 class="list-group-item-heading">Load More</h5>
+  									</div>
+								</div>
+	                    	</div>
+						</div>
+					
 				</div>
 					
 				<div class="modal fade" id="wish_modal" tabindex="-1" role="dialog"

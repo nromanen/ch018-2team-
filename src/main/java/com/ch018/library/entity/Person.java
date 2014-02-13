@@ -100,6 +100,9 @@ public class Person implements Serializable {
 	
 		@OneToMany(targetEntity = WishList.class, mappedBy = "person")
 		private Set<Book> wishes = new HashSet<>();
+		
+		@OneToMany(mappedBy = "person")
+		private Set<Rate> rates = new HashSet<>();
 	
 		public Person() {
 	
