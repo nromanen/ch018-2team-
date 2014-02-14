@@ -1,10 +1,14 @@
 package com.ch018.library.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
@@ -56,22 +61,20 @@ public class LibrarianBooksController {
 		
 		@RequestMapping(value = "/addbook", method = RequestMethod.GET)
 	        public String add(Model model) throws Exception {
-			final int DEFAULT_TERM_OF_ISSUANCE = 14;
-			Book book = new Book();
-			book.setTerm(DEFAULT_TERM_OF_ISSUANCE);
-			
-			Locale locale = LocaleContextHolder.getLocale();
-			
-			model.addAttribute("book", book);
-			model.addAttribute("genres", genreService.getAll());
-			return "librarian_books_add_book";
+				final int DEFAULT_TERM_OF_ISSUANCE = 14;
+				Book book = new Book();
+				book.setTerm(DEFAULT_TERM_OF_ISSUANCE);
+				
+				model.addAttribute("book", book);
+				model.addAttribute("genres", genreService.getAll());
+				return "librarian_books_add_book";
 		}
 		
 		@RequestMapping(value = "/addbook", method = RequestMethod.POST)
-		public String add(@ModelAttribute @Valid Book book, BindingResult result,
-							@RequestParam("gid") Integer gid, Model model) throws Exception {
-			//Set<GenreTranslations> genreTranslation = genreTranslService.getByGenreId(gid);
-			//book.setGenre(genreTranslation);
+		public String add(@ModelAttribute Book book, BindingResult result, HttpServletRequest request,
+							@RequestParam("gid") Integer gid, @RequestParam("file") MultipartFile file, Model model) throws Exception {
+
+			
 			book.setGenre(genreService.getById(gid));
 			if (result.hasErrors()) {
 				model.addAttribute("genre", genreService.getAll());
@@ -79,6 +82,11 @@ public class LibrarianBooksController {
 				return "librarian_books_add_book";
 			} else {
 				book.setCurrentQuantity(book.getGeneralQuantity());
+				if(file != null || !file.isEmpty()) {
+					saveFile(file, book, request);
+				} else {
+					book.setImg("resources/img/default.jpg");
+				}
 				bookService.save(book);
 			}
 			return "redirect:/librarian/books";
@@ -189,5 +197,22 @@ public class LibrarianBooksController {
 			}
 			
 			return "librarian_books";
+		}
+		
+		
+		private void saveFile(MultipartFile file, Book book, HttpServletRequest request) {
+			BufferedImage image = null;
+			String path = request.getSession().getServletContext().getRealPath("/");
+			path = path + "resources\\img\\";
+			try {
+				image = ImageIO.read(file.getInputStream());
+				String originalName = file.getOriginalFilename();
+				String onlyName = originalName.substring(0, originalName.length() - 4);
+				ImageIO.write(image, "jpg",new File(path + onlyName + ".jpg"));
+				ImageIO.write(image, "gif",new File(path + onlyName + ".gif"));
+				book.setImg("resources/img/" + onlyName + ".jpg");
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 		}
 }

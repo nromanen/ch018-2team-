@@ -23,7 +23,7 @@
     </definition>
 
 	<definition name="home" extends="base-template">
-		<put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/books_css_js.jsp" />
+		<put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/home_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/user/home.jsp" /> 
 	</definition>
     

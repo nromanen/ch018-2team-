@@ -74,6 +74,9 @@ public class OrderController {
 	@RequestMapping(method = RequestMethod.GET, value = "{id}")
 	public String orderGet(@PathVariable(value = "id") Integer bookId, Model model,
 			Principal principal) {
+		
+		searchParams.setMainFieldsDefault();
+		
 		if(bookId == null) {
 			return "redirect:/books";
 		}

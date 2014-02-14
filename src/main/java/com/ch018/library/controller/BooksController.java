@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,8 +102,8 @@ public class BooksController {
         
         
         @RequestMapping(method = RequestMethod.GET)
-        public String booksGeneral(Model model) {
-        	
+        public String booksGeneral(HttpServletRequest request, Model model) {
+        	System.out.println(request.getSession().getServletContext().getRealPath("/"));
             model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", 4));
             model.addAttribute("populars", bookService.getLastByField("ordersQuantity", 4));
             logger.info("arrivals {}", bookService.getLastByField("arrivalDate", 4));
