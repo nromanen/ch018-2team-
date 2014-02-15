@@ -1,5 +1,6 @@
 package com.ch018.library.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,9 +8,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.mahout.cf.taste.impl.recommender.CachingRecommender;
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +21,9 @@ import com.ch018.library.DAO.BookDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.Person;
+import com.ch018.library.util.DataModelContainer;
+import com.ch018.library.util.Switch;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -30,7 +37,14 @@ public class BookServiceImpl implements BookService {
         @Autowired
     	private GenreService genreService;
         
-      
+        @Autowired
+        private PersonService personService;
+        
+        @Autowired
+        private DataModelContainer dataModelContainer;
+        
+        @Autowired
+        private Switch switcher;
         	
         private final Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
 
@@ -215,6 +229,30 @@ public class BookServiceImpl implements BookService {
 			return bookDAO.getLastByField(field, quantity);
 		}
 
+		@Override
+		@Transactional
+		public List<Book> getRecommended(int quantity) {
+			List<Book> books = new ArrayList<>();
+			String email = SecurityContextHolder.getContext().getAuthentication().getName();
+			Person person = personService.getByEmail(email);
+			if(person != null && switcher.getRecommendationState()) {
+				dataModelContainer.initDataModel();
+				CachingRecommender cache = dataModelContainer.getCachedRecommender();
+				List<RecommendedItem> items = new ArrayList<>();
+				try {
+					items = cache.recommend(person.getPid(), quantity);
+					books = bookDAO.getBooksFromRecommendedList(items);
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+				}
+			} else {
+				books = getLastByField("rating", quantity);
+			}
+			
+			return books;
+		}
+
+		
 		
 }
 

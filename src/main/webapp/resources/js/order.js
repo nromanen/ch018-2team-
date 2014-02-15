@@ -1,6 +1,9 @@
 $(document).ready(function() {
 	
-	
+
+	$(document).ready(function() {
+		$('#ca-container').contentcarousel();
+	});
 					//raty part
 						var $rate_area = $('#rate_area');
 						if($rate_area.attr('rated') != '') {
@@ -63,7 +66,10 @@ $(document).ready(function() {
 						
 						$('#rate_form_submit').click(function (e) {
 							e.preventDefault();
+							if($('#rate_form').find('input[name="score"]').val() === "")
+								$('#rate_form').find('input[name="score"]').val(0);
 							var data = $('#rate_form').serialize();
+							
 							sendVote(data);
 						});
 						
@@ -335,38 +341,43 @@ function loadComments(){
 		success : function(data) {
 			
 			
-			
-			$.each(data.comments , function (indx, val) {
-				var $list_group_item = $('<div>', {class : 'list-group-item'});
-				var $list_group_item_heading = $('<h5>', {class : 'list-group-item-heading'});
-				var $list_group_item_text = $('<div>', {class : 'list-group-item-text'});
-				var $div_name = $('<div>', {class : 'user_name'});
-				var $div_raty = $('<div>', {class : 'raty'});
-				$div_raty.attr('data-number', '5');
-				$div_raty.raty({
-					readOnly : true,
-					path: $('#path').attr('url')  + '/resources/js/img',
-					half: true,
-					score: val.score
+			if(data.comments.length > 0) {
+				$.each(data.comments , function (indx, val) {
+					var $list_group_item = $('<div>', {class : 'list-group-item'});
+					var $list_group_item_heading = $('<h5>', {class : 'list-group-item-heading'});
+					var $list_group_item_text = $('<div>', {class : 'list-group-item-text'});
+					var $div_name = $('<div>', {class : 'user_name'});
+					var $div_raty = $('<div>', {class : 'raty'});
+					$div_raty.attr('data-number', '5');
+					$div_raty.raty({
+						readOnly : true,
+						path: $('#path').attr('url')  + '/resources/js/img',
+						half: true,
+						score: val.score
+					});
+					$div_name.text(val.name + " " + val.surname);
+					$list_group_item_text.text(val.message);
+					
+					$div_name.appendTo($list_group_item_heading);
+					$div_raty.appendTo($list_group_item_heading);
+					
+					$list_group_item_heading.appendTo($list_group_item);
+					$list_group_item_text.appendTo($list_group_item);
+					
+					$list_group_item.appendTo($('#comments_list_group'));
 				});
-				$div_name.text(val.name + " " + val.surname);
-				$list_group_item_text.text(val.message);
-				
-				$div_name.appendTo($list_group_item_heading);
-				$div_raty.appendTo($list_group_item_heading);
-				
-				$list_group_item_heading.appendTo($list_group_item);
-				$list_group_item_text.appendTo($list_group_item);
-				
-				$list_group_item.appendTo($('#comments_list_group'));
-			});
-			var $list_group_item = $('<div>', {class : 'list-group-item'});
-			var $list_group_item_heading_more = $('<h5>', {class : 'list-group-item-heading', id : 'load_more_li'});
-			var $a = $('<a>', {id : 'load_more_button', href : ''});
-			$a.text('load more');
-			$a.appendTo($list_group_item_heading_more);
-			$list_group_item_heading_more.appendTo($list_group_item);
-			$list_group_item.appendTo($('#comments_list_group'));
+				if(data.pagesQuantity != 1) {
+					var $list_group_item = $('<div>', {class : 'list-group-item'});
+					var $list_group_item_heading_more = $('<h5>', {class : 'list-group-item-heading', id : 'load_more_li'});
+					var $a = $('<a>', {id : 'load_more_button', href : ''});
+					$a.text('load more');
+					$a.appendTo($list_group_item_heading_more);
+					$list_group_item_heading_more.appendTo($list_group_item);
+					$list_group_item.appendTo($('#comments_list_group'));
+				}
+			} else {
+				$('#comments_list_group').text('No comments yet.');
+			}
 			
 			
 			

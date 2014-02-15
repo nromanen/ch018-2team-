@@ -2,6 +2,7 @@ package com.ch018.library.DAO;
 
 import java.util.List;
 
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
@@ -29,5 +30,6 @@ public interface BookDao {
         Integer getMinIntegerField(String field);
         Integer getMaxIntegerField(String field);
         List<Book> getLastByField(String field, int quantity);
+        List<Book> getBooksFromRecommendedList(List<RecommendedItem> items);
         
 }

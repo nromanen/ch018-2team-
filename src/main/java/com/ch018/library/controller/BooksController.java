@@ -103,10 +103,10 @@ public class BooksController {
         
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(HttpServletRequest request, Model model) {
-        	System.out.println(request.getSession().getServletContext().getRealPath("/"));
+
             model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", 4));
-            model.addAttribute("populars", bookService.getLastByField("ordersQuantity", 4));
-            logger.info("arrivals {}", bookService.getLastByField("arrivalDate", 4));
+            model.addAttribute("populars", bookService.getRecommended(10));
+            logger.info("recomended {}", bookService.getRecommended(10));
             return "home";
         }
         
@@ -130,7 +130,6 @@ public class BooksController {
                 model.addAttribute("nothing", true);
             }
             model.addAttribute("books", books);
-            model.addAttribute("num", 1);
             return "books";
         }
 

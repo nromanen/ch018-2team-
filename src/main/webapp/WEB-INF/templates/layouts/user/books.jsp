@@ -16,8 +16,9 @@
 			
 		</div>
 
-	<div class="col-md-2"  id="search_panel">
-
+	<div class="col-md-2">
+	
+	<div class="row"  id="search_panel">
 		<h5><strong><spring:message code="message.parametrize" /></strong></h5>
 		
 		<div class="row">
@@ -66,6 +67,9 @@
 				<button id="searchPost"  class="btn btn-info btn-sm"><spring:message code="message.search" /></button>
 			
 		</div>
+		</div>
+
+	
 	</div>
 	<div class="col-md-10">
 	

@@ -99,6 +99,7 @@ public class OrderController {
 		model.addAttribute("inOrders", ordersService.isPersonOrderedBook(person, book));
 		model.addAttribute("inWishList", wishService.isPersonWishBook(person, book));
 		model.addAttribute("rate", rateService.getRate(person, book));
+		model.addAttribute("recommend", bookService.getRecommended(6));
 		return "order";
 
 	}

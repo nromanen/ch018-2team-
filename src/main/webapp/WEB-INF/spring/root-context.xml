@@ -51,6 +51,10 @@
    	<bean id="switcher" class="com.ch018.library.util.Switch" scope="singleton">
    	</bean>
    	
+   	<bean id="dataModelContainer" class="com.ch018.library.util.DataModelContainer" scope="singleton">
+   		<property name="dataSource" ref="dataSource"/>
+   	</bean>
+   	
    	<bean id="multipartResolver"
     	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
     

@@ -171,8 +171,9 @@
 									action="${pageContext.request.contextPath}/admin/syssetings"
 									method="post">
 									<div class="checkbox">
-										<label> <c:choose>
-												<c:when test="${switcher}">
+										<label> 
+										<c:choose>
+												<c:when test="${switcher.switcher}">
 													<input id="switcher" class="checkbox" type="checkbox" name="switcher"
 														checked="checked"> Local search
                                                 </c:when>
@@ -180,7 +181,19 @@
 													<input id="switcher" class="checkbox" type="checkbox" name="switcher"
 														> Local search
                                                 </c:otherwise>
-											</c:choose>
+										</c:choose>
+										<div class="clearfix"></div>
+										<label> 
+										<c:choose>
+												<c:when test="${switcher.switcher}">
+													<input id="recommendation" class="checkbox" type="checkbox" name="recommendation"
+														checked="checked"> Recomendation for users enabled.
+                                                </c:when>
+												<c:otherwise>
+													<input id="recommendation" class="checkbox" type="checkbox" name="recommendation"
+														> Recomendation for users disabled
+                                                </c:otherwise>
+										</c:choose>
 
 										</label>
 									</div>

@@ -19,6 +19,10 @@ $(document).ready(function() {
 		changeSort($(this).is(':checked'));
 	});
 	
+	$('#recommendation').change(function () {
+		changeRecommendation($(this).is(':checked'));
+	});
+	
 	var path = $('#pagination_info').attr('path');
 	var orderField = $('#pagination_info').attr('orderField');
 	var order = $('#pagination_info').attr('order');
@@ -155,7 +159,7 @@ function changeUserRole(userId, role) {
 
 function changeSort(state) {
 	$.ajax({
-		url : $('#path').attr('path') + "/admin/syssetings",
+		url : $('#path').attr('path') + "/admin/syssetingsSearch",
 		type : "POST",
 		data : {
 			'switcher' : state,
@@ -179,4 +183,31 @@ function changeSort(state) {
 
 	});
 
+}
+
+function changeRecommendation(state) {
+	$.ajax({
+		url : $('#path').attr('path') + "/admin/syssetingsRecommendation",
+		type : "POST",
+		data : {
+			'recommendation' : state,
+		},
+		dataType : "json",
+		contentType : 'application/x-www-form-urlencoded',
+		mimeType : 'application/json',
+		success : function(data) {
+
+			//myOrders();
+			if(data === true)
+				$('#recommendation').attr('checked', 'checked');
+			else
+				$('#recommendation').attr('checked');
+
+		},
+		error : function() {
+			alert(data);
+			$('#recommendation').attr('checked');
+		}
+
+	});
 }

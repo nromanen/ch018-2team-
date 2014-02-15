@@ -66,7 +66,7 @@ public class Book implements Serializable {
 		private int pages;
 	
 		@Size(min = 0)
-		@Column(name = "description")
+		@Column(name = "description", columnDefinition="TEXT")
 		private String description;
 	
 		@Column(name = "bookcase")

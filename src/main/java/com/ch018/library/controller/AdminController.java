@@ -66,17 +66,14 @@ public class AdminController {
         	
             model.addAttribute("persons", persons);
             model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_LIBRARIAN"));
-            model.addAttribute("switcher", switcher.getSwitcher());
+            model.addAttribute("switcher", switcher);
             return "admin";
         }
         
-        @RequestMapping(value = "/syssetings", method = RequestMethod.POST)
-        public ResponseEntity<String> changeSysSettings(@RequestParam(value = "switcher", required = false) Boolean sw) {
+        @RequestMapping(value = "/syssetingsSearch", method = RequestMethod.POST)
+        public ResponseEntity<String> changeSysSettings(@RequestParam(value = "switcher") Boolean sw) {
         	logger.info("switcher = {}", switcher.getSwitcher());
-        	if(sw == null) {
-        		switcher.setSwitcher(Boolean.FALSE);
-        		return new ResponseEntity<>("false", HttpStatus.OK);
-        	}
+        	
         	if(sw) {
         		switcher.setSwitcher(Boolean.TRUE);
         		return new ResponseEntity<>("true", HttpStatus.OK);
@@ -85,6 +82,20 @@ public class AdminController {
         		switcher.setSwitcher(Boolean.FALSE);
         		return new ResponseEntity<>("false", HttpStatus.OK);
         	}
+        }
+        
+        @RequestMapping(value = "/syssetingsRecommendation", method = RequestMethod.POST)
+        public ResponseEntity<String> changeRecommendationSetting(@RequestParam(value = "recommendation") Boolean sw) {
+        	logger.info("recommend = {}", switcher.getRecommendationState());
+        	if(sw) {
+        		switcher.setRecommendationState(Boolean.TRUE);
+        		return new ResponseEntity<>("true", HttpStatus.OK);
+        	}
+        	else {
+        		switcher.setRecommendationState(Boolean.FALSE);
+        		return new ResponseEntity<>("false", HttpStatus.OK);
+        	}
+        	
         }
         
         
@@ -110,4 +121,6 @@ public class AdminController {
                 throw new IncorrectInput("problems during changing role");
             }
         }
+        
+        
 }

@@ -2,6 +2,7 @@ package com.ch018.library.DAO;
 
 import java.util.List;
 
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -188,6 +189,28 @@ public class BookDaoImpl implements BookDao {
 			Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
 			List<Book> books = (List<Book>) criteria.addOrder(Order.desc(field)).setMaxResults(quantity).list();
 			return books;
+		}
+
+		@Override
+		public List<Book> getBooksFromRecommendedList(List<RecommendedItem> items) {
+			Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
+			Disjunction orDisjunction = Restrictions.disjunction();
+			
+			for(RecommendedItem item : items) {
+				orDisjunction.add(Restrictions.eq("bId", (int) item.getItemID()));
+			}
+			
+			criteria.add(orDisjunction);
+			
+			List<Book> books = criteria.list();
+			
+			logger.info("recommended books = {}", books);
+			
+			if(books.isEmpty()) 
+				books = getLastByField("rating", 6);
+			
+			return books;
+			
 		}
 
 		

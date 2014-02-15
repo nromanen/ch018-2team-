@@ -37,4 +37,5 @@ public interface BookService {
              Integer getMinIntegerField(String field);
              Integer getMaxIntegerField(String field);
              List<Book> getLastByField(String field, int quantity);
+             List<Book> getRecommended(int quantity);
 }

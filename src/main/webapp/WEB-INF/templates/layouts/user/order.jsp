@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="row well">
 	
 	<sec:authorize access="isAuthenticated()">
@@ -91,6 +92,10 @@
 								<b><spring:message code="message.libDescription" />: </b> ${book.description}
 							</div>
 						</div>
+						<div class="row" id="book_rating">
+							<div class="raty" data-score="${book.rating}""></div>
+							<div>(${book.votes} votes)</div>
+						</div> 
 					</div>
 				</div>
 				<sec:authorize access="isAuthenticated()">
@@ -246,7 +251,37 @@
 			</div>
 			
 		</div>
-
+		
+		<sec:authorize access="isAuthenticated()">
+			
+			<div class="row" id="recommended">
+				<div class="text-info" style="margin-left: 20px;"><h4>Recommended</h4></div>
+					<c:set var="i" value="1" scope="page" />
+						<c:forEach var="book" items="${recommend}">
+				
+								
+									<div class="col-md-2">
+										<div class="item" id="i${book.bId}">
+											<div class="item-image">
+												<a
+													href="${pageContext.request.contextPath}/books/order/${book.bId}">
+													<img src="${pageContext.request.contextPath}/${fn:substring(book.img, 0, (fn:length(book.img) - 4))}.gif" alt="" class="img-responsive">
+												</a>
+						
+											</div>
+											<div class="item-details">
+												<h6><a href="${pageContext.request.contextPath}/books/order/${book.bId}">${book.title}</a></h6>
+												
+											</div>
+											<div class="clearfix"></div>
+										</div>
+									</div>
+								
+							
+							<c:set var="i" value="${i + 1}" scope="page" />
+						</c:forEach>
+			</div>
+	</sec:authorize>
 
 	</div>
 

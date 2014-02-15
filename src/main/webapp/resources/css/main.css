@@ -42,8 +42,15 @@ ul li a{
 
 #search_panel  .row{
 	
-	padding: 0 10px;
+	padding: 0 24px;
 	
+}
+
+#recommended {
+	border-radius: 15px;
+	background: #EAEAEA;
+	margin-top: 20px;
+	padding: 10px;
 }
 
 .row.well{
@@ -53,3 +60,14 @@ ul li a{
 #left_main{
 	margin-left: 50px;
 }
+
+#order_book_description {
+	max-height: 70px;
+	overflow: hidden;
+}
+#order_book_description:hover  {
+	max-height: 100%;
+	overflow: visible;
+
+}
+

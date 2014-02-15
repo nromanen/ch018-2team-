@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,16 +46,11 @@ public class LibrarianBooksController {
 		@Autowired
 		private BookInUseService bookInUseService;
 		
-
-		
 		final Logger logger = LoggerFactory.getLogger(LibrarianBooksController.class);
 		
-		private Locale locale;
 		
 		@RequestMapping(value = "")
 		public String bookList(Model model) {
-			
-			locale = LocaleContextHolder.getLocale();
 			
 			model.addAttribute("books", bookService.getAll());
 			return "librarian_books";
@@ -71,15 +68,14 @@ public class LibrarianBooksController {
 		}
 		
 		@RequestMapping(value = "/addbook", method = RequestMethod.POST)
-		public String add(@ModelAttribute Book book, BindingResult result, HttpServletRequest request,
+		public ResponseEntity<String> add(@ModelAttribute Book book, BindingResult result, HttpServletRequest request,
 							@RequestParam("gid") Integer gid, @RequestParam("file") MultipartFile file, Model model) throws Exception {
 
 			
 			book.setGenre(genreService.getById(gid));
 			if (result.hasErrors()) {
-				model.addAttribute("genre", genreService.getAll());
 				logger.info("Error Addind Book" + result.toString());
-				return "librarian_books_add_book";
+				return new ResponseEntity<String>(result.toString(), HttpStatus.BAD_REQUEST);
 			} else {
 				book.setCurrentQuantity(book.getGeneralQuantity());
 				if(file != null || !file.isEmpty()) {
@@ -89,7 +85,7 @@ public class LibrarianBooksController {
 				}
 				bookService.save(book);
 			}
-			return "redirect:/librarian/books";
+			return new ResponseEntity<>("{}", HttpStatus.OK);
 		}
 		
 		
@@ -138,7 +134,6 @@ public class LibrarianBooksController {
 		
 		@RequestMapping(value = "/advancedsearch", method = RequestMethod.GET)
 		public String advancedSearch(Model model) throws Exception {
-			locale = LocaleContextHolder.getLocale();
 			Book book = new Book();
 			model.addAttribute("book", book);
 			model.addAttribute("genre", genreService.getAll());
@@ -148,11 +143,7 @@ public class LibrarianBooksController {
 		@RequestMapping(value = "/advancedsearch", method = RequestMethod.POST)
 		public String advancedSearch(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("genreId") Integer gid, Model model) throws Exception {
 			
-			locale = LocaleContextHolder.getLocale();
-			
 			List<Book> booksList = bookService.advancedSearch(book);
-			
-			//HashMap<Book, String> books = bookService.getBooksByLocale(booksList, locale);
 			
 			if (booksList.size() > 0) {
 				model.addAttribute("books", booksList);
@@ -187,8 +178,6 @@ public class LibrarianBooksController {
 			}
 			
 			List<Book> booksList = bookService.simpleSearch(request);
-			
-			//HashMap<Book, String> books = bookService.getBooksByLocale(booksList, locale);
 			
 			if (booksList.size() > 0) {
 				model.addAttribute("books", booksList);
