@@ -14,6 +14,7 @@ public interface RateDao {
 				
 		void save(Rate rate);
 		Rate getRate(Person person, Book book);
+		long getRatesCount();
 		
 	
 }

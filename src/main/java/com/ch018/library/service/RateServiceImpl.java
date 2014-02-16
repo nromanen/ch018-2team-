@@ -59,12 +59,15 @@ public class RateServiceImpl implements RateService {
 			rate.setRateDate(new Date());
 			
 			try {
-				rateDao.save(rate);
-				dataModelContainer.refresh();
+				rateDao.save(rate);	
 			} catch (ConstraintViolationException e) {
 				throw new BookAlreadyRatedException();
 			}
 			
+			if(dataModelContainer.isInit()) {
+				dataModelContainer.refresh();
+			}
+
 			float oldBookRating = book.getRating();
 			int oldBookVotes = book.getVotes();
 			
@@ -91,5 +94,13 @@ public class RateServiceImpl implements RateService {
 			return rateDao.getRate(person, book);
 		}
 
+		@Override
+		@Transactional
+		public long getRatesCount() {
+			
+			return rateDao.getRatesCount();
+		}
+
 	
+		
 }

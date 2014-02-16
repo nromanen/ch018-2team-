@@ -21,9 +21,9 @@ public interface BooksInUseDao {
         List<BooksInUse> getAll();
         List<BooksInUse> getBooksInUseByPerson(Person person);
         List<BooksInUse> getBooksInUseByBook(Book book);
-        List<BooksInUse> getBooksInUseByIssueDate(Date issue);
         List<BooksInUse> getBooksInUseByReturnDate(Date returnDateFrom);
         Date getMinReturnDate(Book book);
         boolean isPersonHaveBook(Person person, Book book); 
         List<BooksInUse> getBooksInUseByReturnDateLe(Date date);
+        long getBooksInUseCountForPerson(Person person);
 }

@@ -63,7 +63,7 @@ public class WishListControllerTest {
 		person.setName("testSurname");
 		person.setEmail("testEmail");
 		person.setPassword("111111");
-		person.setProle("ROLE_USER");
+		person.setPersonRole("ROLE_USER");
 		
 		book = new Book();
 		book.setbId(1);

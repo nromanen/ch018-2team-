@@ -73,15 +73,7 @@
 							       <form:input class="form-control" path="shelf"/>
 							       <form:errors path="shelf" cssClass="error" style="color: red;"/> 
 							    </div>
-						 </div>       
-				                 
-				         <div class="form-group">
-							    <label  class="col-sm-2 control-label"><spring:message code="message.libTerm"/></label>
-							    <div class="col-sm-10">
-							        <form:input class="form-control" path="term"/>
-							        <form:errors path="term" cssClass="error" style="color: red;"/>
-							    </div>
-						 </div>
+						 </div> 
 						 
 				         <div class="form-group">
 							    <label  class="col-sm-2 control-label"><spring:message code="message.libGeneralQuantity"/></label>

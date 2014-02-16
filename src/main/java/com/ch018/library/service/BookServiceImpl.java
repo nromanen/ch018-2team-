@@ -22,6 +22,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
+import com.ch018.library.util.Constans;
 import com.ch018.library.util.DataModelContainer;
 import com.ch018.library.util.Switch;
 
@@ -42,6 +43,9 @@ public class BookServiceImpl implements BookService {
         
         @Autowired
         private DataModelContainer dataModelContainer;
+        
+        @Autowired
+        private RateService rateService;
         
         @Autowired
         private Switch switcher;
@@ -150,69 +154,6 @@ public class BookServiceImpl implements BookService {
 
 		@Override
 		@Transactional
-		public void update(Book book, int genreId) {
-			
-			Book bookEdit;
-			bookEdit = getBookById(book.getbId());
-			
-			bookEdit.setTitle(book.getTitle());
-			bookEdit.setAuthors(book.getAuthors());
-			bookEdit.setYear(book.getYear());
-			bookEdit.setPublisher(book.getPublisher());
-			bookEdit.setPages(book.getPages());
-			bookEdit.setDescription(book.getDescription());
-			bookEdit.setImg(book.getImg());
-			bookEdit.setShelf(book.getShelf());
-			bookEdit.setTerm(book.getTerm());
-			bookEdit.setGeneralQuantity(book.getGeneralQuantity());
-			//bookEdit.setGenre(genreTranslService.getByGenreId(genreId));
-			
-			update(bookEdit);
-		}
-
-		@Override
-		@Transactional
-		public HashMap<Book, String> getAllByLocale(Locale locale) {
-			
-			HashMap<Book, String> localBooks = new HashMap<>();
-			List<Book> book = getAll();
-			//Set<GenreTranslations> genre;
-			
-			/*for (Book bk : book) {
-				genre = bk.getGenreNew();
-				localBooks.put(bk, genreTranslService.getDescription(bk, locale));
-			}
-			*/
-			return localBooks;
-		}
-
-		@Override
-		@Transactional
-		public HashMap<Book, String> getBooksByLocale(List<Book> book,
-				Locale locale) {
-			
-			HashMap<Book, String> localBooks = new HashMap<>();
-			/*Set<GenreTranslations> genre;
-			
-			for (Book bk : book) {
-				genre = bk.getGenreNew();
-				localBooks.put(bk, genreTranslService.getDescription(bk, locale));
-			}*/
-			
-			return localBooks;
-		}
-		
-		@Override
-		public HashMap<Book, String> getBookByLocale(Book book, Locale locale) {
-			
-			HashMap<Book, String> localBook = new HashMap<>();
-			//localBook.put(book, genreTranslService.getDescription(book, locale));
-			
-			return localBook;
-		}
-
-		@Override
-		@Transactional
 		public Integer getMinIntegerField(String field) {
 			return bookDAO.getMinIntegerField(field);
 		}
@@ -233,12 +174,16 @@ public class BookServiceImpl implements BookService {
 		@Transactional
 		public List<Book> getRecommended(int quantity) {
 			List<Book> books = new ArrayList<>();
+			List<RecommendedItem> items;
+			CachingRecommender cache;
 			String email = SecurityContextHolder.getContext().getAuthentication().getName();
 			Person person = personService.getByEmail(email);
-			if(person != null && switcher.getRecommendationState()) {
+			
+			if(person != null &&  switcher.getRecommendationState()
+								&& rateService.getRatesCount() > Constans.MIN_COUNT_FOR_RECOMMEND) {
+
 				dataModelContainer.initDataModel();
-				CachingRecommender cache = dataModelContainer.getCachedRecommender();
-				List<RecommendedItem> items = new ArrayList<>();
+				cache = dataModelContainer.getCachedRecommender();
 				try {
 					items = cache.recommend(person.getPid(), quantity);
 					books = bookDAO.getBooksFromRecommendedList(items);

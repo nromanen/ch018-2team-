@@ -13,7 +13,6 @@ $(document).ready(function() {
 			mimeType : 'application/json',
 
 			success : function() {
-				alert("aaa");
 				location.href = $('#genre_form').attr('action');
 
 			},

@@ -16,28 +16,27 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "BooksInUse", uniqueConstraints = { @UniqueConstraint(columnNames = {"pid", "bid" }) })
+@Table(name = "BooksInUse", uniqueConstraints = { @UniqueConstraint(columnNames = {"personId", "bookId" }) })
 public class BooksInUse implements Serializable {
 	
+
+		private static final long serialVersionUID = 2738859313687793456L;
+
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		@Column(name = "id")
 		private int id;
 	
 		@ManyToOne()
-		@JoinColumn(name = "pid", referencedColumnName = "pid")
+		@JoinColumn(name = "personId", referencedColumnName = "personId")
 		private Person person;
 	
 		@ManyToOne()
-		@JoinColumn(name = "bid", referencedColumnName = "bid")
+		@JoinColumn(name = "bookId", referencedColumnName = "bookId")
 		private Book book;
 	
 		@Temporal(value = TemporalType.TIMESTAMP)
-		@Column(name = "issue_date")
-		private Date issueDate;
-	
-		@Temporal(value = TemporalType.TIMESTAMP)
-		@Column(name = "return_date")
+		@Column(name = "returnDate")
 		private Date returnDate;
 	
 		public BooksInUse() {
@@ -66,15 +65,7 @@ public class BooksInUse implements Serializable {
 		public void setBook(Book book) {
 			this.book = book;
 		}
-	
-		public Date getIssueDate() {
-			return issueDate;
-		}
-	
-		public void setIssueDate(Date issueDate) {
-			this.issueDate = issueDate;
-		}
-	
+
 		public Date getReturnDate() {
 			return returnDate;
 		}
@@ -120,7 +111,7 @@ public class BooksInUse implements Serializable {
 		@Override
 		public String toString() {
 			return "BooksInUse [id=" + id + ", person=" + person + ", book=" + book
-					+ ", issueDate=" + issueDate + ", returnDate=" + returnDate
+					+ ", returnDate=" + returnDate
 					+ "]";
 		}
 

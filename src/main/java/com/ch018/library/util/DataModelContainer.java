@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.ch018.library.service.RateService;
+
 public class DataModelContainer {
 
 	@Autowired
@@ -26,7 +28,7 @@ public class DataModelContainer {
 	private Recommender recommender;
 	
 	private CachingRecommender cachedRecommender;
-	
+		
 	private final Logger logger = LoggerFactory.getLogger(DataModelContainer.class);
 	
 	public void initDataModel() {
@@ -36,7 +38,7 @@ public class DataModelContainer {
 		if(dataModel == null) {
 		
 			try {
-				dataModel = new MySQLJDBCDataModel(dataSource, "rates", "pid", "bid", "score", "rate_date");
+				dataModel = new MySQLJDBCDataModel(dataSource, "Rate", "personId", "bookId", "score", "rateDate");
 				
 				UserSimilarity similarity = new PearsonCorrelationSimilarity(dataModel);
 		
@@ -54,10 +56,15 @@ public class DataModelContainer {
 		}
 	}
 	
+	public boolean isInit() {
+		return dataModel != null;
+	}
+	
 	public void refresh() {
+		logger.info("cache recomend = {}", cachedRecommender);
 		cachedRecommender.refresh(null);
 	}
-
+	
 	public CachingRecommender getCachedRecommender() {
 		return cachedRecommender;
 	}
@@ -74,6 +81,7 @@ public class DataModelContainer {
 		this.dataSource = dataSource;
 		logger.info("DATASOURCE SET = {}", this.dataSource);
 	}
+	
 	
 	
 	

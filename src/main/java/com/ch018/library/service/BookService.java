@@ -24,16 +24,11 @@ public interface BookService {
              List<Book> getBooksByAuthors(String authors);
              List<Book> getBooksByYear(int year);
              List<Book> getBooksByGenre(Genre genre);
-            // List<Book> getBooksComplex(SearchParams searchParams);
              List<Book> getBooksByPublisher(String publisher);
              List<Book> getBooksByPagesEq(int pages);
              List<Book> advancedSearch(Book book);
              List<Book> simpleSearch(String query);
              Map<BooksInUse, Integer> getHolders(Book book);
-             void update(Book book, int genreId);
-             HashMap<Book, String> getAllByLocale(Locale locale);
-             HashMap<Book, String> getBooksByLocale(List<Book> book, Locale locale);
-             HashMap<Book, String> getBookByLocale(Book book, Locale locale);
              Integer getMinIntegerField(String field);
              Integer getMaxIntegerField(String field);
              List<Book> getLastByField(String field, int quantity);

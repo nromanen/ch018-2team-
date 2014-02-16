@@ -27,9 +27,9 @@ public interface OrdersDao {
         List<Orders> getOrdersInHour();
         int getBookIdByPerson(Person person);
         boolean isPersonOrderedBook(Person person, Book book);
-        List<Orders> getOrdersForChanging(Book book, Date returnDate);
         List<Orders> getOrdersBetweenDatesWithoutPerson(Person person, Book book, Date firstDate, Date secondDate);
         long getOrdersCountWithoutPerson(Book book, Person person);
+        long getOrdersCountForPerson(Person person);
         Orders getFirstOrderAfterDateWithoutPerson(Date date, Person person, Book book);
 
 }

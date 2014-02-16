@@ -26,12 +26,15 @@ import com.ch018.library.util.Roles;
  */
 
 @Entity
-@Table(name = "persons")
-@Proxy(lazy = false)
+@Table(name = "Person")
 public class Person implements Serializable {
 	
+
+		private static final long serialVersionUID = -3583908570640889000L;
+
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		@Column(name = "personId")
 		private int pid;
 	
 		@NotEmpty
@@ -53,27 +56,24 @@ public class Person implements Serializable {
 		@Column(name = "password", nullable = false)
 		private String password;
 	
-		@Column(name = "prole")
+		@Column(name = "personRole")
 		private String personRole;
 	
 		@NotEmpty
 		@Column(name = "cellphone")
 		private String cellphone;
 	
-		@Column(name = "confirm")
-		private boolean confirm;
-	
 		@Column(name = "sms")
 		private boolean sms;
 	
-		@Column(name = "mailconfirm")
+		@Column(name = "mailConfirm")
 		private boolean mailConfirm;
 	
-		@Column(name = "mailkey")
-		private String mailKey;
+		@Column(name = "confirmationKey")
+		private String confirmationKey;
 	
-		@Column(name = "multi")
-		private Integer multiBook = 0;
+		@Column(name = "booksOnHands")
+		private Integer booksOnHands = 0;
 	
 		@Column(name = "timelyreturn")
 		private int timelyReturn;
@@ -82,7 +82,7 @@ public class Person implements Serializable {
 		private int untimekyReturn;
 	
 		@NotNull
-		@Column(name = "booksallowed")
+		@Column(name = "booksAllowed")
 		private int booksAllowed;
 	
 		@Column(name = "failedorders")
@@ -92,14 +92,14 @@ public class Person implements Serializable {
 		@Column(name = "generalratio")
 		private double generalRating;
 	
-		@OneToMany(targetEntity = BooksInUse.class, mappedBy = "person")
-		private Set<Book> booksInUse = new HashSet<Book>();
+		@OneToMany(mappedBy = "person")
+		private Set<BooksInUse> booksInUse;
 	
-		@OneToMany(targetEntity = Orders.class, mappedBy = "person")
-		private Set<Book> orders = new HashSet<>();
+		@OneToMany(mappedBy = "person")
+		private Set<Orders> orders;
 	
-		@OneToMany(targetEntity = WishList.class, mappedBy = "person")
-		private Set<Book> wishes = new HashSet<>();
+		@OneToMany(mappedBy = "person")
+		private Set<WishList> wishes;
 		
 		@OneToMany(mappedBy = "person")
 		private Set<Rate> rates = new HashSet<>();
@@ -170,14 +170,6 @@ public class Person implements Serializable {
 			this.cellphone = cellphone;
 		}
 	
-		public boolean isConfirm() {
-			return confirm;
-		}
-	
-		public void setConfirm(boolean confirm) {
-			this.confirm = confirm;
-		}
-	
 		public boolean isSms() {
 			return sms;
 		}
@@ -186,11 +178,11 @@ public class Person implements Serializable {
 			this.sms = sms;
 		}
 	
-		public String getProle() {
+		public String getPersonRole() {
 			return personRole;
 		}
 	
-		public void setProle(String prole) {
+		public void setPersonRole(String prole) {
 			this.personRole = Roles.valueOf(prole).toString();
 		}
 	
@@ -234,38 +226,44 @@ public class Person implements Serializable {
 			this.generalRating = generalRating;
 		}
 	
-		public Set<Book> getBooksInUse() {
+		public Set<BooksInUse> getBooksInUse() {
 			return booksInUse;
 		}
-	
-		public void setBooksInUse(Set<Book> booksInUse) {
+
+		public void setBooksInUse(Set<BooksInUse> booksInUse) {
 			this.booksInUse = booksInUse;
 		}
-	
-		public Set<Book> getOrders() {
+
+		public Set<Orders> getOrders() {
 			return orders;
 		}
-	
-		public void setOrders(Set<Book> orders) {
+
+		public void setOrders(Set<Orders> orders) {
 			this.orders = orders;
 		}
-	
-		public Set<Book> getWishes() {
+
+		public Set<WishList> getWishes() {
 			return wishes;
 		}
-	
-		public void setWishes(Set<Book> wishes) {
+
+		public void setWishes(Set<WishList> wishes) {
 			this.wishes = wishes;
 		}
-	
-		
-	
-		public Integer getMultiBook() {
-			return multiBook;
+
+		public Set<Rate> getRates() {
+			return rates;
+		}
+
+		public void setRates(Set<Rate> rates) {
+			this.rates = rates;
+		}
+
+		public Integer getBooksOnHands() {
+			return booksOnHands;
 		}
 	
-		public void setMultiBook(Integer multiBook) {
-			this.multiBook = multiBook;
+		public void setBooksOnHands(Integer booksOnHands) {
+			this.booksOnHands = booksOnHands;
 		}
 	
 		public boolean isMailConfirm() {
@@ -276,12 +274,12 @@ public class Person implements Serializable {
 			this.mailConfirm = mailConfirm;
 		}
 	
-		public String getMailKey() {
-			return mailKey;
+		public String getConfirmationKey() {
+			return confirmationKey;
 		}
 	
-		public void setMailKey(String mailKey) {
-			this.mailKey = mailKey;
+		public void setConfirmationKey(String confirmationKey) {
+			this.confirmationKey = confirmationKey;
 		}
 	
 		@Override
@@ -317,9 +315,9 @@ public class Person implements Serializable {
 			return "Person [pid=" + pid + ", name=" + name + ", surname=" + surname
 					+ ", email=" + email + ", password=" + password
 					+ ", personRole=" + personRole + ", cellphone=" + cellphone
-					+ ", confirm=" + confirm + ", sms=" + sms + ", mailConfirm="
-					+ mailConfirm + ", mailKey=" + mailKey + ", multiBook="
-					+ multiBook + ", timelyReturn=" + timelyReturn
+					+  ", sms=" + sms + ", mailConfirm="
+					+ mailConfirm + ", confirmationKey=" + confirmationKey + ", booksOnHands="
+					+ booksOnHands + ", timelyReturn=" + timelyReturn
 					+ ", untimekyReturn=" + untimekyReturn + ", booksAllowed="
 					+ booksAllowed + ", failedOrders=" + failedOrders
 					+ ", generalRating=" + generalRating + "]";

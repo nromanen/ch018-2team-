@@ -114,7 +114,7 @@ public class AdminController {
         public @ResponseBody String changeRole(@RequestParam("id") Integer id, @RequestParam("role") String role) throws IncorrectInput {
             try {
                 Person person = personService.getById(id);
-                person.setProle(role);
+                person.setPersonRole(role);
                 personService.update(person);
                 return new JSONObject().toString();
             } catch(Exception e) {

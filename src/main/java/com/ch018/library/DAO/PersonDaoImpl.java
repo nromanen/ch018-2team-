@@ -41,7 +41,7 @@ public class PersonDaoImpl implements PersonDao {
 		public List<Person> getPersonsBySurname(String surname) {
 	
 			return factory.getCurrentSession().createCriteria(Person.class)
-					.add(Restrictions.like("surname", "%" + surname + "%")).list();
+						.add(Restrictions.like("surname", "%" + surname + "%")).list();
 		}
 	
 		@Override
@@ -94,14 +94,16 @@ public class PersonDaoImpl implements PersonDao {
 	
 		@Override
 		public Person getByEmail(String email) {
+			Person person = null;
+			Criteria criteria = factory.getCurrentSession().createCriteria(Person.class);
+			criteria.add(Restrictions.eq("email", email));
 			try {
-				return (Person) factory.getCurrentSession()
-						.createCriteria(Person.class)
-						.add(Restrictions.eq("email", email)).uniqueResult();
+				person = (Person) criteria.uniqueResult();
 			} catch (Exception e) {
-				logger.error("in getByEmail[Dao] {}", e.getMessage());
-				return null;
+				logger.error(e.getMessage());
 			}
+			
+			return person;
 	
 		}
 	
@@ -159,7 +161,6 @@ public class PersonDaoImpl implements PersonDao {
 	
 		@Override
 		public List<Person> simpleSearch(String request) {
-			// TODO Auto-generated method stub
 			if (!request.equals("")) {
 	
 				Session session = factory.openSession();
@@ -186,8 +187,6 @@ public class PersonDaoImpl implements PersonDao {
 	
 		@Override
 		public List<Person> advancedSearch(Person person) {
-			// TODO Auto-generated method stub
-	
 			Session session = factory.openSession();
 	
 			Criteria criteria = session.createCriteria(Person.class);
@@ -215,16 +214,16 @@ public class PersonDaoImpl implements PersonDao {
 	
 		@Override
 		public Person getPersonByKey(String key) {
+			Person person = null;
+			Criteria criteria = factory.getCurrentSession().createCriteria(Person.class);
+			criteria.add(Restrictions.eq("confirmationKey", key));
 			try {
-				
-				return (Person) factory.getCurrentSession()
-						.createCriteria(Person.class)
-						.add(Restrictions.eq("mailKey", key)).uniqueResult();
+				person = (Person) criteria.uniqueResult();
 			} catch (Exception e) {
 				logger.error("error during mailkey {} search", key);
-				return null;
 			}
 	
+			return person;
 		}
 
 		@Override

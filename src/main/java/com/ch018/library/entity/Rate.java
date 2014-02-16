@@ -17,8 +17,8 @@ import javax.persistence.UniqueConstraint;
 
 
 @Entity
-@Table(name = "rates", 
-        uniqueConstraints = { @UniqueConstraint( columnNames = { "pid", "bid" } ) })
+@Table(name = "Rate", 
+        uniqueConstraints = { @UniqueConstraint( columnNames = { "personId", "bookId" } ) })
 public class Rate implements Serializable {
 
 
@@ -30,11 +30,11 @@ public class Rate implements Serializable {
 	    private int id;
 		
 		@ManyToOne(fetch = FetchType.EAGER)
-        @JoinColumn(name = "pid", referencedColumnName = "pid")
+        @JoinColumn(name = "personId", referencedColumnName = "personId")
         private Person person;
         
         @ManyToOne(fetch = FetchType.EAGER)
-        @JoinColumn(name = "bid", referencedColumnName = "bid")
+        @JoinColumn(name = "bookId", referencedColumnName = "bookId")
         private Book book;
         
         @Column(name = "score")
@@ -43,7 +43,7 @@ public class Rate implements Serializable {
         @Column(name = "message")
         private String message;
         
-        @Column(name = "rate_date")
+        @Column(name = "rateDate")
         @Temporal(TemporalType.TIMESTAMP)
         private Date rateDate;
 

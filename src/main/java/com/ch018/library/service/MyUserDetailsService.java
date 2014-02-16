@@ -34,7 +34,7 @@ public class MyUserDetailsService implements UserDetailsService {
             logger.info("user {} not found", username);
             throw new UsernameNotFoundException(username + "Not Found");
         }
-        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(person.getProle());   
+        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(person.getPersonRole());   
         UserDetails user =  new User(person.getEmail(), person.getPassword(), person.isMailConfirm(), true, true, true, authorities);
         logger.info("user {} login", user);
         return user;  

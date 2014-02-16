@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.antlr.grammar.v3.ANTLRv3Parser.throwsSpec_return;
 import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -40,8 +41,7 @@ public class OrdersServiceImpl implements OrdersService {
 		private static final int ADDITIONAL_DAY_IF_SAT = 2;
 		private static final int MAX_TRIES_FOR_ORDER_FINDING = 6;
 		
-		private final Logger logger = LoggerFactory
-				.getLogger(OrdersServiceImpl.class);
+		private final Logger logger = LoggerFactory.getLogger(OrdersServiceImpl.class);
 	
 		@Autowired
 		private OrdersDao ordersDao;
@@ -78,12 +78,9 @@ public class OrdersServiceImpl implements OrdersService {
 		public void save(Orders order) {
 			ordersDao.save(order);
 			Book book = order.getBook();
-			int ordersQuantity = book.getOrdersQuantity() + 1;
-			book.setOrdersQuantity(ordersQuantity);
 			bookDao.update(book);
 			if (wishService.isPersonWishBook(order.getPerson(), order.getBook()))
-				wishService.delete(wishService.getWishByPersonBook(
-						order.getPerson(), order.getBook()));
+				wishService.delete(wishService.getWishByPersonBook(order.getPerson(), order.getBook()));
 		}
 	
 		@Override
@@ -149,8 +146,8 @@ public class OrdersServiceImpl implements OrdersService {
 		@Override
 		@Transactional
 		public boolean isLimitReached(Person person) {
-			int ordersCount = ordersDao.getOrderByPerson(person).size();
-			int useCount = useDao.getBooksInUseByPerson(person).size();
+			long ordersCount = ordersDao.getOrdersCountForPerson(person);
+			long useCount = useDao.getBooksInUseCountForPerson(person);
 	
 			if (person.getBooksAllowed() > ordersCount + useCount)
 				return false;
@@ -164,9 +161,9 @@ public class OrdersServiceImpl implements OrdersService {
 		public void issue(Orders order, int term) {
 			Person person = order.getPerson();
 	
-			int booksOnHands = person.getMultiBook();
+			int booksOnHands = person.getBooksOnHands();
 	
-			person.setMultiBook(++booksOnHands);
+			person.setBooksOnHands(++booksOnHands);
 	
 			personService.update(person);
 	
@@ -241,6 +238,11 @@ public class OrdersServiceImpl implements OrdersService {
 			else if (currentQuantity <= 0) {
 				minDate = booksInUseService.getMinReturnDate(book);
 			}
+			
+			if(minDate == null) {
+				throw new BookUnavailableException();
+			}
+			
 			int loopCount = 0;
 			calendar.setTime(minDate);
 			
@@ -362,7 +364,6 @@ public class OrdersServiceImpl implements OrdersService {
 			tmpDate.setTime(orderDate);
 			tmpDate.add(Calendar.DATE, orderDays);
 			order.setReturnDate(tmpDate.getTime());;
-			order.setChanged(false);
 			update(order);
 			logger.info("person {} edit order for book {} from  {} to {}",
 					person, book, orderDate, tmpDate.getTime());

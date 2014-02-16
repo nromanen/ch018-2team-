@@ -13,5 +13,6 @@ public interface RateService {
 	void save(Rate rate);
 	void addRate(Rate rate, Integer bookId) throws BookAlreadyRatedException;
 	Rate getRate(Person person, Book book);
+	long getRatesCount();
 	
 }

@@ -1,5 +1,6 @@
 package com.ch018.library.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.util.Constans;
 import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsBook;
 import com.ch018.library.util.SearchParamsPerson;
@@ -187,17 +189,22 @@ public class BookDaoImpl implements BookDao {
 		@Override
 		public List<Book> getLastByField(String field, int quantity) {
 			Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
-			List<Book> books = (List<Book>) criteria.addOrder(Order.desc(field)).setMaxResults(quantity).list();
+			List<Book> books = criteria.addOrder(Order.desc(field)).setMaxResults(quantity).list();
 			return books;
 		}
 
 		@Override
 		public List<Book> getBooksFromRecommendedList(List<RecommendedItem> items) {
+			
+			if(items.isEmpty()) 
+				return getLastByField("rating", Constans.AMOUNT_OF_RECOMMEND);
+			
 			Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
 			Disjunction orDisjunction = Restrictions.disjunction();
 			
 			for(RecommendedItem item : items) {
 				orDisjunction.add(Restrictions.eq("bId", (int) item.getItemID()));
+
 			}
 			
 			criteria.add(orDisjunction);
@@ -205,9 +212,7 @@ public class BookDaoImpl implements BookDao {
 			List<Book> books = criteria.list();
 			
 			logger.info("recommended books = {}", books);
-			
-			if(books.isEmpty()) 
-				books = getLastByField("rating", 6);
+
 			
 			return books;
 			

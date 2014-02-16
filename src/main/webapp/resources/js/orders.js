@@ -22,30 +22,9 @@ $(document).ready(function() {
 					
 					$(".calendar").each(
 									function() {
-										var changed = $(this).parent().find(
-												".changed").val();
+										
 										var bid = $(this).attr('bid');
 										console.log("bid " + bid);
-										/*
-										 * if(changed === 'true'){
-										 * 
-										 * var $btn = $(this).next();
-										 * $btn.attr('data-toggle', 'popover');
-										 * $btn.attr('data-content', 'choose
-										 * another date'); $btn.popover('show');
-										 * }else if(orderDateLong > (minDateLong +
-										 * (24*3600*1000))){
-										 * 
-										 * var $btn = $(this).next();
-										 * $btn.attr('data-toggle', 'popover');
-										 * $btn.attr('data-content', 'can choose
-										 * earlier date');
-										 * $btn.popover({placement : 'bottom'});
-										 * $btn.popover('show');
-										 * $btn.popover().hover(function () {
-										 * $btn.popover('hide'); });
-										 *  }
-										 */
 
 										$(this).datetimepicker({
 															onGenerate : function(ct, $input) {

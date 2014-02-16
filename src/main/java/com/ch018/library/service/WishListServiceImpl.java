@@ -75,6 +75,7 @@ public class WishListServiceImpl implements WishListService {
 	    @Override
 	    @Transactional
 	    public boolean isPersonWishBook(Person person, Book book) {
-	        return wishDao.isPersonWishBook(person, book);
+	    	WishList wishlist = getWishByPersonBook(person, book);
+	        return wishlist != null ? true : false;
 	    }
 }

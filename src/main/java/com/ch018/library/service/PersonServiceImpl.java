@@ -146,7 +146,7 @@ public class PersonServiceImpl implements PersonService {
 			update(person);
 			Authentication auth = new PreAuthenticatedAuthenticationToken(
 					person.getEmail(), encoder.encode(password.getNewPass())
-					, Arrays.asList(new SimpleGrantedAuthority(person.getProle())));
+					, Arrays.asList(new SimpleGrantedAuthority(person.getPersonRole())));
 			
 			SecurityContextHolder.getContext().setAuthentication(auth);
 			logger.error("passwords for {} changed", person.getEmail());
@@ -197,7 +197,7 @@ public class PersonServiceImpl implements PersonService {
 				person.setEmail(email);
 				person.setMailConfirm(Boolean.FALSE);
 				String key = getHashFromString(email);
-				person.setMailKey(key);
+				person.setConfirmationKey(key);
 				update(person);
 				mailService.sendConfirmationMail("springytest@gmail.com",
 						"etenzor@gmail.com", "email change confirmation", key, path);
@@ -221,12 +221,12 @@ public class PersonServiceImpl implements PersonService {
 				throw new UserAlreadyExists();
 			}
 			person.setPassword(encoder.encode(person.getPassword()));
-			person.setProle("ROLE_USER");
+			person.setPersonRole("ROLE_USER");
 			person.setBooksAllowed(DEFAULT_BOOKS_ALLOWED);
 			String mailKey = getHashFromString(form.getEmail());
-			person.setMailKey(mailKey);
+			person.setConfirmationKey(mailKey);
 			mailService.sendConfirmationMail("springytest@gmail.com",
-					"etenzor@gmail.com", "confirmation mail", person.getMailKey(), path);
+					"etenzor@gmail.com", "confirmation mail", person.getConfirmationKey(), path);
 			save(person);
 			logger.info("new user {} registered", person);
 			return person;
@@ -243,11 +243,11 @@ public class PersonServiceImpl implements PersonService {
 				}
 					
 				person.setMailConfirm(Boolean.TRUE);
-				person.setMailKey(null);
+				person.setConfirmationKey(null);
 				save(person);
 				Authentication token = 
 						new PreAuthenticatedAuthenticationToken(person.getEmail(), person.getPassword()
-						, Arrays.asList(new SimpleGrantedAuthority(person.getProle())));
+						, Arrays.asList(new SimpleGrantedAuthority(person.getPersonRole())));
 				SecurityContextHolder.getContext().setAuthentication(token);
 				
 				logger.info("person {} successfully confirm mail | auth {}", person, SecurityContextHolder.getContext());
@@ -265,9 +265,9 @@ public class PersonServiceImpl implements PersonService {
 			if (person != null) {
 	
 				String mailKey = getHashFromString(email);
-				person.setMailKey(mailKey);
+				person.setConfirmationKey(mailKey);
 				mailService.sendRestoreMail("springytest@gmail.com",
-						"etenzor@gmail.com", person.getMailKey(), path);
+						"etenzor@gmail.com", person.getConfirmationKey(), path);
 				save(person);
 				logger.info("user {} restore pass mail send", person);
 				return true;
@@ -283,11 +283,11 @@ public class PersonServiceImpl implements PersonService {
 			logger.info("person {} for pass change {}", person, key);
 			if (person != null) {
 				person.setPassword(encoder.encode(password.getNewPass()));
-				person.setMailKey(null);
+				person.setConfirmationKey(null);
 				save(person);
 				Authentication token = 
 						new PreAuthenticatedAuthenticationToken(person.getEmail(), person.getPassword()
-						, Arrays.asList(new SimpleGrantedAuthority(person.getProle())));
+						, Arrays.asList(new SimpleGrantedAuthority(person.getPersonRole())));
 				SecurityContextHolder.getContext().setAuthentication(token);
 				logger.info("person {} password changed", person);
 				return true;
@@ -349,7 +349,6 @@ public class PersonServiceImpl implements PersonService {
 			personEdit.setSurname(user.getSurname());
 			personEdit.setEmail(user.getEmail());
 			personEdit.setCellphone(user.getCellphone());
-			personEdit.setConfirm(user.isConfirm());
 			personEdit.setSms(user.isSms());
 			personEdit.setBooksAllowed(user.getBooksAllowed());
 	

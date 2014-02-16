@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
+import org.tartarus.snowball.Among;
 
 import com.ch018.library.DAO.PaginationDao;
 import com.ch018.library.entity.Book;
@@ -48,6 +49,7 @@ import com.ch018.library.service.GenreService;
 import com.ch018.library.service.GenreTranslationsService;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.service.PaginationService;
+import com.ch018.library.util.Constans;
 import com.ch018.library.util.PageContainer;
 import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsBook;
@@ -104,9 +106,8 @@ public class BooksController {
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(HttpServletRequest request, Model model) {
 
-            model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", 4));
-            model.addAttribute("populars", bookService.getRecommended(10));
-            logger.info("recomended {}", bookService.getRecommended(10));
+            model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", Constans.AMOUNT_OF_BOOKS_TO_MAIN));
+            model.addAttribute("populars", bookService.getRecommended(Constans.AMOUNT_OF_BOOKS_TO_MAIN));
             return "home";
         }
         

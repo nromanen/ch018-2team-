@@ -39,7 +39,6 @@
                             <td> <b> <spring:message code="message.libGenre"/> </b> </td>
                             <td> <b> <spring:message code="message.libDescription"/> </b> </td>    
                             <td> <b> <spring:message code="message.libShelf"/> </b> </td>
-                            <td> <b> <spring:message code="message.libTerm"/> </b> </td> 
                             <td> <b> <spring:message code="message.libCurrentQuantity"/></b> </td>
                             <td> <b> <spring:message code="message.libGeneralQuantity"/></b> </td>
                             <td> <b> <spring:message code="message.libOptions"/> </b> </td>
@@ -61,7 +60,6 @@
 				                        <td>${book.genre.description}</td>
 				                        <td><textarea nik="${book.bId}" id="${book.bId}" class="form-control" rows="2" style=" background:transparent;" onkeyup="jQuery:saveChanges($(this).attr('nik'));"> ${book.description} </textarea></td>
 				                        <td>${book.shelf}</td>
-				                        <td>${book.term}</td>
 				                        <td>${book.currentQuantity}</td>
 				                        <td>${book.generalQuantity}</td>
 				                    <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>" style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>

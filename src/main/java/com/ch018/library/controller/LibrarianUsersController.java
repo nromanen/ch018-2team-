@@ -91,11 +91,10 @@ public class LibrarianUsersController {
 				return "librarian_add_user";
 			} else {
 				user.setMailConfirm(true);
-				user.setConfirm(true);
 				String password = encoder.encode(user.getPassword());
 				System.out.println("Password: " + password);
 				user.setPassword(password);
-				user.setProle("ROLE_USER");
+				user.setPersonRole("ROLE_USER");
 				user.setTimelyReturn(0);
 				user.setUntimekyReturn(0);
 				user.setGeneralRating(DEFAULT_RATING);
