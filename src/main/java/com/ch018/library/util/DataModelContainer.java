@@ -1,7 +1,5 @@
 package com.ch018.library.util;
 
-import javax.sql.DataSource;
-
 import org.apache.mahout.cf.taste.impl.model.jdbc.MySQLJDBCDataModel;
 import org.apache.mahout.cf.taste.impl.neighborhood.NearestNUserNeighborhood;
 import org.apache.mahout.cf.taste.impl.recommender.CachingRecommender;
@@ -15,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import com.ch018.library.service.RateService;
 
 public class DataModelContainer {
 
@@ -42,7 +38,7 @@ public class DataModelContainer {
 				
 				UserSimilarity similarity = new PearsonCorrelationSimilarity(dataModel);
 		
-				UserNeighborhood neighbor = new NearestNUserNeighborhood(2, similarity, dataModel);
+				UserNeighborhood neighbor = new NearestNUserNeighborhood(3, similarity, dataModel);
 		
 				recommender = new GenericUserBasedRecommender(dataModel, neighbor, similarity);
 				

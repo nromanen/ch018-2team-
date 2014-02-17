@@ -186,6 +186,7 @@ public class BookServiceImpl implements BookService {
 				cache = dataModelContainer.getCachedRecommender();
 				try {
 					items = cache.recommend(person.getPid(), quantity);
+					logger.info("Items = {}", items);
 					books = bookDAO.getBooksFromRecommendedList(items);
 				} catch (Exception e) {
 					logger.error(e.getMessage());

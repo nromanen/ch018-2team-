@@ -88,19 +88,8 @@ public class BooksController {
         
         @Autowired
         private PageContainer<Book> pageContainer;
-        
-        @Autowired
-        MessageSource messageSource;
-
-        @Autowired
-        ApplicationContext ctx;
-        
-        @Autowired
-        GenreTranslationsService gtrans;
-
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
-        
         
         
         @RequestMapping(method = RequestMethod.GET)
@@ -115,7 +104,7 @@ public class BooksController {
         @RequestMapping(value = "/search", method = RequestMethod.GET)
         public String bookSearchGet(@ModelAttribute SearchParamsBook tmpParams, Model model) {
         	
-        	List<Book> books = null;
+        	List<Book> books;
         	
         	if(searchParams.isMainFieldsEmpty()) {
         		searchParams.setMainFieldsDefault();
