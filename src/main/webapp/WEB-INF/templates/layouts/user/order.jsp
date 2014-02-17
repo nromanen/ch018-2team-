@@ -87,10 +87,12 @@
 								<b><spring:message code="message.libYear" />: </b> ${book.year}
 							</div>
 						</div>
+						<div style="position: relative">
 						<div class="row" id="order_book_description">
 							<div class="text-info">
 								<b><spring:message code="message.libDescription" />: </b> ${book.description}
 							</div>
+						</div>
 						</div>
 						<div class="row" id="book_rating">
 							<div class="raty" data-score="${book.rating}""></div>

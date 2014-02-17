@@ -42,7 +42,6 @@
 		           	   	            <h5> <strong> <spring:message code="message.libLastName"/></strong> </h5> </a> </td> 
 		                            <td>  <h5> <strong> <spring:message code="message.libEMail"/> </strong> </h5>  </td>
 		                            <td>  <h5> <strong> <spring:message code="message.libCellPhone"/> </strong> </h5>  </td>
-		                            <td>  <h5> <strong> <spring:message code="message.libConfirmed"/> </strong> </h5>  </td>
 		                            <td> <h5> <strong> <spring:message code="message.libSMS"/> </strong> </h5>  </td>
 		                            <td>  <h5> <strong> <spring:message code="message.libReturnedOnTime"/> </strong> </h5>  </td>
 		                            <td>  <h5> <strong> <spring:message code="message.libReturnedLate"/> </strong> </h5>  </td>
@@ -61,11 +60,10 @@
 				                        <td>${user.surname}</td>
 				                        <td>${user.email}</td>
 				                        <td>${user.cellphone}</td>
-				                        <td>${user.confirm}</td>
 				                        <td>${user.sms}</td>
 				                        <td>${user.timelyReturn}</td>
 				                        <td>${user.untimekyReturn}</td>
-				                        <td>${user.multiBook} / ${user.booksAllowed}</td>
+				                        <td>${user.booksOnHands} / ${user.booksAllowed}</td>
 				                        <td>${user.generalRating}/100</td>
 				                        
 				                    <td><a href="${pageContext.request.contextPath}/librarian/users/edituser?id=${user.pid}"  style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>

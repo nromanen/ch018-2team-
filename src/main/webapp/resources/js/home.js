@@ -7,10 +7,10 @@ $(document).ready(function() {
 });
 
 
-var int = setInterval("$('.ca-nav-next').trigger('click');",2000);    
+/*var int = setInterval("$('.ca-nav-next').trigger('click');",2000);    
 
 $('.ca-item').hover(function(){
     clearInterval(int);
 },function(){
     int = setInterval("$('.ca-nav-next').trigger('click');",2000);    
-});
+});*/
