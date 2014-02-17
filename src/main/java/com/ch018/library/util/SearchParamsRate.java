@@ -14,7 +14,7 @@ public class SearchParamsRate extends SearchParams {
 	public void setMainFieldsDefault() {
     	
 		super.setMainFieldsDefault();
-		
+		setOrder(true);
     	setOrderField("rateDate");
     	setPageSize(3);
     	

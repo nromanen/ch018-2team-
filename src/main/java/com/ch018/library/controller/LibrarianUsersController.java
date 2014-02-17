@@ -43,15 +43,17 @@ public class LibrarianUsersController {
 		@RequestMapping(value = "")
 		public String showAll(Model model) throws Exception {
 
-			model.addAttribute("users", personService.getAll());
+			/*model.addAttribute("users", personService.getAll());
 
 			List<Person> person = personService.getAll();
 	
 			for (Person pers : person) {
 				personService.countRating(pers);
 			}
-			model.addAttribute("users", person);
+			model.addAttribute("users", person);*/
 	
+			model.addAttribute("users", personService.getAll());
+			
 			return "librarian_users";
 		}
 		

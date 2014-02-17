@@ -87,13 +87,13 @@
 								<b><spring:message code="message.libYear" />: </b> ${book.year}
 							</div>
 						</div>
-						<div style="position: relative">
-						<div class="row" id="order_book_description">
-							<div class="text-info">
+						
+						<div class="row" id="order_book_description_out">
+							<div class="text-info" id="order_book_description">
 								<b><spring:message code="message.libDescription" />: </b> ${book.description}
 							</div>
 						</div>
-						</div>
+						
 						<div class="row" id="book_rating">
 							<div class="raty" data-score="${book.rating}""></div>
 							<div>(${book.votes} votes)</div>
@@ -283,6 +283,10 @@
 							<c:set var="i" value="${i + 1}" scope="page" />
 						</c:forEach>
 			</div>
+			
+			
+			
+			
 	</sec:authorize>
 
 	</div>

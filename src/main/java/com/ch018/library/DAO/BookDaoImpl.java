@@ -196,15 +196,11 @@ public class BookDaoImpl implements BookDao {
 		@Override
 		public List<Book> getBooksFromRecommendedList(List<RecommendedItem> items) {
 			
-			if(items.isEmpty()) 
-				return getLastByField("rating", Constans.AMOUNT_OF_RECOMMEND);
-			
 			Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
 			Disjunction orDisjunction = Restrictions.disjunction();
 			
 			for(RecommendedItem item : items) {
 				orDisjunction.add(Restrictions.eq("bId", (int) item.getItemID()));
-
 			}
 			
 			criteria.add(orDisjunction);

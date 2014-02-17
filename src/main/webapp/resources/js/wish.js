@@ -75,8 +75,22 @@ $(document).ready(function() {
 
 					$('.wish_delete_button').click(function() {
 						var wishId = $(this).prev().val();
-						deleteWish(wishId);
+						$('#delete_final').attr('wishid', wishId);
+						$('#delete_title').text($('#book_title').text());
+						$('#delete_wish_list').modal('show');
 					});
+					
+					$('#delete_final').click(function() {
+						
+						deleteWish($(this).attr('wishid'));
+						$('#delete_wish_list').modal('hide');
+					});
+					
+					$('#return').click(function() {
+						$('#delete_wish_list').modal('hide');
+					});
+					
+					
 					$('.wish_confirm_button').click(function() {
 						var $parent = $(this).parent();
 						var $calendar = $parent.find('.calendar');
@@ -109,6 +123,12 @@ function deleteWish(wishId) {
 			if ($(".calendar").size() == 0) {
 				$('#empty_wish_list').modal("show");
 			}
+		},
+		error : function(xhr, status, error) {
+			var $li = $('#wish_li_' + wishId);
+			var $err = $li.find($('.wish_delete_err')).removeClass('hide');
+			$err.html(xhr.responseText);
+
 		}
 	});
 

@@ -93,6 +93,12 @@
  <bean id="paginationUtils" name="paginationUtils"  class="org.mockito.Mockito" factory-method="mock">
 			 <constructor-arg value="com.ch018.library.util.PaginationUtils"/>
  </bean>
+
+ <bean  name="principal"  class="org.mockito.Mockito" factory-method="mock">
+			 <constructor-arg value="java.security.Principal"/>
+ </bean>
+ 
+ 
    	
 	<import resource="mail.xml" />
 	<import resource="security.xml" />

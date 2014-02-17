@@ -95,9 +95,24 @@ $(document).ready(function() {
 														});
 									});
 
+				
+					
+					
 					$('.order_delete_button').click(function() {
-
-						deleteOrder($(this).prev().val());
+						var orderId = $(this).prev().val();
+						$('#delete_final').attr('orderid', orderId);
+						$('#delete_title').text($('#book_title').text());
+						$('#delete_order_list').modal('show');
+					});
+					
+					$('#delete_final').click(function() {
+						
+						deleteOrder($(this).attr('orderid'));
+						$('#delete_order_list').modal('hide');
+					});
+					
+					$('#return').click(function() {
+						$('#delete_order_list').modal('hide');
 					});
 
 					$('.order_change_button').click(function() {

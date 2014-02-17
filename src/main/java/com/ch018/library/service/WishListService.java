@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
 import com.ch018.library.entity.WishList;
+import com.ch018.library.exceptions.DeleteSecurityViolationException;
 /**
  *
  * @author Edd Arazian
@@ -24,4 +25,5 @@ public interface WishListService {
         WishList getWishByPersonBook(Person person, Book book);
         WishList getWishByID(int id);
         boolean isPersonWishBook(Person person, Book book); 
+        void remove(WishList wish) throws DeleteSecurityViolationException;
 }

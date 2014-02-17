@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.cassandra.cli.CliParser.newColumnFamily_return;
 import org.apache.mahout.cf.taste.impl.recommender.CachingRecommender;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.slf4j.Logger;
@@ -174,28 +175,34 @@ public class BookServiceImpl implements BookService {
 		@Transactional
 		public List<Book> getRecommended(int quantity) {
 			List<Book> books = new ArrayList<>();
-			List<RecommendedItem> items;
+			List<RecommendedItem> items = new ArrayList<>();
 			CachingRecommender cache;
 			String email = SecurityContextHolder.getContext().getAuthentication().getName();
 			Person person = personService.getByEmail(email);
 			
-			if(person != null &&  switcher.getRecommendationState()
-								&& rateService.getRatesCount() > Constans.MIN_COUNT_FOR_RECOMMEND) {
-
+			if(person == null) {
+				return getLastByField("rating", quantity);
+			}
+			
+			if(switcher.getRecommendationState() && rateService.getRatesCount() > Constans.MIN_COUNT_FOR_RECOMMEND) {
 				dataModelContainer.initDataModel();
 				cache = dataModelContainer.getCachedRecommender();
 				try {
 					items = cache.recommend(person.getPid(), quantity);
-					logger.info("Items = {}", items);
-					books = bookDAO.getBooksFromRecommendedList(items);
 				} catch (Exception e) {
 					logger.error(e.getMessage());
 				}
-			} else {
+				
+			}
+			
+			if(items == null || items.isEmpty()) {
 				books = getLastByField("rating", quantity);
+			} else {
+				books = bookDAO.getBooksFromRecommendedList(items);
 			}
 			
 			return books;
+			
 		}
 
 		

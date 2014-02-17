@@ -1,10 +1,12 @@
 package com.ch018.library.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -37,6 +39,7 @@ import com.ch018.library.util.SearchParamsBook;
 import com.ch018.library.util.Switch;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -78,6 +81,7 @@ public class BooksControllerTest {
 	private MockMvc mockMvc;
 	
 	List<Book> books;
+	List<Book> booksAutocomplete;
 	
 	SearchParamsBook tmpParams;
 	
@@ -89,17 +93,17 @@ public class BooksControllerTest {
 	@Before
 	public void setup() {
 		Mockito.reset(searchParams);
-		Mockito.reset(pageContainer);
 		Mockito.reset(bookService);
 		Mockito.reset(genreService);
-		Mockito.reset(paginationService);
 		Mockito.reset(switcher);
 		Mockito.reset(useService);
 		Mockito.reset(genreService);
+		Mockito.reset(paginationService);
+		Mockito.reset(pageContainer);
 		
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		
-		/*Book book1 = new Book();
+		Book book1 = new Book();
 		Book book2 = new Book();
 		
 		book1.setbId(1);
@@ -108,7 +112,7 @@ public class BooksControllerTest {
 		book2.setbId(2);
 		book2.setTitle("book2");
 
-		books = Arrays.asList(book1, book2);
+		booksAutocomplete = Arrays.asList(book1, book2);
 		
 		person = new Person();
 		person.setEmail("email");
@@ -117,7 +121,7 @@ public class BooksControllerTest {
 		use.setPerson(person);
 		use.setBook(book1);
 		
-		uses = Arrays.asList(use);*/
+		uses = Arrays.asList(use);
 		
 		books = new ArrayList<>();
 		for(int i = 0; i < 10; i++)
@@ -266,153 +270,13 @@ public class BooksControllerTest {
 		
 	}
 	
-	/*
-	@Test
-	public void booksSearchPostNormalFlow() throws Exception {
-		when(pageContainer.getPage(searchParams)).thenReturn(page);
-		
-		mockMvc.perform(post("/books/search"))
-		.andExpect(status().isOk())
-		.andExpect(model().attributeExists("page"))
-		.andExpect(model().attribute("page", hasProperty("books")))
-		.andExpect(model().attributeDoesNotExist("nothing"))
-		.andExpect(model().attributeDoesNotExist("query"));
-		
-		verify(pageContainer, times(1)).getPage(searchParams);
-		
-	}
-	
-	
-	
-	@Test
-	public void booksSearchPostEmptyList() throws Exception {
-		Page pageEmpty = new Page();
-		pageEmpty.setBooks(new ArrayList<Book>());
-		
-		when(pageContainer.getPage(searchParams)).thenReturn(pageEmpty);
-		mockMvc.perform(post("/books/search"))
-		.andExpect(status().isOk())
-		.andExpect(model().attributeExists("page"))
-		.andExpect(model().attributeExists("nothing"));
-		
-		verify(pageContainer, times(1)).getPage(searchParams);
-
-	}
-	
-	@Test
-	public void booksSearchGetPageChangedNormalFlow() throws Exception {
-		when(searchParams.isSlidersNull()).thenReturn(false);
-		when(searchParams.getPage()).thenReturn(1);
-		when(searchParams.getOrderField()).thenReturn("title");
-		when(pageContainer.getPage(searchParams)).thenReturn(page);
-		
-		mockMvc.perform(get("/books/search").param("page", "2"))
-		.andDo(print())
-		.andExpect(status().isOk())
-		.andExpect(model().attributeExists("page"))
-		.andExpect(model().attribute("page", hasProperty("books")))
-		.andExpect(model().attributeDoesNotExist("nothing"))
-		.andExpect(model().attributeDoesNotExist("query"));
-		
-		
-		verify(pageContainer, times(1)).getPage(searchParams);
-		verifyNoMoreInteractions(pageContainer);
-		
-	}
-	
-	@Test
-	public void booksSearchGetPageNotChangedNormalFlow() throws Exception {
-		when(searchParams.isSlidersNull()).thenReturn(false);
-		when(searchParams.getPage()).thenReturn(1);
-		when(searchParams.getOrderField()).thenReturn("title");
-		when(pageContainer.getPage(searchParams)).thenReturn(page);
-		
-		mockMvc.perform(get("/books/search").param("page", "1"))
-		.andDo(print())
-		.andExpect(status().isOk())
-		.andExpect(model().attributeExists("page"))
-		.andExpect(model().attribute("page", hasProperty("books")))
-		.andExpect(model().attributeDoesNotExist("nothing"))
-		.andExpect(model().attributeDoesNotExist("query"));
-		
-		
-		verify(pageContainer, times(1)).getPage(searchParams);
-		verifyNoMoreInteractions(pageContainer);
-		
-	}
-	
-	@Test
-	public void booksSearchGetPageNotChangedOrderChangedNormalFlow() throws Exception {
-		when(searchParams.isSlidersNull()).thenReturn(false);
-		when(searchParams.getPage()).thenReturn(1);
-		when(searchParams.getOrderField()).thenReturn("title");
-		when(pageContainer.getPage(searchParams)).thenReturn(page);
-		
-		mockMvc.perform(get("/books/search").param("page", "1").param("orderField", "authors"))
-		.andDo(print())
-		.andExpect(status().isOk())
-		.andExpect(model().attributeExists("page"))
-		.andExpect(model().attribute("page", hasProperty("books")))
-		.andExpect(model().attributeDoesNotExist("nothing"))
-		.andExpect(model().attributeDoesNotExist("query"));
-		
-		
-		verify(pageContainer, times(1)).getPage(searchParams);
-		verify(pageContainer, times(1)).recalculate(searchParams);;
-		verifyNoMoreInteractions(pageContainer);
-		
-	}
-	
-	@Test
-	public void booksSearchGetPageandOrderChangedNormalFlow() throws Exception {
-		when(searchParams.isSlidersNull()).thenReturn(false);
-		when(searchParams.getPage()).thenReturn(1);
-		when(searchParams.getOrderField()).thenReturn("title");
-		when(pageContainer.getPage(searchParams)).thenReturn(page);
-		
-		mockMvc.perform(get("/books/search").param("page", "3").param("orderField", "authors"))
-		.andDo(print())
-		.andExpect(status().isOk())
-		.andExpect(model().attributeExists("page"))
-		.andExpect(model().attribute("page", hasProperty("books")))
-		.andExpect(model().attributeDoesNotExist("nothing"))
-		.andExpect(model().attributeDoesNotExist("query"));
-		
-		
-		verify(pageContainer, times(1)).getPage(searchParams);
-		verify(pageContainer, times(1)).recalculate(searchParams);;
-		verifyNoMoreInteractions(pageContainer);
-		
-	}
-	
-	@Test
-	public void booksSearchGetOrderChangedNormalFlow() throws Exception {
-		when(searchParams.isSlidersNull()).thenReturn(false);
-		when(searchParams.getPage()).thenReturn(1);
-		when(searchParams.getOrderField()).thenReturn("title");
-		when(pageContainer.getPage(searchParams)).thenReturn(page);
-		
-		mockMvc.perform(get("/books/search").param("page", "1").param("order", "true"))
-		.andDo(print())
-		.andExpect(status().isOk())
-		.andExpect(model().attributeExists("page"))
-		.andExpect(model().attribute("page", hasProperty("books")))
-		.andExpect(model().attributeDoesNotExist("nothing"))
-		.andExpect(model().attributeDoesNotExist("query"));
-		
-		
-		verify(pageContainer, times(1)).getPage(searchParams);
-		verify(pageContainer, times(1)).recalculate(searchParams);;
-		verifyNoMoreInteractions(pageContainer);
-		
-	}
 	
 	@Test
 	public void autocompleteNormal() throws Exception {
 		String query = "book";
 		
 		String response = "{\"suggestions\":[\"book1\",\"book2\"]}";
-		when(bookService.getBooksByTitle(query)).thenReturn(books);
+		when(bookService.getBooksByTitle(query)).thenReturn(booksAutocomplete);
 		
 		String str = mockMvc.perform(get("/books/autocomplete").param("query", query))
 							.andExpect(status().isOk())
@@ -438,6 +302,39 @@ public class BooksControllerTest {
 		assertEquals(response, str);
 		
 	}
-	*/
+	
+	@Ignore
+	@Test
+	public void myBooksNormal() throws Exception {
+		when(useService.getBooksInUseByPerson(person)).thenReturn(uses);
+		
+		mockMvc.perform(get("/books/mybooks"))
+		.andExpect(status().isOk())
+		.andExpect(model().attributeExists("uses"))
+		.andExpect(model().attribute("uses", hasSize(1)))
+		.andExpect(forwardedUrl("/WEB-INF/templates/base-template.jsp"));
+	
+		verify(useService, times(1)).getBooksInUseByPerson(person);
+		
+		verifyNoMoreInteractions(useService);
+		
+	}
+	
+	@Ignore
+	@Test
+	public void myBooksNormalWithGarbageParams() throws Exception {
+		when(useService.getBooksInUseByPerson(person)).thenReturn(uses);
+		
+		mockMvc.perform(get("/books/mybooks").param("aaa", "123"))
+		.andExpect(status().isOk())
+		.andExpect(model().attributeExists("uses"))
+		.andExpect(model().attribute("uses", hasSize(1)))
+		.andExpect(forwardedUrl("/WEB-INF/templates/base-template.jsp"));
+	
+		verify(useService, times(1)).getBooksInUseByPerson(person);
+		
+		verifyNoMoreInteractions(useService);
+		
+	}
 
 }
