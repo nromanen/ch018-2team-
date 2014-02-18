@@ -195,7 +195,7 @@ public class BookServiceImpl implements BookService {
 				
 			}
 			
-			if(items == null || items.isEmpty()) {
+			if(items.isEmpty()) {
 				books = getLastByField("rating", quantity);
 			} else {
 				books = bookDAO.getBooksFromRecommendedList(items);

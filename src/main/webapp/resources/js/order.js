@@ -165,6 +165,7 @@ $(document).ready(function() {
 					$('#order_button').click(function() {
 
 								var bookId = $('#bid').attr('value');
+								console.log('picker val ' + $('#datetimepicker').val());
 								var time = getLongFromFormatTime($('#datetimepicker').val());
 								if(isNaN(time)){
 									$('#datetimepicker').datetimepicker('show');

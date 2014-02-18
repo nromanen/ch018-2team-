@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ch018.library.DAO.BookDao;
 import com.ch018.library.entity.Book;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(JUnit4.class)
 @ContextConfiguration(locations = {"classpath:servlet-context.xml", "classpath:root-context_Dao_Service.xml"})
 @WebAppConfiguration
 public class BookServiceImplTest {

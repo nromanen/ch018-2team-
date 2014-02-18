@@ -165,6 +165,7 @@ public class RegisterControllerTest {
 		mockMvc.perform(post("/restore/password")
 				.param("key", key)
 				.param("oldPass", "111111")
+				
 				.param("newPass", "pass234")
 				.param("rNewPass", "pass234"))
 		.andExpect(status().isOk());

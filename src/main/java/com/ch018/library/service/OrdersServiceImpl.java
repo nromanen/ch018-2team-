@@ -37,7 +37,7 @@ public class OrdersServiceImpl implements OrdersService {
 	
 		private static final int MAX_DAYS = 14;
 		private static final long MILLIS_IN_DAY = 24 * 3600 * 1000;
-		private static final long DIFF_TIME_IN_MILLIS = 3600 * 1000;
+		private static final long DIFF_TIME_IN_MILLIS = 2 * 3600 * 1000;
 		private static final int ADDITIONAL_DAY_IF_SAT = 2;
 		private static final int MAX_TRIES_FOR_ORDER_FINDING = 6;
 		
@@ -274,7 +274,11 @@ public class OrdersServiceImpl implements OrdersService {
 		@Transactional
 		public int getCorrectAmountOfOrderDays(Book book, Date orderDate)
 													throws Exception {
-			if (orderDate.getTime() < (new Date().getTime() + DIFF_TIME_IN_MILLIS))
+			logger.info("date compare = {} : orderDate {}, now {}", (orderDate.getTime() + DIFF_TIME_IN_MILLIS) < new Date().getTime(), new Date(orderDate.getTime()), new Date());
+			
+			Date correctedDate = correctDate(orderDate); 
+			
+			if ((orderDate.getTime() + DIFF_TIME_IN_MILLIS) < new Date().getTime())
 				throw new IncorrectDateException();
 			
 			long ordersCount = getOrdersCountWithoutPerson(book);
