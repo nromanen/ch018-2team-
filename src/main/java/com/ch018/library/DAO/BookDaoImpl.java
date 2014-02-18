@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.Orders;
 import com.ch018.library.util.Constans;
 import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsBook;
@@ -212,6 +213,14 @@ public class BookDaoImpl implements BookDao {
 			
 			return books;
 			
+		}
+
+		@Override
+		public long getBooksCount() {
+			Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
+			criteria.setProjection(Projections.rowCount());
+			
+			return (long) criteria.uniqueResult();
 		}
 
 		

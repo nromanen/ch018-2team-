@@ -3,6 +3,7 @@ package com.ch018.library.service;
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import com.ch018.library.exceptions.OldPasswordIncorrectException;
 import com.ch018.library.exceptions.UserAlreadyExists;
 import com.ch018.library.validation.Password;
 import com.ch018.library.validation.PersonEditValidator;
@@ -136,11 +137,11 @@ public class PersonServiceImpl implements PersonService {
 		@Override
 		@Transactional
 		public void updatePassword(Password password, Person person)
-				throws Exception {
+				throws OldPasswordIncorrectException {
 			if (!encoder.matches(password.getOldPass(), person.getPassword())) {
 				logger.info("person {}", person);
 				logger.error("passwords don't match during update");
-				throw new Exception("old password incorrect");
+				throw new OldPasswordIncorrectException();
 			}
 			person.setPassword(encoder.encode(password.getNewPass()));
 			update(person);

@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -21,6 +23,10 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
+
+@NamedQueries({
+	@NamedQuery(name = "deleteAll", query = "delete from Book")
+})
 
 @Entity
 @Table(name = "book")
@@ -54,7 +60,7 @@ public class Book implements Serializable {
 		@NotNull
 		@Range(min = MIN_YEAR, max = MAX_YEAR)
 		@Column(name = "yearPublic")
-		private int year;
+		private Integer year;
 	
 		
 		@Size(max = MAX_NAME)
@@ -64,14 +70,14 @@ public class Book implements Serializable {
 		@NotNull
 		@Range(min = 1, max = MAX_PAGES)
 		@Column(name = "pages")
-		private int pages;
+		private Integer pages;
 	
 		@Size(min = 0)
 		@Column(name = "description", columnDefinition="TEXT")
 		private String description;
 	
 		@Column(name = "bookcase")
-		private int bookcase;
+		private Integer bookcase;
 		
 		
 		@ManyToOne()
@@ -81,14 +87,14 @@ public class Book implements Serializable {
 		@NotNull
 		@Range(min = 1, max = MAX_SHELF)
 		@Column(name = "shelf")
-		private int shelf;
+		private Integer shelf;
 	
 		@Column(name = "img")
 		private String img = "resources/img/default.jpg";
 	
 		@Range(min = 0)
 		@Column(name = "currentQuantity")
-		private int currentQuantity;
+		private Integer currentQuantity;
 	
 		@NotNull
 		@Range(min = 0, max = MAX_QUANTITY)
@@ -100,10 +106,10 @@ public class Book implements Serializable {
 		private Date arrivalDate = new Date();
 		
 		@Column(name = "rating")
-		Float rating = 0F;
+		private Float rating = 0F;
 		
 		@Column(name = "votes")
-		Integer votes = 0;
+		private Integer votes = 0;
 	
 		@OneToMany(mappedBy = "book")
 		private Set<BooksInUse> bookUses;
@@ -127,6 +133,10 @@ public class Book implements Serializable {
 	
 		
 
+		
+
+		
+		
 		public int getbId() {
 			return bId;
 		}
@@ -151,12 +161,11 @@ public class Book implements Serializable {
 			this.authors = authors;
 		}
 
-
-		public int getYear() {
+		public Integer getYear() {
 			return year;
 		}
 
-		public void setYear(int year) {
+		public void setYear(Integer year) {
 			this.year = year;
 		}
 
@@ -168,11 +177,11 @@ public class Book implements Serializable {
 			this.publisher = publisher;
 		}
 
-		public int getPages() {
+		public Integer getPages() {
 			return pages;
 		}
 
-		public void setPages(int pages) {
+		public void setPages(Integer pages) {
 			this.pages = pages;
 		}
 
@@ -184,11 +193,11 @@ public class Book implements Serializable {
 			this.description = description;
 		}
 
-		public int getBookcase() {
+		public Integer getBookcase() {
 			return bookcase;
 		}
 
-		public void setBookcase(int bookcase) {
+		public void setBookcase(Integer bookcase) {
 			this.bookcase = bookcase;
 		}
 
@@ -200,11 +209,11 @@ public class Book implements Serializable {
 			this.genre = genre;
 		}
 
-		public int getShelf() {
+		public Integer getShelf() {
 			return shelf;
 		}
 
-		public void setShelf(int shelf) {
+		public void setShelf(Integer shelf) {
 			this.shelf = shelf;
 		}
 
@@ -216,11 +225,11 @@ public class Book implements Serializable {
 			this.img = img;
 		}
 
-		public int getCurrentQuantity() {
+		public Integer getCurrentQuantity() {
 			return currentQuantity;
 		}
 
-		public void setCurrentQuantity(int currentQuantity) {
+		public void setCurrentQuantity(Integer currentQuantity) {
 			this.currentQuantity = currentQuantity;
 		}
 
@@ -286,6 +295,40 @@ public class Book implements Serializable {
 
 		public void setRates(Set<Rate> rates) {
 			this.rates = rates;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + bId;
+			result = prime * result + pages;
+			result = prime * result + ((title == null) ? 0 : title.hashCode());
+			result = prime * result + year;
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (!(obj instanceof Book))
+				return false;
+			Book other = (Book) obj;
+			if (bId != other.bId)
+				return false;
+			if (pages != other.pages)
+				return false;
+			if (title == null) {
+				if (other.title != null)
+					return false;
+			} else if (!title.equals(other.title))
+				return false;
+			if (year != other.year)
+				return false;
+			return true;
 		}
 
 		@Override
