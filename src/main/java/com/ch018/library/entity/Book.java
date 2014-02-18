@@ -23,7 +23,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 @Entity
-@Table(name = "Book")
+@Table(name = "book")
 public class Book implements Serializable {
 	
 

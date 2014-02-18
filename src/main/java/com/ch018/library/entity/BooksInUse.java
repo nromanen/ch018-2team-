@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "BooksInUse", uniqueConstraints = { @UniqueConstraint(columnNames = {"personId", "bookId" }) })
+@Table(name = "booksInUse", uniqueConstraints = { @UniqueConstraint(columnNames = {"personId", "bookId" }) })
 public class BooksInUse implements Serializable {
 	
 

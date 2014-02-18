@@ -14,25 +14,26 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ch018.library.DAO.BookDao;
 import com.ch018.library.entity.Book;
 
-@RunWith(JUnit4.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:servlet-context.xml", "classpath:root-context_Dao_Service.xml"})
 @WebAppConfiguration
 public class BookServiceImplTest {
 
 	@Autowired
-	BookDao bookService;
+	BookService bookService;
 	
 	@Test
 	public void saveTest() throws Exception {
 		
 		Book book = new Book();
 		book.setTitle("title");
-		System.out.println(bookService);
+		book.setYear(1995);
+		book.setPages(550);
+		
 		bookService.save(book);
 		
-		Book resp = bookService.getBookById(1);
+		assertEquals(bookService.getBookById(1), 1);
 		
-		assertEquals(book.getTitle(), resp.getTitle());
 	}
 	
 	

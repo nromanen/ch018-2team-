@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "GenreTranslations")
+@Table(name = "genretranslations")
 public class GenreTranslations implements Serializable {
 
 	/**
