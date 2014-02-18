@@ -34,7 +34,7 @@ public interface PersonService {
         List<Person> advancedSearch(Person person);
         Person countRating(Person person); 
         Person register(UserRegistrationForm form, String path) throws Exception;
-        boolean confirmMail(String key, HttpServletRequest request);
+        boolean confirmMail(String key);
         boolean restoreSendEmail(String email, String path);
         boolean isKeyValid(String key);
         boolean restorePass(String key, Password password);

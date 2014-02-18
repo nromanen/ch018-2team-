@@ -1,6 +1,5 @@
 package com.ch018.library.controller;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -8,7 +7,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,22 +46,20 @@ public class RegisterController {
 		@Autowired
 		private BCryptPasswordEncoder encoder;
 	
-		@Autowired(required = true)
+		@Autowired
 		private RegistrationFormValidator validator;
 	
-		@Autowired(required = true)
+		@Autowired
 		private PasswordValidator validatorPass;
 	
 		@RequestMapping(value = "/register", method = RequestMethod.POST)
-		@Secured({ "ROLE_ANONYMOUS" })
 		public ResponseEntity<String> addUser(@Valid @ModelAttribute UserRegistrationForm form, BindingResult result, HttpServletRequest request) {
 			validator.validate(form, result);
 			if (result.hasErrors()) {
 				return new ResponseEntity<>(getErrors(result),
 						HttpStatus.BAD_REQUEST);
 			}
-			String path = request.getScheme() + "://" + request.getServerName() + ":"
-						+ String.valueOf(request.getServerPort())  + request.getContextPath();
+			String path = getPathFromRequest(request);
 			try {
 				personService.register(form, path);
 			} catch (UserAlreadyExists e) {
@@ -76,10 +71,8 @@ public class RegisterController {
 		}
 	
 		@RequestMapping(value = "/confirm", method = RequestMethod.GET)
-		public String confirmation(@RequestParam("key") String key, HttpServletRequest request) {
-			logger.info("Before confirm {}", SecurityContextHolder.getContext().getAuthentication());
-			if (personService.confirmMail(key, request)) {
-				logger.info("After confirm {}", SecurityContextHolder.getContext().getAuthentication());
+		public String confirmation(@RequestParam("key") String key) {
+			if (personService.confirmMail(key)) {
 				return "redirect:/";
 			}
 			else
@@ -88,8 +81,7 @@ public class RegisterController {
 	
 		@RequestMapping(value = "/restore", method = RequestMethod.POST)
 		public ResponseEntity<String> restore(@RequestParam("email") String email, HttpServletRequest request) {
-			String path = request.getScheme() + "://" + request.getServerName() + ":"
-					+ String.valueOf(request.getServerPort())  + request.getContextPath();
+			String path = getPathFromRequest(request);
 			if (personService.restoreSendEmail(email, path)) {
 				return new ResponseEntity<>(new JSONObject().toString(),
 						HttpStatus.OK);
@@ -108,8 +100,8 @@ public class RegisterController {
 		}
 	
 		@RequestMapping(value = "/restore/password", method = RequestMethod.POST)
-		public ResponseEntity<String> restorePassPost(@RequestParam("key") String key, 
-															@Valid @ModelAttribute Password password, BindingResult result) {
+		public ResponseEntity<String> restorePassPost(@Valid @ModelAttribute Password password, BindingResult result,
+															@RequestParam("key") String key) {
 			validatorPass.validate(password, result);
 			if (result.hasErrors())
 				return new ResponseEntity<>(getErrors(result),
@@ -133,5 +125,10 @@ public class RegisterController {
 				sb.append("\n");
 			}
 			return sb.toString();
+		}
+		
+		public String getPathFromRequest(HttpServletRequest request) {
+			return request.getScheme() + "://" + request.getServerName() + ":"
+					+ String.valueOf(request.getServerPort())  + request.getContextPath();
 		}
 }

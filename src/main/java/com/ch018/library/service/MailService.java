@@ -82,6 +82,7 @@ public class MailService {
 			body.append(path);
 			body.append("/restore/password?key=");
 			body.append(key);
+			logger.info("path = {}", path + "/restore/password?key=" + key);
 			sendMessage(from, to, subject, body.toString());
 		}
 		

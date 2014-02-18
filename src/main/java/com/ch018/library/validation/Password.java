@@ -52,6 +52,46 @@ public class Password {
             this.rNewPass = rNewPass;
         }
 
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result
+					+ ((newPass == null) ? 0 : newPass.hashCode());
+			result = prime * result
+					+ ((oldPass == null) ? 0 : oldPass.hashCode());
+			result = prime * result
+					+ ((rNewPass == null) ? 0 : rNewPass.hashCode());
+			return result;
+		}
 
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Password other = (Password) obj;
+			if (newPass == null) {
+				if (other.newPass != null)
+					return false;
+			} else if (!newPass.equals(other.newPass))
+				return false;
+			if (oldPass == null) {
+				if (other.oldPass != null)
+					return false;
+			} else if (!oldPass.equals(other.oldPass))
+				return false;
+			if (rNewPass == null) {
+				if (other.rNewPass != null)
+					return false;
+			} else if (!rNewPass.equals(other.rNewPass))
+				return false;
+			return true;
+		}
+
+        
     
 }

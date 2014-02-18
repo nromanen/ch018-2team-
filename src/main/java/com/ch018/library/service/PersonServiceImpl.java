@@ -234,7 +234,7 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Override
 		@Transactional
-		public boolean confirmMail(String key, HttpServletRequest request) {
+		public boolean confirmMail(String key) {
 			try {
 				Person person = personDao.getPersonByKey(key);
 				if (person == null) {
