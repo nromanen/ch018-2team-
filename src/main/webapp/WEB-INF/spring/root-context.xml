@@ -24,19 +24,27 @@
 	
 	<context:component-scan base-package="com.ch018.library" />
 	
-	<bean id="searchParams" class="com.ch018.library.helper.SearchParams" scope="session">
+   	<bean id="searchParamsBook" class="com.ch018.library.util.SearchParamsBook" scope="session">
+      
+      <aop:scoped-proxy/>
+   	</bean>
+   	<bean id="searchParamsPerson" class="com.ch018.library.util.SearchParamsPerson" scope="session">
       
       <aop:scoped-proxy/>
    	</bean>
    	
-   	<bean id="pageContainer" class="com.ch018.library.helper.PageContainer" scope="session">
+   	<bean id="pageContainer" class="com.ch018.library.util.PageContainer" scope="session">
       
       <aop:scoped-proxy/>
    	</bean>
    	
-   	<bean id="switcher" class="com.ch018.library.helper.Switch" scope="singleton">
+   	<bean id="paginationUtils" class="com.ch018.library.util.PaginationUtils" scope="singleton">
+      
    	</bean>
    	
+   	
+   	<bean id="switcher" class="com.ch018.library.util.Switch" scope="singleton">
+   	</bean>
 	
 	<import resource="data.xml" />
 	<import resource="security.xml"/>

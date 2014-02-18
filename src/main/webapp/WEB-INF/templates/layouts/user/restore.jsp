@@ -1,18 +1,19 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
     
         <div class="row well">
+        <div id="pathr" url="${pageContext.request.contextPath}"></div>
             <div class="col-md-4 col-md-offset-4" style="margin-top: 50px;">
 
                 <div class="panel panel-warning">
                     <div class="panel-heading">
-                        <div class="panel-title">Password reset form</div>
+                        <div class="panel-title"><spring:message code="message.passreset" /></div>
                          </div>
                     <div class="panel-body">
                         <div class="form-group">
                             <form id="restore_pass_form" role="form">
 
-                                <input type="hidden" name="key" value="${key}">
+                                
                                 <input type="hidden" name="oldPass" value="111111">
                                 
                                 <div class="form-group">

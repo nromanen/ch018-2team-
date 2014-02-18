@@ -3,38 +3,39 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles-extras" prefix="tilesx" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <tilesx:useAttribute name="genres" />
 
 <div class="row well">
 
-	<div id="pagination_info" page="${page.searchParams.page}" pageSize="${page.searchParams.pageSize}" pagesQuantity="${page.pagesQuantity}" orderField="${page.searchParams.orderField}" order="${page.searchParams.order}" 
-			path="${pageContext.request.contextPath}" genreId="${page.searchParams.genreId}" bookPageStart="${page.searchParams.bookPageStart}" bookPageEnd="${page.searchParams.bookPageEnd}"
-			yearStart="${page.searchParams.yearStart}" yearEnd="${page.searchParams.yearEnd}" choosenBookPageStart = "${page.searchParams.choosenPageStart}"
-			choosenBookPageEnd = "${page.searchParams.choosenPageEnd}" choosenYearStart = "${page.searchParams.choosenYearStart}"
-			choosenYearEnd = "${page.searchParams.choosenYearEnd}">
+	<div id="pagination_info" page="${sessionScope['scopedTarget.searchParamsBook'].page}" pageSize="${sessionScope['scopedTarget.searchParamsBook'].pageSize}" pagesQuantity="${sessionScope['scopedTarget.searchParamsBook'].pagesQuantity}" orderField="${sessionScope['scopedTarget.searchParamsBook'].orderField}" order="${sessionScope['scopedTarget.searchParamsBook'].order}" 
+			path="${pageContext.request.contextPath}" genreId="${sessionScope['scopedTarget.searchParamsBook'].genre}" bookPageStart="${sessionScope['scopedTarget.searchParamsBook'].bookPageStart}" bookPageEnd="${sessionScope['scopedTarget.searchParamsBook'].bookPageEnd}"
+			yearStart="${sessionScope['scopedTarget.searchParamsBook'].yearStart}" yearEnd="${sessionScope['scopedTarget.searchParamsBook'].yearEnd}" choosenBookPageStart = "${sessionScope['scopedTarget.searchParamsBook'].choosenPageStart}"
+			choosenBookPageEnd = "${sessionScope['scopedTarget.searchParamsBook'].choosenPageEnd}" choosenYearStart = "${sessionScope['scopedTarget.searchParamsBook'].choosenYearStart}"
+			choosenYearEnd = "${sessionScope['scopedTarget.searchParamsBook'].choosenYearEnd}">
 			
 		</div>
 
 	<div class="col-md-2"  id="search_panel">
 
-		<h5>Parameterized search</h5>
+		<h5><strong><spring:message code="message.parametrize" /></strong></h5>
 		
 		<div class="row">
-			<label for="title">Title:</label> 
-				<input class="form-control input-sm" type="text" id="title" value="${page.searchParams.title}">
+			<label for="title"><spring:message code="message.libTitle" />:</label> 
+				<input class="form-control input-sm" type="text" id="title" value="${sessionScope['scopedTarget.searchParamsBook'].title}">
 		</div>
 		<div class="row">
-			<label for="authors">Authors:</label> 
-				<input class="form-control input-sm" type="text" id="authors" value="${page.searchParams.authors}">
+			<label for="authors"><spring:message code="message.libAuthors" />:</label> 
+				<input class="form-control input-sm" type="text" id="authors" value="${sessionScope['scopedTarget.searchParamsBook'].authors}">
 		</div>
 		<div class="row">
-			<label for="publisher">Publisher:</label> 
-				<input class="form-control input-sm" type="text" id="publisher" value="${page.searchParams.publisher}">
+			<label for="publisher"><spring:message code="message.libPublisher" />:</label> 
+				<input class="form-control input-sm" type="text" id="publisher" value="${sessionScope['scopedTarget.searchParamsBook'].publisher}">
 		</div>
 		<div class="row">
-			<label for="genreId">Genre:</label> 
+			<label for="genreId"><spring:message code="message.libGenre" />:</label> 
 				<select id="genreSelect" class="form-control input-sm" type="text">
-					<option value="0">All Genres</option>
+					<option value="0"><spring:message code="message.allGenres" /></option>
 					<c:forEach var="genre" items="${genres}">
 						
 						<option value="${genre.id}">${genre.description}</option>
@@ -45,7 +46,7 @@
 		
 		<div class="row">
 			<p>
-				<label for="pages">Pages range:</label> 
+				<label for="pages"><spring:message code="message.pagerange" />:</label> 
 				<input type="text"	id="pages" style="border: 0; color: #f6931f; font-weight: bold;">
 			</p>
 
@@ -54,7 +55,7 @@
 		<div style="margin: 5px;"></div>
 		<div class="row">
 			<p>
-				<label for="years">Years range:</label> <input type="text"
+				<label for="years"><spring:message code="message.yearrange" />:</label> <input type="text"
 					id="years" style="border: 0; color: #f6931f; font-weight: bold;">
 			</p>
 
@@ -62,7 +63,7 @@
 		</div>
 		<div class="row" style="margin-top: 10px; ">
 			
-				<button id="searchPost"  class="btn btn-info btn-sm">Search</button>
+				<button id="searchPost"  class="btn btn-info btn-sm"><spring:message code="message.search" /></button>
 			
 		</div>
 	</div>
@@ -73,21 +74,21 @@
 		<div class="row">
 			<div class="col-md-2 ">
 			
-				<label for="sortby">SortBy:</label>
+				<label for="sortby"><spring:message code="message.sortby" />:</label>
 				<select id="sortby" name="sortby" class="form-control input-sm">
-					<option value="title" order="false">Title (A-Z)</option>
-					<option value="title" order="true">Title (Z-A)</option>
-					<option value="authors" order="false">Authors (A-Z)</option>
-					<option value="authors" order="true">Authors (Z-A)</option>
-					<option value="publisher" order="false">Publisher (A-Z)</option>
-					<option value="publisher" order="true">Publisher (Z-A)</option>
-					<option value="currentQuantity" order="false">Quantity (Low-High)</option>
-					<option value="currentQuantity" order="true">Quantity (High-Low)</option>
+					<option value="title" order="false"><spring:message code="message.libTitle" /> (A-Z)</option>
+					<option value="title" order="true"><spring:message code="message.libTitle" /> (Z-A)</option>
+					<option value="authors" order="false"><spring:message code="message.libAuthors" /> (A-Z)</option>
+					<option value="authors" order="true"><spring:message code="message.libAuthors" /> (Z-A)</option>
+					<option value="publisher" order="false"><spring:message code="message.libPublisher" /> (A-Z)</option>
+					<option value="publisher" order="true"><spring:message code="message.libPublisher" /> (Z-A)</option>
+					<option value="currentQuantity" order="false"><spring:message code="message.quantity" /> (Low-High)</option>
+					<option value="currentQuantity" order="true"><spring:message code="message.quantity" /> (High-Low)</option>
 				</select>
 				
 			</div>
 			<div class="col-md-2">
-			<label for="pageSize">Page size:</label> 
+			<label for="pageSize"><spring:message code="message.pagesize" />:</label> 
 				<select id="pageSize" class="form-control input-sm" type="text">
 						<option value="8">8</option>
 						<option value="12">12</option>
@@ -101,9 +102,9 @@
 		<ul class='pagination'>
 			<li  class=" first_page hide"><a href="#"><span>1</span></a></li>
 			<li  class=" prev_page hide"><a href="#"><span> &laquo; </span></a></li>
-			<li  class="current_page disabled hide"><a href="#"><span>${page.searchParams.page}<span></a></li>
+			<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsBook'].page}<span></a></li>
 			<li  class="next_page hide"><a href="#"><span> &raquo; </span></a></li>
-			<li  class="last_page hide"><a href="#"><span>${page.pagesQuantity}</span></a></li>
+			<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsBook'].pagesQuantity}</span></a></li>
 		</ul>
 	</div>
 
@@ -113,7 +114,7 @@
 			<c:when test="${nothing}">
 				<h3>
 					<spring:message code="message.nothing" />
-					${query}
+					
 				</h3>
 			</c:when>
 		</c:choose>
@@ -122,7 +123,7 @@
 	
 	
 		<c:set var="i" value="1" scope="page" />
-		<c:forEach var="book" items="${page.books}">
+		<c:forEach var="book" items="${books}">
 
 			<c:if test="${i mod 4 == 0}">
 				<div class="row" id="${i}">
@@ -146,11 +147,11 @@
 					<c:choose>
 						<c:when test="${book.currentQuantity <= 0}">
 							<div class="item-quantity pull-left"
-								style="background: red !important;">Quantity:
+								style="background: red !important;"><spring:message code="message.quantity" />:
 								${book.currentQuantity}</div>
 						</c:when>
 						<c:otherwise>
-							<div class="item-quantity pull-left">Quantity:
+							<div class="item-quantity pull-left"><spring:message code="message.quantity" />:
 								${book.currentQuantity}</div>
 						</c:otherwise>
 					</c:choose>
@@ -159,7 +160,7 @@
 					<div class="pull-right">
 						<a
 							href="${pageContext.request.contextPath}/books/order/${book.bId}"
-							class="btn btn-info btn-sm">More</a>
+							class="btn btn-info btn-sm"><spring:message code="message.more" /></a>
 
 					</div>
 					<div class="clearfix"></div>
@@ -186,9 +187,9 @@
 		<ul class='pagination' style="margin-left: 20px;">
 			<li  class=" first_page hide"><a href="#"><span>1</span></a></li>
 			<li  class=" prev_page hide"><a href="#"><span> &laquo; </span></a></li>
-			<li  class="current_page disabled hide"><a href="#"><span>${page.searchParams.page}<span></a></li>
+			<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsBook'].page}<span></a></li>
 			<li  class="next_page hide"><a href="#"><span> &raquo; </span></a></li>
-			<li  class="last_page hide"><a href="#"><span>${page.pagesQuantity}</span></a></li>
+			<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsBook'].pagesQuantity}</span></a></li>
 		</ul>
 	</div>
 	

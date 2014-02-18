@@ -4,7 +4,8 @@
  */
 package com.ch018.library.DAO;
 
-import com.ch018.library.entity.Person;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -18,7 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.ch018.library.entity.Person;
+import com.ch018.library.util.SearchParamsPerson;
 
 /**
  * 
@@ -31,6 +33,9 @@ public class PersonDaoImpl implements PersonDao {
 	
 		@Autowired
 		private SessionFactory factory;
+		
+		@Autowired
+		private SearchParamsPerson searchParams;
 	
 		@Override
 		public List<Person> getPersonsBySurname(String surname) {
@@ -211,6 +216,7 @@ public class PersonDaoImpl implements PersonDao {
 		@Override
 		public Person getPersonByKey(String key) {
 			try {
+				
 				return (Person) factory.getCurrentSession()
 						.createCriteria(Person.class)
 						.add(Restrictions.eq("mailKey", key)).uniqueResult();
@@ -269,23 +275,7 @@ public class PersonDaoImpl implements PersonDao {
 			return users;
 		}
 
-		@Override
-		public List<Person> pagination(int pageNumber) {
-			int pageNumb = 1;
-			int pageSize = 2;
-			
-			Session session = factory.openSession();
-			Criteria criteria = session.createCriteria(Person.class);
-			criteria.setFirstResult((pageNumb - 1) * pageSize);
-			criteria.setMaxResults(pageSize);
-			
-			List<Person> users = criteria.list();
-			
-			for (Person person : users) {
-				System.out.println(person.getName());
-			}
-			
-			return users;
-		}
-
+		
 }
+
+

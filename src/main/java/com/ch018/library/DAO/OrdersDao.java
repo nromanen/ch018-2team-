@@ -32,4 +32,9 @@ public interface OrdersDao {
         List<Orders> testCriteria(String title, String surname);
         List<Orders> sortOrdersBySurname();
 
+        List<Orders> getOrderByIDList(int id); 
+        List<Orders> getOrdersBetweenDatesWithoutPerson(Person person, Book book, Date firstDate, Date secondDate);
+        long getOrdersCount(Book book);
+
+
 }

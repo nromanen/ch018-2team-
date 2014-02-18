@@ -4,16 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -53,10 +49,6 @@ public class Book implements Serializable {
 		@Size(max = MAX_NAME)
 		@Column(name = "authors")
 		private String authors;
-		
-		@ManyToMany(fetch=FetchType.EAGER)
-		@JoinTable(name = "book_genre", joinColumns = {@JoinColumn(name = "bId")}, inverseJoinColumns = {@JoinColumn(name = "gid")})
-		private Set<GenreTranslations> genreNew;
 	
 		@NotNull
 		@Range(min = MIN_YEAR, max = MAX_YEAR)
@@ -157,13 +149,6 @@ public class Book implements Serializable {
 			this.authors = authors;
 		}
 
-		public Set<GenreTranslations> getGenreNew() {
-			return genreNew;
-		}
-
-		public void setGenre(Set<GenreTranslations> genreNew) {
-			this.genreNew = genreNew;
-		}
 
 		public int getYear() {
 			return year;

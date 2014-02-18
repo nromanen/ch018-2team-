@@ -23,7 +23,7 @@
 	
 	
 	<div class="well">
-		<div class="text-info"><h3>New Arrivals</h3></div>
+		<div class="text-info"><h3><spring:message code="message.arrivals" /></h3></div>
 		<c:set var="i" value="0" scope="page" />
 		<c:forEach var="book" items="${arrivals}">
 
@@ -50,11 +50,11 @@
 					<c:choose>
 						<c:when test="${book.currentQuantity <= 0}">
 							<div class="item-quantity pull-left"
-								style="background: red !important;">Quantity:
+								style="background: red !important;"><spring:message code="message.quantity" />:
 								${book.currentQuantity}</div>
 						</c:when>
 						<c:otherwise>
-							<div class="item-quantity pull-left">Quantity:
+							<div class="item-quantity pull-left"><spring:message code="message.quantity" />:
 								${book.currentQuantity}</div>
 						</c:otherwise>
 					</c:choose>
@@ -63,7 +63,7 @@
 					<div class="pull-right">
 						<a
 							href="${pageContext.request.contextPath}/books/order/${book.bId}"
-							class="btn btn-info btn-sm">More</a>
+							class="btn btn-info btn-sm"><spring:message code="message.more" /></a>
 
 					</div>
 					<div class="clearfix"></div>
@@ -80,7 +80,7 @@
 	
 	
 	<div  class="well">
-	<div class="text-info"><h3>Most Ordered</h3></div>
+	<div class="text-info"><h3><spring:message code="message.popular" /></h3></div>
 		<c:set var="i" value="0" scope="page" />
 		<c:forEach var="book" items="${populars}">
 
@@ -107,11 +107,11 @@
 					<c:choose>
 						<c:when test="${book.currentQuantity <= 0}">
 							<div class="item-quantity pull-left"
-								style="background: red !important;">Quantity:
+								style="background: red !important;"><spring:message code="message.quantity" />:
 								${book.currentQuantity}</div>
 						</c:when>
 						<c:otherwise>
-							<div class="item-quantity pull-left">Quantity:
+							<div class="item-quantity pull-left"><spring:message code="message.quantity" />:
 								${book.currentQuantity}</div>
 						</c:otherwise>
 					</c:choose>
@@ -120,7 +120,7 @@
 					<div class="pull-right">
 						<a
 							href="${pageContext.request.contextPath}/books/order/${book.bId}"
-							class="btn btn-info btn-sm">More</a>
+							class="btn btn-info btn-sm"><spring:message code="message.more" /></a>
 
 					</div>
 					<div class="clearfix"></div>

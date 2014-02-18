@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -10,8 +11,14 @@
          <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
          <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script> 
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
+        
     </head>
     <body>
+    <div id="pagination_info" page="${sessionScope['scopedTarget.searchParamsPerson'].page}" pageSize="${sessionScope['scopedTarget.searchParamsPerson'].pageSize}" pagesQuantity="${sessionScope['scopedTarget.searchParamsPerson'].pagesQuantity}" orderField="${sessionScope['scopedTarget.searchParamsPerson'].orderField}" order="${sessionScope['scopedTarget.searchParamsPerson'].order}" 
+			path="${pageContext.request.contextPath}" >
+			
+		</div>
+		
     <div id="path" path="${pageContext.request.contextPath}"></div>
         <div class="container">
             <div class="row">
@@ -40,6 +47,40 @@
 								<div class="panel-title">Users</div>
 							</div>
 							<div class="panel-body">
+							<div class="row">
+								<div class="col-md-3 ">
+			
+									<label for="sortby"><spring:message code="message.sortby" />:</label>
+									<select id="sortby" name="sortby" class="form-control input-sm">
+										<option value="email" order="false"><spring:message code="message.libEMail" /> (A-Z)</option>
+										<option value="email" order="true"><spring:message code="message.libEMail" /> (Z-A)</option>
+									</select>
+				
+							</div>
+								<div class="col-md-3">
+								<label for="pageSize">Persons on page:</label> 
+									<select id="pageSize" class="form-control input-sm" type="text">
+											<option value="3">3</option>
+											<option value="6">6</option>
+											<option value="12">12</option>
+											<option value="48">48</option>
+									</select>
+								</div>
+								<div class="col-md-6">
+									<form class="form-inline" action="${pageContext.request.contextPath}/admin" method="get">
+										<div class="col-lg-8">
+										<label for="search_input"></label> 
+											<input id="search_input" name="email" class="form-control input-sm" type="text">${sessionScope['scopedTarget.searchParamsPerson'].email}
+										</div>
+										<div class="col-lg-4">
+										<label for="search_input"></label> 
+											<input class="form-control input-sm" type="submit" value="Search">
+										</div>
+										
+									</form>
+								</div>
+								</div>
+								
                     <ul class="list-group list-unstyled">
                         <li class="list-group-item">
                             <div class="row">
@@ -47,10 +88,10 @@
                                     <div class="text-center">
                                         email
                                     </div>
-                                </div>
+                                </div>      
                                 <div class="col-md-3">
                                     <div class="text-center">
-                                        user_role
+                                        user_role 
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -101,9 +142,22 @@
                                     
                                 
                             </div>
+                          
                         </li>
                         </c:forEach>
                     </ul>
+                      <div class="row">
+								<div class="col-md-4 col-md-offset-4" >
+									<ul class='pagination' style="margin-left: 20px;">
+										<li  class=" first_page hide"><a href="#"><span>1</span></a></li>
+										<li  class=" prev_page hide"><a href="#"><span> &laquo; </span></a></li>
+										<li  class="current_page disabled hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsPerson'].page}<span></a></li>
+										<li  class="next_page hide"><a href="#"><span> &raquo; </span></a></li>
+										<li  class="last_page hide"><a href="#"><span>${sessionScope['scopedTarget.searchParamsPerson'].pagesQuantity}</span></a></li>
+									</ul>
+								</div>
+	
+							</div>
                     </div>
                     </div>
                     </div>
@@ -130,19 +184,20 @@
 
 										</label>
 									</div>
-									
+
 
 								</form>
 							</div>
 
 						</div>
 					</div>
+					</div>
                 </div>   
-                
-            </div>
-            <div class="col-md-1">
+                <div class="col-md-1">
                     <a href="${pageContext.request.contextPath}/j_spring_security_logout">logout</a>
                 </div>
+            </div>
+            
         </div>
     </body>
 </html>

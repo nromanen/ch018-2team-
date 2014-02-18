@@ -3,10 +3,12 @@ package com.ch018.library.service;
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import com.ch018.library.exceptions.UserAlreadyExists;
 import com.ch018.library.validation.Password;
 import com.ch018.library.validation.PersonEditValidator;
 import com.ch018.library.validation.PersonalInfo;
 import com.ch018.library.validation.UserRegistrationForm;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.List;
@@ -171,8 +174,12 @@ public class PersonServiceImpl implements PersonService {
 			returnedNotInTime = person.getUntimekyReturn();
 			failedOrders = person.getFailedOrders();
 			if ((returnedInTime > 0) || (returnedNotInTime > 0)) {
-				grade = (double) returnedInTime
-						/ (returnedNotInTime + failedOrders + returnedInTime);
+				try{
+					grade = (double) returnedInTime
+							/ (returnedNotInTime + failedOrders + returnedInTime);
+				} catch (Exception e) {
+					grade = 0;
+				}
 				grade *= MAX_RATING;
 				gradeInt = (int) grade;
 			}
@@ -207,23 +214,22 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Override
 		@Transactional
-		public boolean register(UserRegistrationForm form, String path) {
+		public Person register(UserRegistrationForm form, String path) throws Exception {
 			Person person = new Person(form.getName(), form.getSurname(),
 					form.getEmail(), form.getPassword(), form.getCellPhone());
 			if (getByEmail(person.getEmail()) != null) {
-				return false;
+				throw new UserAlreadyExists();
 			}
 			person.setPassword(encoder.encode(person.getPassword()));
 			person.setProle("ROLE_USER");
 			person.setBooksAllowed(DEFAULT_BOOKS_ALLOWED);
-			person.setMultiBook(DEFAULT_BOOKS_ALLOWED);
 			String mailKey = getHashFromString(form.getEmail());
 			person.setMailKey(mailKey);
 			mailService.sendConfirmationMail("springytest@gmail.com",
 					"etenzor@gmail.com", "confirmation mail", person.getMailKey(), path);
 			save(person);
 			logger.info("new user {} registered", person);
-			return true;
+			return person;
 		}
 	
 		@Override
@@ -274,10 +280,15 @@ public class PersonServiceImpl implements PersonService {
 		@Transactional
 		public boolean restorePass(String key, Password password) {
 			Person person = personDao.getPersonByKey(key);
+			logger.info("person {} for pass change {}", person, key);
 			if (person != null) {
 				person.setPassword(encoder.encode(password.getNewPass()));
 				person.setMailKey(null);
 				save(person);
+				Authentication token = 
+						new PreAuthenticatedAuthenticationToken(person.getEmail(), person.getPassword()
+						, Arrays.asList(new SimpleGrantedAuthority(person.getProle())));
+				SecurityContextHolder.getContext().setAuthentication(token);
 				logger.info("person {} password changed", person);
 				return true;
 			}
@@ -362,19 +373,15 @@ public class PersonServiceImpl implements PersonService {
 
 		@Override
 		public List<Person> orderBySurname() {
-			// TODO Auto-generated method stub
 			return personDao.orderBySurname();
 		}
 
 		@Override
 		public List<Person> orderByRating() {
-			// TODO Auto-generated method stub
 			return personDao.orderByRating();
 		}
 
-		@Override
-		public List<Person> pagination(int pageNumber) {
-			return personDao.pagination(pageNumber);
-		}
+		
+		
 
 }

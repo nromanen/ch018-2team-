@@ -10,16 +10,15 @@ $(document).ready(
 						var diff = parseInt((rawDate - new Date().getTime())
 								/ (24 * 3600 * 1000));
 						$parent.next().text(diff);
-						if (diff * (-1) > 0) {
-							// alert("AA");
+						if (diff < 2) {
 							$parent.parent().parent().css("background-color",
-									"#FF6633");
+									"#FA8072");
 						} else if (diff < 5) {
 							$parent.parent().parent().css("background-color",
 									"#FFFF66");
 						} else {
 							$parent.parent().parent().css("background-color",
-									"#99FF66");
+									"#00FF7F");
 						}
 					});
 

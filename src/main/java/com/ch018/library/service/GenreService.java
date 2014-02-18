@@ -18,4 +18,5 @@ public interface GenreService {
         List<Genre> getAll();
         Genre getById(int id);
         Genre getByDescription(String description); 
+        void addGenre(String eng, String ukr) throws Exception;
 }

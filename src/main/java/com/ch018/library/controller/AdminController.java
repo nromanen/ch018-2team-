@@ -1,23 +1,33 @@
 package com.ch018.library.controller;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ch018.library.DAO.PaginationDao;
 import com.ch018.library.controller.errors.IncorrectInput;
+import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
-import com.ch018.library.helper.Switch;
 import com.ch018.library.service.PersonService;
+import com.ch018.library.service.PaginationService;
+import com.ch018.library.util.PageContainer;
+import com.ch018.library.util.SearchParams;
+import com.ch018.library.util.SearchParamsPerson;
+import com.ch018.library.util.Switch;
 
 /**
  *
@@ -25,41 +35,58 @@ import com.ch018.library.service.PersonService;
  */
 @Controller
 @RequestMapping(value = "/admin")
-@Secured({ "ROLE_ADMIN" })
 public class AdminController {
     
+		private Logger logger = LoggerFactory.getLogger(AdminController.class);
+	
         @Autowired
         private PersonService personService;
+        
+        @Autowired
+        private PaginationService<Person> paginationService;
+        
+        @Autowired
+        private SearchParamsPerson searchParams;
+        
+        @Autowired
+        PageContainer<Person> pageContainer;
         
         @Autowired
         private Switch switcher;
 
         @RequestMapping(method = RequestMethod.GET)
-        public String admin(@RequestParam(value = "page", required = false) Integer page,
-        						@RequestParam(value = "orderField", required = false) String orderField,
-        						@RequestParam(value = "order", required = false) Boolean order, Model model) {
+        public String admin(@ModelAttribute SearchParamsPerson tmpSearchParams, Model model) {
         	
-            model.addAttribute("persons", personService.getAll());
+        	List<Person> persons = null;
+        	
+        	if(searchParams.isMainFieldsEmpty())
+        		searchParams.setMainFieldsDefault();
+        	
+        	persons = paginationService.getPaginatedResult(searchParams, tmpSearchParams, Person.class);
+        	
+            model.addAttribute("persons", persons);
             model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_LIBRARIAN"));
-            model.addAttribute("switcher", switcher.getValue());
+            model.addAttribute("switcher", switcher.getSwitcher());
             return "admin";
         }
         
         @RequestMapping(value = "/syssetings", method = RequestMethod.POST)
         public ResponseEntity<String> changeSysSettings(@RequestParam(value = "switcher", required = false) Boolean sw) {
+        	logger.info("switcher = {}", switcher.getSwitcher());
         	if(sw == null) {
-        		switcher.setValue(Boolean.FALSE);
+        		switcher.setSwitcher(Boolean.FALSE);
         		return new ResponseEntity<>("false", HttpStatus.OK);
         	}
         	if(sw) {
-        		switcher.setValue(Boolean.TRUE);
+        		switcher.setSwitcher(Boolean.TRUE);
         		return new ResponseEntity<>("true", HttpStatus.OK);
         	}
         	else {
-        		switcher.setValue(Boolean.FALSE);
+        		switcher.setSwitcher(Boolean.FALSE);
         		return new ResponseEntity<>("false", HttpStatus.OK);
         	}
         }
+        
         
         @RequestMapping(value = "/delete", method = RequestMethod.POST)
         public @ResponseBody String delete(@RequestParam("id") Integer id) throws IncorrectInput {

@@ -59,11 +59,11 @@
  </bean>
 
 <bean id="pageContainer" name="pageContainer" class="org.mockito.Mockito" factory-method="mock">
-  <constructor-arg value="com.ch018.library.helper.PageContainer"/>
+  <constructor-arg value="com.ch018.library.util.PageContainer"/>
  </bean>
  
  <bean id="searchParams" name="searchParams" class="org.mockito.Mockito" factory-method="mock">
-  <constructor-arg value="com.ch018.library.helper.SearchParams"/>
+  <constructor-arg value="com.ch018.library.util.SearchParams"/>
  </bean>
 
 <bean id="genreTranslationService" name="genreTranslationService" class="org.mockito.Mockito" factory-method="mock">
@@ -74,8 +74,10 @@
   <constructor-arg value="com.ch018.library.service.LanguageService"/>
  </bean>
 
-
-	<import resource="data.xml" />
+<bean id="switcher" name="switcher"  class="org.mockito.Mockito" factory-method="mock">
+			 <constructor-arg value="com.ch018.library.util.Switch"/>
+ </bean>
+   	
 	<import resource="mail.xml" />
 	<import resource="security.xml" />
     

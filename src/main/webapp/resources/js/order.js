@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+					
 					var isLimitReacher = $('#book_limit').val();
 					if (isLimitReacher === 'true')
 						$('#book_limit_modal').modal('show');
@@ -7,62 +7,93 @@ $(document).ready(function() {
 					tmpDate = $('#minDate').val();
 
 					minD = getDateInFormat(tmpDate);
-					minDateSpl = minD.split(" ");
+					minDateSplit = minD.split(" ");
 
 					$('#datetimepicker').datetimepicker({
-										onGenerate : function(ct, $input) {
-											$(this)
-													.find(
-															'.xdsoft_date.xdsoft_weekend')
-													.addClass('xdsoft_disabled');
+						
+						onGenerate : function(ct, $input) {
+							$(this).find('.xdsoft_date.xdsoft_weekend').addClass('xdsoft_disabled');
+						},
+						
+						onSelectDate : function(current_time, $input) {
+							
+							var days = getAvailableDays(current_time, $('.order'));
+							var d = 'can order for ' + days + 'days';
+							console.log('can order for ' + days + 'days');
+							if ($(this).find($('#picker_notify')).attr('id') === undefined) {
+								console.log($(this));
 
-										},
-										onSelectDate : function(current_time, $input) {
-											var days = getAvailableDays(current_time, $('.order'));
-											var d = 'can order for ' + days + 'days';
-											console.log('can order for ' + days + 'days');
-											console.log('choosen date = ' + currentTime);
-											if ($(this).find($('#picker_notify')).attr('id') === undefined) {
-												console.log($(this));
+								var $div = $(
+										'<div>',
+										{
+											id : 'picker_notify',
+											title : d,
+											style : 'position : absolute; top: 0%; left: 50%; text-size:16px;'
+										});
+								$div.attr('data-toggle','tooltip');
+								$div.appendTo($(this));
+								$('#picker_notify').tooltip('show');
 
-												var $div = $(
-														'<div>',
-														{
-															id : 'picker_notify',
-															title : d,
-															style : 'position : absolute; top: 0%; left: 50%; text-size:16px;'
-														});
-												$div.attr('data-toggle','tooltip');
-												$div.appendTo($(this));
-												$('#picker_notify').tooltip('show');
+							} else {
+								console.log("before" + $('#picker_notify').attr('title'));
+								//$('#picker_notify').attr('title', d);
 
-											} else {
-												console.log("before" + $('#picker_notify').attr('title'));
-												//$('#picker_notify').attr('title', d);
+								$('#picker_notify').attr('data-original-title', d)
+										.tooltip('fixTitle')
+										.tooltip('show');
+								console.log("after"+ $('#picker_notify').attr('title'));
+							}
+							
 
-												$('#picker_notify').attr('data-original-title', d)
-														.tooltip('fixTitle')
-														.tooltip('show');
-												console.log("after"+ $('#picker_notify').attr('title'));
-											}
-											console.log('choosen date = ' + currentTime);
+						},
+						
+						onChangeMonth: function( currentDateTime ){
+							var _this = this;
+							$.when(getOrders(currentDateTime)).done(function (){
+								_this.setOptions({
+									value : '',
+									weekends: getWeekEnds($('.order'))
+								});
+							});
+							
 
-										},
-										
-										format : 'Y/m/d H:i',
-										value : minD,
-										minDate : minDateSpl[0],
-										weekends : getWeekEnds($('.order')),
-										allowTimes : [ '09:00', '10:00',
-												'11:00', '12:00', '14:00',
-												'15:00', '16:00' ],
-										
-									});
-					$('#order_button').click(
-							function() {
+						},
+						
+						onShow : function(currentDateTime) {
+							
+							var _this = this;
+						 $.when(getMinDate(), getOrders(currentDateTime)).done(function(){
+							 var date = $('#min_date_inner').attr('date');
+							 _this.setOptions({
+									value : date,
+									minDate : date.split(" ")[0],
+									weekends: getWeekEnds($('.order'))
+								});
+						 }); 
+						
+						
+						 
+						},
+						
+						
+						format : 'Y/m/d H:i',
+						//value : minD,
+						//minDate : minDateSplit[0],
+						weekends : getWeekEnds($('.order')),
+						allowTimes : [ '09:00', '10:00',
+								'11:00', '12:00', '14:00',
+								'15:00', '16:00' ]
+						
+					});
+					
+					$('#order_button').click(function() {
 
 								var bookId = $('#bookId').val();
 								var time = getLongFromFormatTime($('#datetimepicker').val());
+								if(isNaN(time)){
+									$('#datetimepicker').datetimepicker('show');
+									return;
+								}
 								makeOrder(bookId, time);
 
 							});
@@ -92,7 +123,12 @@ function makeOrder(bookId, time, url) {
 
 		},
 		error : function(xhr, status, error) {
+			if(xhr.responseText === 'You already ordered this book') {
+				$('#wish_button').addClass('hide');
+				$('#order_button').addClass('hide');
+				$('#datetimepicker').addClass('hide');
 
+			}
 			$('#order_err').text(xhr.responseText);
 			$('#order_err').removeClass('hide');
 		}
@@ -114,7 +150,74 @@ function addToWishList(bookId, url) {
 
 			$('#wish_modal').modal('show');
 
+		},
+		error : function(xhr, status, error) {
+			if(xhr.responseText === 'Book already in WishList') {
+				$('#wish_button').addClass('hide');
+				$('#order_button').addClass('hide');
+				$('#datetimepicker').addClass('hide');
+
+			}
+			$('#order_err').text(xhr.responseText);
+			$('#order_err').removeClass('hide');
 		}
 
 	});
 }
+
+function getOrders(date) {
+	return $.ajax({
+		url : $('#path').attr('url') + "/books/order/getAdditionalOrders",
+		type : "POST",
+		data : {
+			'bookId' : $('#bookId').val(),
+			'time' : date.getTime(),
+		},
+		dataType : "json",
+		contentType : 'application/x-www-form-urlencoded',
+		mimeType : 'application/json',
+
+		success : function(data) {
+			$('#orders').empty();
+			var $orders = $('#orders');
+			$.each(data.orders, function(index, value) {
+				console.log(value.days + " " + value.orderDate);
+				var $order = $('<div>', {class : 'order'});
+				$order.attr('start', value.orderDate);
+				$order.attr('days', value.days);
+				$order.appendTo($orders);
+				
+			});
+		}
+	});	
+}
+
+function getMinDate() {
+	return $.ajax({
+		url : $('#path').attr('url') + "/books/order/getMinOrderDate",
+		type : "POST",
+		data : {
+			'bookId' : $('#bookId').val(),
+		},
+		dataType : "json",
+		contentType : 'application/x-www-form-urlencoded',
+		mimeType : 'application/json',
+
+		success : function(data) {
+	
+			var $mindate = $('#min_date');		
+			$mindate.empty();	
+			$inner = $('<div>', {id: 'min_date_inner'});		
+			$inner.appendTo($mindate);
+			$inner.attr('date', getDateInFormat(data.minDate));
+	
+		},
+		error : function(xhr, status, error) {
+
+			$('#order_err').text(xhr.responseText);
+			$('#order_err').removeClass('hide');
+		}
+	});	
+};
+
+

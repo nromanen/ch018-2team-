@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
-import com.ch018.library.helper.SearchParams;
+import com.ch018.library.util.SearchParams;
 import com.ch018.library.validation.BookEditValidator;
 
 @Service
@@ -24,7 +24,7 @@ public interface BookService {
              List<Book> getBooksByAuthors(String authors);
              List<Book> getBooksByYear(int year);
              List<Book> getBooksByGenre(Genre genre);
-             List<Book> getBooksComplex(SearchParams searchParams);
+            // List<Book> getBooksComplex(SearchParams searchParams);
              List<Book> getBooksByPublisher(String publisher);
              List<Book> getBooksByPagesEq(int pages);
              List<Book> advancedSearch(Book book);

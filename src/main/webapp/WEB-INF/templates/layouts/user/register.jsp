@@ -8,7 +8,7 @@
 
                 <div class="panel panel-success">
                     <div class="panel-heading">
-                        <div class="panel-title">Registration Form</div>
+                        <div class="panel-title"><spring:message code="message.registration" /></div>
                          </div>
                     <div class="panel-body">
                         <div class="form-group col-lg-10">
@@ -55,9 +55,9 @@
                                               <h4 class="modal-title" id="success_reg_label">Registration Notification</h4>
                                             </div>
                                             <div class="modal-body">
-                                              <h4>You successfully register!</h4>
+                                              <h4><spring:message code="message.succreg" /></h4>
                                               <p>
-                                              <h4>Check your email for confirmation</h4>
+                                              <h4><spring:message code="message.check" /></h4>
                                             </div>
                                             
                                             </div>

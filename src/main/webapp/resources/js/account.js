@@ -165,7 +165,7 @@ $(document)
 																			'hide');
 															setTimeout(
 																	function() {
-																		window.location.href = "/";
+																		window.location.href = $('#path').attr('url');
 																	}, 4000);
 														},
 														error : function(xhr,
