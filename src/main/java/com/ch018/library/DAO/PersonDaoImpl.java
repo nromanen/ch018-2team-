@@ -7,6 +7,7 @@ package com.ch018.library.DAO;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ch018.library.entity.Person;
 import com.ch018.library.util.SearchParamsPerson;
@@ -41,7 +43,7 @@ public class PersonDaoImpl implements PersonDao {
 		public List<Person> getPersonsBySurname(String surname) {
 	
 			return factory.getCurrentSession().createCriteria(Person.class)
-					.add(Restrictions.like("surname", "%" + surname + "%")).list();
+						.add(Restrictions.like("surname", "%" + surname + "%")).list();
 		}
 	
 		@Override
@@ -94,14 +96,16 @@ public class PersonDaoImpl implements PersonDao {
 	
 		@Override
 		public Person getByEmail(String email) {
+			Person person = null;
+			Criteria criteria = factory.getCurrentSession().createCriteria(Person.class);
+			criteria.add(Restrictions.eq("email", email));
 			try {
-				return (Person) factory.getCurrentSession()
-						.createCriteria(Person.class)
-						.add(Restrictions.eq("email", email)).uniqueResult();
+				person = (Person) criteria.uniqueResult();
 			} catch (Exception e) {
-				logger.error("in getByEmail[Dao] {}", e.getMessage());
-				return null;
+				logger.error(e.getMessage());
 			}
+			
+			return person;
 	
 		}
 	
@@ -159,7 +163,6 @@ public class PersonDaoImpl implements PersonDao {
 	
 		@Override
 		public List<Person> simpleSearch(String request) {
-			// TODO Auto-generated method stub
 			if (!request.equals("")) {
 	
 				Session session = factory.openSession();
@@ -186,8 +189,6 @@ public class PersonDaoImpl implements PersonDao {
 	
 		@Override
 		public List<Person> advancedSearch(Person person) {
-			// TODO Auto-generated method stub
-	
 			Session session = factory.openSession();
 	
 			Criteria criteria = session.createCriteria(Person.class);
@@ -215,16 +216,16 @@ public class PersonDaoImpl implements PersonDao {
 	
 		@Override
 		public Person getPersonByKey(String key) {
+			Person person = null;
+			Criteria criteria = factory.getCurrentSession().createCriteria(Person.class);
+			criteria.add(Restrictions.eq("confirmationKey", key));
 			try {
-				
-				return (Person) factory.getCurrentSession()
-						.createCriteria(Person.class)
-						.add(Restrictions.eq("mailKey", key)).uniqueResult();
+				person = (Person) criteria.uniqueResult();
 			} catch (Exception e) {
 				logger.error("error during mailkey {} search", key);
-				return null;
 			}
 	
+			return person;
 		}
 
 		@Override

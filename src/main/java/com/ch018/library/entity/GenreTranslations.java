@@ -1,6 +1,6 @@
 package com.ch018.library.entity;
 
-import java.util.Set;
+import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,15 +11,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "genre_translations")
-public class GenreTranslations {
+@Table(name = "GenreTranslations")
+public class GenreTranslations implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3482636637014819639L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "gid")
+	@JoinColumn(name = "genreId")
 	private Genre genre;
 	
 	private String description;
@@ -60,8 +65,11 @@ public class GenreTranslations {
 
 	@Override
 	public String toString() {
-		return description;
+		return "GenreTranslations [id=" + id + ", genre=" + genre.getId()
+				+ ", description=" + description + ", locale=" + locale + "]";
 	}
+
+	
 	
 	
 	

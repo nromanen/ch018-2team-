@@ -1,5 +1,6 @@
 package com.ch018.library.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,9 +8,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.cassandra.cli.CliParser.newColumnFamily_return;
+import org.apache.mahout.cf.taste.impl.recommender.CachingRecommender;
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +22,10 @@ import com.ch018.library.DAO.BookDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.Person;
+import com.ch018.library.util.Constans;
+import com.ch018.library.util.DataModelContainer;
+import com.ch018.library.util.Switch;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -30,7 +39,17 @@ public class BookServiceImpl implements BookService {
         @Autowired
     	private GenreService genreService;
         
-      
+        @Autowired
+        private PersonService personService;
+        
+        @Autowired
+        private DataModelContainer dataModelContainer;
+        
+        @Autowired
+        private RateService rateService;
+        
+        @Autowired
+        private Switch switcher;
         	
         private final Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
 
@@ -136,69 +155,6 @@ public class BookServiceImpl implements BookService {
 
 		@Override
 		@Transactional
-		public void update(Book book, int genreId) {
-			
-			Book bookEdit;
-			bookEdit = getBookById(book.getbId());
-			
-			bookEdit.setTitle(book.getTitle());
-			bookEdit.setAuthors(book.getAuthors());
-			bookEdit.setYear(book.getYear());
-			bookEdit.setPublisher(book.getPublisher());
-			bookEdit.setPages(book.getPages());
-			bookEdit.setDescription(book.getDescription());
-			bookEdit.setImg(book.getImg());
-			bookEdit.setShelf(book.getShelf());
-			bookEdit.setTerm(book.getTerm());
-			bookEdit.setGeneralQuantity(book.getGeneralQuantity());
-			//bookEdit.setGenre(genreTranslService.getByGenreId(genreId));
-			
-			update(bookEdit);
-		}
-
-		@Override
-		@Transactional
-		public HashMap<Book, String> getAllByLocale(Locale locale) {
-			
-			HashMap<Book, String> localBooks = new HashMap<>();
-			List<Book> book = getAll();
-			//Set<GenreTranslations> genre;
-			
-			/*for (Book bk : book) {
-				genre = bk.getGenreNew();
-				localBooks.put(bk, genreTranslService.getDescription(bk, locale));
-			}
-			*/
-			return localBooks;
-		}
-
-		@Override
-		@Transactional
-		public HashMap<Book, String> getBooksByLocale(List<Book> book,
-				Locale locale) {
-			
-			HashMap<Book, String> localBooks = new HashMap<>();
-			/*Set<GenreTranslations> genre;
-			
-			for (Book bk : book) {
-				genre = bk.getGenreNew();
-				localBooks.put(bk, genreTranslService.getDescription(bk, locale));
-			}*/
-			
-			return localBooks;
-		}
-		
-		@Override
-		public HashMap<Book, String> getBookByLocale(Book book, Locale locale) {
-			
-			HashMap<Book, String> localBook = new HashMap<>();
-			//localBook.put(book, genreTranslService.getDescription(book, locale));
-			
-			return localBook;
-		}
-
-		@Override
-		@Transactional
 		public Integer getMinIntegerField(String field) {
 			return bookDAO.getMinIntegerField(field);
 		}
@@ -215,6 +171,41 @@ public class BookServiceImpl implements BookService {
 			return bookDAO.getLastByField(field, quantity);
 		}
 
+		@Override
+		@Transactional
+		public List<Book> getRecommended(int quantity) {
+			List<Book> books = new ArrayList<>();
+			List<RecommendedItem> items = new ArrayList<>();
+			CachingRecommender cache;
+			String email = SecurityContextHolder.getContext().getAuthentication().getName();
+			Person person = personService.getByEmail(email);
+			
+			if(person == null) {
+				return getLastByField("rating", quantity);
+			}
+			
+			if(switcher.getRecommendationState() && rateService.getRatesCount() > Constans.MIN_COUNT_FOR_RECOMMEND) {
+				dataModelContainer.initDataModel();
+				cache = dataModelContainer.getCachedRecommender();
+				try {
+					items = cache.recommend(person.getPid(), quantity);
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+				}
+				
+			}
+			
+			if(items.isEmpty()) {
+				books = getLastByField("rating", quantity);
+			} else {
+				books = bookDAO.getBooksFromRecommendedList(items);
+			}
+			
+			return books;
+			
+		}
+
+		
 		
 }
 

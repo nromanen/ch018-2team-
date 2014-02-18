@@ -12,5 +12,6 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script> 
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.maskedinput.min.js"></script> 
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.validate.min.js"></script> 
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.raty.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/search.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/index.js"></script>

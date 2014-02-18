@@ -17,49 +17,44 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "orders", 
-        uniqueConstraints = { @UniqueConstraint( columnNames = { "pid", "bid" } ) })
+@Table(name = "Orders", 
+        uniqueConstraints = { @UniqueConstraint( columnNames = { "personId", "bookId" } ) })
 public class Orders implements Serializable {
-        
-        @Id
+
+		private static final long serialVersionUID = 9045662704362349782L;
+
+		@Id
         @GeneratedValue
         @Column(name = "id")
         private int id;
         
         @ManyToOne(fetch = FetchType.EAGER)
-        @JoinColumn(name = "pid", referencedColumnName = "pid")
+        @JoinColumn(name = "personId", referencedColumnName = "personId")
         private Person person;
         
         @ManyToOne(fetch = FetchType.EAGER)
-        @JoinColumn(name = "bid", referencedColumnName = "bid")
+        @JoinColumn(name = "bookId", referencedColumnName = "bookId")
         private Book book;
         
-        @Column(name = "order_date")
+        @Column(name = "orderDate")
         @Temporal(TemporalType.TIMESTAMP)
         private Date orderDate;
         
-        @Column(name = "changed")
-        private boolean changed;
-        
-        @Column(name = "daysamount")
-        private long daysAmount;
+        @Column(name = "returnDate")
+        @Temporal(TemporalType.TIMESTAMP)
+        private Date returnDate;
         
         public Orders() {
                 
         }
         
-        public Orders(Person person, Book book, Date date) {
-                this.person = person;
-                this.book = book;
-                this.orderDate = date;
-                this.changed = false;
-        }
+   
 
-        public Orders(Person person, Book book, Date orderDate, long daysAmount) {
+        public Orders(Person person, Book book, Date orderDate, Date returnDate) {
             this.person = person;
             this.book = book;
             this.orderDate = orderDate;
-            this.daysAmount = daysAmount;
+            this.returnDate = returnDate;
         }
         
         public int getId() {
@@ -98,21 +93,13 @@ public class Orders implements Serializable {
             this.orderDate = orderDate;
         }
 
-        public boolean isChanged() {
-            return changed;
-        }
+		public Date getReturnDate() {
+			return returnDate;
+		}
 
-        public void setChanged(boolean changed) {
-            this.changed = changed;
-        }
-
-        public long getDaysAmount() {
-            return daysAmount;
-        }
-
-        public void setDaysAmount(long daysAmount) {
-            this.daysAmount = daysAmount;
-        }
+		public void setReturnDate(Date returnDate) {
+			this.returnDate = returnDate;
+		}
 
 		@Override
 		public int hashCode() {
@@ -152,8 +139,8 @@ public class Orders implements Serializable {
 		@Override
 		public String toString() {
 			return "Orders [id=" + id + ", person=" + person.getPid() + ", book=" + book.getbId()
-					+ ", orderDate=" + orderDate + ", changed=" + changed
-					+ ", daysAmount=" + daysAmount + "]";
+					+ ", orderDate=" + orderDate 
+					+ ", returnDate=" + returnDate + "]";
 		}
 
         

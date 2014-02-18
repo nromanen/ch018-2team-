@@ -33,6 +33,11 @@
       <aop:scoped-proxy/>
    	</bean>
    	
+   	<bean id="searchParamsRate" class="com.ch018.library.util.SearchParamsRate" scope="session">
+      
+      <aop:scoped-proxy/>
+   	</bean>
+   	
    	<bean id="pageContainer" class="com.ch018.library.util.PageContainer" scope="session">
       
       <aop:scoped-proxy/>
@@ -45,6 +50,16 @@
    	
    	<bean id="switcher" class="com.ch018.library.util.Switch" scope="singleton">
    	</bean>
+   	
+   	<bean id="dataModelContainer" class="com.ch018.library.util.DataModelContainer" scope="singleton">
+   		<property name="dataSource" ref="dataSource"/>
+   	</bean>
+   	
+   	<bean id="multipartResolver"
+    	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    
+    	<property name="maxUploadSize" value="1000000"/>
+	</bean>
 	
 	<import resource="data.xml" />
 	<import resource="security.xml"/>

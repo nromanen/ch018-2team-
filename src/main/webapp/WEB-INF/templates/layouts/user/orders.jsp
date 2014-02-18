@@ -29,16 +29,15 @@
 
 				<li class="list-group-item" id="order_li_${order.id}">
 					<div class="row">
-						<div class="col-md-3" style="max-width: 90%; overflow:  hidden;">${order.book.title}</div>
+						<div id="book_title" class="col-md-3" style="max-width: 90%; overflow:  hidden;">${order.book.title}</div>
 						<div class="col-md-2 order_date" val="${order.orderDate.time}"></div>
-						<div class="col-md-1 days">${order.daysAmount}</div>
+						<div class="col-md-1 return_date" val="${order.returnDate.time}"></div>
 						<div class="col-md-4">
 
 							<input type="hidden" class="order_id" value="${order.id}"> <input type="hidden" class="minDate" value="">
 							<input type="hidden" class="orderDate" value="${order.orderDate.time}" > 
 							<input class="calendar" bid="${order.book.bId}" value="<spring:message code="message.available" />">
 							<button class="btn-info order_change_button" data-toggle="tooltip"  data-original-title="<spring:message code="message.changed" />"><spring:message code="message.change" /></button>
-							<input class="changed" type="hidden" value="${order.changed}">
 							<div class="alert alert-danger order_date_err hide"></div>
 
 						</div>
@@ -87,3 +86,32 @@
 	</div>
 </div>
 <!--Modal Empty-->
+
+
+<!--Modal Delete-->
+
+	<div class="modal fade" id="delete_order_list" tabindex="-1"
+		role="dialog" aria-labelledby="delete_order_list_label"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="delete_order_list_label">Delete Wish
+						Notification</h4>
+				</div>
+				<div class="modal-body">
+					<h3>Delete <b id="delete_title"></b> from wishlist?</h3>
+				</div>
+				<div class="modal-footer">
+
+					<button id="delete_final" type="button" class="btn btn-danger">Delete</button>
+					<button id="return" type="button" class="btn btn-primary">Return to list</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Modal Delete-->
+
+

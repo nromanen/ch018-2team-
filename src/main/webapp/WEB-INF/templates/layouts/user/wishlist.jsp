@@ -26,7 +26,7 @@
 
 				<li class="list-group-item" id="wish_li_${wish.id}">
 					<div class="row">
-						<div class="col-md-4" style="max-width: 90%; overflow:  hidden;">${wish.book.title}</div>
+						<div id="book_title" class="col-md-4" style="max-width: 90%; overflow:  hidden;">${wish.book.title}</div>
 						<div class="col-md-5">
 							<input type="hidden" class="wishId" value="${wish.id}">
 							<input type="hidden" class="bookId" value="${wish.book.bId}">
@@ -37,6 +37,7 @@
 						<div class="col-md-3">
 							<input type="hidden" class="wishId" value="${wish.id}">
 							<button class="btn-danger wish_delete_button"><spring:message code="message.libDelete" /></button>
+							<div class="alert alert-danger wish_delete_err hide"></div>
 						</div>
 					</div>
 				</li>
@@ -77,6 +78,32 @@
 		</div>
 	</div>
 	<!--Modal Empty-->
+	
+	<!--Modal Delete-->
+
+	<div class="modal fade" id="delete_wish_list" tabindex="-1"
+		role="dialog" aria-labelledby="delete_wish_list_label"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="delete_wish_list_label">Delete Wish
+						Notification</h4>
+				</div>
+				<div class="modal-body">
+					<h3>Delete <b id="delete_title"></b> from wishlist?</h3>
+				</div>
+				<div class="modal-footer">
+
+					<button id="delete_final" type="button" class="btn btn-danger">Delete</button>
+					<button id="return" type="button" class="btn btn-primary">Return to list</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Modal Delete-->
 
 </div>
 

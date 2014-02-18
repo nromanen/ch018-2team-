@@ -2,7 +2,9 @@ package com.ch018.library.DAO;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -83,12 +86,6 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 		}
 	
 		@Override
-		public List<BooksInUse> getBooksInUseByIssueDate(Date issue) {
-			return factory.getCurrentSession().createCriteria(BooksInUse.class)
-					.add(Restrictions.eq("issueDate", issue)).list();
-		}
-	
-		@Override
 		public List<BooksInUse> getBooksInUseByReturnDate(Date returnDate) {
 			return factory.getCurrentSession().createCriteria(BooksInUse.class)
 					.add(Restrictions.ge("returnDate", returnDate)).list();
@@ -96,19 +93,18 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 	
 		@Override
 		public Date getMinReturnDate(Book book) {
-			Date minDate = (Date) factory
-					.getCurrentSession()
-					.createCriteria(BooksInUse.class)
-					.add(Restrictions.eq("book", book))
-					.setProjection(
-							Projections.projectionList().add(
-									Projections.min("returnDate"))).uniqueResult();
-			if (minDate == null) {
-				return new Date();
-			} else {
-				return minDate;
-	
+			Date minDate = null;
+			Criteria criteria = factory.getCurrentSession().createCriteria(BooksInUse.class);
+			criteria.add(Restrictions.eq("book", book));
+			criteria.setProjection(Projections.projectionList().add(Projections.min("returnDate")));
+			
+			try {
+				minDate = (Date) criteria.uniqueResult();
+			} catch (Exception e) {
+				logger.error(e.getMessage());
 			}
+			
+			return minDate;
 		}
 	
 		@Override
@@ -123,11 +119,12 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 	
 		@Override
 		public boolean isPersonHaveBook(Person person, Book book) {
+			
+			Criteria criteria = factory.getCurrentSession().createCriteria(BooksInUse.class); 
+			criteria.add(Restrictions.eq("person", person));
+			criteria.add(Restrictions.eq("book", book));
 			try {
-				BooksInUse use = (BooksInUse) factory.getCurrentSession()
-						.createCriteria(BooksInUse.class)
-						.add(Restrictions.eq("person", person))
-						.add(Restrictions.eq("book", book)).uniqueResult();
+				BooksInUse use = (BooksInUse) criteria.uniqueResult();
 				return use == null ? false : true;
 			} catch (Exception e) {
 				return false;
@@ -136,29 +133,32 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 	
 		@Override
 		public List<BooksInUse> getBooksInUseByReturnDateLe(Date date) {
-	
+		
+			List<BooksInUse> uses = new ArrayList<>();
+			
+			Criteria criteria = factory.getCurrentSession().createCriteria(BooksInUse.class);
+			criteria.add(Restrictions.le("returnDate", getDateToWithoutTime(date)));
+			
 			try {
-				return factory.getCurrentSession().createCriteria(BooksInUse.class)
-						.add(Restrictions.le("returnDate", getDateToWithoutTime(date)))
-						.list();
+				uses = criteria.list();
 			} catch (Exception e) {
-				logger.error(
-						"error {} during getBooksInUseByReturnDateLe with date{}",
-						e.getMessage(), date);
-				return null;
+				logger.error("error {} during getBooksInUseByReturnDateLe with date{}",e.getMessage(), date);
 			}
+			
+			return uses;
 	
 		}
 	
-		private Date getDateFromWithoutTime(Date date) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(date);
-			calendar.set(Calendar.HOUR_OF_DAY, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			calendar.set(Calendar.MILLISECOND, 0);
-			return calendar.getTime();
+		@Override
+		public long getBooksInUseCountForPerson(Person person) {
+			
+			Criteria criteria = factory.getCurrentSession().createCriteria(BooksInUse.class);
+			criteria.add(Restrictions.eq("person", person));
+			criteria.setProjection(Projections.rowCount());
+			
+			return (long) criteria.uniqueResult();
 		}
+
 	
 		private Date getDateToWithoutTime(Date date) {
 			Calendar calendar = Calendar.getInstance();

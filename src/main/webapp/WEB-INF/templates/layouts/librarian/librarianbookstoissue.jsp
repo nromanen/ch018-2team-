@@ -25,7 +25,6 @@
                         <td> <b> Genre </b> </td>
                         <td> <b> Description </b> </td>    
                         <td> <b> Shelf </b> </td>
-                        <td> <b> Term </b> </td> 
                         <td> <b> Options </b> </td>
                         
                 </tr>
@@ -41,7 +40,6 @@
                         <td>${book.genre}</td>
                         <td>${book.description}</td>
                         <td>${book.shelf}</td>
-                        <td>${book.term}</td>
                     <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>">Edit</a>
                     <td><a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>">Delete</a></td>
                 </tr>

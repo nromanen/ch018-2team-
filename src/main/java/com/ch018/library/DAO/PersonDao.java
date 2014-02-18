@@ -35,6 +35,4 @@ public interface PersonDao {
     List<Person> orderByName();
     List<Person> orderBySurname();
     List<Person> orderByRating();
-
-    		
 }

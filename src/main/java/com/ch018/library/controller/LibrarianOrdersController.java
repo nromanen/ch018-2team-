@@ -1,20 +1,22 @@
 package com.ch018.library.controller;
 
+
 import com.ch018.library.DAO.OrdersDao;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.sql.SQLException;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/librarian/orders")
@@ -23,6 +25,7 @@ public class LibrarianOrdersController {
 		private static final String VALIDATION_FAILED = "Term must be between 1 and 70";
 		private static final int MIN_ISUUE = 1;
 		private static final int MAX_ISSUE = 70;
+		private static final long MILLIS_IN_DAY = 24 * 3600 * 1000;
 		
 		@Autowired
 		private OrdersService ordersService;
@@ -52,12 +55,17 @@ public class LibrarianOrdersController {
 		
 		
 		@RequestMapping(value = "/issue", method = RequestMethod.GET)
-		public String issueGet(@RequestParam("id") int id, Model model) throws Exception {
+		public String issueGet(@RequestParam("id") int id, Model model){
 			
 			Orders order = ordersService.getOrderByID(id);
-			
+			int maxIssueDays = 0;
+			try {
+				maxIssueDays = ordersService.getMaxIssueDays(order);
+			} catch (Exception e) {
+				System.out.println("UNAVAIL");
+			}
 			model.addAttribute("order", order);
-			model.addAttribute("term", order.getDaysAmount());
+			model.addAttribute("term", maxIssueDays);
 			
 			return "librarian_orders_issue";
 		}
@@ -73,7 +81,7 @@ public class LibrarianOrdersController {
 			} catch (Exception e) {
 				
 				model.addAttribute("order", ordersService.getOrderByID(id));
-				model.addAttribute("term", order.getDaysAmount());
+				model.addAttribute("term", (order.getReturnDate().getTime() - order.getOrderDate().getTime())/MILLIS_IN_DAY);
 				model.addAttribute("validation", "Please, enter correct value!");
 				return "librarian_orders_issue";
 			}
@@ -84,7 +92,7 @@ public class LibrarianOrdersController {
 				return "redirect:/librarian/orders";
 			} else {
 				model.addAttribute("order", ordersService.getOrderByID(id));
-				model.addAttribute("term", order.getDaysAmount());
+				model.addAttribute("term", (order.getReturnDate().getTime() - order.getOrderDate().getTime())/MILLIS_IN_DAY);
 				model.addAttribute("validation", VALIDATION_FAILED);
 				return "librarian_orders_issue";
 			}

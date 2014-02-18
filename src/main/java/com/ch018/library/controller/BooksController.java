@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
+import org.tartarus.snowball.Among;
 
 import com.ch018.library.DAO.PaginationDao;
 import com.ch018.library.entity.Book;
@@ -46,6 +49,7 @@ import com.ch018.library.service.GenreService;
 import com.ch018.library.service.GenreTranslationsService;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.service.PaginationService;
+import com.ch018.library.util.Constans;
 import com.ch018.library.util.PageContainer;
 import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsBook;
@@ -84,27 +88,15 @@ public class BooksController {
         
         @Autowired
         private PageContainer<Book> pageContainer;
-        
-        @Autowired
-        MessageSource messageSource;
-
-        @Autowired
-        ApplicationContext ctx;
-        
-        @Autowired
-        GenreTranslationsService gtrans;
-
 
         private final Logger logger = LoggerFactory.getLogger(BooksController.class);
         
         
-        
         @RequestMapping(method = RequestMethod.GET)
-        public String booksGeneral(Model model) {
-        	
-            model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", 4));
-            model.addAttribute("populars", bookService.getLastByField("ordersQuantity", 4));
-            logger.info("arrivals {}", bookService.getLastByField("arrivalDate", 4));
+        public String booksGeneral(HttpServletRequest request, Model model) {
+
+            model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", Constans.AMOUNT_OF_BOOKS_TO_MAIN));
+            model.addAttribute("populars", bookService.getRecommended(Constans.AMOUNT_OF_BOOKS_TO_MAIN));
             return "home";
         }
         
@@ -112,7 +104,7 @@ public class BooksController {
         @RequestMapping(value = "/search", method = RequestMethod.GET)
         public String bookSearchGet(@ModelAttribute SearchParamsBook tmpParams, Model model) {
         	
-        	List<Book> books = null;
+        	List<Book> books;
         	
         	if(searchParams.isMainFieldsEmpty()) {
         		searchParams.setMainFieldsDefault();
@@ -128,7 +120,6 @@ public class BooksController {
                 model.addAttribute("nothing", true);
             }
             model.addAttribute("books", books);
-            model.addAttribute("num", 1);
             return "books";
         }
 

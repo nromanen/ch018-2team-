@@ -89,7 +89,6 @@ public class GenreServiceImpl implements GenreService {
 			GenreTranslations ukrTranslation = new GenreTranslations();
 			
 			genre.setDescription(eng);
-			
 			save(genre);
 			
 			System.out.println(genre.getId());

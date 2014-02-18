@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ch018.library.entity;
 
 import java.io.Serializable;
@@ -15,25 +11,25 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-/**
- *
- * @author Admin
- */
+
 @Entity
-@Table(name = "wishlist", 
-        uniqueConstraints = { @UniqueConstraint( columnNames = { "pid", "bid" } ) })
+@Table(name = "Wishlist", 
+        uniqueConstraints = { @UniqueConstraint( columnNames = { "personId", "bookId" } ) })
 public class WishList implements Serializable {
-    
-        @Id
+
+		
+	private static final long serialVersionUID = -3744895473210175797L;
+
+		@Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int id;
 
-        @ManyToOne()//targetEntity = Person.class)
-        @JoinColumn(name = "pid", referencedColumnName = "pid")
+        @ManyToOne
+        @JoinColumn(name = "personId", referencedColumnName = "personId")
         private Person person;
 
-        @ManyToOne()//targetEntity = Book.class)
-        @JoinColumn(name = "bid", referencedColumnName = "bid")
+        @ManyToOne
+        @JoinColumn(name = "bookId", referencedColumnName = "bookId")
         private Book book;
 
         public WishList() {
@@ -69,4 +65,47 @@ public class WishList implements Serializable {
             this.book = book;
         }
 
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((book == null) ? 0 : book.hashCode());
+			result = prime * result + id;
+			result = prime * result
+					+ ((person == null) ? 0 : person.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (!(obj instanceof WishList))
+				return false;
+			WishList other = (WishList) obj;
+			if (book == null) {
+				if (other.book != null)
+					return false;
+			} else if (!book.equals(other.book))
+				return false;
+			if (id != other.id)
+				return false;
+			if (person == null) {
+				if (other.person != null)
+					return false;
+			} else if (!person.equals(other.person))
+				return false;
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return "WishList [id=" + id + ", person=" + person.getPid() + ", book="
+					+ book.getbId() + "]";
+		}
+
+        
+        
 }

@@ -13,43 +13,18 @@ $(document).ready(function() {
 						var orderDateInMillis = $(this).attr('val');
 						console.log('orderdate = ' + orderDateInMillis);
 						$(this).text(getDateInFormat(Number(orderDateInMillis)));
+						
+						var returnDateInMillis = Number($(this).next().attr('val'));
+						var days = (returnDateInMillis - Number(orderDateInMillis)) / (24 * 3600 * 1000);
+						$(this).next().text(Math.round(days));
+						
 					});
 					
 					$(".calendar").each(
 									function() {
-										var changed = $(this).parent().find(
-												".changed").val();
-										var orderDateLong = $(this).prev()
-												.val();
-										var minDateLong = $(this).parent()
-												.find($('.minDate')).val();
-										var orderDate = getDateInFormat(orderDateLong);
-										var rawMinDate = getDateInFormat(minDateLong);
-										var minDate = rawMinDate.split(" ");
-										console.log("minDate " + minDate);
-										var $orders = $(this).parent().find('.order');
+										
 										var bid = $(this).attr('bid');
 										console.log("bid " + bid);
-										/*
-										 * if(changed === 'true'){
-										 * 
-										 * var $btn = $(this).next();
-										 * $btn.attr('data-toggle', 'popover');
-										 * $btn.attr('data-content', 'choose
-										 * another date'); $btn.popover('show');
-										 * }else if(orderDateLong > (minDateLong +
-										 * (24*3600*1000))){
-										 * 
-										 * var $btn = $(this).next();
-										 * $btn.attr('data-toggle', 'popover');
-										 * $btn.attr('data-content', 'can choose
-										 * earlier date');
-										 * $btn.popover({placement : 'bottom'});
-										 * $btn.popover('show');
-										 * $btn.popover().hover(function () {
-										 * $btn.popover('hide'); });
-										 *  }
-										 */
 
 										$(this).datetimepicker({
 															onGenerate : function(ct, $input) {
@@ -106,7 +81,7 @@ $(document).ready(function() {
 															},
 															
 															format : 'Y/m/d H:i',
-															value : orderDate,
+															//value : orderDate,
 															//minDate : minDate[0],
 															allowTimes : [
 																	'09:00',
@@ -120,9 +95,24 @@ $(document).ready(function() {
 														});
 									});
 
+				
+					
+					
 					$('.order_delete_button').click(function() {
-
-						deleteOrder($(this).prev().val());
+						var orderId = $(this).prev().val();
+						$('#delete_final').attr('orderid', orderId);
+						$('#delete_title').text($('#book_title').text());
+						$('#delete_order_list').modal('show');
+					});
+					
+					$('#delete_final').click(function() {
+						
+						deleteOrder($(this).attr('orderid'));
+						$('#delete_order_list').modal('hide');
+					});
+					
+					$('#return').click(function() {
+						$('#delete_order_list').modal('hide');
 					});
 
 					$('.order_change_button').click(function() {
@@ -191,7 +181,7 @@ function editOrder(orderId, date) {
 			var $order_date = $li.find(".order_date");
 			var $days = $li.find(".days");
 			var minD = getDateInFormat(data.minDate).split(" ");
-			var currentDate = getDateInFormat(data.date);
+			var currentDate = getDateInFormat(Number(data.orderDate));
 			$order_date.text(currentDate);
 			console.log("days " + $days.attr('class'));
 			$days.text(data.days);
@@ -240,8 +230,8 @@ function getOrders(date, bid) {
 			$.each(data.orders, function(index, value) {
 				console.log(value.days + " " + value.orderDate);
 				var $order = $('<div>', {class : 'order'});
-				$order.attr('start', value.orderDate);
-				$order.attr('days', value.days);
+				$order.attr('orderDate', value.orderDate);
+				$order.attr('returnDate', value.returnDate);
 				$order.appendTo($orders);
 				
 			});

@@ -109,16 +109,16 @@
                             </div>
                         </li>
                         <c:forEach var="person" items="${persons}">
-                            <li id="person_li_${person.getPid()}" class="list-group-item">
+                            <li id="person_li_${person.pid}" class="list-group-item">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="text-center">
-                                            ${person.getEmail()}
+                                            ${person.email}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="text-center user_role">
-                                            ${person.getProle()}
+                                            ${person.personRole}
                                         </div>
                                     </div>
                                         <div class="col-md-3">
@@ -130,13 +130,13 @@
                                                 </c:forEach>
                                             </select>  
                                             
-                                            <button class="btn-warning  change_role" value="${person.getPid()}">Change</button> 
+                                            <button class="btn-warning  change_role" value="${person.pid}">Change</button> 
                                         
                                     </div>
                                     <div class="col-md-3">
                                         <div class="text-center">
                                             
-                                            <button class="btn-danger" value="${person.getPid()}">Delete</button> 
+                                            <button class="btn-danger" value="${person.pid}">Delete</button> 
                                         </div>
                                     </div>
                                     
@@ -171,8 +171,9 @@
 									action="${pageContext.request.contextPath}/admin/syssetings"
 									method="post">
 									<div class="checkbox">
-										<label> <c:choose>
-												<c:when test="${switcher}">
+										<label> 
+										<c:choose>
+												<c:when test="${switcher.switcher}">
 													<input id="switcher" class="checkbox" type="checkbox" name="switcher"
 														checked="checked"> Local search
                                                 </c:when>
@@ -180,7 +181,19 @@
 													<input id="switcher" class="checkbox" type="checkbox" name="switcher"
 														> Local search
                                                 </c:otherwise>
-											</c:choose>
+										</c:choose>
+										<div class="clearfix"></div>
+										<label> 
+										<c:choose>
+												<c:when test="${switcher.switcher}">
+													<input id="recommendation" class="checkbox" type="checkbox" name="recommendation"
+														checked="checked"> Recomendation for users enabled.
+                                                </c:when>
+												<c:otherwise>
+													<input id="recommendation" class="checkbox" type="checkbox" name="recommendation"
+														> Recomendation for users disabled
+                                                </c:otherwise>
+										</c:choose>
 
 										</label>
 									</div>

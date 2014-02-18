@@ -23,21 +23,22 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 @Entity
-@Table(name = "books")
-@Proxy(lazy = false)
+@Table(name = "Book")
 public class Book implements Serializable {
 	
+
+		private static final long serialVersionUID = -7141788634638340212L;
+		
 		private static final int MAX_NAME = 255;
-		private static final int MIN_YEAR = 1800;
+		private static final int MIN_YEAR = 1900;
 		private static final int MAX_YEAR = 2030;
 		private static final int MAX_PAGES = 10000;
 		private static final int MAX_SHELF = 1000;
 		private static final int MAX_QUANTITY = 1000;
-		private static final int MAX_TERM = 365;
 	
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		@Column(name = "bid", unique = true, nullable = false)
+		@Column(name = "bookId", unique = true, nullable = false)
 		private int bId;
 	
 		@NotEmpty
@@ -52,7 +53,7 @@ public class Book implements Serializable {
 	
 		@NotNull
 		@Range(min = MIN_YEAR, max = MAX_YEAR)
-		@Column(name = "year_public")
+		@Column(name = "yearPublic")
 		private int year;
 	
 		
@@ -66,7 +67,7 @@ public class Book implements Serializable {
 		private int pages;
 	
 		@Size(min = 0)
-		@Column(name = "description")
+		@Column(name = "description", columnDefinition="TEXT")
 		private String description;
 	
 		@Column(name = "bookcase")
@@ -74,7 +75,7 @@ public class Book implements Serializable {
 		
 		
 		@ManyToOne()
-		@JoinColumn(name = "gid")
+		@JoinColumn(name = "genreId")
 		private Genre genre;
 	
 		@NotNull
@@ -82,38 +83,39 @@ public class Book implements Serializable {
 		@Column(name = "shelf")
 		private int shelf;
 	
-		@NotNull
-		@Range(min = 0, max = MAX_TERM)
-		@Column(name = "term")
-		private int term;
-	
 		@Column(name = "img")
-		private String img = "http://placehold.it/480x480";
+		private String img = "resources/img/default.jpg";
 	
 		@Range(min = 0)
-		@Column(name = "cur_quantity")
+		@Column(name = "currentQuantity")
 		private int currentQuantity;
 	
 		@NotNull
 		@Range(min = 0, max = MAX_QUANTITY)
-		@Column(name = "gen_quantity")
+		@Column(name = "generalQuantity")
 		private Integer generalQuantity;
 		
-		@Column(name = "arrival_date")
+		@Column(name = "arrivalDate")
 		@Temporal(TemporalType.TIMESTAMP)
 		private Date arrivalDate = new Date();
 		
-		@Column(name = "orders_quantity")
-		private Integer ordersQuantity = 0;
+		@Column(name = "rating")
+		Float rating = 0F;
+		
+		@Column(name = "votes")
+		Integer votes = 0;
 	
-		@OneToMany(targetEntity = BooksInUse.class, mappedBy = "book")
-		private Set<Person> personsUse;
+		@OneToMany(mappedBy = "book")
+		private Set<BooksInUse> bookUses;
 	
-		@OneToMany(targetEntity = Orders.class, mappedBy = "book")
-		private Set<Person> personsOrders;
+		@OneToMany(mappedBy = "book")
+		private Set<Orders> bookOrders;
 	
-		@OneToMany(targetEntity = WishList.class, mappedBy = "book")
-		private Set<Person> personsWishes;
+		@OneToMany(mappedBy = "book")
+		private Set<WishList> bookWishes;
+		
+		@OneToMany(mappedBy = "book")
+		private Set<Rate> rates;
 	
 		public Book() {
 	
@@ -206,14 +208,6 @@ public class Book implements Serializable {
 			this.shelf = shelf;
 		}
 
-		public int getTerm() {
-			return term;
-		}
-
-		public void setTerm(int term) {
-			this.term = term;
-		}
-
 		public String getImg() {
 			return img;
 		}
@@ -246,36 +240,52 @@ public class Book implements Serializable {
 			this.arrivalDate = arrivalDate;
 		}
 
-		public Integer getOrdersQuantity() {
-			return ordersQuantity;
+		public Float getRating() {
+			return rating;
 		}
 
-		public void setOrdersQuantity(Integer ordersQuantity) {
-			this.ordersQuantity = ordersQuantity;
+		public void setRating(Float rating) {
+			this.rating = rating;
 		}
 
-		public Set<Person> getPersonsUse() {
-			return personsUse;
+		public Integer getVotes() {
+			return votes;
 		}
 
-		public void setPersonsUse(Set<Person> personsUse) {
-			this.personsUse = personsUse;
+		public void setVotes(Integer votes) {
+			this.votes = votes;
 		}
 
-		public Set<Person> getPersonsOrders() {
-			return personsOrders;
+		public Set<BooksInUse> getBookUses() {
+			return bookUses;
 		}
 
-		public void setPersonsOrders(Set<Person> personsOrders) {
-			this.personsOrders = personsOrders;
+		public void setBookUses(Set<BooksInUse> bookUses) {
+			this.bookUses = bookUses;
 		}
 
-		public Set<Person> getPersonsWishes() {
-			return personsWishes;
+		public Set<Orders> getBookOrders() {
+			return bookOrders;
 		}
 
-		public void setPersonsWishes(Set<Person> personsWishes) {
-			this.personsWishes = personsWishes;
+		public void setBookOrders(Set<Orders> bookOrders) {
+			this.bookOrders = bookOrders;
+		}
+
+		public Set<WishList> getBookWishes() {
+			return bookWishes;
+		}
+
+		public void setBookWishes(Set<WishList> bookWishes) {
+			this.bookWishes = bookWishes;
+		}
+
+		public Set<Rate> getRates() {
+			return rates;
+		}
+
+		public void setRates(Set<Rate> rates) {
+			this.rates = rates;
 		}
 
 		@Override
@@ -283,10 +293,9 @@ public class Book implements Serializable {
 			return "Book [bId=" + bId + ", title=" + title + ", authors="
 					+ authors + ", genre=" + genre + ", year=" + year
 					+ ", publisher=" + publisher + ", pages=" + pages
-					+ ", bookcase=" + bookcase + ", shelf=" + shelf + ", term="
-					+ term + ", currentQuantity=" + currentQuantity
+					+ ", bookcase=" + bookcase + ", shelf=" + shelf  + ", currentQuantity=" + currentQuantity
 					+ ", generalQuantity=" + generalQuantity + ", arrivalDate="
-					+ arrivalDate + ", ordersQuantity=" + ordersQuantity + "]";
+					+ arrivalDate + "]";
 		}
 
 		

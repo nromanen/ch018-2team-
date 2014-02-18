@@ -42,22 +42,7 @@
 								    </div>
 							 </div>
 				           	 
-				           	 <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libConfirmed"/></label>
-							    <div class="col-sm-10">
-							    	 <select name="confirm" class="form-control">
-							    	 <c:if test="${user.confirm == true }">
-				                		<option value="true" selected="selected">true</option>
-				                		<option value="false">false</option>
-				                	 </c:if>	
-				                	  <c:if test="${user.confirm == false }">
-				                		<option value="true">true</option>
-				                		<option value="false" selected="selected">false</option>
-				                	 </c:if>	
-				                		
-				                	</select>
-							    </div>
-							 </div>
+				           	 
 							 
 							 <div class="form-group">
 							    <label for="inputEmail3" class="col-sm-2 control-label">SMS</label>

@@ -1,7 +1,9 @@
 package com.ch018.library.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
+import com.ch018.library.util.Constans;
 import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsBook;
 import com.ch018.library.util.SearchParamsPerson;
@@ -36,7 +39,7 @@ public class BookDaoImpl implements BookDao {
 			try {
 				factory.getCurrentSession().save(book);
 			} catch (Exception e) {
-				logger.error("error during save book {}", book);
+				logger.error("error during save book {}, error {}", book, e.getMessage());
 			}
 		}
 	
@@ -162,75 +165,6 @@ public class BookDaoImpl implements BookDao {
 			}
 		}
 	
-		/*@Override
-		public List<Book> getBooksComplex(SearchParams tmpSearchParams) {
-
-				SearchParamsBook searchParams = (SearchParamsBook) tmpSearchParams;
-			logger.info("book dao search {}", searchParams);
-			String query;
-			Criteria criteria = factory.getCurrentSession().createCriteria(
-					Book.class);
-			if (searchParams.getQuery() !=  null) {
-				query = "%" + searchParams.getQuery() + "%";
-				SimpleExpression tExp = Restrictions.like("title", query);
-				SimpleExpression aExp = Restrictions.like("authors", query);
-				SimpleExpression pExp = Restrictions.like("publisher", query);
-				criteria.add(Restrictions.or(tExp, aExp, pExp));
-			}
-			
-			if(searchParams.getTitle() != null) {
-				query = "%" + searchParams.getTitle() + "%";
-				criteria.add(Restrictions.like("title", query));
-			}
-			
-			if(searchParams.getAuthors() != null) {
-				query = "%" + searchParams.getAuthors() + "%";
-				criteria.add(Restrictions.like("authors", query));
-			}
-			
-			if(searchParams.getPublisher() != null) {
-				query = "%" + searchParams.getPublisher() + "%";
-				criteria.add(Restrictions.like("publisher", query));
-			}
-			
-			if (searchParams.getGenre() > 0) {
-				criteria.add(Restrictions.eq("genre.id", searchParams.getGenre()));
-			}
-
-			if (searchParams.getChoosenPageStart() != null &&
-					searchParams.getChoosenPageEnd() != null) {
-			  criteria.add(Restrictions.between("pages",
-					  searchParams.getChoosenPageStart(), searchParams.getChoosenPageEnd()));
-			  logger.info("PAGES {}", criteria.list());
-			}
-			
-			if (searchParams.getChoosenYearStart() != null &&
-					searchParams.getChoosenYearEnd() != null) {
-			  criteria.add(Restrictions.between("year",
-					  searchParams.getChoosenYearStart(), searchParams.getChoosenYearEnd())); 
-			  logger.info("YEARS {}", criteria.list());
-			}
-			
-			if (searchParams.getOrder())
-				criteria.addOrder(Order.desc(searchParams.getOrderField()));
-			else
-				criteria.addOrder(Order.asc(searchParams.getOrderField()));
-			
-			int pageNum = searchParams.getPage();
-			int pageSize = searchParams.getPageSize();
-			int itemsQuantity = criteria.list().size();
-			int quantity =  itemsQuantity / pageSize;
-			if(quantity == 0)
-				quantity = 10;
-			searchParams.setPagesQuantity(quantity);
-			criteria.setFirstResult((pageNum - 1) * pageSize);
-			criteria.setMaxResults(pageSize);
-			
-			
-			logger.info("SIZE = {}", criteria.list().size());
-			return criteria.list();
-		}
-	*/
 	
 		@Override
 		public Integer getMinIntegerField(String field) {
@@ -255,8 +189,29 @@ public class BookDaoImpl implements BookDao {
 		@Override
 		public List<Book> getLastByField(String field, int quantity) {
 			Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
-			List<Book> books = (List<Book>) criteria.addOrder(Order.desc(field)).setMaxResults(quantity).list();
+			List<Book> books = criteria.addOrder(Order.desc(field)).setMaxResults(quantity).list();
 			return books;
+		}
+
+		@Override
+		public List<Book> getBooksFromRecommendedList(List<RecommendedItem> items) {
+			
+			Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
+			Disjunction orDisjunction = Restrictions.disjunction();
+			
+			for(RecommendedItem item : items) {
+				orDisjunction.add(Restrictions.eq("bId", (int) item.getItemID()));
+			}
+			
+			criteria.add(orDisjunction);
+			
+			List<Book> books = criteria.list();
+			
+			logger.info("recommended books = {}", books);
+
+			
+			return books;
+			
 		}
 
 		

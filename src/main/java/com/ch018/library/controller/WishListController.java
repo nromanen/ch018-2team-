@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
 import com.ch018.library.entity.WishList;
+import com.ch018.library.exceptions.DeleteSecurityViolationException;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
@@ -55,8 +56,8 @@ public class WishListController {
 		final Logger logger = LoggerFactory.getLogger(WishListController.class);
 	
 		@RequestMapping(value = "/add", method = RequestMethod.POST)
-		public ResponseEntity<String> add(@RequestParam("bookId") Integer bookId) {
-			String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		public ResponseEntity<String> add(@RequestParam("bookId") Integer bookId, Principal principal) {
+			String email = principal.getName();
 			Person person = personService.getByEmail(email);
 			Book book = bookService.getBookById(bookId);
 			WishList wish = new WishList(person, book);
@@ -83,10 +84,15 @@ public class WishListController {
 		}
 	
 		@RequestMapping(value = "/delete")
-		@Secured({ "ROLE_USER" })
-		public @ResponseBody String delete(@RequestParam("wishId") Integer wishId) {
-			wishService.delete(wishService.getWishByID(wishId));
-			return new JSONObject().toString();
+		public @ResponseBody ResponseEntity<String> delete(@RequestParam("wishId") Integer wishId) {
+			try {
+				wishService.remove(wishService.getWishByID(wishId));
+			} catch (DeleteSecurityViolationException e) {
+				logger.error(e.getMessage());
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+			JSONObject json = new JSONObject();
+			return new ResponseEntity<>(json.toString(), HttpStatus.OK);
 		}
 
 }

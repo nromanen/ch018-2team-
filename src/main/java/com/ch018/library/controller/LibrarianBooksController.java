@@ -1,16 +1,22 @@
 package com.ch018.library.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
@@ -39,16 +46,11 @@ public class LibrarianBooksController {
 		@Autowired
 		private BookInUseService bookInUseService;
 		
-
-		
 		final Logger logger = LoggerFactory.getLogger(LibrarianBooksController.class);
 		
-		private Locale locale;
 		
 		@RequestMapping(value = "")
 		public String bookList(Model model) {
-			
-			locale = LocaleContextHolder.getLocale();
 			
 			model.addAttribute("books", bookService.getAll());
 			return "librarian_books";
@@ -56,32 +58,32 @@ public class LibrarianBooksController {
 		
 		@RequestMapping(value = "/addbook", method = RequestMethod.GET)
 	        public String add(Model model) throws Exception {
-			final int DEFAULT_TERM_OF_ISSUANCE = 14;
-			Book book = new Book();
-			book.setTerm(DEFAULT_TERM_OF_ISSUANCE);
-			
-			Locale locale = LocaleContextHolder.getLocale();
-			
-			model.addAttribute("book", book);
-			model.addAttribute("genres", genreService.getAll());
-			return "librarian_books_add_book";
+				Book book = new Book();
+	
+				model.addAttribute("book", book);
+				model.addAttribute("genres", genreService.getAll());
+				return "librarian_books_add_book";
 		}
 		
 		@RequestMapping(value = "/addbook", method = RequestMethod.POST)
-		public String add(@ModelAttribute @Valid Book book, BindingResult result,
-							@RequestParam("gid") Integer gid, Model model) throws Exception {
-			//Set<GenreTranslations> genreTranslation = genreTranslService.getByGenreId(gid);
-			//book.setGenre(genreTranslation);
+		public ResponseEntity<String> add(@ModelAttribute Book book, BindingResult result, HttpServletRequest request,
+							@RequestParam("gid") Integer gid, @RequestParam("file") MultipartFile file, Model model) throws Exception {
+
+			
 			book.setGenre(genreService.getById(gid));
 			if (result.hasErrors()) {
-				model.addAttribute("genre", genreService.getAll());
 				logger.info("Error Addind Book" + result.toString());
-				return "librarian_books_add_book";
+				return new ResponseEntity<String>(result.toString(), HttpStatus.BAD_REQUEST);
 			} else {
 				book.setCurrentQuantity(book.getGeneralQuantity());
+				if(file != null || !file.isEmpty()) {
+					saveFile(file, book, request);
+				} else {
+					book.setImg("resources/img/default.jpg");
+				}
 				bookService.save(book);
 			}
-			return "redirect:/librarian/books";
+			return new ResponseEntity<>("{}", HttpStatus.OK);
 		}
 		
 		
@@ -130,7 +132,6 @@ public class LibrarianBooksController {
 		
 		@RequestMapping(value = "/advancedsearch", method = RequestMethod.GET)
 		public String advancedSearch(Model model) throws Exception {
-			locale = LocaleContextHolder.getLocale();
 			Book book = new Book();
 			model.addAttribute("book", book);
 			model.addAttribute("genre", genreService.getAll());
@@ -140,11 +141,7 @@ public class LibrarianBooksController {
 		@RequestMapping(value = "/advancedsearch", method = RequestMethod.POST)
 		public String advancedSearch(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("genreId") Integer gid, Model model) throws Exception {
 			
-			locale = LocaleContextHolder.getLocale();
-			
 			List<Book> booksList = bookService.advancedSearch(book);
-			
-			//HashMap<Book, String> books = bookService.getBooksByLocale(booksList, locale);
 			
 			if (booksList.size() > 0) {
 				model.addAttribute("books", booksList);
@@ -180,8 +177,6 @@ public class LibrarianBooksController {
 			
 			List<Book> booksList = bookService.simpleSearch(request);
 			
-			//HashMap<Book, String> books = bookService.getBooksByLocale(booksList, locale);
-			
 			if (booksList.size() > 0) {
 				model.addAttribute("books", booksList);
 			} else {
@@ -189,5 +184,22 @@ public class LibrarianBooksController {
 			}
 			
 			return "librarian_books";
+		}
+		
+		
+		private void saveFile(MultipartFile file, Book book, HttpServletRequest request) {
+			BufferedImage image = null;
+			String path = request.getSession().getServletContext().getRealPath("/");
+			path = path + "resources\\img\\";
+			try {
+				image = ImageIO.read(file.getInputStream());
+				String originalName = file.getOriginalFilename();
+				String onlyName = originalName.substring(0, originalName.length() - 4);
+				ImageIO.write(image, "jpg",new File(path + onlyName + ".jpg"));
+				ImageIO.write(image, "gif",new File(path + onlyName + ".gif"));
+				book.setImg("resources/img/" + onlyName + ".jpg");
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 		}
 }

@@ -220,4 +220,4 @@ function doPost(params, url) {
 
 	$form.appendTo('body');
 	$form.submit();
-	}
+	};

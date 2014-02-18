@@ -27,6 +27,7 @@
     <mapping class="com.ch018.library.entity.Orders"/>
     <mapping class="com.ch018.library.entity.WishList"/>
     <mapping class="com.ch018.library.entity.GenreTranslations"/>
+    <mapping class="com.ch018.library.entity.Rate"/>
      </session-factory>
 </hibernate-configuration>
 

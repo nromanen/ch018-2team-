@@ -62,22 +62,44 @@
   <constructor-arg value="com.ch018.library.util.PageContainer"/>
  </bean>
  
- <bean id="searchParams" name="searchParams" class="org.mockito.Mockito" factory-method="mock">
-  <constructor-arg value="com.ch018.library.util.SearchParams"/>
+ <bean id="searchParamsBook" name="searchParamsBook" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.util.SearchParamsBook"/>
+ </bean>
+ 
+ <bean id="searchParamsPerson" name="searchParamsPerson" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.util.SearchParamsPerson"/>
+ </bean>
+ 
+ <bean id="searchParamsRate" name="searchParamsRate" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.util.SearchParamsRate"/>
+ </bean>
+ 
+ <bean id="paginationService" name="paginationService" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.service.PaginationService"/>
  </bean>
 
-<bean id="genreTranslationService" name="genreTranslationService" class="org.mockito.Mockito" factory-method="mock">
-  <constructor-arg value="com.ch018.library.service.GenreTranslationService"/>
+<bean  name="genreTranslationsService" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.service.GenreTranslationsService"/>
  </bean>
-
-<bean id="languageService" name="languageService" class="org.mockito.Mockito" factory-method="mock">
-  <constructor-arg value="com.ch018.library.service.LanguageService"/>
+ 
+ <bean name="rateService" class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.service.RateService"/>
  </bean>
 
 <bean id="switcher" name="switcher"  class="org.mockito.Mockito" factory-method="mock">
 			 <constructor-arg value="com.ch018.library.util.Switch"/>
  </bean>
-   	
+ 
+ <bean id="paginationUtils" name="paginationUtils"  class="org.mockito.Mockito" factory-method="mock">
+			 <constructor-arg value="com.ch018.library.util.PaginationUtils"/>
+ </bean>
+
+ <bean  name="principal"  class="org.mockito.Mockito" factory-method="mock">
+			 <constructor-arg value="java.security.Principal"/>
+ </bean>
+ 
+ 
+   	<import resource ="data.xml" />
 	<import resource="mail.xml" />
 	<import resource="security.xml" />
     

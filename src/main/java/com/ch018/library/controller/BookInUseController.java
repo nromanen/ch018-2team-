@@ -60,7 +60,6 @@ public class BookInUseController {
 			BooksInUse bis = new BooksInUse();
 			bis.setPerson(person);
 			bis.setBook(book);
-			bis.setIssueDate(new Date());
 			bis.setReturnDate(new Date(System.currentTimeMillis()
 					+ (TWO_WEEKS_IN_MILLIS)));
 			useService.save(bis);

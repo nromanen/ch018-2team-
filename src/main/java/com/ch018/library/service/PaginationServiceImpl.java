@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ch018.library.DAO.PaginationDao;
 import com.ch018.library.util.PageContainer;
 import com.ch018.library.util.SearchParams;
+import com.ch018.library.util.SearchParamsRate;
 import com.ch018.library.util.Switch;
 
 @Service

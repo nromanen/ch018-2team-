@@ -43,15 +43,17 @@ public class LibrarianUsersController {
 		@RequestMapping(value = "")
 		public String showAll(Model model) throws Exception {
 
-			model.addAttribute("users", personService.getAll());
+			/*model.addAttribute("users", personService.getAll());
 
 			List<Person> person = personService.getAll();
 	
 			for (Person pers : person) {
 				personService.countRating(pers);
 			}
-			model.addAttribute("users", person);
+			model.addAttribute("users", person);*/
 	
+			model.addAttribute("users", personService.getAll());
+			
 			return "librarian_users";
 		}
 		
@@ -91,11 +93,10 @@ public class LibrarianUsersController {
 				return "librarian_add_user";
 			} else {
 				user.setMailConfirm(true);
-				user.setConfirm(true);
 				String password = encoder.encode(user.getPassword());
 				System.out.println("Password: " + password);
 				user.setPassword(password);
-				user.setProle("ROLE_USER");
+				user.setPersonRole("ROLE_USER");
 				user.setTimelyReturn(0);
 				user.setUntimekyReturn(0);
 				user.setGeneralRating(DEFAULT_RATING);

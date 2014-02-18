@@ -7,9 +7,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,36 +66,28 @@ public class OrdersDaoImpl implements OrdersDao {
 		}
 	
 		@Override
-		public void update(int id, Date newDate) {
-			Orders order = (Orders) factory.getCurrentSession().get(Orders.class,
-					id);
-			order.setOrderDate(newDate);
-		}
-	
-		@Override
 		public List<Orders> getAll() {
 			return factory.getCurrentSession().createCriteria(Orders.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		}
 	
 		@Override
 		public List<Orders> getOrderByPerson(Person person) {
-			return factory.getCurrentSession().createCriteria(Orders.class)
-					.add(Restrictions.eq("person", person)).list();
+			return factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("person", person)).list();
 	
 		}
 	
 		@Override
 		public List<Orders> getOrderByBook(Book book) {
+			List<Orders> orders = new ArrayList<>();
+			Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
+			criteria.add(Restrictions.eq("book", book));
+			criteria.addOrder(Order.asc("orderDate"));
 			try {
-				List<Orders> orders = factory.getCurrentSession()
-						.createCriteria(Orders.class)
-						.add(Restrictions.eq("book", book))
-						.addOrder(Order.asc("orderDate")).list();
-				return orders == null ? new ArrayList<Orders>() : orders;
+				orders = criteria.list();	
 			} catch (Exception e) {
 				logger.error("error in getOrderByBook {}", e.getMessage());
-				return new ArrayList<>();
 			}
+			return orders;
 		}
 	
 		@Override
@@ -104,30 +99,15 @@ public class OrdersDaoImpl implements OrdersDao {
 		@Override
 		public Orders getOrderByID(int id) {
 			return (Orders) factory.getCurrentSession()
-					.createCriteria(Orders.class).add(Restrictions.eq("id", id))
-					.list().get(0);
+					.createCriteria(Orders.class).add(Restrictions.eq("id", id)).uniqueResult();
 		}
 	
 		@Override
 		public List<Orders> getOrdersToday() {
-			Calendar start = Calendar.getInstance();
-			Calendar end = Calendar.getInstance();
-	
-			start.set(Calendar.HOUR_OF_DAY, 0);
-			start.set(Calendar.MINUTE, 0);
-			start.set(Calendar.SECOND, 0);
-			start.set(Calendar.MILLISECOND, 0);
-	
-			Date startDate = start.getTime();
-	
-			end.add(Calendar.DAY_OF_YEAR, 1);
-			end.set(Calendar.HOUR_OF_DAY, 0);
-			end.set(Calendar.MINUTE, 0);
-			end.set(Calendar.SECOND, 0);
-			end.set(Calendar.MILLISECOND, 0);
-	
-			Date endDate = end.getTime();
-	
+			Date[] dates = formTodayStartEndTime();
+			Date startDate = dates[0];
+			Date endDate = dates[1];
+			
 			Session session = factory.getCurrentSession();
 	
 			Criteria criteria = session.createCriteria(Orders.class);
@@ -137,6 +117,26 @@ public class OrdersDaoImpl implements OrdersDao {
 	
 			return orders;
 		}
+		
+		@Override
+		public List<Orders> getOrdersTodayWithoutPerson(Book book, Person person) {
+			
+			Date[] dates = formTodayStartEndTime();
+			Date startDate = dates[0];
+			Date endDate = dates[1];
+	
+			Session session = factory.getCurrentSession();
+	
+			Criteria criteria = session.createCriteria(Orders.class);
+			criteria.add(Restrictions.eq("book", book));
+			criteria.add(Restrictions.ne("person", person));
+			criteria.add(Restrictions.between("orderDate", startDate, endDate));
+	
+			List<Orders> orders = criteria.list();
+	
+			return orders;
+		}
+		
 	
 		@Override
 		public List<Orders> getOrdersInHour() {
@@ -148,7 +148,7 @@ public class OrdersDaoImpl implements OrdersDao {
 			Date startDate = start.getTime();
 			Date endDate = end.getTime();
 	
-			Session session = factory.openSession();
+			Session session = factory.getCurrentSession();
 	
 			Criteria criteria = session.createCriteria(Orders.class);
 			criteria.add(Restrictions.between("orderDate", startDate, endDate));
@@ -168,31 +168,18 @@ public class OrdersDaoImpl implements OrdersDao {
 	
 		@Override
 		public boolean isPersonOrderedBook(Person person, Book book) {
+			
+			Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
+			criteria.add(Restrictions.eq("person", person));
+			criteria.add(Restrictions.eq("book", book));
 			try {
-				Orders order = (Orders) factory.getCurrentSession()
-						.createCriteria(Orders.class)
-						.add(Restrictions.eq("person", person))
-						.add(Restrictions.eq("book", book)).list().get(0);
+				Orders order = (Orders) criteria.uniqueResult();
 				return order == null ? false : true;
 			} catch (Exception e) {
-				return false;
+				logger.error(e.getMessage());
+				
 			}
-	
-		}
-	
-		@Override
-		public List<Orders> getOrdersForChanging(Book book, Date returnDate) {
-			List<Orders> orders = new ArrayList<>();
-			try {
-				System.out.println("Book " + book + "return date " + returnDate);
-				orders = factory.getCurrentSession().createCriteria(Orders.class)
-						.add(Restrictions.eq("book", book))
-						.add(Restrictions.lt("orderDate", returnDate)).list();
-			} catch (Exception e) {
-				logger.error("Error while getting orders to change {}",
-						e.getMessage());
-			}
-			return orders;
+			return false;
 		}
 	
 		@Override
@@ -248,45 +235,91 @@ public class OrdersDaoImpl implements OrdersDao {
 		@Override
 		public List<Orders> getOrdersBetweenDatesWithoutPerson(Person person, Book book, Date firstDate, Date secondDate) {
  
-			List<Orders> orders =  factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq("book", book))
-					.add(Restrictions.ne("person", person))
-					.add(Restrictions.between("orderDate", firstDate, secondDate)).addOrder(Order.asc("orderDate")).list();
-			logger.info("orders between {} - {} = {} for book {}", firstDate, secondDate, orders, book);
-			if(orders == null)
-				return new ArrayList<>();
+			Calendar tmpDate = Calendar.getInstance();
+			tmpDate.setTime(firstDate);
+			tmpDate.set(Calendar.DATE, tmpDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+			Date endOfFirstMonth = tmpDate.getTime();
+			
+			logger.info("first {} end {} second {}", firstDate, endOfFirstMonth, secondDate);
+			
+			Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
+			criteria.add(Restrictions.ne("person", person));
+			
+			Criterion returnDateExp = Restrictions.between("returnDate", firstDate, endOfFirstMonth);
+			Criterion orderDateExp = Restrictions.between("orderDate", firstDate, secondDate);
+			
+			criteria.add(Restrictions.or(returnDateExp, orderDateExp));
+			
+			criteria.addOrder(Order.asc("orderDate"));
+			
+			List<Orders> orders = criteria.list();
+			
 			return orders;
+			
 		}
 
 		@Override
-		public long getOrdersCount(Book book) {
-			return (long) factory.getCurrentSession().createCriteria(Orders.class)
-								.setProjection(Projections.rowCount()).uniqueResult();
+		public long getOrdersCountWithoutPerson(Book book, Person person) {
+			
+			Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
+			criteria.add(Restrictions.ne("person", person));
+			criteria.add(Restrictions.eq("book", book));
+			criteria.setProjection(Projections.rowCount());
+			
+			return (long) criteria.uniqueResult();
+
+		}
+		
+		
+		@Override
+		public long getOrdersCountForPerson(Person person) {
+			
+			Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
+			criteria.add(Restrictions.eq("person", person));
+			criteria.setProjection(Projections.rowCount());
+			
+			return (long) criteria.uniqueResult();
 		}
 
+		@Override
+		public Orders getFirstOrderAfterDateWithoutPerson(Date date, Person person, Book book) {
+			
+			Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
+			criteria.add(Restrictions.ne("person", person));
+			criteria.add(Restrictions.eq("book", book));
+			criteria.addOrder(Order.asc("orderDate"));
+			criteria.add(Restrictions.gt("orderDate", date));
+			criteria.setFirstResult(0).setMaxResults(1);
+
+			Orders order = (Orders) criteria.uniqueResult();
+			
+			
+			
+			return order;
+			
+			
+		}
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		private Date[] formTodayStartEndTime() {
+			Calendar start = Calendar.getInstance();
+			Calendar end = Calendar.getInstance();
+	
+			start.set(Calendar.HOUR_OF_DAY, 0);
+			start.set(Calendar.MINUTE, 0);
+			start.set(Calendar.SECOND, 0);
+			start.set(Calendar.MILLISECOND, 0);
+	
+			Date startDate = start.getTime();
+	
+			end.add(Calendar.DAY_OF_YEAR, 1);
+			end.set(Calendar.HOUR_OF_DAY, 0);
+			end.set(Calendar.MINUTE, 0);
+			end.set(Calendar.SECOND, 0);
+			end.set(Calendar.MILLISECOND, 0);
+	
+			Date endDate = end.getTime();
+			
+			return new Date[]{startDate, endDate};
+		}
+			
 }

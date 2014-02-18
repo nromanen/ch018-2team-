@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.antlr.grammar.v3.ANTLRv3Parser.throwsSpec_return;
 import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -23,7 +24,6 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 
-import com.ch018.library.helper.OrderDays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +39,7 @@ import java.util.List;
 import com.ch018.library.exceptions.BookUnavailableException;
 import com.ch018.library.exceptions.IncorrectDateException;
 import com.ch018.library.exceptions.TooManyOrdersException;
+import com.ch018.library.util.Constans;
 
 
 /**
@@ -50,12 +51,11 @@ public class OrdersServiceImpl implements OrdersService {
 	
 		private static final int MAX_DAYS = 14;
 		private static final long MILLIS_IN_DAY = 24 * 3600 * 1000;
-		private static final long DIFF_TIME_IN_MILLIS = 3600 * 1000;
+		private static final long DIFF_TIME_IN_MILLIS = 2 * 3600 * 1000;
 		private static final int ADDITIONAL_DAY_IF_SAT = 2;
 		private static final int MAX_TRIES_FOR_ORDER_FINDING = 6;
 		
-		private final Logger logger = LoggerFactory
-				.getLogger(OrdersServiceImpl.class);
+		private final Logger logger = LoggerFactory.getLogger(OrdersServiceImpl.class);
 	
 		@Autowired
 		private OrdersDao ordersDao;
@@ -92,24 +92,15 @@ public class OrdersServiceImpl implements OrdersService {
 		public void save(Orders order) {
 			ordersDao.save(order);
 			Book book = order.getBook();
-			int ordersQuantity = book.getOrdersQuantity() + 1;
-			book.setOrdersQuantity(ordersQuantity);
 			bookDao.update(book);
 			if (wishService.isPersonWishBook(order.getPerson(), order.getBook()))
-				wishService.delete(wishService.getWishByPersonBook(
-						order.getPerson(), order.getBook()));
+				wishService.delete(wishService.getWishByPersonBook(order.getPerson(), order.getBook()));
 		}
 	
 		@Override
 		@Transactional
 		public void delete(Orders order) {
 			ordersDao.delete(order);
-		}
-	
-		@Override
-		@Transactional
-		public void update(int id, Date newDate) {
-			ordersDao.update(id, newDate);
 		}
 	
 		@Override
@@ -169,8 +160,8 @@ public class OrdersServiceImpl implements OrdersService {
 		@Override
 		@Transactional
 		public boolean isLimitReached(Person person) {
-			int ordersCount = ordersDao.getOrderByPerson(person).size();
-			int useCount = useDao.getBooksInUseByPerson(person).size();
+			long ordersCount = ordersDao.getOrdersCountForPerson(person);
+			long useCount = useDao.getBooksInUseCountForPerson(person);
 	
 			if (person.getBooksAllowed() > ordersCount + useCount)
 				return false;
@@ -184,9 +175,9 @@ public class OrdersServiceImpl implements OrdersService {
 		public void issue(Orders order, int term) {
 			Person person = order.getPerson();
 	
-			int booksOnHands = person.getMultiBook();
+			int booksOnHands = person.getBooksOnHands();
 	
-			person.setMultiBook(++booksOnHands);
+			person.setBooksOnHands(++booksOnHands);
 	
 			personService.update(person);
 	
@@ -249,17 +240,23 @@ public class OrdersServiceImpl implements OrdersService {
 			Calendar calendar = Calendar.getInstance();
 			
 			List<Orders> orders = null;
-			long ordersAmount = ordersDao.getOrdersCount(book);
+			long ordersAmount = getOrdersCountWithoutPerson(book);
 			
 			if(generalQuantity <= 0)
 				throw new BookUnavailableException();
 			
 			if (currentQuantity > 0 && ordersAmount < currentQuantity) {
+				logger.info("return current date {}", minDate);
 				return minDate;
 			} 
 			else if (currentQuantity <= 0) {
 				minDate = booksInUseService.getMinReturnDate(book);
 			}
+			
+			if(minDate == null) {
+				throw new BookUnavailableException();
+			}
+			
 			int loopCount = 0;
 			calendar.setTime(minDate);
 			
@@ -274,8 +271,10 @@ public class OrdersServiceImpl implements OrdersService {
 					if (days >= 1) 
 						return minDate;
 					else {
-						minDate = new Date(order.getOrderDate().getTime()
-								+ order.getDaysAmount() * MILLIS_IN_DAY);
+						Calendar tmpDate = Calendar.getInstance();
+						tmpDate.setTime(order.getReturnDate());
+						tmpDate.add(Calendar.DATE, 1);
+						minDate = tmpDate.getTime();
 					}
 				}
 			calendar.add(Calendar.MONTH, 2);
@@ -289,8 +288,17 @@ public class OrdersServiceImpl implements OrdersService {
 		@Transactional
 		public int getCorrectAmountOfOrderDays(Book book, Date orderDate)
 													throws Exception {
-			if (orderDate.getTime() < (new Date().getTime() + DIFF_TIME_IN_MILLIS))
+			logger.info("date compare = {} : orderDate {}, now {}", (orderDate.getTime() + DIFF_TIME_IN_MILLIS) < new Date().getTime(), new Date(orderDate.getTime()), new Date());
+			
+			Date correctedDate = correctDate(orderDate); 
+			
+			if ((orderDate.getTime() + DIFF_TIME_IN_MILLIS) < new Date().getTime())
 				throw new IncorrectDateException();
+			
+			long ordersCount = getOrdersCountWithoutPerson(book);
+			if(ordersCount < book.getCurrentQuantity())
+				return MAX_DAYS;
+			
 			List<Orders> orders = getOrdersForPeriodFromMonth(book, orderDate);
 
 			int days = MAX_DAYS;
@@ -310,7 +318,7 @@ public class OrdersServiceImpl implements OrdersService {
 						days = MAX_DAYS;
 					break;
 				} else if(currentOrderDateInMillis > orderDateInMillis
-							&& (currentOrderDateInMillis < orderDateInMillis + order.getDaysAmount()*MILLIS_IN_DAY))
+							&& (currentOrderDateInMillis < order.getReturnDate().getTime()))
 					throw new IncorrectDateException();
 			}
 			return checkForWeekend(orderDate, days);
@@ -336,7 +344,10 @@ public class OrdersServiceImpl implements OrdersService {
 			} catch (Exception e) {
 				throw new Exception();
 			}
-			Orders order = new Orders(person, book, orderDate, days);
+			Calendar tmpDate = Calendar.getInstance();
+			tmpDate.setTime(orderDate);
+			tmpDate.add(Calendar.DATE, days);
+			Orders order = new Orders(person, book, orderDate, tmpDate.getTime());
 			try {
 				save(order);
 			} catch (ConstraintViolationException e) {
@@ -367,11 +378,13 @@ public class OrdersServiceImpl implements OrdersService {
 				throw new Exception();
 			}
 			order.setOrderDate(orderDate);
-			order.setDaysAmount(orderDays);
-			order.setChanged(false);
+			Calendar tmpDate = Calendar.getInstance();
+			tmpDate.setTime(orderDate);
+			tmpDate.add(Calendar.DATE, orderDays);
+			order.setReturnDate(tmpDate.getTime());;
 			update(order);
-			logger.info("person {} edit order for book {} to date {} for {}  days",
-					person, book, orderDate, orderDays);
+			logger.info("person {} edit order for book {} from  {} to {}",
+					person, book, orderDate, tmpDate.getTime());
 			return order;
 	
 		}
@@ -448,21 +461,17 @@ public class OrdersServiceImpl implements OrdersService {
 		public List<Orders> getOrdersForPeriodFromMonth(Book book, Date date) {
 			String email = SecurityContextHolder.getContext().getAuthentication().getName();
 			Person person = personService.getByEmail(email);
-			Calendar current = Calendar.getInstance();
 			Calendar choosenMonth = Calendar.getInstance();
-			Calendar previousMonth = Calendar.getInstance();
 			Calendar nextMonth = Calendar.getInstance();
 			
 			choosenMonth.setTime(date);
-			choosenMonth.set(Calendar.DATE, 15);
-			previousMonth = (Calendar) choosenMonth.clone();
-			previousMonth.add(Calendar.MONTH, -1);
-
-
+			choosenMonth.set(Calendar.DATE, 1);
+			
 			nextMonth = (Calendar) choosenMonth.clone();
 			nextMonth.add(Calendar.MONTH, 1);
+			nextMonth.set(Calendar.DATE, 15);
 			
-			Date firstDate = previousMonth.getTime();
+			Date firstDate = choosenMonth.getTime();
 			Date secondDate = nextMonth.getTime();
 			logger.info("first date {} second date {}", firstDate, secondDate);
 			return ordersDao.getOrdersBetweenDatesWithoutPerson(person, book, firstDate, secondDate);
@@ -474,6 +483,84 @@ public class OrdersServiceImpl implements OrdersService {
         }
 
 
+		@Override
+		@Transactional
+		public long getOrdersCountWithoutPerson(Book book) {
+			String email = SecurityContextHolder.getContext().getAuthentication().getName();
+			Person person = personDao.getByEmail(email);
+			logger.info("person {}", person);
+			return ordersDao.getOrdersCountWithoutPerson(book, person);
+		}
+
+		@Override
+		@Transactional
+		public int getMaxIssueDays(Orders order) throws BookUnavailableException {
+			Book book = order.getBook();
+			Person person = order.getPerson();
+			Date orderDate = order.getOrderDate();
+			Date returnDate = order.getReturnDate();
+			int currentBookQuantity = book.getCurrentQuantity();
+			long ordersQuantity = ordersDao.getOrdersCountWithoutPerson(book, person);
+			int maxIssueDays = 0;
+			logger.info("isOrderDay {}", isOrderDateToday(orderDate));
+			if (isOrderDateToday(orderDate)) {
+				
+				if(currentBookQuantity <= 0)
+					throw new BookUnavailableException();
+				
+				if(currentBookQuantity > ordersQuantity)
+					return Constans.MAX_ISSUE_PERIOD;
+				
+				Orders nextOrder = ordersDao.getFirstOrderAfterDateWithoutPerson(returnDate, person, book);
+				
+				if(nextOrder == null)
+					return Constans.MAX_ISSUE_PERIOD;
+				
+				maxIssueDays = Math.round((nextOrder.getOrderDate().getTime() - orderDate.getTime()) / Constans.MILLIS_IN_DAY);
+
+				
+			} else {
+				
+				orderDate = new Date();
+				
+				List<Orders> ordersForToday = ordersDao.getOrdersTodayWithoutPerson(book, person);
+				
+				if(ordersForToday.isEmpty() && currentBookQuantity > ordersQuantity) {
+					return Constans.MAX_ISSUE_PERIOD;
+				}
+				else if(!ordersForToday.isEmpty() || currentBookQuantity <= ordersQuantity) {
+					Orders nextOrder = ordersDao.getFirstOrderAfterDateWithoutPerson(orderDate, person, book);
+					logger.info("next order = {}", nextOrder);
+					if(nextOrder == null)
+						return Constans.MAX_ISSUE_PERIOD;
+					
+					maxIssueDays = Math.round((nextOrder.getOrderDate().getTime() - orderDate.getTime()) / Constans.MILLIS_IN_DAY);
+					
+				}
+				
+			}
+				
+			return maxIssueDays;
+			
+		}
+
+		
+		private boolean isOrderDateToday(Date orderDate) {
+			Calendar today = Calendar.getInstance();
+			Calendar order = Calendar.getInstance();
+			order.setTime(orderDate);
+			
+			int todayDay = today.get(Calendar.DAY_OF_YEAR);
+			int todayMonth = today.get(Calendar.MONTH);
+			int todayYear = today.get(Calendar.YEAR);
+			
+			int orderDay = order.get(Calendar.DAY_OF_YEAR);
+			int orderMonth = order.get(Calendar.MONTH);
+			int orderYear = order.get(Calendar.YEAR);
+			
+			return todayDay == orderDay && todayMonth == orderMonth && todayYear == orderYear;
+		}
+		
 		
 		
 		

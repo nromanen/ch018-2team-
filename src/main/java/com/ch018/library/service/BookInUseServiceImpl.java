@@ -86,12 +86,7 @@ public class BookInUseServiceImpl implements BookInUseService {
       public List<BooksInUse> getBooksInUseByBook(Book book) {
         return useDao.getBooksInUseByBook(book);
       }
-    
-      @Override
-      @Transactional
-      public List<BooksInUse> getBooksInUseByIssueDate(Date issue) {
-        return useDao.getBooksInUseByIssueDate(issue);
-      }
+
     
       @Override
       @Transactional
@@ -135,9 +130,9 @@ public class BookInUseServiceImpl implements BookInUseService {
           person.setUntimekyReturn(booksReturnedNotIntime);
         }
     
-        booksOnHands = person.getMultiBook();
+        booksOnHands = person.getBooksOnHands();
         booksOnHands -= 1;
-        person.setMultiBook(booksOnHands);
+        person.setBooksOnHands(booksOnHands);
         personService.update(person);
         personService.countRating(person);
         
@@ -150,7 +145,6 @@ public class BookInUseServiceImpl implements BookInUseService {
         if((bookInUse.getReturnDate().getTime() - now.getTime()) >= (2*MILLIS_IN_DAY)) {
           orders = orderService.getOrderByBook(book);
           for(Orders order : orders) {
-            order.setChanged(true);
             mailService.sendMailOrderChange("springytest@gmail.com", "etenzor@gmail.com", "Book Available Early", order);
             if(person.isSms()) 
               smsService.sendSms("book: " + order.getBook().getTitle() + " available earlier");

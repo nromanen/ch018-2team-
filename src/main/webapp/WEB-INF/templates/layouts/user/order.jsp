@@ -1,25 +1,22 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="row well">
 	
-	<div id="path" url="${pageContext.request.contextPath}"></div>
-
 	<sec:authorize access="isAuthenticated()">
 	<div id="picker_date">
 		<div id="min_date"></div>
 		<div id="disabled_dates" value="${disabled}"></div>
 		<div id="allow_times"></div>
-		<div id="orders">
-		
-		</div>
+		<div id="orders"></div>
 
 	</div>
 	</sec:authorize>
-
-	<!--<div class="col-md-2" id="left_main">
-                    New Arrivals
-                </div>-->
+	
+	<div id="path" url="${pageContext.request.contextPath}"></div>
+	<div id="bid" value="${book.bId}"></div>
+	<div id="pagination_info" page="${sessionScope['scopedTarget.searchParamsRate'].page}" pagesQuantity = "${sessionScope['scopedTarget.searchParamsRate'].pagesQuantity}"></div>
 
 	<div class="col-md-12" id="center_main">
 
@@ -90,13 +87,48 @@
 								<b><spring:message code="message.libYear" />: </b> ${book.year}
 							</div>
 						</div>
-						<div class="row" id="order_book_description">
-							<div class="text-info">
+						
+						<div class="row" id="order_book_description_out">
+							<div class="text-info" id="order_book_description">
 								<b><spring:message code="message.libDescription" />: </b> ${book.description}
 							</div>
 						</div>
+						
+						<div class="row" id="book_rating">
+							<div class="raty" data-score="${book.rating}""></div>
+							<div>(${book.votes} votes)</div>
+						</div> 
 					</div>
 				</div>
+				<sec:authorize access="isAuthenticated()">
+					<div class="row" style="margin-top: 20px;" id="rate_area" rated="${rate.id}" score="${rate.score}" message="${rate.message}">
+						<div class="col-md-8 ">
+							<div class="panel panel-info" id="rate_panel">
+	                    		<div class="panel-heading">
+	                        		<div id="rate_area_title" class="panel-title">Leave comment about book</div>    	
+	                    		</div>
+	                    	<div class="panel-body">
+	                    		<div class="form-group">
+	                            	<form id="rate_form" role="form">
+	                                	<div class="form-group">
+	    									<div id="rate"></div>
+	  									</div>
+	                                	<input type="hidden" name="bookId" value="${book.bId}">
+	                                	<div class="form-group">
+	                                		<textarea id="rate_form_textarea" class="form-control" name="message" maxlength="250" style="resize: none;" ></textarea>
+	                            		</div>
+	                            		<button id="rate_form_submit" type="submit" class="btn btn-default">Submit</button>
+	                            		
+	                                	<div id="rate_err" class="alert alert-danger hide">
+	                                	</div>
+	                            	</form>
+	                        	</div>
+	                    	</div>
+						</div>
+					</div>
+				</div>
+				</sec:authorize>
+				
 			</div>
 			
 			<div class="col-md-5" id="order_order_wish_part">
@@ -127,9 +159,9 @@
 							<c:when test="${inWishList}">
 								<!-- <input type="hidden" id="minDate" value="${minDate}">  -->
 								
-								<input class="form-control" id="datetimepicker" value="<spring:message code="message.available" />">
+								<input class="form-control" id="datetimepicker" placeholder="<spring:message code="message.available" />">
 								
-								<input type="hidden" id="bookId" value="${book.getbId()}">
+								<!--<input type="hidden" id="bookId" value="${book.getbId()}">-->
 								<div class="alert alert-info col-lg-6"><spring:message code="message.bookinwish" /></div>
 								<div class="clearfix"></div>
 								<button id="order_button" class="btn btn-info">Order</button>
@@ -137,8 +169,8 @@
 							</c:when>
 							<c:otherwise>
 								<!-- <input type="hidden" id="minDate" value="${minDate}">  -->
-								<input class="form-control" id="datetimepicker" value="<spring:message code="message.available" />">
-								<input type="hidden" id="bookId" value="${book.getbId()}">
+								<input class="form-control" id="datetimepicker" placeholder="<spring:message code="message.available" />">
+								<!--<input type="hidden" id="bookId" value="${book.getbId()}">-->
 	
 								<button id="order_button" class="btn btn-info btn-sm"><spring:message code="message.order" /></button>
 	
@@ -175,10 +207,24 @@
 							</div>
 						</div>
 					</div>
-
+				
 				</sec:authorize>
 				</div>
 				
+				<div class="row" style="margin-top: 40px;">
+				
+					<div class="panel panel-info">
+	                    		<div class="panel-heading">
+	                        		<div class="panel-title"><a id="view_comments" href="">View comments</a></div>    	
+	                    		</div>
+	                    	<div id="comments_panel_body" class="panel-body " style="display : none; height: 300px; overflow: scroll; overflow-x:hidden;">
+	                    		<div id="comments_list_group" class="list-group">
+  									
+								</div>
+	                    	</div>
+						</div>
+					
+				</div>
 					
 				<div class="modal fade" id="wish_modal" tabindex="-1" role="dialog"
 					aria-labelledby="wish_modal_label" aria-hidden="true">
@@ -207,7 +253,41 @@
 			</div>
 			
 		</div>
-
+		
+		<sec:authorize access="isAuthenticated()">
+			
+			<div class="row" id="recommended">
+				<div class="text-info" style="margin-left: 20px;"><h4>Recommended</h4></div>
+					<c:set var="i" value="1" scope="page" />
+						<c:forEach var="book" items="${recommend}">
+				
+								
+									<div class="col-md-2">
+										<div class="item" id="i${book.bId}">
+											<div class="item-image">
+												<a
+													href="${pageContext.request.contextPath}/books/order/${book.bId}">
+													<img src="${pageContext.request.contextPath}/${fn:substring(book.img, 0, (fn:length(book.img) - 4))}.gif" alt="" class="img-responsive">
+												</a>
+						
+											</div>
+											<div class="item-details">
+												<h6><a href="${pageContext.request.contextPath}/books/order/${book.bId}">${book.title}</a></h6>
+												
+											</div>
+											<div class="clearfix"></div>
+										</div>
+									</div>
+								
+							
+							<c:set var="i" value="${i + 1}" scope="page" />
+						</c:forEach>
+			</div>
+			
+			
+			
+			
+	</sec:authorize>
 
 	</div>
 

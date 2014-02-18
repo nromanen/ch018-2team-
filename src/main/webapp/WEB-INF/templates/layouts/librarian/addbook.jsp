@@ -8,89 +8,72 @@
         		
 					<div class="col-md-7">
 						
-				        <form:form id="addbook" method="POST" commandName="book" class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">
+				        <form id="addbook" method="POST" action="${pageContext.request.contextPath}/librarian/books/addbook" class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px" enctype="multipart/form-data">
 				            <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libTitle"/></label>
+							    <label for="title" class="col-sm-2 control-label" maxlength="50"><spring:message code="message.libTitle"/></label>
 							    <div class="col-sm-10">
-							    	<form:input type="text" class="form-control" path="title" id="titleval" />
-							        <form:errors path="title" cssClass="error" style="color: red;"/>
+							    	<input type="text" class="form-control" name="title" id="titleval" />
+							        
 							    </div>
 							</div> 
 				          
 				            <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libAuthors"/></label>
+							    <label for="authors" class="col-sm-2 control-label" maxlength="50"><spring:message code="message.libAuthors"/></label>
 							    <div class="col-sm-10">
-							    	<form:input type="text" class="form-control" path="authors"/>
-							    	<form:errors path="authors" cssClass="error" style="color: red;"/>
+							    	<input type="text" class="form-control" name="authors"/>
 							    </div>
 							</div> 
 				          
 				            <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libYear"/></label>
+							    <label for="year" class="col-sm-2 control-label" ><spring:message code="message.libYear"/></label>
 							    <div class="col-sm-10">
-							    	<form:input type="text" class="form-control" path="year"/>
-							    	<form:errors path="year" cssClass="error" style="color: red;"/>
+							    	<input type="text" class="form-control" name="year"/>
 							    </div>
 							</div> 
 				           
 				           <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libPublisher"/></label>
+							    <label for="publisher" class="col-sm-2 control-label"><spring:message code="message.libPublisher"/></label>
 							    <div class="col-sm-10">
-							    	<form:input type="text" class="form-control" path="publisher"/>
-							   		<form:errors path="publisher" cssClass="error" style="color: red;"/>
+							    	<input type="text" class="form-control" name="publisher"/>
 							    </div>
 							</div> 
 				           
 				            <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libPages"/></label>
+							    <label for="pages" class="col-sm-2 control-label"><spring:message code="message.libPages"/></label>
 							    <div class="col-sm-10">
-							    	<form:input type="text" class="form-control" path="pages"/>
-							    	<form:errors path="pages" cssClass="error" style="color: red;"/>
+							    	<input type="text" class="form-control" name="pages"/>
 							    </div>
 							</div> 
 				            
 				            <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libDescription"/></label>
+							    <label for="description" class="col-sm-2 control-label"><spring:message code="message.libDescription"/></label>
 							    <div class="col-sm-10">
-							    	<form:input type="text" class="form-control" path="description"/>
-							    	<form:errors path="description" cssClass="error" style="color: red;"/>
+							    	<input type="text" class="form-control" name="description"/>
 							    </div>
 							</div>
 				            
 				            <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libImg"/></label>
+							    <label for="file" class="col-sm-2 control-label"><spring:message code="message.libImg"/></label>
 							    <div class="col-sm-10">
-							    	<form:input type="text" class="form-control" path="img"/>
-							    	<form:errors path="img" cssClass="error" style="color: red;"/>
+							    	<input type="file"  name="file" />
 							    </div>
 							</div>
 				            
 				            <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libShelf"/></label>
+							    <label for="shelf" class="col-sm-2 control-label"><spring:message code="message.libShelf"/></label>
 							    <div class="col-sm-10">
-							    	<form:input type="text" class="form-control" path="shelf"/>
-							    	<form:errors path="shelf" cssClass="error" style="color: red;"/>
+							    	<input type="text" class="form-control" name="shelf"/>
 							    </div>
 							</div>
-				            
 				            <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libTerm"/></label>
-							    <div class="col-sm-10">
-							    	<form:input type="text" class="form-control" path="term" />
-							    	<form:errors path="term" cssClass="error" style="color: red;"/>
-							    </div>
-							</div>
-				            
-				            <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libGeneralQuantity"/></label>
+							    <label for="generalQuantity" class="col-sm-2 control-label"><spring:message code="message.libGeneralQuantity"/></label>
 							    <div class="col-sm-10">
 							    	<input type="text" class="form-control" name="generalQuantity" />
-							    	<form:errors path="generalQuantity" cssClass="error" style="color: red;"/>
 							    </div>
 							</div>
 				            
 				            <div class="form-group">
-							    <label for="inputEmail3" class="col-sm-2 control-label"><spring:message code="message.libGenre"/></label>
+							    <label for="gid" class="col-sm-2 control-label"><spring:message code="message.libGenre"/></label>
 							    <div class="col-sm-10">
 							    	   <select name="gid" class="form-control">
 					                    <c:forEach var="genre" items="${genres}">
@@ -103,9 +86,36 @@
 		
 						<div class="col-md-1 col-md-offset-10" style="margin-top:10px" >
 							<input type="submit" class="btn btn-default btn-sm" value="Add" style="background-color: #00A1A1 ; color: #FFFFFF">
+							<div id="error_div" class="hide"></div>
 						</div>
-				        </form:form>
+				        </form>
 				        
 				   </div>     
+				   
+				   <div class="modal fade" id="success_add" tabindex="-1" role="dialog"
+					aria-labelledby="success_add_label" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								
+								<h4 class="modal-title" id="wish_modal_label">Add Book
+									Notification</h4>
+							</div>
+							<div class="modal-body">
+								<h4>Book added successfully:</h4>
+								
+							</div>
+							<div class="modal-footer">
+								<button type="button" onclick="location.href = '${pageContext.request.contextPath}/librarian/books/addbook'"
+									class="btn btn-info" data-dismiss="modal">Add one More</button>
+								<button type="button"
+									onclick="location.href = '${pageContext.request.contextPath}/librarian/books'"
+									class="btn btn-primary">Return to main</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				   
+				   
 		    </div>    	
       
