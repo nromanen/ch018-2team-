@@ -30,5 +30,6 @@ public interface OrdersDao {
         List<Orders> getOrdersForChanging(Book book, Date returnDate);
         List<Orders> getOrderByIDList(int id);
         List<Orders> testCriteria(String title, String surname);
+        List<Orders> sortOrdersBySurname();
 
 }

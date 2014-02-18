@@ -1,23 +1,24 @@
 package com.ch018.library.DAO;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Orders;
+import com.ch018.library.entity.Person;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Orders;
-import com.ch018.library.entity.Person;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Repository
 public class OrdersDaoImpl implements OrdersDao {
@@ -26,6 +27,10 @@ public class OrdersDaoImpl implements OrdersDao {
 	
 		@Autowired
 		private SessionFactory factory;
+    @Autowired
+    private BookDao bookDao;
+    @Autowired
+    private PersonDao personDao;
 	
 		@Override
 		public void save(Orders order) {
@@ -210,8 +215,33 @@ public class OrdersDaoImpl implements OrdersDao {
 	
 		}
         @Override
+        @Transactional
         public List<Orders> testCriteria(String title, String surname){
-            factory.getCurrentSession().createCriteria(Orders.class).add(Restrictions.eq())
+            System.out.println("fuck");
+            Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
+            try {
+                System.out.println("pizdec");
+                criteria.add(Restrictions.like("book.tile",title, MatchMode.ANYWHERE ));
+                criteria.add(Restrictions.like("person.surname", surname, MatchMode.ANYWHERE));
+
+            }
+            catch (Exception e){
+                System.out.println("EXCEPTION");
+            }
+/*            System.out.println("!!"+criteria.list());
+            System.out.println("!!!"+criteria);  */
+            return criteria.list();
+        }
+        @Override
+        @Transactional
+        public List<Orders> sortOrdersBySurname(){
+            int pageNumber=1;
+            int pageSize=10;
+            Session session = factory.getCurrentSession();
+            Criteria criteria = session.createCriteria(Orders.class);
+            criteria.setFirstResult((pageNumber-1)*pageSize);
+            criteria.setMaxResults(pageSize);
+            return (List<Orders>) criteria.list();
         }
 
 }

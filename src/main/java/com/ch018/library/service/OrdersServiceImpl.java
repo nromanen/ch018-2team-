@@ -1,17 +1,5 @@
 package com.ch018.library.service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ch018.library.DAO.BookDao;
 import com.ch018.library.DAO.BooksInUseDao;
 import com.ch018.library.DAO.OrdersDao;
@@ -21,6 +9,17 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.helper.OrderDays;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -398,5 +397,10 @@ public class OrdersServiceImpl implements OrdersService {
 			}
 			return excluded;
 		}
+        @Transactional
+        public List<Orders> sortOrdersBySurname(){
+            return ordersDao.sortOrdersBySurname();
+        }
+
 
 }

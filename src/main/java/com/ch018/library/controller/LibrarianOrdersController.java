@@ -1,8 +1,11 @@
 package com.ch018.library.controller;
 
-import java.sql.SQLException;
-import java.util.List;
-
+import com.ch018.library.DAO.OrdersDao;
+import com.ch018.library.entity.Orders;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.BookService;
+import com.ch018.library.service.OrdersService;
+import com.ch018.library.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ch018.library.entity.Orders;
-import com.ch018.library.service.BookInUseService;
-import com.ch018.library.service.BookService;
-import com.ch018.library.service.OrdersService;
-import com.ch018.library.service.PersonService;
+import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/librarian/orders")
@@ -26,6 +26,8 @@ public class LibrarianOrdersController {
 		
 		@Autowired
 		private OrdersService ordersService;
+    @Autowired
+    private OrdersDao ordersDao;
 		
 		@Autowired
 		private BookInUseService booksInUseService;
@@ -113,9 +115,16 @@ public class LibrarianOrdersController {
 	        if (title.compareTo("Title")!=0) titleSearch++;
 	        if (surnameSearch==1&&titleSearch==0) model.addAttribute("orders",ordersService.getOrdersByPersonSurname(ordersService.getAll(), surname));
 	        if (surnameSearch==0&&titleSearch==1) model.addAttribute("orders",ordersService.getOrdersByBookTitle(ordersService.getAll(),title));
-	        if (surnameSearch==1&&titleSearch==1) model.addAttribute("orders",ordersService.getOrdersByPersonSurname(ordersService.getOrdersByBookTitle(ordersService.getAll(),title),surname));
-	
-	        return "librarian_orders";
+	        if (surnameSearch==1&&titleSearch==1) model.addAttribute("orders",ordersDao.testCriteria(title, surname)); //model.addAttribute("orders",ordersService.getOrdersByPersonSurname(ordersService.getOrdersByBookTitle(ordersService.getAll(),title),surname));
+            //System.out.println("Controller "+ordersDao.testCriteria(title,surname));
+            return "librarian_orders";
 	    }
+
+    @RequestMapping(value = "/sortSurname")
+    public String sSurname(Model model) throws Exception {
+
+        model.addAttribute("orders", ordersService.sortOrdersBySurname());
+        return "librarian_orders";
+    }
 	
 }

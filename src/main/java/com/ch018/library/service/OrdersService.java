@@ -1,14 +1,13 @@
 package com.ch018.library.service;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.helper.OrderDays;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -39,5 +38,6 @@ public interface OrdersService {
          List<Orders> getOrdersByBookTitle(List<Orders> orders, String title);
          List<Orders> getOrdersByPersonSurname(List<Orders> orders,String surname);
          List<Orders> getOrdersByOrdersId(List<Orders> orders,int id);
+         List<Orders> sortOrdersBySurname();
 
 }

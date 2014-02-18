@@ -27,7 +27,7 @@
             <table id="upTable" border="1" width="80%" class="table table-hover table-striped table-bordered table-condensed">
                 <tr>
 
-                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDSurname" onclick="jQuery:clkSurname();">Surname</td>
+                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDSurname" onclick="jQuery:clkSurname();">Surname <button style="height: 50px" onclick="jQuery:sortSurname();" contenteditable="false"><img src="">sort</button></td>
                     <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDTitle" onclick="jQuery:clkTitle();">Title</td>
                     <td width="30%" onblur="jQuery:bl();" contenteditable="true" id="TDDate" onclick="jQuery:clkDate();">Date</td>
                     <td width="30%">Options</td>
@@ -59,9 +59,12 @@
 <script type="text/javascript">
 
     function tdid(){
-
+                                                                                                                                                                                                     contenteditable="true"
         $("#content1").load("${pageContext.request.contextPath}/librarian/orders/searchById #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text()});
 
+    }
+    function sortSurname(){
+        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1");
     }
     function bl(){
 
@@ -74,7 +77,7 @@
         if ($("#TDSurname").text()=="Surname") $("#TDSurname").text("");
 
 
-    }
+    }                                                                                                                                                                                                              contenteditable="true"
     function clkDate(){
         if ($("#TDDate").text()=="Date") $("#TDDate").text("");
 
