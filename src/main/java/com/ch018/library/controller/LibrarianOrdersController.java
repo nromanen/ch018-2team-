@@ -30,8 +30,8 @@ public class LibrarianOrdersController {
 		@Autowired
 		private OrdersService ordersService;
     
-		@Autowired
-		private OrdersDao ordersDao;
+		/*@Autowired
+		private OrdersDao ordersDao;*/
 		
 		@Autowired
 		private BookInUseService booksInUseService;
@@ -124,7 +124,7 @@ public class LibrarianOrdersController {
 	        if (title.compareTo("Title")!=0) titleSearch++;
 	        if (surnameSearch==1&&titleSearch==0) model.addAttribute("orders",ordersService.getOrdersByPersonSurname(ordersService.getAll(), surname));
 	        if (surnameSearch==0&&titleSearch==1) model.addAttribute("orders",ordersService.getOrdersByBookTitle(ordersService.getAll(),title));
-	        if (surnameSearch==1&&titleSearch==1) model.addAttribute("orders",ordersDao.testCriteria(title, surname)); //model.addAttribute("orders",ordersService.getOrdersByPersonSurname(ordersService.getOrdersByBookTitle(ordersService.getAll(),title),surname));
+	        //if (surnameSearch==1&&titleSearch==1) model.addAttribute("orders",ordersDao.testCriteria(title, surname)); //model.addAttribute("orders",ordersService.getOrdersByPersonSurname(ordersService.getOrdersByBookTitle(ordersService.getAll(),title),surname));
             //System.out.println("Controller "+ordersDao.testCriteria(title,surname));
             return "librarian_orders";
 	    }

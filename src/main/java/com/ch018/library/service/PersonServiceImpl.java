@@ -3,6 +3,8 @@ package com.ch018.library.service;
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import com.ch018.library.exceptions.EmailAlreadyInUseException;
+import com.ch018.library.exceptions.EmailNotChangedException;
 import com.ch018.library.exceptions.OldPasswordIncorrectException;
 import com.ch018.library.exceptions.UserAlreadyExists;
 import com.ch018.library.validation.Password;
@@ -136,12 +138,9 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Override
 		@Transactional
-		public void updatePassword(Password password, Person person)
-				throws OldPasswordIncorrectException {
-			logger.info("in update password = {}", password);
-			logger.info("encoder = {}", encoder.encode(password.getOldPass()));
+		public void updatePassword(Password password, Person person) throws OldPasswordIncorrectException {
+			logger.info("person pass raw {} , enc {}", password.getOldPass(), encoder.encode(password.getOldPass()));
 			if (!encoder.matches(password.getOldPass(), person.getPassword())) {
-				logger.info("in if");
 				logger.info("person {}", person);
 				logger.error("passwords don't match during update");
 				throw new OldPasswordIncorrectException();
@@ -195,10 +194,13 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Override
 		@Transactional
-		public void changeEmail(String email, Person person, String path) throws Exception {
+		public void changeEmail(String email, Person person, String path) throws EmailAlreadyInUseException, EmailNotChangedException {
+			
+			logger.info("GET BY EMAIL {}", getByEmail(email));
+			if (getByEmail(email) != null)
+				throw new EmailAlreadyInUseException();
+				
 			try {
-				if (getByEmail(email) != null)
-					throw new Exception("email already in use");
 				person.setEmail(email);
 				person.setMailConfirm(Boolean.FALSE);
 				String key = getHashFromString(email);
@@ -213,7 +215,7 @@ public class PersonServiceImpl implements PersonService {
 			} catch (Exception e) {
 				logger.error("error during email: {} change {}", email,
 						e.getMessage());
-				throw new Exception("email doesn't changed. Try later");
+				throw new EmailNotChangedException();
 			}
 		}
 	

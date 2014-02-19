@@ -95,13 +95,13 @@
 						</div>
 						
 						<div class="row" id="book_rating">
-							<div class="raty" data-score="${book.rating}""></div>
+							<div id="book_rate" class="raty" data-score="${book.rating}""></div>
 							<div id="vote_area">(${book.votes} votes)</div>
 						</div> 
 					</div>
 				</div>
 				<sec:authorize access="isAuthenticated()">
-					<div class="row" style="margin-top: 20px;" id="rate_area" rated="${rate.id}" score="${rate.score}" message="${rate.message}">
+					<div class="row" style="margin-top: 20px; " id="rate_area" rated="${rate.id}" score="${rate.score}" message="${rate.message}">
 						<div class="col-md-8 ">
 							<div class="panel panel-info" id="rate_panel">
 	                    		<div class="panel-heading">

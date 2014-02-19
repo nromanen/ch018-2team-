@@ -215,8 +215,13 @@ public class OrderController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		}
 		
+		Book book = bookService.getBookById(bookId);
+		
 		JSONObject responseJson = new JSONObject();
 		responseJson.put("score", rate.getScore());
+		responseJson.put("bookRating", book.getRating());
+		responseJson.put("bookVotes", book.getVotes());
+		
 		return new ResponseEntity<>(responseJson.toString(), HttpStatus.OK);		
 	}
 	
