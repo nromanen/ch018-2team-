@@ -6,17 +6,10 @@ import com.ch018.library.entity.Person;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
+import org.hibernate.criterion.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -205,26 +198,22 @@ public class OrdersDaoImpl implements OrdersDao {
         @Override
         @Transactional
         public List<Orders> testCriteria(String title, String surname){
-            System.out.println("fuck");
-            Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
-            try {
-                System.out.println("pizdec");
-                criteria.add(Restrictions.like("book.tile",title, MatchMode.ANYWHERE ));
-                criteria.add(Restrictions.like("person.surname", surname, MatchMode.ANYWHERE));
+            System.out.println("ckfu");
+            Criteria criteria = factory.openSession().createCriteria(Orders.class);
 
-            }
-            catch (Exception e){
-                System.out.println("EXCEPTION");
-            }
-/*            System.out.println("!!"+criteria.list());
-            System.out.println("!!!"+criteria);  */
+                System.out.println("decpiz");
+                criteria.add(Restrictions.eq("book.title",11));
+                criteria.add(Restrictions.eq("person",3));
+
+            System.out.println("!!"+criteria.list());
+            System.out.println("!!!"+criteria);
             return criteria.list();
         }
         @Override
         @Transactional
         public List<Orders> sortOrdersBySurname(){
             int pageNumber=1;
-            int pageSize=10;
+            int pageSize=2;
             Session session = factory.getCurrentSession();
             Criteria criteria = session.createCriteria(Orders.class);
             criteria.setFirstResult((pageNumber-1)*pageSize);

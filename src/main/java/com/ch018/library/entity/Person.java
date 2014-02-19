@@ -26,7 +26,7 @@ import com.ch018.library.util.Roles;
  */
 
 @Entity
-@Table(name = "Person")
+@Table(name = "person")
 public class Person implements Serializable {
 	
 

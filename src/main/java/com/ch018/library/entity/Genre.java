@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 
 
 @Entity
-@Table(name = "Genre")
+@Table(name = "genre")
 public class Genre implements Serializable {
 
 		

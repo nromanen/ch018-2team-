@@ -27,7 +27,8 @@
             <table id="upTable" border="1" width="80%" class="table table-hover table-striped table-bordered table-condensed">
                 <tr>
 
-                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDSurname" onclick="jQuery:clkSurname();">Surname <button style="height: 50px" onclick="jQuery:sortSurname();" contenteditable="false"><img src="">sort</button></td>
+                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDSurname" onclick="jQuery:clkSurname();">Surname</td>
+                    <td><button style="height: 30px" onclick="jQuery:sortSurname();" contenteditable="false"><img src="">sort</button></td>
                     <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDTitle" onclick="jQuery:clkTitle();">Title</td>
                     <td width="30%" onblur="jQuery:bl();" contenteditable="true" id="TDDate" onclick="jQuery:clkDate();">Date</td>
                     <td width="30%">Options</td>
