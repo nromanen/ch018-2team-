@@ -209,7 +209,7 @@ public class OrdersDaoImpl implements OrdersDao {
             Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
             try {
                 System.out.println("pizdec");
-                criteria.add(Restrictions.like("book.tile",title, MatchMode.ANYWHERE ));
+                criteria.add(Restrictions.like("book.title",title, MatchMode.ANYWHERE ));
                 criteria.add(Restrictions.like("person.surname", surname, MatchMode.ANYWHERE));
 
             }
