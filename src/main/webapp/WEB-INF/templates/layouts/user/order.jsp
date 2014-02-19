@@ -96,7 +96,7 @@
 						
 						<div class="row" id="book_rating">
 							<div class="raty" data-score="${book.rating}""></div>
-							<div>(${book.votes} votes)</div>
+							<div id="vote_area">(${book.votes} votes)</div>
 						</div> 
 					</div>
 				</div>
@@ -159,7 +159,7 @@
 							<c:when test="${inWishList}">
 								<!-- <input type="hidden" id="minDate" value="${minDate}">  -->
 								
-								<input class="form-control" id="datetimepicker" placeholder="<spring:message code="message.available" />">
+								<input class="form-control" id="datetimepicker" value="<spring:message code="message.available" />">
 								
 								<!--<input type="hidden" id="bookId" value="${book.getbId()}">-->
 								<div class="alert alert-info col-lg-6"><spring:message code="message.bookinwish" /></div>
@@ -169,7 +169,7 @@
 							</c:when>
 							<c:otherwise>
 								<!-- <input type="hidden" id="minDate" value="${minDate}">  -->
-								<input class="form-control" id="datetimepicker" placeholder="<spring:message code="message.available" />">
+								<input class="form-control" id="datetimepicker" value="<spring:message code="message.available" />">
 								<!--<input type="hidden" id="bookId" value="${book.getbId()}">-->
 	
 								<button id="order_button" class="btn btn-info btn-sm"><spring:message code="message.order" /></button>
