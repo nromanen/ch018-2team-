@@ -200,7 +200,6 @@ public class OrdersDaoImpl implements OrdersDao {
         public List<Orders> testCriteria(String title, String surname){
             System.out.println("ckfu");
             Criteria criteria = factory.openSession().createCriteria(Orders.class);
-
                 System.out.println("decpiz");
                 criteria.add(Restrictions.eq("book.title",11));
                 criteria.add(Restrictions.eq("person",3));

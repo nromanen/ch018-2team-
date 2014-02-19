@@ -99,7 +99,6 @@
  </bean>
  
  
-   	<import resource ="data.xml" />
 	<import resource="mail.xml" />
 	<import resource="security.xml" />
     
