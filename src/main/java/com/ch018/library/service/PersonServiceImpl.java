@@ -138,11 +138,15 @@ public class PersonServiceImpl implements PersonService {
 		@Transactional
 		public void updatePassword(Password password, Person person)
 				throws OldPasswordIncorrectException {
+			logger.info("in update password = {}", password);
+			logger.info("encoder = {}", encoder.encode(password.getOldPass()));
 			if (!encoder.matches(password.getOldPass(), person.getPassword())) {
+				logger.info("in if");
 				logger.info("person {}", person);
 				logger.error("passwords don't match during update");
 				throw new OldPasswordIncorrectException();
 			}
+			logger.info("after if");
 			person.setPassword(encoder.encode(password.getNewPass()));
 			update(person);
 			Authentication auth = new PreAuthenticatedAuthenticationToken(
