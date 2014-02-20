@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.Arrays;
 
+import org.hibernate.HibernateException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,8 +32,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ch018.library.entity.Person;
 import com.ch018.library.exceptions.EmailAlreadyInUseException;
 import com.ch018.library.exceptions.EmailNotChangedException;
+import com.ch018.library.exceptions.InformationNotUpdateException;
 import com.ch018.library.exceptions.OldPasswordIncorrectException;
+import com.ch018.library.exceptions.UserAlreadyExists;
 import com.ch018.library.validation.Password;
+import com.ch018.library.validation.PersonalInfo;
+import com.ch018.library.validation.UserRegistrationForm;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:servlet-context_for_service.xml", "classpath:root-context_for_service.xml"})
@@ -71,6 +77,7 @@ public class PersonServiceImplTest {
 		person.setFailedOrders(0);
 		person.setGeneralRating(0);
 		person.setMailConfirm(true);
+		person.setConfirmationKey("1111111111");
 		person.setPersonRole("ROLE_USER");
 		person.setSms(false);
 		person.setTimelyReturn(0);
@@ -152,31 +159,113 @@ public class PersonServiceImplTest {
 		
 	}
 	
+	@Test
+	public void registerTest() {
+		UserRegistrationForm form = new UserRegistrationForm();
+		form.setName("newUser");
+		form.setSurname("newSurname");
+		form.setEmail("newmail@mail.com");
+		form.setrEmail("newmail@mail.com");
+		form.setPassword("user123");
+		form.setrPassword("user123");
+		form.setCellPhone("000-000-0000");
+		
+		personService.register(form, "path");
+	}
 	
-	/*@Override
-		@Transactional
-		public void changeEmail(String email, Person person, String path) throws Exception {
-			try {
-				if (getByEmail(email) != null)
-					throw new Exception("email already in use");
-				person.setEmail(email);
-				person.setMailConfirm(Boolean.FALSE);
-				String key = getHashFromString(email);
-				person.setConfirmationKey(key);
-				update(person);
-				mailService.sendConfirmationMail("springytest@gmail.com",
-						"etenzor@gmail.com", "email change confirmation", key, path);
-				Authentication auth = new PreAuthenticatedAuthenticationToken(
-						email, SecurityContextHolder.getContext()
-								.getAuthentication().getPrincipal());
-				SecurityContextHolder.getContext().setAuthentication(auth);
-			} catch (Exception e) {
-				logger.error("error during email: {} change {}", email,
-						e.getMessage());
-				throw new Exception("email doesn't changed. Try later");
-			}
-		}*/
+	@Test(expected = HibernateException.class)
+	public void registerTestUserExists() {
+		UserRegistrationForm form = new UserRegistrationForm();
+		form.setName(person.getName());
+		form.setSurname(person.getSurname());
+		form.setEmail(person.getEmail());
+		form.setrEmail(person.getEmail());
+		form.setPassword("user123");
+		form.setrPassword("user123");
+		form.setCellPhone(person.getCellphone());
+		
+		personService.register(form, "path");
+	}
 	
+	@Test
+	public void confirmMailTest() throws Exception {
+		String key = person.getConfirmationKey();
+		Assert.assertTrue(personService.confirmMail(key));
+	}
+	
+	@Test
+	public void confirmMailTestKeyNotFound() throws Exception {
+		String key = "1";
+		Assert.assertFalse(personService.confirmMail(key));
+	}
+	
+	@Test
+	public void restoreSendMailTest() throws Exception {
+		String email = person.getEmail();
+		Assert.assertTrue(personService.restoreSendEmail(email, "path"));
+		
+	}
+	
+	@Test
+	public void restoreSendMailNotFoundTest() throws Exception {
+		String email = "incorrect@mail.com";
+		Assert.assertFalse(personService.restoreSendEmail(email, "path"));
+		
+	}
+	
+	@Test
+	public void restorePassTest() throws Exception {
+		String key = person.getConfirmationKey();
+		Password pass = new Password();
+		pass.setNewPass(newPass);
+		pass.setrNewPass(newPass);
+		pass.setOldPass(oldPass);
+		personService.restorePass(key, pass);
+		
+		String changedPass = personService.getById(person.getPid()).getPassword();
+		
+		Assert.assertTrue(encoder.matches(newPass, changedPass));
+	}
+	
+	@Test
+	public void restorePassKeyNotFoundTest() throws Exception {
+		String key = "1";
+		Password pass = new Password();
+		pass.setNewPass(newPass);
+		pass.setrNewPass(newPass);
+		pass.setOldPass(oldPass);
+		
+		Assert.assertFalse(personService.restorePass(key, pass));
+	}
+	
+	@Test
+	public void restorePassNullTest() throws Exception {		
+		Assert.assertFalse(personService.restorePass(null, null));
+	}
+	
+	@Test
+	public void updatePersonalInfoTest() throws Exception {
+		PersonalInfo info = new PersonalInfo();
+		info.setName(person.getName());
+		info.setSurname(person.getSurname());
+		info.setSms(person.isSms());
+		info.setCellphone(person.getCellphone());
+		
+		personService.updatePersonalInfo(person, info);
+		
+	}
+	
+	@Test(expected = InformationNotUpdateException.class)
+	public void updatePersonalInfoNotUpdatePersonNullTest() throws Exception {
+		PersonalInfo info = new PersonalInfo();
+		info.setName(person.getName());
+		info.setSurname(person.getSurname());
+		info.setSms(person.isSms());
+		info.setCellphone(person.getCellphone());
+		
+		personService.updatePersonalInfo(null, info);
+		
+	}
 	
 	private void setDatabase(Person person) {
 		Connection connection;
@@ -190,8 +279,8 @@ public class PersonServiceImplTest {
 			
 			String userCreateQuery = "INSERT INTO `librarytest2`.`person` (`personId`, `booksAllowed`, `booksOnHands`, `cellphone`,"
             		+ " `email`, `failedorders`, `generalratio`, `mailConfirm`, `name`, `password`,"
-            		+ " `personRole`, `sms`, `surname`, `timelyreturn`, `untimelyreturn`)"
-            		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            		+ " `personRole`, `sms`, `surname`, `timelyreturn`, `untimelyreturn`, `confirmationKey`)"
+            		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			preparedStmt = connection.prepareStatement(userCreateQuery);
 			preparedStmt.setInt(1, person.getPid());
 			preparedStmt.setInt(2, person.getBooksAllowed());
@@ -208,6 +297,7 @@ public class PersonServiceImplTest {
 			preparedStmt.setString(13, person.getSurname());
 			preparedStmt.setInt(14, person.getTimelyReturn());
 			preparedStmt.setInt(15, person.getUntimekyReturn());
+			preparedStmt.setString(16, person.getConfirmationKey());
             
 			preparedStmt.execute();
 			

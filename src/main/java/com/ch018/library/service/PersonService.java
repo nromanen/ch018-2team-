@@ -5,11 +5,13 @@ import com.ch018.library.entity.Person;
 import com.ch018.library.exceptions.EmailAlreadyInUseException;
 import com.ch018.library.exceptions.EmailNotChangedException;
 import com.ch018.library.exceptions.OldPasswordIncorrectException;
+import com.ch018.library.exceptions.UserAlreadyExists;
 import com.ch018.library.validation.Password;
 import com.ch018.library.validation.PersonEditValidator;
 import com.ch018.library.validation.PersonalInfo;
 import com.ch018.library.validation.UserRegistrationForm;
 
+import org.hibernate.HibernateException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +40,7 @@ public interface PersonService {
         List<Person> simpleSearch(String request);
         List<Person> advancedSearch(Person person);
         Person countRating(Person person); 
-        Person register(UserRegistrationForm form, String path) throws Exception;
+        Person register(UserRegistrationForm form, String path) throws HibernateException;
         boolean confirmMail(String key);
         boolean restoreSendEmail(String email, String path);
         boolean isKeyValid(String key);
