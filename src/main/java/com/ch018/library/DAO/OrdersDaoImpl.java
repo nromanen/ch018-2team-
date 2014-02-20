@@ -199,6 +199,7 @@ public class OrdersDaoImpl implements OrdersDao {
         @Override
         @Transactional
         public List<Orders> testCriteria(String title, String surname){
+<<<<<<< HEAD
             boolean and = false;
             System.out.println("input data: title:"+title+", surname:"+surname+".");
             if (title.compareTo("Title")==0 && surname.compareTo("Surname")==0) return getAll();
@@ -250,6 +251,13 @@ public class OrdersDaoImpl implements OrdersDao {
             if (and) QUERY.append(" and ");
             else and=true;
             QUERY.append("person.surname like "+"'%"+surname+"%'");
+=======
+            System.out.println("ckfu");
+            Criteria criteria = factory.openSession().createCriteria(Orders.class);
+                System.out.println("decpiz");
+                criteria.add(Restrictions.eq("book.title",11));
+                criteria.add(Restrictions.eq("person",3));
+>>>>>>> 054d6fb9dc92c9febfd066b9141e3c081b98ab31
 
         }
 

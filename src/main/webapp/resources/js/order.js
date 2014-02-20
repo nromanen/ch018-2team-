@@ -316,10 +316,11 @@ function sendVote(data) {
 				score: data.score
 			});
 			$('#rate_form_textarea').attr('disabled', 'disabled');
+			/*var vote = Number($('#vote_area').text().split(" ")) + 1;
+			$('#vote_area').text('votes ' + vote);*/
 	
 		},
 		error : function(xhr, status, error) {
-
 			$('#rate_err').text(xhr.responseText);
 			$('#rate_err').removeClass('hide');
 		}

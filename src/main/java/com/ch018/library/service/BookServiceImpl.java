@@ -205,6 +205,14 @@ public class BookServiceImpl implements BookService {
 			
 		}
 
+		@Override
+		@Transactional
+		public long getBooksCount() {
+			return bookDAO.getBooksCount();
+		}
+		
+		
+
 		
 		
 }

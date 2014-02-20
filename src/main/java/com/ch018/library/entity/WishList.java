@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 
 @Entity
-@Table(name = "wishlist",
+@Table(name = "wishlist", 
         uniqueConstraints = { @UniqueConstraint( columnNames = { "personId", "bookId" } ) })
 public class WishList implements Serializable {
 
