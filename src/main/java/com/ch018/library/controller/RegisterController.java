@@ -3,6 +3,7 @@ package com.ch018.library.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.hibernate.HibernateException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,10 +63,9 @@ public class RegisterController {
 			String path = getPathFromRequest(request);
 			try {
 				personService.register(form, path);
-			} catch (UserAlreadyExists e) {
+			} catch (HibernateException e) {
+				logger.error("In controll Type {}", e.getClass());
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-			} catch (Exception e) {
-				return new ResponseEntity<>(SOMETHING_WRONG, HttpStatus.BAD_REQUEST);
 			}
 			return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
 		}
@@ -122,7 +122,7 @@ public class RegisterController {
 			StringBuilder sb = new StringBuilder();
 			for (ObjectError error : result.getAllErrors()) {
 				sb.append(error.getDefaultMessage());
-				sb.append("\n");
+				sb.append("<p>");
 			}
 			return sb.toString();
 		}

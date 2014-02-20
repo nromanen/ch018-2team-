@@ -88,9 +88,8 @@ public class Person implements Serializable {
 		@Column(name = "failedorders")
 		private int failedOrders;
 	
-		@NotNull
 		@Column(name = "generalratio")
-		private double generalRating;
+		private double generalRating = 0D;
 	
 		@OneToMany(mappedBy = "person")
 		private Set<BooksInUse> booksInUse;

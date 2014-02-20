@@ -27,10 +27,10 @@
                             <input id="reg_rmail" class="form-control" equalto="#reg_mail" type="email" name="rEmail" required placeholder="<spring:message code="message.reenter" /> Email">
                         </div>
                         <div class="form-group ">
-                            <input id="reg_pass" class="form-control" type="password" name="password" required placeholder="Password">
+                            <input id="reg_pass" class="form-control"  type="password" name="password" required placeholder="Password">
                         </div>
                         <div class="form-group ">
-                            <input id="reg_rpass" class="form-control" equalto="#reg_pass" type="password" name="rPassword" required placeholder="<spring:message code="message.reenter" /> Password">
+                            <input id="reg_rpass" class="form-control"  equalto="#reg_pass" type="password" name="rPassword" required placeholder="<spring:message code="message.reenter" /> Password">
                         </div>
                         <div class="form-group ">
                             <input id="reg_phone" class="form-control" type="text" name="cellPhone" required placeholder="<spring:message code="message.phone" />">

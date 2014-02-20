@@ -48,12 +48,7 @@ public class PersonDaoImpl implements PersonDao {
 	
 		@Override
 		public void save(Person person) {
-			try {
 				factory.getCurrentSession().save(person);
-			} catch (Exception e) {
-				logger.error("during save person {}", person);
-			}
-	
 		}
 	
 		@Override

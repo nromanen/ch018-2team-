@@ -273,7 +273,7 @@ public class OrdersServiceImpl implements OrdersService {
 						minDate = tmpDate.getTime();
 					}
 				}
-			calendar.add(Calendar.MONTH, 2);
+				calendar.add(Calendar.MONTH, 1);
 			}
 			
 			throw new TooManyOrdersException();
@@ -393,8 +393,12 @@ public class OrdersServiceImpl implements OrdersService {
 				calendar.add(Calendar.DATE, 2);
 			else if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
 				calendar.add(Calendar.DATE, 1);
-			if(calendar.get(Calendar.HOUR_OF_DAY) > 16 || calendar.get(Calendar.HOUR_OF_DAY) < 8)
-				calendar.set(Calendar.HOUR_OF_DAY, 11);
+			if(calendar.get(Calendar.HOUR_OF_DAY) > 15) {
+				calendar.set(Calendar.HOUR_OF_DAY, 9);
+				calendar.add(Calendar.DATE, 1);
+			} else if(calendar.get(Calendar.HOUR_OF_DAY) < 8) {
+				calendar.set(Calendar.HOUR_OF_DAY, 9);
+			}
 			logger.info("shifted date = {}", calendar.getTime());
 			return calendar.getTime();
 		}

@@ -171,17 +171,4 @@ public class RegisterControllerTest {
 		.andExpect(status().isOk());
 		
 	}
-	/*@RequestMapping(value = "/restore/password", method = RequestMethod.POST)
-		public ResponseEntity<String> restorePassPost(@RequestParam("key") String key, 
-															@Valid @ModelAttribute Password password, BindingResult result) {
-			validatorPass.validate(password, result);
-			if (result.hasErrors())
-				return new ResponseEntity<>(getErrors(result),
-						HttpStatus.BAD_REQUEST);
-			if (personService.restorePass(key, password))
-				return new ResponseEntity<>(new JSONObject().toString(),
-						HttpStatus.OK);
-			return new ResponseEntity<>("error during restore",
-					HttpStatus.BAD_REQUEST);
-		}*/
 }
