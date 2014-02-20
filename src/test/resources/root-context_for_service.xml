@@ -57,6 +57,10 @@
    		<property name="dataSource" ref="dataSource"/>
    	</bean>
    	
+   	<bean id="mailService"  class="org.mockito.Mockito" factory-method="mock">
+  <constructor-arg value="com.ch018.library.service.MailService"/>
+ </bean>
+   	
  
    	<import resource ="data.xml" />
 	<import resource="mail.xml" />
