@@ -7,16 +7,15 @@ import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
-import java.sql.SQLException;
-import java.util.List;
-
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/librarian/orders")
@@ -115,23 +114,14 @@ public class LibrarianOrdersController {
 	
 	    @RequestMapping(value = "/searchById", method = RequestMethod.POST)
 	    public String searchById(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date) throws Exception {
-	
-	        int surnameSearch = 0;
-	        int titleSearch = 0;
-	
-	        if (surname.compareTo("Surname")!=0) surnameSearch++;
-	        if (title.compareTo("Title")!=0) titleSearch++;
-	        if (surnameSearch==1&&titleSearch==0) model.addAttribute("orders",ordersService.getOrdersByPersonSurname(ordersService.getAll(), surname));
-	        if (surnameSearch==0&&titleSearch==1) model.addAttribute("orders",ordersService.getOrdersByBookTitle(ordersService.getAll(),title));
-	        if (surnameSearch==1&&titleSearch==1) model.addAttribute("orders",ordersDao.testCriteria(title, surname)); //model.addAttribute("orders",ordersService.getOrdersByPersonSurname(ordersService.getOrdersByBookTitle(ordersService.getAll(),title),surname));
-            //System.out.println("Controller "+ordersDao.testCriteria(title,surname));
+	    model.addAttribute("orders", ordersDao.testCriteria(title,surname)); //model.addAttribute("orders",ordersService.getOrdersByPersonSurname(ordersService.getOrdersByBookTitle(ordersService.getAll(),title),surname));
             return "librarian_orders";
 	    }
 
     @RequestMapping(value = "/sortSurname")
-    public String sSurname(Model model) throws Exception {
-
-        model.addAttribute("orders", ordersService.sortOrdersBySurname());
+    public String sSurname(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") int how) throws Exception {
+        System.out.println("SORT SURNAME:"+how+",");
+        model.addAttribute("orders", ordersDao.testCriteria(title,surname,how));
         return "librarian_orders";
     }
 	

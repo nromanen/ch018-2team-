@@ -28,6 +28,7 @@ public interface OrdersDao {
         int getBookIdByPerson(Person person);
         boolean isPersonOrderedBook(Person person, Book book);
         List<Orders> testCriteria(String title, String surname);
+        List<Orders> testCriteria(String title, String surname, int how);
         List<Orders> sortOrdersBySurname();
         List<Orders> getOrderByIDList(int id); 
         List<Orders> getOrdersBetweenDatesWithoutPerson(Person person, Book book, Date firstDate, Date secondDate);

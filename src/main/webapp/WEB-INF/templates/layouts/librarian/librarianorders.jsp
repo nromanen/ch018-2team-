@@ -28,7 +28,8 @@
                 <tr>
 
                     <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDSurname" onclick="jQuery:clkSurname();">Surname</td>
-                    <td><button style="height: 30px" onclick="jQuery:sortSurname();" contenteditable="false"><img src="">sort</button></td>
+                    <td><button id="surnameSortButton" style="height: 30px" onclick="jQuery:sortSurname($('#surnameSort').text());" contenteditable="false"><img src="">sort</button></td>
+                    <a id="surnameSort" hidden="true">1</a>
                     <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDTitle" onclick="jQuery:clkTitle();">Title</td>
                     <td width="30%" onblur="jQuery:bl();" contenteditable="true" id="TDDate" onclick="jQuery:clkDate();">Date</td>
                     <td width="30%">Options</td>
@@ -60,12 +61,15 @@
 <script type="text/javascript">
 
     function tdid(){
-                                                                                                                                                                                                     contenteditable="true"
-        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/searchById #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text()});
+        contenteditable="true"
+        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/searchById #content1", {"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text()});
 
     }
-    function sortSurname(){
-        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1");
+    function sortSurname(how){
+
+        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text(),"how":how});
+        if (how=="1") $("#surnameSort").text("0");
+        if (how=="0") $("#surnameSort").text("1");
     }
     function bl(){
 

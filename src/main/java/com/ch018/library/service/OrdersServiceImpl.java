@@ -1,9 +1,6 @@
 package com.ch018.library.service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.antlr.grammar.v3.ANTLRv3Parser.throwsSpec_return;
 import org.hibernate.HibernateException;
@@ -481,7 +478,11 @@ public class OrdersServiceImpl implements OrdersService {
         public List<Orders> sortOrdersBySurname(){
             return ordersDao.sortOrdersBySurname();
         }
+        @Transactional
+        public List<Orders> sortOrdersBySurname(String surname,String titel, int how){
 
+            return ordersDao.sortOrdersBySurname();
+        }
 
 		@Override
 		@Transactional

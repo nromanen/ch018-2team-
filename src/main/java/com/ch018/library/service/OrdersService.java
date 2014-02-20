@@ -3,11 +3,11 @@ package com.ch018.library.service;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
+import com.ch018.library.exceptions.BookUnavailableException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import com.ch018.library.exceptions.BookUnavailableException;
 
 @Service
 public interface OrdersService {
@@ -36,5 +36,6 @@ public interface OrdersService {
          List<Orders> getOrdersForPeriodFromMonth(Book book, Date date);
          long getOrdersCountWithoutPerson(Book book);
          int getMaxIssueDays(Orders order) throws BookUnavailableException;
+         List<Orders> sortOrdersBySurname(String surname,String title,int how);
 
 }

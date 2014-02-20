@@ -4,6 +4,7 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
@@ -198,22 +199,72 @@ public class OrdersDaoImpl implements OrdersDao {
         @Override
         @Transactional
         public List<Orders> testCriteria(String title, String surname){
-            System.out.println("ckfu");
-            Criteria criteria = factory.openSession().createCriteria(Orders.class);
+            boolean and = false;
+            System.out.println("input data: title:"+title+", surname:"+surname+".");
+            if (title.compareTo("Title")==0 && surname.compareTo("Surname")==0) return getAll();
+                StringBuilder QUERY = new StringBuilder("From Orders where ");
+                if (title.compareTo("Title")!=0) {
+                    System.out.println("ttl");
+                                                    if (and) QUERY.append(" and ");
+                                                    else and=true;
+                                                    QUERY.append("book.title like "+"'%"+title+"%'");
 
-                System.out.println("decpiz");
-                criteria.add(Restrictions.eq("book.title",11));
-                criteria.add(Restrictions.eq("person",3));
+                }
+                if (surname.compareTo("Surname")!=0) {
+                    System.out.println("srnm");
+                                                    if (and) QUERY.append(" and ");
+                                                    else and=true;
+                                                    QUERY.append("person.surname like "+"'%"+surname+"%'");
 
-            System.out.println("!!"+criteria.list());
-            System.out.println("!!!"+criteria);
-            return criteria.list();
+                }
+            System.out.println("!!!"+QUERY.toString());
+                Query query= factory.getCurrentSession().createQuery(QUERY.toString());
+
+            return query.list();
         }
+    @Override
+    @Transactional
+    public List<Orders> testCriteria(String title, String surname, int how){
+        boolean and = false;
+        System.out.println("input data: title:"+title+", surname:"+surname+".");
+
+        StringBuilder QUERY = new StringBuilder("From Orders ");
+        if (title.compareTo("Title")==0 && surname.compareTo("Surname")==0) {
+            if (how==1) QUERY.append("order by person.surname desc");
+            if (how==0) QUERY.append("order by person.surname asc");
+            System.out.println("!!!"+QUERY.toString());
+            Query query= factory.getCurrentSession().createQuery(QUERY.toString());
+
+            return query.list();
+        }
+        else QUERY.append("where ");
+        if (title.compareTo("Title")!=0) {
+            System.out.println("ttl");
+            if (and) QUERY.append(" and ");
+            else and=true;
+            QUERY.append("book.title like "+"'%"+title+"%'");
+
+        }
+        if (surname.compareTo("Surname")!=0) {
+            System.out.println("srnm");
+            if (and) QUERY.append(" and ");
+            else and=true;
+            QUERY.append("person.surname like "+"'%"+surname+"%'");
+
+        }
+
+        if (how==1) QUERY.append(" order by person.surname desc");
+        if (how==0) QUERY.append(" order by person.surname asc");
+        System.out.println("!!!"+QUERY.toString());
+        Query query= factory.getCurrentSession().createQuery(QUERY.toString());
+
+        return query.list();
+    }
         @Override
         @Transactional
         public List<Orders> sortOrdersBySurname(){
             int pageNumber=1;
-            int pageSize=2;
+            int pageSize=10;
             Session session = factory.getCurrentSession();
             Criteria criteria = session.createCriteria(Orders.class);
             criteria.setFirstResult((pageNumber-1)*pageSize);
