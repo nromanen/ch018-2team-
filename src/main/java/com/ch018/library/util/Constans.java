@@ -8,5 +8,6 @@ public interface Constans {
 	int MIN_COUNT_FOR_RECOMMEND = 20;
 	int AMOUNT_OF_RECOMMEND = 6;
 	int AMOUNT_OF_BOOKS_TO_MAIN = 10;
+	int MAX_USER_NAME_LENGTH = 30;
 	
 }

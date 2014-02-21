@@ -63,7 +63,7 @@
 				                        <td>${user.booksOnHands} / ${user.booksAllowed}</td>
 				                        <td>${user.generalRating}/100</td>
 				                        
-				                    <td><a href="${pageContext.request.contextPath}/librarian/users/edituser?id=${user.pid}"  style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
+				                    <td><a href="${pageContext.request.contextPath}/librarian/users/edituser?id=${user.pid}"  style="color: #0E3846">Details |</a>
 
 
 				                        <!-- jquery:shure()--><a onclick="jQuery:delete_user($(this).attr('nik'));" nik="${pageContext.request.contextPath}/librarian/users/deleteuser?id=${user.pid}"     style="color: #0E3846; cursor:pointer"><spring:message code="message.libDelete"/>|</a>

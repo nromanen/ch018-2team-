@@ -86,7 +86,7 @@ public class LibrarianUsersController {
 		}
 	
 		@RequestMapping(value = "/adduser", method = RequestMethod.POST)
-		public String addUser(@ModelAttribute("user") @Valid Person user,
+		public String addUser(@Valid @ModelAttribute("user")  Person user,
 				BindingResult result) throws Exception {
 			if (result.hasErrors()) {
 				System.out.println("Errors Adding User" + result.toString());
