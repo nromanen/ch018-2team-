@@ -7,6 +7,8 @@ import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
+import com.ch018.library.util.Constans;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +24,6 @@ import java.util.List;
 public class LibrarianOrdersController {
 
 		private static final String VALIDATION_FAILED = "Term must be between 1 and 70";
-		private static final int MIN_ISUUE = 1;
-		private static final int MAX_ISSUE = 70;
 		private static final long MILLIS_IN_DAY = 24 * 3600 * 1000;
 		
 		@Autowired
@@ -62,7 +62,8 @@ public class LibrarianOrdersController {
 			try {
 				maxIssueDays = ordersService.getMaxIssueDays(order);
 			} catch (Exception e) {
-				System.out.println("UNAVAIL");
+				model.addAttribute("unavailable", true);
+				return "librarian_orders_issue";
 			}
 			model.addAttribute("order", order);
 			model.addAttribute("term", maxIssueDays);
@@ -86,7 +87,7 @@ public class LibrarianOrdersController {
 				return "librarian_orders_issue";
 			}
 			
-			if ((termInt <= MAX_ISSUE) && (termInt >= MIN_ISUUE)) {
+			if ((termInt <= Constans.MAX_ISSUE_PERIOD) && (termInt >= Constans.MIN_ISSUE_PERIOD)) {
 				ordersService.issue(order, termInt);
 				ordersService.delete(ordersService.getOrderByID(id));
 				return "redirect:/librarian/orders";

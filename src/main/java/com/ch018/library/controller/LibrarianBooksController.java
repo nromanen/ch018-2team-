@@ -3,12 +3,14 @@ package com.ch018.library.controller;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -24,7 +26,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
@@ -66,9 +71,8 @@ public class LibrarianBooksController {
 		}
 		
 		@RequestMapping(value = "/addbook", method = RequestMethod.POST)
-		public ResponseEntity<String> add(@ModelAttribute Book book, BindingResult result, HttpServletRequest request,
-							@RequestParam("gid") Integer gid, @RequestParam("file") MultipartFile file, Model model) throws Exception {
-
+		public ResponseEntity<String> add(@Valid @ModelAttribute Book book, BindingResult result, HttpServletRequest request,
+							@RequestParam("gid") Integer gid, @RequestParam("file") MultipartFile file, Model model) {
 			
 			book.setGenre(genreService.getById(gid));
 			if (result.hasErrors()) {
@@ -88,7 +92,7 @@ public class LibrarianBooksController {
 		
 		
 		@RequestMapping(value = "/deletebook")
-		public String deleteBook(@RequestParam("id") int bookId, Model model) throws SQLException {
+		public String deleteBook(@RequestParam("id") int bookId, Model model) {
 		
 			String error = "error";
 			
@@ -103,13 +107,8 @@ public class LibrarianBooksController {
 		}
 		
 		@RequestMapping(value = "/editbook", method = RequestMethod.GET)
-		public String edit(@RequestParam("id") int bookId, Model model) throws SQLException {
+		public String edit(@RequestParam("id") int bookId, Model model) {
 			
-			//locale = LocaleContextHolder.getLocale();
-			
-			Book book = bookService.getBookById(bookId);
-			
-			//model.addAttribute("genres", genreTranslService.getAllByLocale(locale.toString()));
 			model.addAttribute("book", bookService.getBookById(bookId));
 			model.addAttribute("genres", genreService.getAll());
 			return "librarian_books_edit_book";
@@ -139,7 +138,7 @@ public class LibrarianBooksController {
 		}
 		
 		@RequestMapping(value = "/advancedsearch", method = RequestMethod.POST)
-		public String advancedSearch(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("genreId") Integer gid, Model model) throws Exception {
+		public String advancedSearch(@ModelAttribute("book") Book book, BindingResult result, @RequestParam("genreId") Integer gid, Model model) {
 			
 			List<Book> booksList = bookService.advancedSearch(book);
 			
@@ -153,7 +152,7 @@ public class LibrarianBooksController {
 		}
 		
 		@RequestMapping(value = "/holders", method = RequestMethod.GET)
-		public String showBookHolders(@RequestParam("id") int id, Model model) throws Exception {
+		public String showBookHolders(@RequestParam("id") int id, Model model) {
 			Book book = new Book();
 			book = bookService.getBookById(id);
 			Map<BooksInUse, Integer> booksInUse = bookService.getHolders(bookService.getBookById(id));
@@ -168,7 +167,7 @@ public class LibrarianBooksController {
 		}
 		
 		@RequestMapping(value = "/simplesearch", method=RequestMethod.POST)
-		public String simpleSearch(@RequestParam("request") String request, Model model) throws Exception {
+		public String simpleSearch(@RequestParam("request") String request, Model model) {
 			
 			if (request.equals("")) {
 				model.addAttribute("books", bookService.getAll());
@@ -202,4 +201,6 @@ public class LibrarianBooksController {
 				System.out.println(e.getMessage());
 			}
 		}
+		
+		
 }

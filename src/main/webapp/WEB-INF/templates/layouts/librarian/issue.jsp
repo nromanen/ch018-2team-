@@ -38,23 +38,25 @@
 								    	 <h5> <c:out  value="${fn:substring(order.getOrderDate(), 0, 11)}"/> </h5> 
 								    </div>
 							 </div> 
-							 <div class="form-group">
-							 <div class="col-sm-10">
-							 <p>
-							 	<input type="hidden" id="term_value" value="${term}">
-								<label for="term">term:</label>
-				 				<input type="text" id="term" style="border: 0;font-weight: bold;">
-							</p>
-
-							<div id="term-range"></div>
-							</div>
 							 
-								 <!--  
-									    <label for="inputEmail3" class="col-sm-2 control-label">Term</label>
-									    <div class="col-sm-10">
-									    	<input name="term" class="form-control" value="${term}">
-									    </div> -->
-								 </div>  
+							 <div class="form-group">
+							 	<div class="col-sm-10">
+									 <c:choose>
+									 	<c:when test="${unavailable}">
+									 		<input type="text" disabled="disabled" style="color:red">Book Unavailable
+									 	</c:when>
+									 	<c:otherwise>
+									 		<p>
+										 	<input type="hidden" id="term_value" value="${term}">
+											<label for="term">term:</label>
+							 				<input type="text" id="term" style="border: 0;font-weight: bold;">
+											</p>
+		
+											<div id="term-range"></div>
+									 	</c:otherwise>
+									 </c:choose> 
+								</div>
+							</div>  
 								 
 								 <div class="form-group">
 									    <label for="inputEmail3" class="col-sm-2 control-label"></label>
