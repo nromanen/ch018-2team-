@@ -18,6 +18,7 @@ public interface BookService {
              void save(Book book);
              void delete(Book book);
              void update(Book book);
+             void update(Book book, Integer gid);
              List<Book> getAll();
              Book getBookById(int id);
              List<Book> getBooksByTitle(String title);

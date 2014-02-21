@@ -2,7 +2,9 @@ package com.ch018.library.controller;
 
 
 import com.ch018.library.DAO.OrdersDao;
+import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
+import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
@@ -46,9 +48,6 @@ public class LibrarianOrdersController {
 		public String showAll(Model model) throws Exception {
 			
 			List<Orders> orders = ordersService.getAll();
-			
-			System.out.println("Orders size:" + orders.size());
-			
 			model.addAttribute("orders", ordersService.getAll());
 			return "librarian_orders";
 		}
@@ -129,4 +128,23 @@ public class LibrarianOrdersController {
         return "librarian_orders";
     }
 	
+    @RequestMapping(value = "/person")
+	public String showPersonOrders(@RequestParam("id") Integer pid, Model model) {
+    	Person person = personService.getById(pid);
+		List<Orders> orders = ordersService.getOrderByPerson(person);
+		
+		model.addAttribute("orders", ordersService.getAll());
+		return "librarian_orders";
+	}
+    
+    @RequestMapping(value = "/book")
+	public String showBookOrders(@RequestParam("id") Integer bid, Model model) {
+    	Book book = bookService.getBookById(bid);
+		List<Orders> orders = ordersService.getOrderByBook(book);
+		
+		model.addAttribute("orders", ordersService.getAll());
+		return "librarian_orders";
+	}
+    
+    
 }

@@ -58,7 +58,7 @@ public class BookDaoImpl implements BookDao {
 			try {
 				factory.getCurrentSession().update(book);
 			} catch (Exception e) {
-				logger.error("error during update book {}", book);
+				logger.error("error during update book {}", e.getMessage());
 			}
 	
 		}
@@ -70,7 +70,10 @@ public class BookDaoImpl implements BookDao {
 	
 		@Override
 		public Book getBookById(int id) {
-			return (Book) factory.getCurrentSession().createCriteria(Book.class).add(Restrictions.eq("bId", id)).uniqueResult();//get(Book.class, id);
+			Session session = factory.getCurrentSession();
+			Book book = (Book) session.createCriteria(Book.class).add(Restrictions.eq("bId", id)).uniqueResult();
+			session.clear();
+			return book;
 		}
 	
 		@Override
