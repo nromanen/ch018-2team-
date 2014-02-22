@@ -12,14 +12,15 @@
 		    $( "#term" ).val($( "#term-range" ).slider( "value") + " days" );
 		    
 		    
-		$('#issue_submit').click(function (e) {
+		$('#term_submit').click(function (e) {
 			e.preventDefault();
-			
-			$form = $('#issue_form');
+			console.log("form1 " + $('#term-range').slider("value")) ;
+			$form = $('#term_form');
 			
 			$('<input>', {
 				name : 'term',
-				val : $('#term-range').slider("value")
+				val : $('#term-range').slider("value"),
+				class : "hide"
 			}).appendTo($form);
 			
 			$form.submit();

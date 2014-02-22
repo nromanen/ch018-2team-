@@ -28,7 +28,11 @@ public class GenreTranslationsServiceImpl implements GenreTranslationsService {
 		return genreTranslationsDao.getTranslationById(id);
 	}
 
-
+	@Override
+	public String getDescription(Integer genreId) {
+		
+		return genreTranslationsDao.getDescription(genreId);
+	}
 
 	
 	

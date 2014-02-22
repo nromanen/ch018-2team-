@@ -4,6 +4,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.ch018.library.util.Constans;
+
 /**
  *
  * @author Edd Arazian
@@ -14,17 +16,17 @@ public class Password {
         public static final int MAX_SIZE = 16;
 
         @NotEmpty(message = "password field can't be empty")
-        @Size(min = MIN_SIZE, max = MAX_SIZE
+        @Size(min = Constans.MIN_PASSWORD_LENGTH, max = Constans.MAX_PASSWORD_LENGTH
         			, message = "password size must be between 6 and 16")
         private String oldPass;
 
         @NotEmpty(message = "password field can't be empty")
-        @Size(min = MIN_SIZE, max = MAX_SIZE
+        @Size(min = Constans.MIN_PASSWORD_LENGTH, max = Constans.MAX_PASSWORD_LENGTH
         			, message = "password size must be between 6 and 16")
         private String newPass;
 
         @NotEmpty(message = "password field can't be empty")
-        @Size(min = MIN_SIZE, max = MAX_SIZE
+        @Size(min = Constans.MIN_PASSWORD_LENGTH, max = Constans.MAX_PASSWORD_LENGTH
         			, message = "password size must be between 6 and 16")
         private String rNewPass;
 

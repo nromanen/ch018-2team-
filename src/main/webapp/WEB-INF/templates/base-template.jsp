@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Home Page</title>
+<title><tiles:insertAttribute name="title" /></title>
 
 <tiles:insertAttribute name="style-js-main" />
 <tiles:insertAttribute name="style-js" />

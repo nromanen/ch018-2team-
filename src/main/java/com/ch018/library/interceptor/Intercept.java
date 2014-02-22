@@ -23,18 +23,12 @@ public class Intercept extends EmptyInterceptor {
 		if(entity instanceof Genre) {
 			
 			Genre genre = (Genre) entity;
-			int i = 0;
-			for(String str : propertyNames) {
-				if(str.equals("description"))
-					break;
-				i++;
-			}
-			state[i] = translationService.getTranslationById(genre.getId());
+			genre.setDescription(translationService.getDescription(genre.getId()));
 
-
+			return true;
 
 		}
-		return true;
+		return false;
 		
 	}
 

@@ -52,14 +52,15 @@
    	
    	<bean id="switcher" class="com.ch018.library.util.Switch" scope="singleton">
    	</bean>
-   	
-   	<bean id="dataModelContainer" class="com.ch018.library.util.DataModelContainer" scope="singleton">
-   		<property name="dataSource" ref="dataSource"/>
-   	</bean>
+
    	
    	<bean id="mailService"  class="org.mockito.Mockito" factory-method="mock">
-  <constructor-arg value="com.ch018.library.service.MailService"/>
- </bean>
+  		<constructor-arg value="com.ch018.library.service.MailService"/>
+ 	</bean>
+ 
+ 	<bean id="dataModelContainer"  class="org.mockito.Mockito" factory-method="mock">
+  		<constructor-arg value="com.ch018.library.util.DataModelContainer"/>
+ 	</bean>
    	
  
    	<import resource ="data.xml" />

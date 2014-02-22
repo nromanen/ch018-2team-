@@ -24,6 +24,7 @@ public class Genre implements Serializable {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
        
+		@Transient
         private String description;
         
         @OneToMany(mappedBy = "genre", fetch = FetchType.LAZY)

@@ -74,12 +74,12 @@
 			</div>
 			<div class="modal-body">
 				<h3><spring:message code="message.emptyorders" /></h3>
-				<h4><spring:message code="message.try" /> <a href="${pageContext.request.contextPath}/books/search"><spring:message code="message.catalogue" /></a></h4>
+				<h4><spring:message code="message.try" /> <a href="${pageContext.request.contextPath}/books/search?generalQuery=true&page=1"><spring:message code="message.catalogue" /></a></h4>
 			</div>
 			<div class="modal-footer">
 
 				<button type="button"
-					onclick="location.href = '${pageContext.request.contextPath}/books/search'"
+					onclick="location.href = '${pageContext.request.contextPath}/books/search?generalQuery=true&page=1'"
 					class="btn btn-primary"><spring:message code="message.catalogue" /></button>
 			</div>
 		</div>

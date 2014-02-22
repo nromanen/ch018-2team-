@@ -7,7 +7,7 @@
         	<div class="row">
 				
 					<div class="col-md-4">
-				        <form id="issue_form" method="POST" action="${pageContext.request.contextPath}/librarian/orders/issue" class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">
+				        <form id="term_form" method="POST" action="${pageContext.request.contextPath}/librarian/orders/issue" class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">
 				             
 				             <input name="id" type="hidden" class="form-control" value="${order.id}" /> 
 				             
@@ -65,7 +65,7 @@
 									    </div>
 								 </div> 
 				          <div class="col-md-1 col-md-offset-7" style="margin-top:10px">
-							<input id="issue_submit" type="submit" class="btn btn-default btn-sm" value="Issue" style="background-color: #00A1A1 ; color: #FFFFFF">
+							<input id="term_submit" type="submit" class="btn btn-default btn-sm" value="Issue" style="background-color: #00A1A1 ; color: #FFFFFF">
 						</div>
 				        </form>
 				   </div>     

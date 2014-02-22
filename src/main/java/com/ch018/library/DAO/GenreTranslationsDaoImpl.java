@@ -1,5 +1,6 @@
 package com.ch018.library.DAO;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -76,8 +77,29 @@ public class GenreTranslationsDaoImpl implements GenreTranslationsDao {
 	}
 
 
+	@Override
+	public GenreTranslations getByDescription(String description) {
+		
+		Criteria criteria = factory.getCurrentSession().createCriteria(GenreTranslations.class);
+		criteria.add(Restrictions.eq("description", description));
+		
+		return (GenreTranslations) criteria.uniqueResult();
+	}
 
 
+	@Override
+	public String getDescription(Integer genreId) {
+		String locale = LocaleContextHolder.getLocale().getLanguage();
+		Criteria criteria = factory.getCurrentSession().createCriteria(GenreTranslations.class);
+		criteria.add(Restrictions.eq("genre.id", genreId));
+		criteria.add(Restrictions.eq("locale", locale));
+		
+		GenreTranslations translation = (GenreTranslations) criteria.uniqueResult();
+		String description = translation.getDescription();
+		
+		return description;
+	}
 
+	
 
 }

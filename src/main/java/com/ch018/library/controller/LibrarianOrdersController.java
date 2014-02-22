@@ -31,8 +31,8 @@ public class LibrarianOrdersController {
 		@Autowired
 		private OrdersService ordersService;
     
-		@Autowired
-		private OrdersDao ordersDao;
+		/*@Autowired
+		private OrdersDao ordersDao;*/
 		
 		@Autowired
 		private BookInUseService booksInUseService;
@@ -116,7 +116,7 @@ public class LibrarianOrdersController {
 	    @RequestMapping(value = "/searchById", method = RequestMethod.POST)
 	    public String searchById(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date) throws Exception {
 
-			model.addAttribute("orders", ordersDao.testCriteria(title,surname)); 
+			//model.addAttribute("orders", ordersDao.testCriteria(title,surname)); 
 
             return "librarian_orders";
 	    }
@@ -124,7 +124,7 @@ public class LibrarianOrdersController {
     @RequestMapping(value = "/sortSurname")
     public String sSurname(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") int how) throws Exception {
         System.out.println("SORT SURNAME:"+how+",");
-        model.addAttribute("orders", ordersDao.testCriteria(title,surname,how));
+        //model.addAttribute("orders", ordersDao.testCriteria(title,surname,how));
         return "librarian_orders";
     }
 	

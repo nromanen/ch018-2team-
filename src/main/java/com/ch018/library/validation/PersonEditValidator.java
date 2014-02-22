@@ -1,23 +1,24 @@
 package com.ch018.library.validation;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class PersonEditValidator {
+import com.ch018.library.util.Constans;
 
-		private static final int MAX_NAME = 30;
+public class PersonEditValidator {
 		
 		private int pid;
 	
 		@NotEmpty
-		@Size(max = MAX_NAME)
+		@Size(min = Constans.MIN_USER_NAME_LENGTH, max = Constans.MAX_USER_NAME_LENGTH)
 		private String name;
 	
 		@NotEmpty
-		@Size(max = MAX_NAME)
+		@Size(min = Constans.MIN_USER_NAME_LENGTH, max = Constans.MAX_USER_NAME_LENGTH)
 		private String surname;
 	
 		@NotEmpty
@@ -25,6 +26,7 @@ public class PersonEditValidator {
 		private String email;
 	
 		@NotEmpty
+        @Pattern(regexp = "\\d{3}-\\d{3}-\\d{4}", message = "phone field can't be empty")
 		private String cellphone;
 	
 		private boolean confirm;

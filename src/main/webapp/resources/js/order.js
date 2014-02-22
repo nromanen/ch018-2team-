@@ -197,6 +197,11 @@ function makeOrder(bookId, time, url) {
 		success : function() {
 
 			$('#order_modal').modal('show');
+			$('#wish_button').addClass('hide');
+			$('#order_button').addClass('hide');
+			$('#datetimepicker').addClass('hide');
+			$('#order_err').text('You already ordered this book');
+			$('#order_err').removeClass('hide');
 
 		},
 		error : function(xhr, status, error) {
@@ -226,6 +231,9 @@ function addToWishList(bookId, url) {
 		success : function() {
 
 			$('#wish_modal').modal('show');
+			$('#wish_button').addClass('hide');
+			$('#order_err').text('Book already in WishList');
+			$('#order_err').removeClass('hide');
 
 		},
 		error : function(xhr, status, error) {

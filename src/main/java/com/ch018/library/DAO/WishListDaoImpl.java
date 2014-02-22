@@ -82,7 +82,8 @@ public class WishListDaoImpl implements WishListDao {
         	criteria.add(Restrictions.eq("book", book));
         	
         	try{
-                WishList wish = (WishList) criteria.uniqueResult();
+                wishlist = (WishList) criteria.uniqueResult();
+                
             } catch(Exception e) {
             	logger.error(e.getMessage());
             }

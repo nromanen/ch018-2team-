@@ -269,7 +269,6 @@ public class PersonServiceImplTest {
 	
 	private void setDatabase(Person person) {
 		Connection connection;
-		Statement stmt;
 		PreparedStatement preparedStmt;
 		
 		try {

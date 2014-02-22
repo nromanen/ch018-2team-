@@ -18,6 +18,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 import com.ch018.library.util.Constans;
 import com.ch018.library.util.Roles;
@@ -40,12 +41,12 @@ public class Person implements Serializable {
 		private int pid;
 	
 		@NotEmpty
-		@Size(max = Constans.MAX_USER_NAME_LENGTH)
+		@Size(min = Constans.MIN_USER_NAME_LENGTH, max = Constans.MAX_USER_NAME_LENGTH)
 		@Column(name = "name")
 		private String name;
 	
 		@NotEmpty
-		@Size(max = Constans.MAX_USER_NAME_LENGTH)
+		@Size(min = Constans.MIN_USER_NAME_LENGTH, max = Constans.MAX_USER_NAME_LENGTH)
 		@Column(name = "surname")
 		private String surname;
 	
@@ -61,7 +62,7 @@ public class Person implements Serializable {
 		@Column(name = "personRole")
 		private String personRole;
 	
-		@NotEmpty()
+		@NotEmpty
         @Pattern(regexp = "\\d{3}-\\d{3}-\\d{4}", message = "phone field can't be empty")
 		@Column(name = "cellphone")
 		private String cellphone;
@@ -85,6 +86,7 @@ public class Person implements Serializable {
 		private int untimekyReturn;
 	
 		@NotNull
+		@Range(min = 0, max = Constans.MAX_BOOKS_ALLOWED)
 		@Column(name = "booksAllowed")
 		private int booksAllowed;
 	
