@@ -316,8 +316,16 @@ function sendVote(data) {
 				score: data.score
 			});
 			$('#rate_form_textarea').attr('disabled', 'disabled');
-			/*var vote = Number($('#vote_area').text().split(" ")) + 1;
-			$('#vote_area').text('votes ' + vote);*/
+			$('#vote_area').text("(" + data.bookVotes + ' votes)');
+			$('#book_rate').empty();
+			$('#book_rate').attr('data-score', data.bookRating);
+			
+			$('#book_rate').raty({ 
+				path: $('#path').attr('url')  + '/resources/js/img',
+				readOnly : true,
+				score : data.bookRating
+			});
+			
 	
 		},
 		error : function(xhr, status, error) {

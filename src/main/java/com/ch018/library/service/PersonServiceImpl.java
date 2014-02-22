@@ -3,6 +3,9 @@ package com.ch018.library.service;
 import com.ch018.library.DAO.PersonDao;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
+import com.ch018.library.exceptions.EmailAlreadyInUseException;
+import com.ch018.library.exceptions.EmailNotChangedException;
+import com.ch018.library.exceptions.InformationNotUpdateException;
 import com.ch018.library.exceptions.OldPasswordIncorrectException;
 import com.ch018.library.exceptions.UserAlreadyExists;
 import com.ch018.library.validation.Password;
@@ -10,6 +13,8 @@ import com.ch018.library.validation.PersonEditValidator;
 import com.ch018.library.validation.PersonalInfo;
 import com.ch018.library.validation.UserRegistrationForm;
 
+import org.hibernate.HibernateException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,12 +141,9 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Override
 		@Transactional
-		public void updatePassword(Password password, Person person)
-				throws OldPasswordIncorrectException {
-			logger.info("in update password = {}", password);
-			logger.info("encoder = {}", encoder.encode(password.getOldPass()));
+		public void updatePassword(Password password, Person person) throws OldPasswordIncorrectException {
+			logger.info("person pass raw {} , enc {}", password.getOldPass(), encoder.encode(password.getOldPass()));
 			if (!encoder.matches(password.getOldPass(), person.getPassword())) {
-				logger.info("in if");
 				logger.info("person {}", person);
 				logger.error("passwords don't match during update");
 				throw new OldPasswordIncorrectException();
@@ -195,10 +197,13 @@ public class PersonServiceImpl implements PersonService {
 	
 		@Override
 		@Transactional
-		public void changeEmail(String email, Person person, String path) throws Exception {
+		public void changeEmail(String email, Person person, String path) throws EmailAlreadyInUseException, EmailNotChangedException {
+			
+			logger.info("GET BY EMAIL {}", getByEmail(email));
+			if (getByEmail(email) != null)
+				throw new EmailAlreadyInUseException();
+				
 			try {
-				if (getByEmail(email) != null)
-					throw new Exception("email already in use");
 				person.setEmail(email);
 				person.setMailConfirm(Boolean.FALSE);
 				String key = getHashFromString(email);
@@ -213,18 +218,15 @@ public class PersonServiceImpl implements PersonService {
 			} catch (Exception e) {
 				logger.error("error during email: {} change {}", email,
 						e.getMessage());
-				throw new Exception("email doesn't changed. Try later");
+				throw new EmailNotChangedException();
 			}
 		}
 	
 		@Override
 		@Transactional
-		public Person register(UserRegistrationForm form, String path) throws Exception {
+		public Person register(UserRegistrationForm form, String path) throws HibernateException {
 			Person person = new Person(form.getName(), form.getSurname(),
 					form.getEmail(), form.getPassword(), form.getCellPhone());
-			if (getByEmail(person.getEmail()) != null) {
-				throw new UserAlreadyExists();
-			}
 			person.setPassword(encoder.encode(person.getPassword()));
 			person.setPersonRole("ROLE_USER");
 			person.setBooksAllowed(DEFAULT_BOOKS_ALLOWED);
@@ -232,8 +234,12 @@ public class PersonServiceImpl implements PersonService {
 			person.setConfirmationKey(mailKey);
 			mailService.sendConfirmationMail("springytest@gmail.com",
 					"etenzor@gmail.com", "confirmation mail", person.getConfirmationKey(), path);
-			save(person);
-			logger.info("new user {} registered", person);
+			try {
+				save(person);
+				logger.info("new user {} registered", person);
+			} catch (ConstraintViolationException e) {
+				throw new HibernateException("User already exists");
+			}
 			return person;
 		}
 	
@@ -241,26 +247,26 @@ public class PersonServiceImpl implements PersonService {
 		@Transactional
 		public boolean confirmMail(String key) {
 			try {
-				Person person = personDao.getPersonByKey(key);
-				if (person == null) {
-					logger.info("key not found in db");
+					Person person = personDao.getPersonByKey(key);
+					if (person == null) {
+						logger.info("key not found in db");
+						return false;
+					}
+						
+					person.setMailConfirm(Boolean.TRUE);
+					person.setConfirmationKey(null);
+					save(person);
+					Authentication token = 
+							new PreAuthenticatedAuthenticationToken(person.getEmail(), person.getPassword()
+							, Arrays.asList(new SimpleGrantedAuthority(person.getPersonRole())));
+					SecurityContextHolder.getContext().setAuthentication(token);
+					
+					logger.info("person {} successfully confirm mail | auth {}", person, SecurityContextHolder.getContext());
+					return true;
+				} catch (Exception e) {
+					logger.info("Error in confirm {}", e.getMessage());
 					return false;
 				}
-					
-				person.setMailConfirm(Boolean.TRUE);
-				person.setConfirmationKey(null);
-				save(person);
-				Authentication token = 
-						new PreAuthenticatedAuthenticationToken(person.getEmail(), person.getPassword()
-						, Arrays.asList(new SimpleGrantedAuthority(person.getPersonRole())));
-				SecurityContextHolder.getContext().setAuthentication(token);
-				
-				logger.info("person {} successfully confirm mail | auth {}", person, SecurityContextHolder.getContext());
-				return true;
-			} catch (Exception e) {
-				logger.info("Error in confirm {}", e.getMessage());
-				return false;
-			}
 		}
 	
 		@Override
@@ -313,7 +319,7 @@ public class PersonServiceImpl implements PersonService {
 		@Override
 		@Transactional
 		public void updatePersonalInfo(Person person, PersonalInfo info)
-				throws Exception {
+				throws InformationNotUpdateException {
 			try {
 				person.setName(info.getName());
 				person.setSurname(info.getSurname());
@@ -322,7 +328,7 @@ public class PersonServiceImpl implements PersonService {
 				update(person);
 			} catch (Exception e) {
 				logger.error("error in updatePersonalInfo {}", e.getMessage());
-				throw new Exception("information not update");
+				throw new InformationNotUpdateException();
 			}
 	
 		}
