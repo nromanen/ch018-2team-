@@ -199,7 +199,7 @@ public class OrdersDaoImpl implements OrdersDao {
         @Override
         @Transactional
         public List<Orders> testCriteria(String title, String surname){
-<<<<<<< HEAD
+
             boolean and = false;
             System.out.println("input data: title:"+title+", surname:"+surname+".");
             if (title.compareTo("Title")==0 && surname.compareTo("Surname")==0) return getAll();
@@ -225,49 +225,54 @@ public class OrdersDaoImpl implements OrdersDao {
         }
     @Override
     @Transactional
-    public List<Orders> testCriteria(String title, String surname, int how){
+    public List<Orders> testCriteria(String title, String surname,String how, String what,int page,int count){
         boolean and = false;
-        System.out.println("input data: title:"+title+", surname:"+surname+".");
 
+        if (what.compareTo("")!=0){
         StringBuilder QUERY = new StringBuilder("From Orders ");
         if (title.compareTo("Title")==0 && surname.compareTo("Surname")==0) {
-            if (how==1) QUERY.append("order by person.surname desc");
-            if (how==0) QUERY.append("order by person.surname asc");
-            System.out.println("!!!"+QUERY.toString());
+            QUERY.append("order by "+what+" "+how);
+            System.out.println("!!!" + QUERY.toString());
             Query query= factory.getCurrentSession().createQuery(QUERY.toString());
+            query.setFirstResult((page-1)*count);
+            query.setMaxResults(count);
 
             return query.list();
         }
         else QUERY.append("where ");
         if (title.compareTo("Title")!=0) {
-            System.out.println("ttl");
+
             if (and) QUERY.append(" and ");
             else and=true;
             QUERY.append("book.title like "+"'%"+title+"%'");
 
         }
         if (surname.compareTo("Surname")!=0) {
-            System.out.println("srnm");
+
             if (and) QUERY.append(" and ");
             else and=true;
             QUERY.append("person.surname like "+"'%"+surname+"%'");
-=======
-            System.out.println("ckfu");
-            Criteria criteria = factory.openSession().createCriteria(Orders.class);
-                System.out.println("decpiz");
-                criteria.add(Restrictions.eq("book.title",11));
-                criteria.add(Restrictions.eq("person",3));
->>>>>>> 054d6fb9dc92c9febfd066b9141e3c081b98ab31
+
 
         }
 
-        if (how==1) QUERY.append(" order by person.surname desc");
-        if (how==0) QUERY.append(" order by person.surname asc");
+        QUERY.append("order by "+what+" "+how);
         System.out.println("!!!"+QUERY.toString());
         Query query= factory.getCurrentSession().createQuery(QUERY.toString());
+        query.setFirstResult((page-1)*count);
+        query.setMaxResults(count);
 
-        return query.list();
+
+
+        return query.list();}
+        else {
+            List<Orders> answerList = new ArrayList<>();
+            for (int i=0;i<count;i++)
+                answerList.add(getAll().get(((page-1)*count)+i));
+            return answerList;
+        }
     }
+
         @Override
         @Transactional
         public List<Orders> sortOrdersBySurname(){
@@ -277,7 +282,7 @@ public class OrdersDaoImpl implements OrdersDao {
             Criteria criteria = session.createCriteria(Orders.class);
             criteria.setFirstResult((pageNumber-1)*pageSize);
             criteria.setMaxResults(pageSize);
-            return (List<Orders>) criteria.list();
+            return criteria.list();
         }
 
 		@Override

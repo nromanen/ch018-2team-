@@ -120,9 +120,15 @@ public class LibrarianOrdersController {
 	    }
 
     @RequestMapping(value = "/sortSurname")
-    public String sSurname(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") int how) throws Exception {
+    public String sSurname(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") String how,@RequestParam("what") String what,@RequestParam("page") String page,@RequestParam("count") String count) throws Exception {
         System.out.println("SORT SURNAME:"+how+",");
-        model.addAttribute("orders", ordersDao.testCriteria(title,surname,how));
+        model.addAttribute("orders", ordersDao.testCriteria(title,surname,how,what,Integer.parseInt(page),Integer.parseInt(count)));
+        return "librarian_orders";
+    }
+    @RequestMapping(value = "/pagination")
+    public String pagin(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") String how,@RequestParam("what") String what,@RequestParam("page") int page,@RequestParam("count") int count) throws Exception {
+        System.out.println("SORT SURNAME:"+how+",");
+       // model.addAttribute("orders", ordersDao.paginationOrders(title,surname,how,what,page,count)/*ordersDao.testCriteria(title,surname,how,what)*/);
         return "librarian_orders";
     }
 	

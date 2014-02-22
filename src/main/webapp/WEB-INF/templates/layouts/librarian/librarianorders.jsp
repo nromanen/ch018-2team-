@@ -28,9 +28,12 @@
                 <tr>
 
                     <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDSurname" onclick="jQuery:clkSurname();">Surname</td>
-                    <td><button id="surnameSortButton" style="height: 30px" onclick="jQuery:sortSurname($('#surnameSort').text());" contenteditable="false"><img src="">sort</button></td>
-                    <a id="surnameSort" hidden="true">1</a>
+                    <td onclick="jQuery:sortS($('#sort').text(),'person.surname',$('#page').text(),$('#countP').text());" contenteditable="false"><img style="height: 20px; width: 20px" src="${pageContext.request.contextPath}/resources/img/sort.ico"></td>
+                    <a id="sort" hidden="true">asc</a>
+                    <a id="whatKindOfSort" hidden="true"></a>
+                    <a id="page" hidden="true">1</a>
                     <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDTitle" onclick="jQuery:clkTitle();">Title</td>
+                    <td onclick="jQuery:sortS($('#sort').text(),'book.title',$('#page').text(),$('#countP').text());" contenteditable="false"><img style="height: 20px; width: 20px" src="${pageContext.request.contextPath}/resources/img/sort.ico"></td>
                     <td width="30%" onblur="jQuery:bl();" contenteditable="true" id="TDDate" onclick="jQuery:clkDate();">Date</td>
                     <td width="30%">Options</td>
 
@@ -53,23 +56,50 @@
                     </c:forEach>
                 </table>
             </div>
+            <ul class="pagination pager">
+                <li ><a onclick="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),1,$('#countP').val());">&laquo;</a></li>
 
+                    <li><a onclick="jQuery:pageMinus($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());">Previous</a></li>
+                    <li><a onclick="jQuery:pagePlus($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());">Next</a></li>
+
+                <li><a>&raquo;</a><input id="countP" type="text" value="10" class="form-control"></li>
+            </ul>
 
         </div>
     </div>
 </div>
 <script type="text/javascript">
 
+    function pagePlus(how,what,page,count){
+        $('#page').text(parseInt($('#page').text())+1);
+        alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+$('#page').text()+","+"COUNT:"+count+".");
+        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text(),"how":how,"what":what,"page":$('#page').text(),"count":count});
+
+    }
+    function pageMinus(how,what,page,count){
+        $('#page').text(parseInt($('#page').text())-1);
+        alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+$('#page').text()+","+"COUNT:"+count+".");
+        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text(),"how":how,"what":what,"page":$('#page').text(),"count":count});
+
+    }
     function tdid(){
         contenteditable="true"
         $("#content1").load("${pageContext.request.contextPath}/librarian/orders/searchById #content1", {"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text()});
 
     }
-    function sortSurname(how){
+    function pagin(how,what,page,count){
 
-        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text(),"how":how});
-        if (how=="1") $("#surnameSort").text("0");
-        if (how=="0") $("#surnameSort").text("1");
+        alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+page+","+"COUNT:"+count+".");
+        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text(),"how":how,"what":what,"page":page,"count":count});
+
+    }
+    function sortS(how,what){
+        if (how=="desc") $("#sort").text("asc");
+        if (how=="asc") $("#sort").text("desc");
+        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text(),"how":how,"what":what});
+
+        $("#whatKindOfSort").text(what);
+
     }
     function bl(){
 
