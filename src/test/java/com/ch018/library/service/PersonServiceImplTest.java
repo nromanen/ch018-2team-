@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,6 +86,11 @@ public class PersonServiceImplTest {
 		
 		setDatabase(person);
 		
+	}
+	
+	@After
+	public void after() {
+		flush();
 	}
 	
 	@Test(expected = OldPasswordIncorrectException.class)
@@ -307,7 +313,21 @@ public class PersonServiceImplTest {
 		}
 		
 	}
-	
+
+	private void flush() {
+		Connection connection;
+		PreparedStatement preparedStmt;
+		
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/librarytest2", "root", "root");
+			preparedStmt = connection.prepareStatement("delete from person");
+			preparedStmt.execute();
+
+			
+		} catch (Exception e) {
+			logger.error("DB wr {}", e.getMessage());
+		}
+	}
 }
 
  

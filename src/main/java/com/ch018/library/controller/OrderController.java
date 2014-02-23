@@ -119,8 +119,6 @@ public class OrderController {
 			ordersService.addOrder(person, bookId, date);
 		} catch (IncorrectDateException | HibernateException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			return new ResponseEntity<>(SOMETHING_WRONG, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(new JSONObject().toString(), HttpStatus.OK);
 	}
@@ -155,8 +153,6 @@ public class OrderController {
 			order = ordersService.editOrder(person, orderId, new Date(date));
 		} catch (IncorrectDateException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			return new ResponseEntity<>(SOMETHING_WRONG, HttpStatus.BAD_REQUEST);
 		}
 		JSONObject json = new JSONObject();
 		json.put("orderId", orderId);
@@ -195,10 +191,8 @@ public class OrderController {
 		Date date = null;
 		try {
 			date = ordersService.getMinOrderDate(book);
-		} catch (TooManyOrdersException | BookUnavailableException | IncorrectDateException e) {
+		} catch (TooManyOrdersException | BookUnavailableException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
-			return new ResponseEntity<>(SOMETHING_WRONG, HttpStatus.BAD_REQUEST);
 		}
 		JSONObject minDate = new JSONObject();
 		minDate.put("minDate", date.getTime());

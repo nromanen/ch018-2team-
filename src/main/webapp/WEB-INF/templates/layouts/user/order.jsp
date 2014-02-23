@@ -185,14 +185,9 @@
 						aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal"
-										aria-hidden="true">&times;</button>
-									<h4 class="modal-title" id="order_modal_label">Order
-										Notification</h4>
-								</div>
+								
 								<div class="modal-body">
-									<h3><spring:message code="message.youordered" />: </h3>
+									<h4><spring:message code="message.youordered" />: </h4>
 									<h5>${book.getTitle()}</h5>
 								</div>
 								<div class="modal-footer">
@@ -230,14 +225,9 @@
 					aria-labelledby="wish_modal_label" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal"
-									aria-hidden="true">&times;</button>
-								<h4 class="modal-title" id="wish_modal_label">Order
-									Notification</h4>
-							</div>
+							
 							<div class="modal-body">
-								<h3><spring:message code="message.addwish" />:</h3>
+								<h4><spring:message code="message.addwish" />:</h4>
 								<h5>${book.getTitle()}</h5>
 							</div>
 							<div class="modal-footer">

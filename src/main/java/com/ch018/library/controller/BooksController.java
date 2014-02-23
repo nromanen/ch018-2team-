@@ -94,7 +94,7 @@ public class BooksController {
         
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(HttpServletRequest request, Model model) {
-
+        	logger.info("switcher {}, {}", switcher.getSwitcher(), switcher.getRecommendationState());
             model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", Constans.AMOUNT_OF_BOOKS_TO_MAIN));
             model.addAttribute("populars", bookService.getRecommended(Constans.AMOUNT_OF_BOOKS_TO_MAIN));
             return "home";

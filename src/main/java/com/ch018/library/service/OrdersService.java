@@ -5,7 +5,10 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.exceptions.BookUnavailableException;
+import com.ch018.library.exceptions.IncorrectDateException;
+import com.ch018.library.exceptions.TooManyOrdersException;
 
+import org.hibernate.HibernateException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -26,10 +29,10 @@ public interface OrdersService {
          int getBookIdByPerson(Person person);   
          boolean isPersonOrderedBook(Person person, Book book);
          boolean isLimitReached(Person person);
-         Date getMinOrderDate(Book book) throws Exception;
-         int getCorrectAmountOfOrderDays(Book book, Date orderDate) throws Exception;
-         void addOrder(Person person, int bookId, Date orderDate) throws Exception;
-         Orders editOrder(Person person, int orderId, Date orderDate) throws Exception;
+         Date getMinOrderDate(Book book) throws BookUnavailableException, TooManyOrdersException;
+         int getCorrectAmountOfOrderDays(Book book, Date orderDate) throws IncorrectDateException;
+         void addOrder(Person person, int bookId, Date orderDate) throws IncorrectDateException, HibernateException;
+         Orders editOrder(Person person, int orderId, Date orderDate) throws IncorrectDateException;
          void issue(Orders order, int term);
          List<Orders> getOrdersByBookTitle(List<Orders> orders, String title);
          List<Orders> getOrdersByPersonSurname(List<Orders> orders,String surname);
