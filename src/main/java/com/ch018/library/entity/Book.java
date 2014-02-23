@@ -35,7 +35,7 @@ public class Book implements Serializable {
 
 		private static final long serialVersionUID = -7141788634638340212L;
 		
-		private static final int MAX_NAME = 255;
+		private static final int MAX_NAME = 100;
 		private static final int MIN_YEAR = 1900;
 		private static final int MAX_YEAR = 2030;
 		private static final int MAX_PAGES = 10000;
@@ -72,7 +72,6 @@ public class Book implements Serializable {
 		@Column(name = "pages")
 		private Integer pages;
 	
-		@Size(min = 0)
 		@Column(name = "description", columnDefinition="TEXT")
 		private String description;
 	

@@ -47,16 +47,14 @@
 							 <div class="form-group">
 							    <label for="inputEmail3" class="col-sm-2 control-label">SMS</label>
 							    <div class="col-sm-10">
-							    	 <select name="sms" class="form-control">
+							    	
 				                		<c:if test="${user.sms == true }">
-				                		<option value="true" selected="selected">true</option>
-				                		<option value="false">false</option>
+				                		<input name="sms" type="checkbox" checked="checked">
 				                	 </c:if>	
 				                	  <c:if test="${user.sms == false }">
-				                		<option value="true">true</option>
-				                		<option value="false" selected="selected">false</option>
+				                		<input name="sms" type="checkbox">
 				                	 </c:if>	
-				                	</select>
+				                
 							    </div>
 							 </div>
 				          

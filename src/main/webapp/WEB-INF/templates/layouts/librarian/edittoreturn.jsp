@@ -7,9 +7,9 @@
         	<div class="row">
         	
 					<div class="col-md-7">
-				        <form:form method="POST" commandName="inuse"  class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">
+				        <form id="term_form" method="POST" action="${pageContext.request.contextPath}/librarian/toreturn/edit"   class="form-horizontal" role="form" style="margin-left: 70px ; margin-top:30px">
 				          
-								    	 <form:input path="id" type="hidden" class="form-control"/> 
+								    	 <input name="id" type="hidden" value="${id}" class="form-control"/> 
 				           
 				            <div class="form-group">
 								    <label for="inputEmail3" class="col-sm-2 control-label">Name</label>
@@ -33,11 +33,23 @@
 							 </div>  
 							
 							<div class="form-group">
-								    <label for="inputEmail3" class="col-sm-2 control-label">Increase by days</label>
-								    <div class="col-sm-10">
-								    	 <input name="days" class="form-control"/> 
-								    </div>
-							 </div>  
+							 	<div class="col-sm-10">
+									 <c:choose>
+									 	<c:when test="${unavailable}">
+									 		<input type="text" disabled="disabled" style="color:red">Book Unavailable
+									 	</c:when>
+									 	<c:otherwise>
+									 		<p>
+										 	<input type="hidden" id="term_value" value="${term}">
+											<label for="term">term:</label>
+							 				<input type="text" id="term" style="border: 0;font-weight: bold;">
+											</p>
+		
+											<div id="term-range"></div>
+									 	</c:otherwise>
+									 </c:choose> 
+								</div>
+							</div>  
 							 
 							 <div class="form-group">
 									    <label for="inputEmail3" class="col-sm-2 control-label"></label>
@@ -46,8 +58,8 @@
 									    </div>
 							 </div> 
 				           <div class="col-md-1 col-md-offset-10" style="margin-top:10px">
-							<input type="submit" class="btn btn-default btn-sm" value="<spring:message code="message.libSave"/>" style="background-color: #00A1A1 ; color: #FFFFFF">
+							<input id="term_submit" type="submit" class="btn btn-default btn-sm" value="<spring:message code="message.libSave"/>" style="background-color: #00A1A1 ; color: #FFFFFF">
 						</div>
-				        </form:form>
+				        </form>
 				   </div>     
 		    </div>    	

@@ -11,5 +11,5 @@ public interface GenreTranslationsService {
 	
 	String getTranslationById(int id);
 	
-
+	String getDescription(Integer genreId);
 }

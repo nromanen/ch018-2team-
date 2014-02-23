@@ -81,14 +81,13 @@ public class GenreServiceImpl implements GenreService {
 			if(ukr == null || ukr.equals(""))
 				ukr = eng;
 
-			if(getByDescription(eng) != null)
+			if(translationDao.getByDescription(eng) != null)
 				throw new GenreAlreadyExists();
 			
 			Genre genre = new Genre();
 			GenreTranslations engTranslation = new GenreTranslations();
 			GenreTranslations ukrTranslation = new GenreTranslations();
-			
-			genre.setDescription(eng);
+
 			save(genre);
 			
 			System.out.println(genre.getId());
@@ -106,6 +105,10 @@ public class GenreServiceImpl implements GenreService {
 			translationDao.save(ukrTranslation);
 				
 		}
+
+		
         
+		
+		
         
 }

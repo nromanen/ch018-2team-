@@ -17,12 +17,14 @@
     
     <definition name="base-template" template="/WEB-INF/templates/base-template.jsp">
         <put-attribute name="header" value="user-header" /> 
+        <put-attribute name="title" value="" />
         <put-attribute name="style-js-main" value="/WEB-INF/templates/layouts/user/main_css_js.jsp" />      
         <put-attribute name="style-js" value="" />
         <put-attribute name="footer" value="/WEB-INF/templates/layouts/footer.jsp" />
     </definition>
 
 	<definition name="home" extends="base-template">
+		<put-attribute name="title" value="Home Page" />
 		<put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/home_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/user/home.jsp" /> 
 	</definition>
@@ -30,47 +32,56 @@
     <definition name="booksContent" preparer="genres" template="/WEB-INF/templates/layouts/user/books.jsp"></definition>
 
     <definition name="books"  extends="base-template">
+    	<put-attribute name="title" value="Books" />
         <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/books_css_js.jsp" />
         <put-attribute name="content" value="booksContent" />     
     </definition>
     
     <definition name="order"  extends="base-template">
+    	<put-attribute name="title" value="Order" />
         <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/order_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/user/order.jsp" />
         
     </definition>
     
     <definition name="orders"  extends="base-template">
+    	<put-attribute name="title" value="My Orders" />
         <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/orders_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/user/orders.jsp" />
         
     </definition>
     
     <definition name="wishlist"  extends="base-template">
+    	<put-attribute name="title" value="WishList" />
         <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/wishlist_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/user/wishlist.jsp" />
         
     </definition>
     
     <definition name="mybooks"  extends="base-template">
+    	<put-attribute name="title" value="My Books" />
         <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/mybooks_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/user/myBooks.jsp" />
     </definition>
     
     <definition name="account"  extends="base-template">
+    	<put-attribute name="title" value="Account" />
         <put-attribute name="style-js" value="/WEB-INF/templates/layouts/user/account_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/user/account.jsp" />
     </definition>
     
     <definition name="login" extends="base-template">
+    	<put-attribute name="title" value="Login" />
     	<put-attribute name="content" value="/WEB-INF/templates/layouts/user/login.jsp" />
     </definition>
     
     <definition name="register" extends="base-template">
+    	<put-attribute name="title" value="Register" />
     	<put-attribute name="content" value="/WEB-INF/templates/layouts/user/register.jsp" />
     </definition>
     
     <definition name="restore" extends="base-template">
+    	<put-attribute name="title" value="Restore" />
     	<put-attribute name="content" value="/WEB-INF/templates/layouts/user/restore.jsp" />
     </definition>
     
@@ -81,6 +92,8 @@
     <!-- Books -->
     <definition name="librarian_books" extends="base-template">
         <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="style-js-main" value="/WEB-INF/templates/layouts/librarian/librarian_main_css_js.jsp" />
+        <put-attribute name="style-js" value="" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/books.jsp" />
     </definition>
     
@@ -103,6 +116,8 @@
     
     <definition name="librarian_books_edit_book" extends="base-template">
         <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="style-js-main" value="/WEB-INF/templates/layouts/librarian/librarian_main_css_js.jsp" />
+        <put-attribute name="style-js" value="" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/editbook.jsp" />
     </definition>
     
@@ -119,11 +134,15 @@
     
     <definition name="librarian_add_user" extends="base-template">
         <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="style-js-main" value="/WEB-INF/templates/layouts/librarian/librarian_main_css_js.jsp" />      
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/librarian/adduser_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/adduser.jsp" />
     </definition>
     
     <definition name="librarian_edit_user" extends="base-template">
         <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="style-js-main" value="/WEB-INF/templates/layouts/librarian/librarian_main_css_js.jsp" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/librarian/adduser_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/edituser.jsp" />
     </definition>
     
@@ -156,6 +175,8 @@
     
     <definition name="librarian_edittoreturn" extends="base-template">
         <put-attribute name="header" value="librarian_header" />
+        <put-attribute name="style-js-main" value="/WEB-INF/templates/layouts/librarian/librarian_main_css_js.jsp" />      
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/librarian/issue_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/edittoreturn.jsp" />
     </definition>
     

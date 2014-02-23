@@ -87,6 +87,7 @@
 						<div class="col-md-1 col-md-offset-10" style="margin-top:10px" >
 							<input type="submit" class="btn btn-default btn-sm" value="Add" style="background-color: #00A1A1 ; color: #FFFFFF">
 							<div id="error_div" class="hide"></div>
+							<div>${file_error}</div>
 						</div>
 				        </form>
 				        

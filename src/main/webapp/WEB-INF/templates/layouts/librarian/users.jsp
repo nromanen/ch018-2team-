@@ -31,24 +31,22 @@
 			<div class="col-md-12">
 				
 					<div class="col-md-12" style="margin-top:30px">
-					   <div id="content1">
+					   <div class="table-responsive" id="content1">
 						<table class="table table-hover table-striped table-bordered table-condensed">
 		     			   <thead>
 		         		       <tr>
-		           	   	            <td> <a href="<c:url value="/librarian/users/orderbyname"/>">
-		           	   	            <h5> <strong> <spring:message code="message.libFirstName"/></strong> </h5> </a></td>
+		           	   	            <td>  <a href="<c:url value="/librarian/users/orderbyname"/>"> <strong> <spring:message code="message.libFirstName"/></strong>  </a></td>
 		           	   	             
-		            	            <td>  <a href="<c:url value="/librarian/users/orderbysurname"/>">
-		           	   	            <h5> <strong> <spring:message code="message.libLastName"/></strong> </h5> </a> </td> 
-		                            <td>  <h5> <strong> <spring:message code="message.libEMail"/> </strong> </h5>  </td>
-		                            <td>  <h5> <strong> <spring:message code="message.libCellPhone"/> </strong> </h5>  </td>
-		                            <td> <h5> <strong> <spring:message code="message.libSMS"/> </strong> </h5>  </td>
-		                            <td>  <h5> <strong> <spring:message code="message.libReturnedOnTime"/> </strong> </h5>  </td>
-		                            <td>  <h5> <strong> <spring:message code="message.libReturnedLate"/> </strong> </h5>  </td>
-		                            <td>  <h5> <strong> Books Available </strong> </h5>  </td>
-		                            <td> <a href="<c:url value="/librarian/users/orderbyrating"/>">
-		           	   	            <h5> <strong> <spring:message code="message.libRating"/></strong> </h5> </a>  </td>
-		                            <td>  <h5> <strong> <spring:message code="message.libOptions"/> </strong> </h5>  </td>
+		            	            <td>  <a href="<c:url value="/librarian/users/orderbysurname"/>"> <strong> <spring:message code="message.libLastName"/></strong>  </a> </td> 
+		                            <td>   <strong> <spring:message code="message.libEMail"/> </strong>  </td>
+		                        
+			                           <td>   <strong> <spring:message code="message.libReturnedOnTime"/> </strong> </td>
+			                            <td>  <strong> <spring:message code="message.libReturnedLate"/> </strong> </td> 
+		                            
+		                            
+		                            <td>  <strong>in use / max amount</strong></td>
+		                            <td> <a href="<c:url value="/librarian/users/orderbyrating"/>"> <strong> <spring:message code="message.libRating"/></strong>  </a> </td>
+		                            <td>  <strong> <spring:message code="message.libOptions"/> </strong> </td>
 		               	         
 		               		   </tr>
 		       			 </thead>
@@ -58,15 +56,14 @@
 				                        <td hidden="true">${user.pid}</td>
 				                        <td>${user.name}</td>
 				                        <td>${user.surname}</td>
-				                        <td>${user.email}</td>
-				                        <td>${user.cellphone}</td>
+				                        
 				                        <td>${user.sms}</td>
 				                        <td>${user.timelyReturn}</td>
 				                        <td>${user.untimekyReturn}</td>
 				                        <td>${user.booksOnHands} / ${user.booksAllowed}</td>
 				                        <td>${user.generalRating}/100</td>
 				                        
-				                    <td><a href="${pageContext.request.contextPath}/librarian/users/edituser?id=${user.pid}"  style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
+				                    <td><a href="${pageContext.request.contextPath}/librarian/users/edituser?id=${user.pid}"  style="color: #0E3846">Details |</a>
 
 
 				                        <!-- jquery:shure()--><a onclick="jQuery:delete_user($(this).attr('nik'));" nik="${pageContext.request.contextPath}/librarian/users/deleteuser?id=${user.pid}"     style="color: #0E3846; cursor:pointer"><spring:message code="message.libDelete"/>|</a>

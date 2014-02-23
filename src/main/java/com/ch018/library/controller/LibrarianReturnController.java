@@ -3,7 +3,9 @@ package com.ch018.library.controller;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
+import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,10 +26,15 @@ public class LibrarianReturnController {
 	
 		@Autowired
 		private BookInUseService booksInUseService;
+		
 		@Autowired
 		private PersonService personService;
+		
 		@Autowired
 		private BookService bookService;
+		
+		@Autowired
+		private OrdersService orderService;
 		
 		@RequestMapping(value = "")
 		public String showAll(Model model) throws Exception {
@@ -55,12 +62,25 @@ public class LibrarianReturnController {
 		
 		@RequestMapping(value = "/edit", method = RequestMethod.GET)
 		public String edit(@RequestParam("id") int id, Model model) throws Exception {
-			model.addAttribute("inuse", booksInUseService.getBookInUseById(id));
+			BooksInUse bookInUse = booksInUseService.getBookInUseById(id);
+			int maxIssueDays = 0;
+			
+			try {
+				maxIssueDays = orderService.getMaxDaysForIncrease(bookInUse);
+			} catch (Exception e) {
+				model.addAttribute("unavailable", true);
+				return "librarian_edittoreturn";
+			}
+			
+			model.addAttribute("inuse", bookInUse);
+			model.addAttribute("term", maxIssueDays);
+			model.addAttribute("id", id);
+			
 			return "librarian_edittoreturn";
 		}
 		
 		@RequestMapping(value = "/edit", method = RequestMethod.POST)
-		public String edit(@RequestParam("id") int id, @RequestParam("days") String days, Model model) throws Exception {
+		public String edit(@RequestParam("id") int id, @RequestParam("term") String days, Model model) throws Exception {
 			
 			int daysInt = 0;
 			BooksInUse bookInUse = booksInUseService.getBookInUseById(id);

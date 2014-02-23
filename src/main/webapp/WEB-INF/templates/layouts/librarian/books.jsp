@@ -31,40 +31,29 @@
 
          		       <tr>
            	                
-           	   	            <td> <b> <spring:message code="message.libTitle"/> </b> </td>
-            	            <td> <b> <spring:message code="message.libAuthors"/> </b> </td> 
+           	   	            <td  style="max-width:400px;"> <b> <spring:message code="message.libTitle"/> </b> </td>
+            	            
                             <td> <b> <spring:message code="message.libYear"/> </b> </td>
-                            <td> <b> <spring:message code="message.libPublisher"/> </b> </td>
-                            <td> <b> <spring:message code="message.libPages"/> </b> </td>
-                            <td> <b> <spring:message code="message.libGenre"/> </b> </td>
-                            <td> <b> <spring:message code="message.libDescription"/> </b> </td>    
+                            <td> <b> <spring:message code="message.libPages"/> </b> </td>  
                             <td> <b> <spring:message code="message.libShelf"/> </b> </td>
                             <td> <b> <spring:message code="message.libCurrentQuantity"/></b> </td>
                             <td> <b> <spring:message code="message.libGeneralQuantity"/></b> </td>
                             <td> <b> <spring:message code="message.libOptions"/> </b> </td>
                	         
                		   </tr>
-                    </table>
-                    <div id="content1" class="table table-hover table-striped  table-condensed">
-                        <table id="downTable" border="1" width="80%" class="table table-hover table-striped table-bordered table-condensed">
-
-                        <c:set var = "locale" value="${locale}"/>
 				        <c:forEach items="${books}" var="book">
 				                <tr>
 				                        <td hidden="true">${book.bId}</td>
-				                        <td>${book.title}</td>
-				                        <td>${book.authors}</td>
+				                        <td style="max-width:400px;"">${book.title}</td>
 				                        <td>${book.year}</td>
-				                        <td>${book.publisher}</td>
 				                        <td>${book.pages}</td>
-				                        <td>${book.genre.description}</td>
-				                        <td><textarea nik="${book.bId}" id="${book.bId}" class="form-control" rows="2" style=" background:transparent;" onkeyup="jQuery:saveChanges($(this).attr('nik'));"> ${book.description} </textarea></td>
 				                        <td>${book.shelf}</td>
 				                        <td>${book.currentQuantity}</td>
 				                        <td>${book.generalQuantity}</td>
 				                    <td><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>" style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
 				                    <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>" style="color: #0E3846"><spring:message code="message.libDelete"/> |</a>
-				                     <a href="<c:url value="/librarian/books/holders?id=${book.bId}"/>"style="color: #0E3846"><spring:message code="message.libHolders"/></a></td>
+				                     <a href="<c:url value="/librarian/books/holders?id=${book.bId}"/>"style="color: #0E3846"><spring:message code="message.libHolders"/></a>
+				                     | <a href="<c:url value="/librarian/orders/book?id=${book.bId}"/>"style="color: #0E3846">Orders</a></td>
 				                </tr>
 				        </c:forEach>
 			   </table>

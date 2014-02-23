@@ -32,9 +32,11 @@ public interface OrdersDao {
         List<Orders> sortOrdersBySurname();
         List<Orders> getOrderByIDList(int id); 
         List<Orders> getOrdersBetweenDatesWithoutPerson(Person person, Book book, Date firstDate, Date secondDate);
+        long getOrdersCountForBook(Book book);
         long getOrdersCountWithoutPerson(Book book, Person person);
         long getOrdersCountForPerson(Person person);
         Orders getFirstOrderAfterDateWithoutPerson(Date date, Person person, Book book);
+        Orders getFirstOrderAfterDate(Date date, Book book);
 
 
 }

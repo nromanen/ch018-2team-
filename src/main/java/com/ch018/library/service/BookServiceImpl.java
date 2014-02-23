@@ -73,6 +73,17 @@ public class BookServiceImpl implements BookService {
 
         @Override
         @Transactional
+        public void update(Book book, Integer gid) {
+        	Genre genre = genreService.getById(gid);
+        	Book originalBook = getBookById(book.getbId());
+        	book.setCurrentQuantity(originalBook.getCurrentQuantity());
+        	book.setShelf(originalBook.getShelf());
+        	book.setGenre(genre);
+        	bookDAO.update(book);
+        }
+        
+        @Override
+        @Transactional
         public List<Book> getAll() {
             return bookDAO.getAll();
         }

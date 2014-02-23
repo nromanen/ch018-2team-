@@ -7,7 +7,8 @@
 <sec:authorize access="isAuthenticated()">
     <tilesx:useAttribute name="orders" />
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="${pageContext.request.contextPath}/books" id="my_books"><spring:message code="messages.home" /></a></li>
+    	<li><a href="${pageContext.request.contextPath}/books" id="home"><spring:message code="messages.home" /></a></li>
+        <li><a href="${pageContext.request.contextPath}/books/search?generalQuery=true&page=1" id="catalogue"><spring:message code="message.catalogue" /></a></li>
         <li><a  href="${pageContext.request.contextPath}/books/mybooks" id="my_books"><spring:message code="message.mybooks" /></a></li>
         <li><a  href="${pageContext.request.contextPath}/books/order/my" id="my_orders"><spring:message code="message.orders" /><span class="badge pull-right">${orders}</span></a></li>
         <li><a href="${pageContext.request.contextPath}/books/wishlist/my" id="my_wishlist"><spring:message code="message.wishlist" /></a></li>
@@ -25,7 +26,7 @@
 
 	<div class="nav navbar-nav navbar-left" style="margin : 8px 0 10px 0;">
 	<a type="button" class="btn btn-default" href="${pageContext.request.contextPath}/books"><spring:message code="message.home" /></a>
-	 <a type="button" class="btn btn-default" href="${pageContext.request.contextPath}/books/search"><spring:message code="message.catalogue" /></a>
+	 <a type="button" class="btn btn-default" href="${pageContext.request.contextPath}/books/search?generalQuery=true&page=1"><spring:message code="message.catalogue" /></a>
 	</div>
 
     <div class="nav navbar-nav navbar-right" style="margin : 10px 0 10px 0;">
@@ -106,7 +107,7 @@
                     </div>
                     <div class="form-group col-lg-8 col-lg-offset-2">
                         <input id="restore_mail_form_submit" url="${pageContext.request.contextPath}/restore" type="submit" class="form-control btn btn-warning" value="Restore">
-                        </div class="form-group col-lg-8 col-lg-offset-2">
+                        </div>
                         <div class="clearfix"></div>
                     <div id="forgot_error_mail_div" class="alert alert-danger hide">
                     </div>

@@ -2,11 +2,15 @@ package com.ch018.library.controller;
 
 
 import com.ch018.library.DAO.OrdersDao;
+import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
+import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
+import com.ch018.library.util.Constans;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +26,6 @@ import java.util.List;
 public class LibrarianOrdersController {
 
 		private static final String VALIDATION_FAILED = "Term must be between 1 and 70";
-		private static final int MIN_ISUUE = 1;
-		private static final int MAX_ISSUE = 70;
 		private static final long MILLIS_IN_DAY = 24 * 3600 * 1000;
 		
 		@Autowired
@@ -46,9 +48,6 @@ public class LibrarianOrdersController {
 		public String showAll(Model model) throws Exception {
 			
 			List<Orders> orders = ordersService.getAll();
-			
-			System.out.println("Orders size:" + orders.size());
-			
 			model.addAttribute("orders", ordersService.getAll());
 			return "librarian_orders";
 		}
@@ -62,7 +61,8 @@ public class LibrarianOrdersController {
 			try {
 				maxIssueDays = ordersService.getMaxIssueDays(order);
 			} catch (Exception e) {
-				System.out.println("UNAVAIL");
+				model.addAttribute("unavailable", true);
+				return "librarian_orders_issue";
 			}
 			model.addAttribute("order", order);
 			model.addAttribute("term", maxIssueDays);
@@ -86,7 +86,7 @@ public class LibrarianOrdersController {
 				return "librarian_orders_issue";
 			}
 			
-			if ((termInt <= MAX_ISSUE) && (termInt >= MIN_ISUUE)) {
+			if ((termInt <= Constans.MAX_ISSUE_PERIOD) && (termInt >= Constans.MIN_ISSUE_PERIOD)) {
 				ordersService.issue(order, termInt);
 				ordersService.delete(ordersService.getOrderByID(id));
 				return "redirect:/librarian/orders";
@@ -121,17 +121,36 @@ public class LibrarianOrdersController {
             return "librarian_orders";
 	    }
 
-    @RequestMapping(value = "/sortSurname")
-    public String sSurname(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") String how,@RequestParam("what") String what,@RequestParam("page") String page,@RequestParam("count") String count) throws Exception {
-        System.out.println("SORT SURNAME:"+how+",");
-        model.addAttribute("orders", ordersDao.testCriteria(title,surname,how,what,Integer.parseInt(page),Integer.parseInt(count)));
-        return "librarian_orders";
-    }
-    @RequestMapping(value = "/pagination")
-    public String pagin(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") String how,@RequestParam("what") String what,@RequestParam("page") int page,@RequestParam("count") int count) throws Exception {
-        System.out.println("SORT SURNAME:"+how+",");
-       // model.addAttribute("orders", ordersDao.paginationOrders(title,surname,how,what,page,count)/*ordersDao.testCriteria(title,surname,how,what)*/);
-        return "librarian_orders";
-    }
-	
+		@RequestMapping(value = "/sortSurname")
+		public String sSurname(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") String how,@RequestParam("what") String what,@RequestParam("page") String page,@RequestParam("count") String count) throws Exception {
+			System.out.println("SORT SURNAME:"+how+",");
+			model.addAttribute("orders", ordersDao.testCriteria(title,surname,how,what,Integer.parseInt(page),Integer.parseInt(count)));
+			return "librarian_orders";
+		}
+		@RequestMapping(value = "/pagination")
+		public String pagin(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") String how,@RequestParam("what") String what,@RequestParam("page") int page,@RequestParam("count") int count) throws Exception {
+			System.out.println("SORT SURNAME:"+how+",");
+		   // model.addAttribute("orders", ordersDao.paginationOrders(title,surname,how,what,page,count)/*ordersDao.testCriteria(title,surname,how,what)*/);
+			return "librarian_orders";
+		}
+		
+		@RequestMapping(value = "/person")
+		public String showPersonOrders(@RequestParam("id") Integer pid, Model model) {
+			Person person = personService.getById(pid);
+			List<Orders> orders = ordersService.getOrderByPerson(person);
+			
+			model.addAttribute("orders", ordersService.getAll());
+			return "librarian_orders";
+		}
+		
+		@RequestMapping(value = "/book")
+		public String showBookOrders(@RequestParam("id") Integer bid, Model model) {
+			Book book = bookService.getBookById(bid);
+			List<Orders> orders = ordersService.getOrderByBook(book);
+			
+			model.addAttribute("orders", ordersService.getAll());
+			return "librarian_orders";
+		}
+		
+    
 }

@@ -310,6 +310,17 @@ public class OrdersDaoImpl implements OrdersDao {
 			return orders;
 			
 		}
+		
+		
+
+		@Override
+		public long getOrdersCountForBook(Book book) {
+			Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
+			criteria.add(Restrictions.eq("book", book));
+			criteria.setProjection(Projections.rowCount());
+			
+			return (long) criteria.uniqueResult();
+		}
 
 		@Override
 		public long getOrdersCountWithoutPerson(Book book, Person person) {
@@ -346,13 +357,26 @@ public class OrdersDaoImpl implements OrdersDao {
 
 			Orders order = (Orders) criteria.uniqueResult();
 			
-			
-			
 			return order;
 			
 			
 		}
 		
+		
+		
+		@Override
+		public Orders getFirstOrderAfterDate(Date date, Book book) {
+			Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
+			criteria.add(Restrictions.eq("book", book));
+			criteria.addOrder(Order.asc("orderDate"));
+			criteria.add(Restrictions.gt("orderDate", date));
+			criteria.setFirstResult(0).setMaxResults(1);
+
+			Orders order = (Orders) criteria.uniqueResult();
+			
+			return order;
+		}
+
 		private Date[] formTodayStartEndTime() {
 			Calendar start = Calendar.getInstance();
 			Calendar end = Calendar.getInstance();

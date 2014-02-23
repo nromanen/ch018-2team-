@@ -14,4 +14,8 @@ public interface GenreTranslationsDao {
 	String getTranslationById(int id);
 
 	String getTranslationById(int id, String locale);
+	
+	GenreTranslations getByDescription(String description);
+	
+	String getDescription(Integer genreId);
 }

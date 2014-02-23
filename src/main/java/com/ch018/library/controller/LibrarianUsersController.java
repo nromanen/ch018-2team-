@@ -86,7 +86,7 @@ public class LibrarianUsersController {
 		}
 	
 		@RequestMapping(value = "/adduser", method = RequestMethod.POST)
-		public String addUser(@ModelAttribute("user") @Valid Person user,
+		public String addUser(@Valid @ModelAttribute("user")  Person user,
 				BindingResult result) throws Exception {
 			if (result.hasErrors()) {
 				System.out.println("Errors Adding User" + result.toString());
@@ -117,10 +117,8 @@ public class LibrarianUsersController {
 		}
 	
 		@RequestMapping(value = "/edituser", method = RequestMethod.POST)
-		public String editUser(
-				@ModelAttribute("user") @Valid PersonEditValidator user,
-				BindingResult result, @RequestParam("pid") int pid, Model model)
-				throws Exception {
+		public String editUser(@Valid @ModelAttribute("user")  PersonEditValidator user,
+				BindingResult result, @RequestParam("pid") int pid, Model model) throws Exception {
 	
 			if (result.hasErrors()) {
 				System.out.println("Error editing user: " + result.toString());

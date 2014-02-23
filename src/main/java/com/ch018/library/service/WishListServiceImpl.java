@@ -78,6 +78,7 @@ public class WishListServiceImpl implements WishListService {
 	    @Transactional
 	    public boolean isPersonWishBook(Person person, Book book) {
 	    	WishList wishlist = getWishByPersonBook(person, book);
+	    	System.out.println("WISH " + wishlist);
 	        return wishlist != null ? true : false;
 	    }
 

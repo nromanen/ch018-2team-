@@ -47,7 +47,7 @@
 							    <label  class="col-sm-2 control-label"><spring:message code="message.libPages"/></label>
 							    <div class="col-sm-10">
 							       <form:input class="form-control" path="pages"/>
-							       <form:errors path="pages" cssClass="error" style="color: red;"/>
+							    	  <form:errors path="pages" cssClass="error" style="color: red;"/>
 							    </div>
 						 </div> 
 						 

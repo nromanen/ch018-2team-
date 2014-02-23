@@ -94,6 +94,50 @@ public class Rate implements Serializable {
 		public void setRateDate(Date rateDate) {
 			this.rateDate = rateDate;
 		}
+		
+		
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((book == null) ? 0 : book.hashCode());
+			result = prime * result + id;
+			result = prime * result
+					+ ((message == null) ? 0 : message.hashCode());
+			result = prime * result
+					+ ((person == null) ? 0 : person.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (!(obj instanceof Rate))
+				return false;
+			Rate other = (Rate) obj;
+			if (book == null) {
+				if (other.book != null)
+					return false;
+			} else if (!book.equals(other.book))
+				return false;
+			if (id != other.id)
+				return false;
+			if (message == null) {
+				if (other.message != null)
+					return false;
+			} else if (!message.equals(other.message))
+				return false;
+			if (person == null) {
+				if (other.person != null)
+					return false;
+			} else if (!person.equals(other.person))
+				return false;
+			return true;
+		}
 
 		@Override
 		public String toString() {

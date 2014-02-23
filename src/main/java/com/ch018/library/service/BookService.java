@@ -1,8 +1,6 @@
 package com.ch018.library.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -10,14 +8,13 @@ import org.springframework.stereotype.Service;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
-import com.ch018.library.util.SearchParams;
-import com.ch018.library.validation.BookEditValidator;
 
 @Service
 public interface BookService {
              void save(Book book);
              void delete(Book book);
              void update(Book book);
+             void update(Book book, Integer gid);
              List<Book> getAll();
              Book getBookById(int id);
              List<Book> getBooksByTitle(String title);
