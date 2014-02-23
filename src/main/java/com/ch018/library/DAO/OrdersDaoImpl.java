@@ -7,7 +7,10 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.*;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -262,7 +265,7 @@ public class OrdersDaoImpl implements OrdersDao {
         query.setFirstResult((page-1)*count);
         query.setMaxResults(count);
 
-
+                  //3-count 4-page
 
         return query.list();}
         else {
@@ -310,7 +313,20 @@ public class OrdersDaoImpl implements OrdersDao {
 			return orders;
 			
 		}
-		
+		@Override
+        public List<Orders> getOrdersByDate() throws Exception{
+            /*System.out.println("fuck u");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String Date = "2014-02-24 11:00:00";
+            String date1 =  new SimpleDateFormat("-MM-dd").format(Date);
+            System.out.println("fuckin' date: "+date1);*/
+            Date Date = new Date("2014-02-24");
+
+            Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
+            criteria.add(Restrictions.like("orderDate",Date));
+            System.out.println("!!!"+criteria.list());
+            return criteria.list();
+        }
 		
 
 		@Override
