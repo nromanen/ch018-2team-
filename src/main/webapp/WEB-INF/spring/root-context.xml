@@ -61,6 +61,7 @@
     	<property name="maxUploadSize" value="1000000"/>
 	</bean>
 	
+	
 	<import resource="data.xml" />
 	<import resource="security.xml"/>
 	<import resource="mail.xml"/>

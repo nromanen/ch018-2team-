@@ -196,6 +196,9 @@ public class OrdersServiceImpl implements OrdersService {
 			bookInUse.setPerson(order.getPerson());
 			bookInUse.setReturnDate(date);
 			booksInUseService.save(bookInUse);
+			
+			delete(order);
+			
 			mailService.sendEmailBookIssued("springytest@gmail.com",
 					"etenzor@gmail.com", "Book Orders", order, person,
 					book, bookInUse, term);
@@ -226,7 +229,7 @@ public class OrdersServiceImpl implements OrdersService {
 		 */
 		@Override
 		@Transactional
-		public Date getMinOrderDate(Book book) throws Exception {
+		public Date getMinOrderDate(Book book) throws BookUnavailableException, TooManyOrdersException {
 	
 			int currentQuantity = book.getCurrentQuantity();
 			int generalQuantity = book.getGeneralQuantity();
@@ -283,7 +286,7 @@ public class OrdersServiceImpl implements OrdersService {
 		@Override
 		@Transactional
 		public int getCorrectAmountOfOrderDays(Book book, Date orderDate)
-													throws Exception {
+													throws IncorrectDateException {
 			logger.info("orderDate {}, now {}", new Date(orderDate.getTime()), new Date());
 			
 			orderDate = correctDate(orderDate); 
@@ -329,7 +332,7 @@ public class OrdersServiceImpl implements OrdersService {
 		@Override
 		@Transactional
 		public void addOrder(Person person, int bookId, Date orderDate)
-				throws Exception {
+				throws IncorrectDateException, HibernateException {
 			Book book = bookService.getBookById(bookId);
 			orderDate = correctDate(orderDate);
 			int days;
@@ -337,8 +340,6 @@ public class OrdersServiceImpl implements OrdersService {
 				days = getCorrectAmountOfOrderDays(book, orderDate);
 			} catch (IncorrectDateException e) {
 				throw new IncorrectDateException();
-			} catch (Exception e) {
-				throw new Exception();
 			}
 			Calendar tmpDate = Calendar.getInstance();
 			tmpDate.setTime(orderDate);
@@ -360,7 +361,7 @@ public class OrdersServiceImpl implements OrdersService {
 		@Override
 		@Transactional
 		public Orders editOrder(Person person, int orderId, Date orderDate)
-				throws Exception {
+				throws IncorrectDateException {
 	
 			Orders order = getOrderByID(orderId);
 			Book book = order.getBook();
@@ -370,8 +371,6 @@ public class OrdersServiceImpl implements OrdersService {
 				orderDays = getCorrectAmountOfOrderDays(book, orderDate);
 			} catch (IncorrectDateException e) {
 				throw new IncorrectDateException();
-			} catch (Exception e) {
-				throw new Exception();
 			}
 			order.setOrderDate(orderDate);
 			Calendar tmpDate = Calendar.getInstance();
@@ -385,7 +384,7 @@ public class OrdersServiceImpl implements OrdersService {
 	
 		}
 		
-		private Date correctDate(Date date) {
+		public Date correctDate(Date date) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(date);
 			logger.info("shifted date before = {}", calendar.getTime());

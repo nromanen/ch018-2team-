@@ -1,6 +1,17 @@
 
 $(document).ready(function () {
 
+	$('#file').bind('change', function() {
+       if(this.files[0].size/1024/1024 > 1) {
+    	   $('#file_err').text("File size > 1 MB");
+    	   $('#file_err').removeClass('hide');
+       } else if(this.files[0].size/1024/1024 <= 1) {
+    	   $('#file_err').addClass('hide');
+       }
+       		
+    });
+	
+	
 	$('#addbook').validate({
 		
 		errorClass : "my-error-class",

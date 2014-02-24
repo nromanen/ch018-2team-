@@ -5,11 +5,13 @@ import static org.junit.Assert.assertEquals;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,126 +23,157 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Person;
+import com.ch018.library.entity.Rate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:servlet-context_for_service.xml", "classpath:root-context_for_service.xml"})
 @WebAppConfiguration
 public class BookServiceImplTest {
 
-	private final Logger logger = LoggerFactory.getLogger(BookServiceImplTest.class);
-	
-	@Autowired
-	BookService bookService;
-	
-	@Autowired
-	SessionFactory factory;
-	
-	private Book book;
-	
-	private Book testBook;
-	
-	@Before
-	public void setup() {
+		private final Logger logger = LoggerFactory.getLogger(BookServiceImplTest.class);
 		
-		book = new Book();
-		book.setTitle("test1");
-		book.setShelf(1);
-		book.setBookcase(1);
-		book.setYear(2000);
-		book.setPages(500);
-		book.setGeneralQuantity(2);
+		@Autowired
+		BookService bookService;
 		
-		testBook = new Book();
-		testBook.setTitle("test2");
-		testBook.setShelf(1);
-		testBook.setBookcase(1);
-		testBook.setYear(2000);
-		testBook.setPages(500);
-		testBook.setGeneralQuantity(2);
+		@Autowired
+		SessionFactory factory;
 		
-		Connection connection;
-		Statement stmt;
-		PreparedStatement preparedStmt;
+		private Book book;
 		
-		try {
-			connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/librarytest2", "root", "root");
-			stmt = connection.createStatement();
-			stmt.execute("delete from book");
-			logger.info("Delete All query executed");
-			String saveTestBook = "insert into book(title, shelf, bookcase, yearPublic, pages, generalQuantity) values (?, ?, ?, ?, ?, ?)";
-			preparedStmt = connection.prepareStatement(saveTestBook);
-			preparedStmt.setString(1, "test");
-			preparedStmt.setInt(2, 1);
-			preparedStmt.setInt(3, 1);
-			preparedStmt.setInt(4, 2000);
-			preparedStmt.setInt(5, 500);
-			preparedStmt.setInt(6, 2);
+		private Book testBook;
+		
+		@Before
+		public void setup() {
 			
-			preparedStmt.executeUpdate();
+			book = new Book();
+			book.setbId(1);
+			book.setTitle("test1");
+			book.setShelf(1);
+			book.setBookcase(1);
+			book.setYear(2000);
+			book.setPages(500);
+			book.setGeneralQuantity(2);
+			
+			testBook = new Book();
+			book.setbId(2);
+			testBook.setTitle("test2");
+			testBook.setShelf(1);
+			testBook.setBookcase(1);
+			testBook.setYear(2000);
+			testBook.setPages(500);
+			testBook.setGeneralQuantity(2);
 			
 			
-		} catch (Exception e) {
+			setDatabase(book);
+			
+			
 			
 		}
 		
+		@After
+		public void after() {
+			flush();
+		}
 		
-	}
-	
-	@Test
-	public void saveTest() throws Exception {
+		@Test
+		public void saveTest() throws Exception {
+			
+			int countBeforeSave = getRowCount();	
+			bookService.save(testBook);
+			int countAfterSave = getRowCount();	
+			assertEquals(countBeforeSave + 1, countAfterSave);
+		}
 		
-		long countBeforeSave = bookService.getBooksCount();	
-		bookService.save(book);
-		long countAfterSave = bookService.getBooksCount();	
-		assertEquals(countBeforeSave + 1, countAfterSave);
-	}
-	
-	@Test
-	public void deleteTest() throws Exception {
-		long countBeforeSave = bookService.getBooksCount();	
-		List<Book> books = bookService.getBooksByTitle("test");
-		for(Book book : books)
+		@Test
+		public void deleteTest() throws Exception {
+			int countBeforeSave = getRowCount();	
 			bookService.delete(book);
-		long countAfterSave = bookService.getBooksCount();	
-		assertEquals(countBeforeSave - 1, countAfterSave);
-	}
-	
-	@Test
-	public void getBookByTitleTest() {
-		List<Book> books = new ArrayList<>();
-		books = bookService.getBooksByTitle("test");
+			int countAfterSave = getRowCount();	
+			assertEquals(countBeforeSave - 1, countAfterSave);
+		}
 		
-		assertEquals(books.size(), 1);
-	}
-	
-	
-	@Test
-	public void getUnknownBookByTitleTest() {
-		List<Book> books = new ArrayList<>();
-		books = bookService.getBooksByTitle("sfasaf");
+		@Test
+		public void getBookByTitleTest() {
+			List<Book> books = new ArrayList<>();
+			books = bookService.getBooksByTitle(book.getTitle());
+			
+			assertEquals(books.size(), 1);
+		}
 		
-		assertEquals(books.size(), 0);
-	}
+		
+		@Test
+		public void getUnknownBookByTitleTest() {
+			List<Book> books = new ArrayList<>();
+			books = bookService.getBooksByTitle("sfasaf");
+			
+			assertEquals(books.size(), 0);
+		}
+		
+		private int getRowCount() {
+			Connection connection;
+			PreparedStatement preparedStmt;
+			int count = 0;
+			try {
+				connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/librarytest2", "root", "root");
+				preparedStmt = connection.prepareStatement("SELECT count(*) as count FROM book");
+				
+				ResultSet rs = preparedStmt.executeQuery();
+				
+				while(rs.next())
+					count = rs.getInt("count");	
+				
+			} catch (Exception e) {
+				logger.error("DB wr {}", e.getMessage());
+			}
+			
+			return count;
+		}
+		
+		private void setDatabase(Book book) {
+			Connection connection;
+			PreparedStatement preparedStmt;
+			
+			try {
+				connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/librarytest2", "root", "root");
+				preparedStmt = connection.prepareStatement("delete from book");
+				preparedStmt.execute();
+				
+				String saveTestBook = "insert into book(title, shelf, bookcase, yearPublic, pages, generalQuantity, bookid) values (?, ?, ?, ?, ?, ?, ?)";
+				preparedStmt = connection.prepareStatement(saveTestBook);
+				preparedStmt.setString(1, book.getTitle());
+				preparedStmt.setInt(2, book.getShelf());
+				preparedStmt.setInt(3, book.getBookcase());
+				preparedStmt.setInt(4, book.getYear());
+				preparedStmt.setInt(5, book.getPages());
+				preparedStmt.setInt(6, book.getGeneralQuantity());
+				preparedStmt.setInt(7, book.getbId());
+				
+				preparedStmt.execute();
+				
+				
+			} catch (Exception e) {
+				logger.error("DB wr {}", e.getMessage());
+			}
+			
+		}
 	
-	
-	/*void delete(Book book);
-             void update(Book book);
-             List<Book> getAll();
-             Book getBookById(int id);
-             List<Book> getBooksByTitle(String title);
-             List<Book> getBooksByAuthors(String authors);
-             List<Book> getBooksByYear(int year);
-             List<Book> getBooksByGenre(Genre genre);
-             List<Book> getBooksByPublisher(String publisher);
-             List<Book> getBooksByPagesEq(int pages);
-             List<Book> advancedSearch(Book book);
-             List<Book> simpleSearch(String query);
-             Map<BooksInUse, Integer> getHolders(Book book);
-             Integer getMinIntegerField(String field);
-             Integer getMaxIntegerField(String field);
-             List<Book> getLastByField(String field, int quantity);
-             List<Book> getRecommended(int quantity);
-             long getBooksCount();*/
-	
+		
+		private void flush() {
+			Connection connection;
+			PreparedStatement preparedStmt;
+			
+			try {
+				connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/librarytest2", "root", "root");
+				preparedStmt = connection.prepareStatement("delete from book");
+				preparedStmt.execute();
+				
+				
+				
+			} catch (Exception e) {
+				logger.error("DB wr {}", e.getMessage());
+			}
+			
+		}
 	
 }

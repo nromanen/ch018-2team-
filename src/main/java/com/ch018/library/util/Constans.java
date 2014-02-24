@@ -14,5 +14,6 @@ public interface Constans {
 	int MAX_PASSWORD_LENGTH = 16;
 	int MAX_BOOKS_ALLOWED = 100;
 	int MAX_DAYS_FOR_INCREASING = 10;
+	int MAX_ORDER_DAYS = 14;
 	
 }

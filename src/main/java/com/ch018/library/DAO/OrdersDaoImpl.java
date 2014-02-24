@@ -311,6 +311,8 @@ public class OrdersDaoImpl implements OrdersDao {
 			
 			List<Orders> orders = criteria.list();
 			
+			logger.info("Ordersss = {}", orders);
+			
 			return orders;
 			
 		}

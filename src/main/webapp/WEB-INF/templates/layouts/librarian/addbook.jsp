@@ -55,7 +55,8 @@
 				            <div class="form-group">
 							    <label for="file" class="col-sm-2 control-label"><spring:message code="message.libImg"/></label>
 							    <div class="col-sm-10">
-							    	<input type="file"  name="file" />
+							    	<input type="file" id="file" name="file" />
+							    	<div id="file_err" class="alert alert-danger hide"></div>
 							    </div>
 							</div>
 				            

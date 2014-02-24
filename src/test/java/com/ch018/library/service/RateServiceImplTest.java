@@ -13,6 +13,7 @@ import java.util.Date;
 import me.prettyprint.hector.api.ResultStatus;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -123,6 +124,10 @@ public class RateServiceImplTest {
 			
 		}
 		
+		@After
+		public void after() {
+			flush();
+		}
 		
 		@Test
 		public void getRateTest() throws Exception {
@@ -218,6 +223,7 @@ public class RateServiceImplTest {
 			return score;
 		}
 		
+		
 		private void setDatabase(Person person, Book book, Rate rate) {
 			Connection connection;
 			PreparedStatement preparedStmt;
@@ -300,4 +306,20 @@ public class RateServiceImplTest {
 			
 		}
 		
+		private void flush() {
+			Connection connection;
+			PreparedStatement preparedStmt;
+			
+			try {
+				connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/librarytest2", "root", "root");
+				preparedStmt = connection.prepareStatement("delete from rate");
+				preparedStmt.execute();
+				preparedStmt = connection.prepareStatement("delete from person");
+				preparedStmt.execute();
+				preparedStmt = connection.prepareStatement("delete from book");
+				preparedStmt.execute();
+			} catch (Exception e) {
+				logger.error("DB wr {}", e.getMessage());
+			}
+		}
 }

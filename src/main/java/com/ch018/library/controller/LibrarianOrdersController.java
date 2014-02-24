@@ -91,7 +91,6 @@ public class LibrarianOrdersController {
 			
 			if ((termInt <= Constans.MAX_ISSUE_PERIOD) && (termInt >= Constans.MIN_ISSUE_PERIOD)) {
 				ordersService.issue(order, termInt);
-				ordersService.delete(ordersService.getOrderByID(id));
 				return "redirect:/librarian/orders";
 			} else {
 				model.addAttribute("order", ordersService.getOrderByID(id));
@@ -119,7 +118,7 @@ public class LibrarianOrdersController {
 	    @RequestMapping(value = "/searchById", method = RequestMethod.POST)
 	    public String searchById(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date) throws Exception {
 
-			model.addAttribute("orders", ordersDao.testCriteria(title,surname)); 
+			//model.addAttribute("orders", ordersDao.testCriteria(title,surname)); 
 
             return "librarian_orders";
 	    }
@@ -142,7 +141,7 @@ public class LibrarianOrdersController {
 			Person person = personService.getById(pid);
 			List<Orders> orders = ordersService.getOrderByPerson(person);
 			
-			model.addAttribute("orders", ordersService.getAll());
+			model.addAttribute("orders", orders);
 			return "librarian_orders";
 		}
 		
@@ -151,7 +150,7 @@ public class LibrarianOrdersController {
 			Book book = bookService.getBookById(bid);
 			List<Orders> orders = ordersService.getOrderByBook(book);
 			
-			model.addAttribute("orders", ordersService.getAll());
+			model.addAttribute("orders", orders);
 			return "librarian_orders";
 		}
 		

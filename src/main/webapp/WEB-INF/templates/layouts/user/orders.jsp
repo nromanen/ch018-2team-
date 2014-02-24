@@ -66,15 +66,10 @@
 	aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="empty_orders_list_label">Empty List
-					Notification</h4>
-			</div>
+			
 			<div class="modal-body">
-				<h3><spring:message code="message.emptyorders" /></h3>
-				<h4><spring:message code="message.try" /> <a href="${pageContext.request.contextPath}/books/search?generalQuery=true&page=1"><spring:message code="message.catalogue" /></a></h4>
+				<h4><spring:message code="message.emptyorders" /></h4>
+				<h5><spring:message code="message.try" /> <a href="${pageContext.request.contextPath}/books/search?generalQuery=true&page=1"><spring:message code="message.catalogue" /></a></h5>
 			</div>
 			<div class="modal-footer">
 
@@ -95,14 +90,9 @@
 		aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="delete_order_list_label">Delete Wish
-						Notification</h4>
-				</div>
+				
 				<div class="modal-body">
-					<h3>Delete <b id="delete_title"></b> from wishlist?</h3>
+					<h4><strong>Delete</strong> <span id="delete_title"></span> <strong>from wishlist?</strong></h4>
 				</div>
 				<div class="modal-footer">
 

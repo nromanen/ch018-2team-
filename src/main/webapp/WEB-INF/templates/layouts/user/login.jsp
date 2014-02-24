@@ -46,10 +46,7 @@
 <div class="modal fade" id="forgot_pass" tabindex="-1" role="dialog" aria-labelledby="forgot_pass_label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="forgot_pass_label">Notification</h4>
-            </div>
+            
             <div class="modal-body">
                 <div class="text-info"><h6><spring:message code="message.restore" /></h6></div>
             </div>
@@ -76,10 +73,7 @@
 <div class="modal fade" id="forgot_mail_send" tabindex="-1" role="dialog" aria-labelledby="forgot_mail_send_label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="forgot_mail_send_label">Limit Notification</h4>
-            </div>
+            
             <div class="modal-body">
                 <div class="text-info"><h4><spring:message code="message.restorecheck" /></h4></div>
 

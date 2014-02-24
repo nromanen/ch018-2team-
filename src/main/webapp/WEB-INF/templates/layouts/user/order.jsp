@@ -127,6 +127,22 @@
 						</div>
 					</div>
 				</div>
+				<div class="row" >
+				<div class="col-md-8">
+					<div class="panel panel-info">
+	                    		<div class="panel-heading">
+	                        		<div class="panel-title"><a id="view_comments" href="">View comments</a></div>    	
+	                    		</div>
+	                    	<div id="comments_panel_body" class="panel-body " style="display : none; height: 300px; overflow: scroll; overflow-x:hidden;">
+	                    		<div id="comments_list_group" class="list-group">
+  									
+								</div>
+	                    	</div>
+						</div>
+						</div>
+					
+				</div>
+					
 				</sec:authorize>
 				
 			</div>
@@ -185,14 +201,9 @@
 						aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal"
-										aria-hidden="true">&times;</button>
-									<h4 class="modal-title" id="order_modal_label">Order
-										Notification</h4>
-								</div>
+								
 								<div class="modal-body">
-									<h3><spring:message code="message.youordered" />: </h3>
+									<h4><spring:message code="message.youordered" />: </h4>
 									<h5>${book.getTitle()}</h5>
 								</div>
 								<div class="modal-footer">
@@ -211,33 +222,15 @@
 				</sec:authorize>
 				</div>
 				
-				<div class="row" style="margin-top: 40px;">
 				
-					<div class="panel panel-info">
-	                    		<div class="panel-heading">
-	                        		<div class="panel-title"><a id="view_comments" href="">View comments</a></div>    	
-	                    		</div>
-	                    	<div id="comments_panel_body" class="panel-body " style="display : none; height: 300px; overflow: scroll; overflow-x:hidden;">
-	                    		<div id="comments_list_group" class="list-group">
-  									
-								</div>
-	                    	</div>
-						</div>
-					
-				</div>
 					
 				<div class="modal fade" id="wish_modal" tabindex="-1" role="dialog"
 					aria-labelledby="wish_modal_label" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal"
-									aria-hidden="true">&times;</button>
-								<h4 class="modal-title" id="wish_modal_label">Order
-									Notification</h4>
-							</div>
+							
 							<div class="modal-body">
-								<h3><spring:message code="message.addwish" />:</h3>
+								<h4><spring:message code="message.addwish" />:</h4>
 								<h5>${book.getTitle()}</h5>
 							</div>
 							<div class="modal-footer">
