@@ -127,6 +127,22 @@
 						</div>
 					</div>
 				</div>
+				<div class="row" >
+				<div class="col-md-8">
+					<div class="panel panel-info">
+	                    		<div class="panel-heading">
+	                        		<div class="panel-title"><a id="view_comments" href="">View comments</a></div>    	
+	                    		</div>
+	                    	<div id="comments_panel_body" class="panel-body " style="display : none; height: 300px; overflow: scroll; overflow-x:hidden;">
+	                    		<div id="comments_list_group" class="list-group">
+  									
+								</div>
+	                    	</div>
+						</div>
+						</div>
+					
+				</div>
+					
 				</sec:authorize>
 				
 			</div>
@@ -206,20 +222,7 @@
 				</sec:authorize>
 				</div>
 				
-				<div class="row" style="margin-top: 40px;">
 				
-					<div class="panel panel-info">
-	                    		<div class="panel-heading">
-	                        		<div class="panel-title"><a id="view_comments" href="">View comments</a></div>    	
-	                    		</div>
-	                    	<div id="comments_panel_body" class="panel-body " style="display : none; height: 300px; overflow: scroll; overflow-x:hidden;">
-	                    		<div id="comments_list_group" class="list-group">
-  									
-								</div>
-	                    	</div>
-						</div>
-					
-				</div>
 					
 				<div class="modal fade" id="wish_modal" tabindex="-1" role="dialog"
 					aria-labelledby="wish_modal_label" aria-hidden="true">

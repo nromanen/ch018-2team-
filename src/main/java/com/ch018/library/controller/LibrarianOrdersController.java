@@ -138,7 +138,7 @@ public class LibrarianOrdersController {
 			Person person = personService.getById(pid);
 			List<Orders> orders = ordersService.getOrderByPerson(person);
 			
-			model.addAttribute("orders", ordersService.getAll());
+			model.addAttribute("orders", orders);
 			return "librarian_orders";
 		}
 		
@@ -147,7 +147,7 @@ public class LibrarianOrdersController {
 			Book book = bookService.getBookById(bid);
 			List<Orders> orders = ordersService.getOrderByBook(book);
 			
-			model.addAttribute("orders", ordersService.getAll());
+			model.addAttribute("orders", orders);
 			return "librarian_orders";
 		}
 		
