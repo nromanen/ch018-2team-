@@ -72,17 +72,17 @@
 <script type="text/javascript">
     function countChange(){
         $('#count').text($('#countP').text());
-        alert("fuck: "+$('#count').text());
+        //alert("fuck: "+$('#count').text());
     }
     function pagePlus(how,what,page,count){
         $('#page').text(parseInt($('#page').text())+1);
-        alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+$('#page').text()+","+"COUNT:"+count+".");
+        //alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+$('#page').text()+","+"COUNT:"+count+".");
         $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text(),"how":how,"what":what,"page":$('#page').text(),"count":count});
         $("#whatKindOfSort").text(what);
     }
     function pageMinus(how,what,page,count){
         $('#page').text(parseInt($('#page').text())-1);
-        alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+$('#page').text()+","+"COUNT:"+count+".");
+        //alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+$('#page').text()+","+"COUNT:"+count+".");
         $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text(),"how":how,"what":what,"page":$('#page').text(),"count":count});
         $("#whatKindOfSort").text(what);
     }
@@ -94,7 +94,7 @@
     function pagin(how,what,page,count){
         if (how=="desc") $("#sort").text("asc");
         if (how=="asc") $("#sort").text("desc");
-        alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+page+","+"COUNT:"+count+".");
+        //alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+page+","+"COUNT:"+count+".");
         $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text(),"how":how,"what":what,"page":page,"count":count});
         $("#whatKindOfSort").text(what);
     }
