@@ -5,10 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import org.apache.cassandra.cli.CliParser.newColumnFamily_return;
 import org.apache.mahout.cf.taste.impl.recommender.CachingRecommender;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.slf4j.Logger;

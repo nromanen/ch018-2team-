@@ -56,11 +56,7 @@ public class OrdersServiceImplTest {
 		
 		private Date orderDate1;
 		
-		private Date orderDate2;
-		
 		private Date returnDate1;
-		
-		private Date returnDate2;
 		
 		private int term1;
 
@@ -105,15 +101,11 @@ public class OrdersServiceImplTest {
 			
 			
 			String ordDate1 = "2014-02-23";
-			String ordDate2 = "2014-03-01";
 			String retDate1 = "2014-03-19";
-			String retDate2 = "2014-03-04";
 			
 			try {
 				orderDate1 = format.parse(ordDate1);
-				orderDate2 = format.parse(ordDate2);
 				returnDate1 = format.parse(retDate1);
-				returnDate2 = format.parse(retDate2);
 			} catch (Exception e) {
 				logger.error("Date parse {}", e);
 			}

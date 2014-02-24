@@ -1,11 +1,8 @@
 package com.ch018.library.controller;
 
 import java.util.List;
-import java.util.Locale;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,11 +22,7 @@ public class LibrarianGenresController {
 
 	@Autowired
 	private GenreService genreService;
-	
 
-	
-	private final String ENG = "en";
-	private final String UKR = "ua";
 	
 	@RequestMapping(value = "")
 	public String allGenres(Model model) {

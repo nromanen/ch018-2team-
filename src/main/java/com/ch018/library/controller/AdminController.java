@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,21 +17,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ch018.library.DAO.PaginationDao;
 import com.ch018.library.controller.errors.IncorrectInput;
-import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Person;
-import com.ch018.library.service.PersonService;
 import com.ch018.library.service.PaginationService;
+import com.ch018.library.service.PersonService;
 import com.ch018.library.util.PageContainer;
-import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsPerson;
 import com.ch018.library.util.Switch;
 
-/**
- *
- * @author Admin
- */
+
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {

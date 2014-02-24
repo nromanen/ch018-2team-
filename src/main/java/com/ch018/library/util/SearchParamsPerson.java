@@ -2,17 +2,15 @@ package com.ch018.library.util;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ch018.library.util.annotation.Affect;
 import com.ch018.library.util.annotation.Ordinary;
 
 public class SearchParamsPerson extends SearchParams implements Serializable {
 
 
-		private final Logger logger = LoggerFactory.getLogger(SearchParamsPerson.class);
-	
+
+		private static final long serialVersionUID = 6196192130964154204L;
+		
+		
 		@Ordinary
 		private String email;
 		

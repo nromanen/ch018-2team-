@@ -5,6 +5,8 @@ import com.ch018.library.util.annotation.Ordinary;
 
 public class SearchParamsRate extends SearchParams {
 	
+
+	private static final long serialVersionUID = -6254089375027876934L;
 	
 	@Ordinary(onlyCopy = true)
     @ComplexType(entityField = "bId")

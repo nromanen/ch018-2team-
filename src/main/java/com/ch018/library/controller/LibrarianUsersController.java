@@ -27,7 +27,6 @@ import com.ch018.library.validation.PersonEditValidator;
 public class LibrarianUsersController {
 
 		private static final double DEFAULT_RATING = 0.5;
-		private static final int FIRST_PAGE = 1;
 	
 		@Autowired
 		private PersonService personService;
@@ -133,23 +132,10 @@ public class LibrarianUsersController {
 		@RequestMapping(value = "/deleteuser", method = RequestMethod.GET)
 		public ResponseEntity<String> deleteUser(@RequestParam("id") int id, Model model) throws Exception {
 			
-			/*
-			String error = "Error deleting books! This user has an order!";
-			
-			try {
-				personService.delete(id);
-			} catch (Exception e) {
-				System.out.println("Error deleting books");
-				model.addAttribute("exception", error);
-				return "redirect:/librarian/users";
-			}
-			*/
-
-            //personService.delete(id);
             System.out.println("ID: "+id);
             if (personService.delete(id))
-            return new ResponseEntity ("Unable to delete the user. Reason: he has orders", HttpStatus.OK);
-            return new ResponseEntity ("User was deleted", HttpStatus.OK);
+            return new ResponseEntity<String> ("Unable to delete the user. Reason: he has orders", HttpStatus.OK);
+            return new ResponseEntity<String> ("User was deleted", HttpStatus.OK);
 
 
 		}
