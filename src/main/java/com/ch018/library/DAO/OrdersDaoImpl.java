@@ -201,7 +201,6 @@ public class OrdersDaoImpl implements OrdersDao {
 		}
 
         @Override
-        @Transactional
         public List<Orders> testCriteria(String title, String surname){
 
             boolean and = false;
@@ -226,56 +225,57 @@ public class OrdersDaoImpl implements OrdersDao {
                 Query query= factory.getCurrentSession().createQuery(QUERY.toString());
 
             return query.list();
+        
         }
-    @Override
-    @Transactional
-    public List<Orders> testCriteria(String title, String surname,String how, String what,int page,int count){
-        boolean and = false;
-
-        if (what.compareTo("")!=0){
-        StringBuilder QUERY = new StringBuilder("From Orders ");
-        if (title.compareTo("Title")==0 && surname.compareTo("Surname")==0) {
-            QUERY.append("order by "+what+" "+how);
-            System.out.println("!!!" + QUERY.toString());
-            Query query= factory.getCurrentSession().createQuery(QUERY.toString());
-            query.setFirstResult((page-1)*count);
-            query.setMaxResults(count);
-
-            return query.list();
-        }
-        else QUERY.append("where ");
-        if (title.compareTo("Title")!=0) {
-
-            if (and) QUERY.append(" and ");
-            else and=true;
-            QUERY.append("book.title like "+"'%"+title+"%'");
-
-        }
-        if (surname.compareTo("Surname")!=0) {
-
-            if (and) QUERY.append(" and ");
-            else and=true;
-            QUERY.append("person.surname like "+"'%"+surname+"%'");
-
-
-        }
-
-        QUERY.append("order by "+what+" "+how);
-        System.out.println("!!!"+QUERY.toString());
-        Query query= factory.getCurrentSession().createQuery(QUERY.toString());
-        query.setFirstResult((page-1)*count);
-        query.setMaxResults(count);
-
-
-
-        return query.list();}
-        else {
-            List<Orders> answerList = new ArrayList<>();
-            for (int i=0;i<count;i++)
-                answerList.add(getAll().get(((page-1)*count)+i));
-            return answerList;
-        }
-    }
+        
+	    @Override
+	    public List<Orders> testCriteria(String title, String surname,String how, String what,int page,int count){
+	        boolean and = false;
+	
+	        if (what.compareTo("")!=0){
+	        StringBuilder QUERY = new StringBuilder("From Orders ");
+	        if (title.compareTo("Title")==0 && surname.compareTo("Surname")==0) {
+	            QUERY.append("order by "+what+" "+how);
+	            System.out.println("!!!" + QUERY.toString());
+	            Query query= factory.getCurrentSession().createQuery(QUERY.toString());
+	            query.setFirstResult((page-1)*count);
+	            query.setMaxResults(count);
+	
+	            return query.list();
+	        }
+	        else QUERY.append("where ");
+	        if (title.compareTo("Title")!=0) {
+	
+	            if (and) QUERY.append(" and ");
+	            else and=true;
+	            QUERY.append("book.title like "+"'%"+title+"%'");
+	
+	        }
+	        if (surname.compareTo("Surname")!=0) {
+	
+	            if (and) QUERY.append(" and ");
+	            else and=true;
+	            QUERY.append("person.surname like "+"'%"+surname+"%'");
+	
+	
+	        }
+	
+	        QUERY.append("order by "+what+" "+how);
+	        System.out.println("!!!"+QUERY.toString());
+	        Query query= factory.getCurrentSession().createQuery(QUERY.toString());
+	        query.setFirstResult((page-1)*count);
+	        query.setMaxResults(count);
+	
+	
+	
+	        return query.list();}
+	        else {
+	            List<Orders> answerList = new ArrayList<>();
+	            for (int i=0;i<count;i++)
+	                answerList.add(getAll().get(((page-1)*count)+i));
+	            return answerList;
+	        }
+	    }
 
         @Override
         @Transactional

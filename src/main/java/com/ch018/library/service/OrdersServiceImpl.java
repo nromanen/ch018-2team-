@@ -576,6 +576,20 @@ public class OrdersServiceImpl implements OrdersService {
 		}
 
 		
+
+		@Override
+		@Transactional
+		public List<Orders> testCriteria(String title, String surname) {
+			return ordersDao.testCriteria(title, surname);
+		}
+
+		@Override
+		@Transactional
+		public List<Orders> testCriteria(String title, String surname,
+				String how, String what, int page, int count) {
+			return ordersDao.testCriteria(title, surname, how, what, page, count);
+		}
+		
 		private boolean isOrderDateToday(Date orderDate) {
 			Calendar today = Calendar.getInstance();
 			Calendar order = Calendar.getInstance();

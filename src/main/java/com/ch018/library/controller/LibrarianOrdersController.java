@@ -33,9 +33,6 @@ public class LibrarianOrdersController {
 		private OrdersService ordersService;
     
 		@Autowired
-		private OrdersDao ordersDao;
-		
-		@Autowired
 		private BookInUseService booksInUseService;
 		
 		@Autowired
@@ -118,7 +115,7 @@ public class LibrarianOrdersController {
 	    @RequestMapping(value = "/searchById", method = RequestMethod.POST)
 	    public String searchById(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date) throws Exception {
 
-			model.addAttribute("orders", ordersDao.testCriteria(title,surname));
+			model.addAttribute("orders", ordersService.testCriteria(title,surname));
 
             return "librarian_orders";
 	    }
@@ -126,7 +123,7 @@ public class LibrarianOrdersController {
 		@RequestMapping(value = "/sortSurname")
 		public String sSurname(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") String how,@RequestParam("what") String what,@RequestParam("page") String page,@RequestParam("count") String count) throws Exception {
 			System.out.println("SORT SURNAME:"+how+",");
-			model.addAttribute("orders",ordersDao.testCriteria(title,surname,how,what,Integer.parseInt(page),Integer.parseInt(count)));
+			model.addAttribute("orders", ordersService.testCriteria(title,surname,how,what,Integer.parseInt(page),Integer.parseInt(count)));
 			return "librarian_orders";
 		}
 		@RequestMapping(value = "/pagination")
