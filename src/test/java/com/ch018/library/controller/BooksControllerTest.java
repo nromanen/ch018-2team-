@@ -96,6 +96,8 @@ public class BooksControllerTest {
 		Mockito.reset(switcher);
 		Mockito.reset(useService);
 		Mockito.reset(genreService);
+		Mockito.reset(paginationService);
+		Mockito.reset(pageContainer);
 		
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		
