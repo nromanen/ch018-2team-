@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -265,7 +266,7 @@ public class OrdersDaoImpl implements OrdersDao {
         query.setFirstResult((page-1)*count);
         query.setMaxResults(count);
 
-                  //3-count 4-page
+
 
         return query.list();}
         else {
@@ -320,10 +321,14 @@ public class OrdersDaoImpl implements OrdersDao {
             String Date = "2014-02-24 11:00:00";
             String date1 =  new SimpleDateFormat("-MM-dd").format(Date);
             System.out.println("fuckin' date: "+date1);*/
-            Date Date = new Date("2014-02-24");
-
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String Date = "2014-02-24";
+            java.util.Date dateFrom = simpleDateFormat.parse(Date);
+            java.util.Date dateTo = null;// = dateFrom.getDay();
+            dateTo.setDate(dateFrom.getDate()+1);
+            System.out.println("DATE:"+dateTo+"!"+"DATE FROM:"+dateFrom+"!");
             Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
-            criteria.add(Restrictions.like("orderDate",Date));
+            //criteria.add(Restrictions.eq("orderDate",));
             System.out.println("!!!"+criteria.list());
             return criteria.list();
         }

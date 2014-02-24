@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -46,9 +47,11 @@ public class LibrarianOrdersController {
 		
 		@RequestMapping(value = "")
 		public String showAll(Model model) throws Exception {
-			
-			List<Orders> orders = ordersService.getAll();
-			model.addAttribute("orders", ordersService.getAll());
+            List<Orders> orders = new ArrayList<>();
+
+            for (int i=0;i<10;i++)
+            orders.add(ordersService.getAll().get(i));
+			model.addAttribute("orders", orders);
 			return "librarian_orders";
 		}
 		
@@ -124,7 +127,7 @@ public class LibrarianOrdersController {
 		@RequestMapping(value = "/sortSurname")
 		public String sSurname(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") String how,@RequestParam("what") String what,@RequestParam("page") String page,@RequestParam("count") String count) throws Exception {
 			System.out.println("SORT SURNAME:"+how+",");
-			model.addAttribute("orders",ordersDao.getOrdersByDate() /*ordersDao.testCriteria(title,surname,how,what,Integer.parseInt(page),Integer.parseInt(count))*/);
+			model.addAttribute("orders",ordersDao.testCriteria(title,surname,how,what,Integer.parseInt(page),Integer.parseInt(count)));
 			return "librarian_orders";
 		}
 		@RequestMapping(value = "/pagination")
