@@ -185,13 +185,13 @@
 										<div class="clearfix"></div>
 										<label> 
 										<c:choose>
-												<c:when test="${switcher.switcher}">
+												<c:when test="${switcher.recommendationState}">
 													<input id="recommendation" class="checkbox" type="checkbox" name="recommendation"
-														checked="checked"> Recomendation for users enabled.
+														checked="checked"> Recomendation for user.
                                                 </c:when>
 												<c:otherwise>
 													<input id="recommendation" class="checkbox" type="checkbox" name="recommendation"
-														> Recomendation for users disabled
+														> Recomendation for user.
                                                 </c:otherwise>
 										</c:choose>
 
