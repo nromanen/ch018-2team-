@@ -1,8 +1,10 @@
 package com.ch018.library.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
-import org.antlr.grammar.v3.ANTLRv3Parser.throwsSpec_return;
 import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -20,19 +22,6 @@ import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import com.ch018.library.exceptions.BookUnavailableException;
 import com.ch018.library.exceptions.IncorrectDateException;
 import com.ch018.library.exceptions.TooManyOrdersException;
@@ -575,6 +564,20 @@ public class OrdersServiceImpl implements OrdersService {
 
 		}
 
+		
+
+		@Override
+		@Transactional
+		public List<Orders> testCriteria(String title, String surname) {
+			return ordersDao.testCriteria(title, surname);
+		}
+
+		@Override
+		@Transactional
+		public List<Orders> testCriteria(String title, String surname,
+				String how, String what, int page, int count) {
+			return ordersDao.testCriteria(title, surname, how, what, page, count);
+		}
 		
 		private boolean isOrderDateToday(Date orderDate) {
 			Calendar today = Calendar.getInstance();

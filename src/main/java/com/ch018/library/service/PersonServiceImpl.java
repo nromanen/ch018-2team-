@@ -1,17 +1,9 @@
 package com.ch018.library.service;
 
-import com.ch018.library.DAO.PersonDao;
-import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.entity.Person;
-import com.ch018.library.exceptions.EmailAlreadyInUseException;
-import com.ch018.library.exceptions.EmailNotChangedException;
-import com.ch018.library.exceptions.InformationNotUpdateException;
-import com.ch018.library.exceptions.OldPasswordIncorrectException;
-import com.ch018.library.exceptions.UserAlreadyExists;
-import com.ch018.library.validation.Password;
-import com.ch018.library.validation.PersonEditValidator;
-import com.ch018.library.validation.PersonalInfo;
-import com.ch018.library.validation.UserRegistrationForm;
+import java.security.MessageDigest;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -28,12 +20,17 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-
-import java.security.MessageDigest;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import com.ch018.library.DAO.PersonDao;
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Person;
+import com.ch018.library.exceptions.EmailAlreadyInUseException;
+import com.ch018.library.exceptions.EmailNotChangedException;
+import com.ch018.library.exceptions.InformationNotUpdateException;
+import com.ch018.library.exceptions.OldPasswordIncorrectException;
+import com.ch018.library.validation.Password;
+import com.ch018.library.validation.PersonEditValidator;
+import com.ch018.library.validation.PersonalInfo;
+import com.ch018.library.validation.UserRegistrationForm;
 
 /**
  * 
@@ -176,7 +173,7 @@ public class PersonServiceImpl implements PersonService {
 		public Person countRating(Person person) {
 			int returnedInTime, returnedNotInTime, failedOrders;
 			double grade = 0;
-			int booksOnHands, gradeInt = 0;
+			int gradeInt = 0;
 			returnedInTime = person.getTimelyReturn();
 			returnedNotInTime = person.getUntimekyReturn();
 			failedOrders = person.getFailedOrders();

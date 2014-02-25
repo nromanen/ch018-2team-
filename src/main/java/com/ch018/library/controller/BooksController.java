@@ -1,19 +1,9 @@
 package com.ch018.library.controller;
 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,12 +11,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.MessageSource;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.PropertySource;
-import org.springframework.core.env.PropertySources;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -34,24 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.ConfigurableWebApplicationContext;
-import org.tartarus.snowball.Among;
 
-import com.ch018.library.DAO.PaginationDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.entity.Genre;
-import com.ch018.library.entity.GenreTranslations;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
-import com.ch018.library.service.GenreTranslationsService;
-import com.ch018.library.service.PersonService;
 import com.ch018.library.service.PaginationService;
+import com.ch018.library.service.PersonService;
 import com.ch018.library.util.Constans;
 import com.ch018.library.util.PageContainer;
-import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsBook;
 import com.ch018.library.util.Switch;
 /**

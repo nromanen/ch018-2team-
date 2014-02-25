@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ch018.library.util.annotation.Affect;
 import com.ch018.library.util.annotation.Ordinary;
 
 @Component
 public abstract class SearchParams implements Serializable{
 
+		private static final long serialVersionUID = 4537803179853069865L;
 
 
 		private final Logger logger = LoggerFactory.getLogger(SearchParams.class);

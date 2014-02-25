@@ -1,22 +1,19 @@
 package com.ch018.library.service;
 
+import java.util.List;
+
+import org.hibernate.HibernateException;
+import org.springframework.stereotype.Service;
+
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Person;
 import com.ch018.library.exceptions.EmailAlreadyInUseException;
 import com.ch018.library.exceptions.EmailNotChangedException;
 import com.ch018.library.exceptions.OldPasswordIncorrectException;
-import com.ch018.library.exceptions.UserAlreadyExists;
 import com.ch018.library.validation.Password;
 import com.ch018.library.validation.PersonEditValidator;
 import com.ch018.library.validation.PersonalInfo;
 import com.ch018.library.validation.UserRegistrationForm;
-
-import org.hibernate.HibernateException;
-import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
-
-import java.util.List;
 /**
  *
  * @author Edd Arazian

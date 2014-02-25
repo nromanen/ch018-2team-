@@ -2,7 +2,6 @@ package com.ch018.library.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ch018.library.util.annotation.Affect;
 import com.ch018.library.util.annotation.Between;
 import com.ch018.library.util.annotation.ComplexType;
 import com.ch018.library.util.annotation.Ordinary;

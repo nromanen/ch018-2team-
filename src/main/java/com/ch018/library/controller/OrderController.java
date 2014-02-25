@@ -37,7 +37,6 @@ import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PaginationService;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.service.RateService;
-import com.ch018.library.service.RateServiceImpl;
 import com.ch018.library.service.WishListService;
 import com.ch018.library.util.Constans;
 import com.ch018.library.util.SearchParamsRate;
@@ -53,7 +52,6 @@ public class OrderController {
 
 	final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
-	private final static String SOMETHING_WRONG = "Something wrong. Stay Calm. We resolving problem...";
 	
 	@Autowired
 	private BookService bookService;

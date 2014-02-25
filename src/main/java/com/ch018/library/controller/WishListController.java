@@ -3,7 +3,6 @@ package com.ch018.library.controller;
 import java.security.Principal;
 import java.util.List;
 
-import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

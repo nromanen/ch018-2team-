@@ -1,15 +1,9 @@
 package com.ch018.library.controller;
 
 
-import com.ch018.library.DAO.OrdersDao;
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Orders;
-import com.ch018.library.entity.Person;
-import com.ch018.library.service.BookInUseService;
-import com.ch018.library.service.BookService;
-import com.ch018.library.service.OrdersService;
-import com.ch018.library.service.PersonService;
-import com.ch018.library.util.Constans;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,9 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Orders;
+import com.ch018.library.entity.Person;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.BookService;
+import com.ch018.library.service.OrdersService;
+import com.ch018.library.service.PersonService;
+import com.ch018.library.util.Constans;
 
 @Controller
 @RequestMapping(value = "/librarian/orders")
@@ -32,9 +31,6 @@ public class LibrarianOrdersController {
 		@Autowired
 		private OrdersService ordersService;
     
-		@Autowired
-		private OrdersDao ordersDao;
-		
 		@Autowired
 		private BookInUseService booksInUseService;
 		
@@ -118,7 +114,9 @@ public class LibrarianOrdersController {
 	    @RequestMapping(value = "/searchById", method = RequestMethod.POST)
 	    public String searchById(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date) throws Exception {
 
-			//model.addAttribute("orders", ordersDao.testCriteria(title,surname));
+
+			model.addAttribute("orders", ordersService.testCriteria(title,surname));
+
 
             return "librarian_orders";
 	    }
@@ -126,7 +124,7 @@ public class LibrarianOrdersController {
 		@RequestMapping(value = "/sortSurname")
 		public String sSurname(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date,@RequestParam("how") String how,@RequestParam("what") String what,@RequestParam("page") String page,@RequestParam("count") String count) throws Exception {
 			System.out.println("SORT SURNAME:"+how+",");
-			model.addAttribute("orders",ordersDao.testCriteria(title,surname,how,what,Integer.parseInt(page),Integer.parseInt(count)));
+			model.addAttribute("orders", ordersService.testCriteria(title,surname,how,what,Integer.parseInt(page),Integer.parseInt(count)));
 			return "librarian_orders";
 		}
 		@RequestMapping(value = "/pagination")

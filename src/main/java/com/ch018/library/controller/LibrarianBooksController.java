@@ -1,11 +1,22 @@
 package com.ch018.library.controller;
 
+
 import com.ch018.library.DAO.BookDao;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -27,6 +39,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.BookService;
+import com.ch018.library.service.GenreService;
+
 
 @Controller
 @RequestMapping(value = "/librarian/books")
@@ -86,8 +105,6 @@ public class LibrarianBooksController {
 		
 		@RequestMapping(value = "/deletebook")
 		public String deleteBook(@RequestParam("id") int bookId, Model model) {
-		
-			String error = "error";
 			
 			try {
 				Book book = bookService.getBookById(bookId);

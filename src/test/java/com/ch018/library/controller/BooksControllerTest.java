@@ -1,6 +1,17 @@
 package com.ch018.library.controller;
 
-import java.security.Principal;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +20,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,15 +27,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Person;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
@@ -34,15 +39,8 @@ import com.ch018.library.service.PaginationService;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.util.Constans;
 import com.ch018.library.util.PageContainer;
-import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsBook;
 import com.ch018.library.util.Switch;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:servlet-context.xml", "classpath:root-context.xml"})
@@ -98,8 +96,6 @@ public class BooksControllerTest {
 		Mockito.reset(switcher);
 		Mockito.reset(useService);
 		Mockito.reset(genreService);
-		Mockito.reset(paginationService);
-		Mockito.reset(pageContainer);
 		
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		

@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ch018.library.service.BookService;
-import com.ch018.library.util.annotation.Affect;
 import com.ch018.library.util.annotation.Between;
 import com.ch018.library.util.annotation.ComplexType;
 import com.ch018.library.util.annotation.Ordinary;
@@ -17,6 +16,10 @@ public class SearchParamsBook extends SearchParams implements Serializable {
 
 	
 		
+
+
+		private static final long serialVersionUID = -2525475415563280213L;
+
 
 		private final Logger logger = LoggerFactory.getLogger(SearchParams.class);
 	

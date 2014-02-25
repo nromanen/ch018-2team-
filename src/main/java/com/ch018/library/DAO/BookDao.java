@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Genre;
+
+
 
 
 @Repository

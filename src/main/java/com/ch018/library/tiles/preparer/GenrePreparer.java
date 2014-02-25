@@ -5,7 +5,6 @@ import org.apache.tiles.AttributeContext;
 import org.apache.tiles.preparer.ViewPreparer;
 import org.apache.tiles.request.Request;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.ch018.library.service.GenreService;
@@ -21,7 +20,7 @@ public class GenrePreparer implements ViewPreparer {
 	    
 	    @Override
 	    public void execute(Request rqst, AttributeContext ac) {
-	    	String locale = LocaleContextHolder.getLocale().toString();
+	   
 	        ac.putAttribute("genres", new Attribute(genreService.getAll()));
 	    }
 }

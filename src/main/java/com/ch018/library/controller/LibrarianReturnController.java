@@ -1,10 +1,7 @@
 package com.ch018.library.controller;
 
-import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.service.BookInUseService;
-import com.ch018.library.service.BookService;
-import com.ch018.library.service.OrdersService;
-import com.ch018.library.service.PersonService;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Calendar;
-import java.util.Date;
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.BookService;
+import com.ch018.library.service.OrdersService;
+import com.ch018.library.service.PersonService;
 
 @Controller
 @RequestMapping(value = "/librarian/toreturn")
@@ -53,8 +53,6 @@ public class LibrarianReturnController {
 		
 		@RequestMapping(value = "/getback", method = RequestMethod.POST)
 		public String getBack(@RequestParam("id") int id, Model model) throws Exception {
-			BooksInUse  bookInUse = new BooksInUse();
-			bookInUse = booksInUseService.getBookInUseById(id);
 			booksInUseService.getBookBack(booksInUseService.getBookInUseById(id));
 			return "redirect:/librarian/toreturn";
 		}
