@@ -27,7 +27,7 @@ import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PaginationService;
 import com.ch018.library.service.PersonService;
-import com.ch018.library.util.Constans;
+import com.ch018.library.util.Constants;
 import com.ch018.library.util.PageContainer;
 import com.ch018.library.util.SearchParamsBook;
 import com.ch018.library.util.Switch;
@@ -72,8 +72,8 @@ public class BooksController {
         @RequestMapping(method = RequestMethod.GET)
         public String booksGeneral(HttpServletRequest request, Model model) {
         	logger.info("switcher {}, {}", switcher.getSwitcher(), switcher.getRecommendationState());
-            model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", Constans.AMOUNT_OF_BOOKS_TO_MAIN));
-            model.addAttribute("populars", bookService.getRecommended(Constans.AMOUNT_OF_BOOKS_TO_MAIN));
+            model.addAttribute("arrivals", bookService.getLastByField("arrivalDate", Constants.AMOUNT_OF_BOOKS_TO_MAIN));
+            model.addAttribute("populars", bookService.getRecommended(Constants.AMOUNT_OF_BOOKS_TO_MAIN));
             return "home";
         }
         

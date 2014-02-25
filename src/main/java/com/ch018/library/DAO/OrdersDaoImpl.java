@@ -361,6 +361,7 @@ public class OrdersDaoImpl implements OrdersDao {
 			
 			Criteria criteria = factory.getCurrentSession().createCriteria(Orders.class);
 			criteria.add(Restrictions.ne("person", person));
+			criteria.add(Restrictions.eq("book", book));
 			
 			Criterion returnDateExp = Restrictions.between("returnDate", firstDate, endOfFirstMonth);
 			Criterion orderDateExp = Restrictions.between("orderDate", firstDate, secondDate);

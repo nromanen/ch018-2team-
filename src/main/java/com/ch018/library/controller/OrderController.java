@@ -38,7 +38,7 @@ import com.ch018.library.service.PaginationService;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.service.RateService;
 import com.ch018.library.service.WishListService;
-import com.ch018.library.util.Constans;
+import com.ch018.library.util.Constants;
 import com.ch018.library.util.SearchParamsRate;
 
 /**
@@ -98,7 +98,7 @@ public class OrderController {
 		model.addAttribute("inOrders", ordersService.isPersonOrderedBook(person, book));
 		model.addAttribute("inWishList", wishService.isPersonWishBook(person, book));
 		model.addAttribute("rate", rateService.getRate(person, book));
-		model.addAttribute("recommend", bookService.getRecommended(Constans.AMOUNT_OF_RECOMMEND));
+		model.addAttribute("recommend", bookService.getRecommended(Constants.AMOUNT_OF_RECOMMEND));
 		return "order";
 
 	}
