@@ -38,6 +38,7 @@ public interface OrdersDao {
         Orders getFirstOrderAfterDateWithoutPerson(Date date, Person person, Book book);
         Orders getFirstOrderAfterDate(Date date, Book book);
         List<Orders> getOrdersByDate()throws Exception;
+        List<Orders> getAllPagin(int n);
 
 
 }

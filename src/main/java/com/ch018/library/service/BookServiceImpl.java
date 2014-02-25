@@ -1,12 +1,13 @@
 package com.ch018.library.service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.ch018.library.DAO.BookDao;
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.Person;
+import com.ch018.library.util.Constans;
+import com.ch018.library.util.DataModelContainer;
+import com.ch018.library.util.Switch;
 import org.apache.mahout.cf.taste.impl.recommender.CachingRecommender;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.slf4j.Logger;
@@ -16,14 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ch018.library.DAO.BookDao;
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.entity.Genre;
-import com.ch018.library.entity.Person;
-import com.ch018.library.util.Constans;
-import com.ch018.library.util.DataModelContainer;
-import com.ch018.library.util.Switch;
+import java.util.*;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -219,7 +213,11 @@ public class BookServiceImpl implements BookService {
 		public long getBooksCount() {
 			return bookDAO.getBooksCount();
 		}
-		
+		@Override
+        @Transactional
+        public List<Book> getAllPagin(int n){
+            return bookDAO.getAllPagin(n);
+        }
 		
 
 		

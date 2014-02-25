@@ -32,22 +32,25 @@
             <table id="upTable" border="1" width="80%" class="table table-hover table-striped table-bordered table-condensed">
                 <tr>
 
-                    <td id="TDTitle" width="29%" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" onblur="jQuery:bl();" onclick="jQuery:clkTitle();" contenteditable="true"><spring:message code="message.libTitle"/></td>
+                    <td id="TDTitle" width="25%" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" onblur="jQuery:bl();" onclick="jQuery:clkTitle();" contenteditable="true"><spring:message code="message.libTitle"/></td>
                     <td width="3%" onclick="jQuery:pagin($('#sort').text(),'title',$('#page').text(),$('#countP').text());" contenteditable="false"><img style="height: 20px; width: 20px" src="${pageContext.request.contextPath}/resources/img/sort.ico"></td>
 
-                    <td id="TDYear" width="5%" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" onblur="jQuery:bl();" onclick="jQuery:clkYear();" contenteditable="true"><spring:message code="message.libYear"/></td>
+                    <td id="TDYear" width="4%" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" onblur="jQuery:bl();" onclick="jQuery:clkYear();" contenteditable="true"><spring:message code="message.libYear"/></td>
                     <td width="3%" onclick="jQuery:pagin($('#sort').text(),'year',$('#page').text(),$('#countP').text());" contenteditable="false"><img style="height: 20px; width: 20px" src="${pageContext.request.contextPath}/resources/img/sort.ico"></td>
 
-                    <td id="TDPages" width="6%" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" onblur="jQuery:bl();" onclick="jQuery:clkPages();" contenteditable="true"><spring:message code="message.libPages"/></td>
+                    <td id="TDPages" width="4%" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" onblur="jQuery:bl();" onclick="jQuery:clkPages();" contenteditable="true"><spring:message code="message.libPages"/></td>
                     <td width="3%" onclick="jQuery:pagin($('#sort').text(),'pages',$('#page').text(),$('#countP').text());" contenteditable="false"><img style="height: 20px; width: 20px" src="${pageContext.request.contextPath}/resources/img/sort.ico"></td>
 
-                    <td id="TDShelf" width="6%" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" onblur="jQuery:bl();" onclick="jQuery:clkShelf();" contenteditable="true"><spring:message code="message.libShelf"/></td>
+                    <td id="TDShelf" width="4%" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" onblur="jQuery:bl();" onclick="jQuery:clkShelf();" contenteditable="true"><spring:message code="message.libShelf"/></td>
+                    <td width="3%" onclick="jQuery:pagin($('#sort').text(),'shelf',$('#page').text(),$('#countP').text());" contenteditable="false"><img style="height: 20px; width: 20px" src="${pageContext.request.contextPath}/resources/img/sort.ico"></td>
 
                     <td id="TDCq" width="10%" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" onblur="jQuery:bl();" onclick="jQuery:clkCq();" contenteditable="true"><spring:message code="message.libCurrentQuantity"/></td>
+                    <td width="3%" onclick="jQuery:pagin($('#sort').text(),'currentQuantity',$('#page').text(),$('#countP').text());" contenteditable="false"><img style="height: 20px; width: 20px" src="${pageContext.request.contextPath}/resources/img/sort.ico"></td>
 
                     <td id="TDGq" width="10%" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" onblur="jQuery:bl();" onclick="jQuery:clkGq();" contenteditable="true"><spring:message code="message.libGeneralQuantity"/></td>
+                    <td width="3%" onclick="jQuery:pagin($('#sort').text(),'generalQuantity',$('#page').text(),$('#countP').text());" contenteditable="false"><img style="height: 20px; width: 20px" src="${pageContext.request.contextPath}/resources/img/sort.ico"></td>
 
-                    <td width="22%"> <b> <spring:message code="message.libOptions"/> </b> </td>
+                    <td width="20%"><spring:message code="message.libOptions"/></td>
 
                     <a id="sort" hidden="true">asc</a>
                     <a id="whatKindOfSort" hidden="true"></a>
@@ -60,19 +63,19 @@
                         <tr>
                             <td hidden="true">${book.bId}</td>
 
-                            <td width="32%">${book.title}</td>
+                            <td width="22%">${book.title}</td>
 
-                            <td width="5%">${book.year}</td>
+                            <td width="7%">${book.year}</td>
 
-                            <td width="6%">${book.pages}</td>
+                            <td width="7%">${book.pages}</td>
 
-                            <td width="6%">${book.shelf}</td>
+                            <td width="5%">${book.shelf}</td>
 
                             <td width="10%">${book.currentQuantity}</td>
 
                             <td width="10%">${book.generalQuantity}</td>
 
-                            <td width="22%"><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>" style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
+                            <td width="20%"><a href="<c:url value="/librarian/books/editbook?id=${book.bId}"/>" style="color: #0E3846"><spring:message code="message.libEdit"/> |</a>
                                 <a href="<c:url value="/librarian/books/deletebook?id=${book.bId}"/>" style="color: #0E3846"><spring:message code="message.libDelete"/> |</a>
                                 <a href="<c:url value="/librarian/books/holders?id=${book.bId}"/>"style="color: #0E3846"><spring:message code="message.libHolders"/></a>
                                 | <a href="<c:url value="/librarian/orders/book?id=${book.bId}"/>"style="color: #0E3846">Orders</a></td>
@@ -87,9 +90,11 @@
                 <li><a onclick="jQuery:pagePlus($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());">Next</a></li>
 
                 <li><a>&raquo;</a>
-                    <table><tr><td id="countP" contenteditable="true" onkeyup="jQuery:countChange();jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text())" onclick="$('#countP').text('')">10</td><tr></table>
+                    <table><tr><td><a>fields QTY:</a></td><td id="countP" contenteditable="true" onkeyup="jQuery:countChange();jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text())" onclick="$('#countP').text('')">10</td><tr></table>
                 </li>
             </ul>
+
+
         </div>
     </div>
 </div>
@@ -101,20 +106,20 @@
     function pagePlus(how,what,page,count){
         $('#page').text(parseInt($('#page').text())+1);
         //alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+$('#page').text()+","+"COUNT:"+count+".");
-        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text(),"how":how,"what":what,"page":$('#page').text(),"count":count});
+        $("#content1").load("${pageContext.request.contextPath}/librarian/books/searchPagin #content1",{"title":$("#TDTitle").text(),"year":$("#TDYear").text(),"pages":$("#TDPages").text(),"shelf":$("#TDShelf").text(),"cq":$("#TDCq").text(),"gq":$("#TDGq").text(),"how":how,"what":what,"page":$("#page").text(),"count":count});
         $("#whatKindOfSort").text(what);
     }
     function pageMinus(how,what,page,count){
         $('#page').text(parseInt($('#page').text())-1);
         //alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+$('#page').text()+","+"COUNT:"+count+".");
-        $("#content1").load("${pageContext.request.contextPath}/librarian/orders/sortSurname #content1",{"title":$("#TDTitle").text(),"surname":$("#TDSurname").text(),"date":$("#TDDate").text(),"how":how,"what":what,"page":$('#page').text(),"count":count});
+        $("#content1").load("${pageContext.request.contextPath}/librarian/books/searchPagin #content1",{"title":$("#TDTitle").text(),"year":$("#TDYear").text(),"pages":$("#TDPages").text(),"shelf":$("#TDShelf").text(),"cq":$("#TDCq").text(),"gq":$("#TDGq").text(),"how":how,"what":what,"page":$("#page").text(),"count":count});
         $("#whatKindOfSort").text(what);
     }
 
     function pagin(how,what,page,count){
         if (how=="desc") $("#sort").text("asc");
         if (how=="asc") $("#sort").text("desc");
-        alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+page+","+"COUNT:"+count+".");
+        //alert("HOW:"+how+","+"WHAT:"+what+","+"PAGE:"+page+","+"COUNT:"+count+".");
         $("#whatKindOfSort").text(what);
         $("#content1").load("${pageContext.request.contextPath}/librarian/books/searchPagin #content1",{"title":$("#TDTitle").text(),"year":$("#TDYear").text(),"pages":$("#TDPages").text(),"shelf":$("#TDShelf").text(),"cq":$("#TDCq").text(),"gq":$("#TDGq").text(),"how":how,"what":what,"page":page,"count":count});
 
