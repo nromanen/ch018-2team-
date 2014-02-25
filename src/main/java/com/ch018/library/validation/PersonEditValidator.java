@@ -7,18 +7,18 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.ch018.library.util.Constans;
+import com.ch018.library.util.Constants;
 
 public class PersonEditValidator {
 		
 		private int pid;
 	
 		@NotEmpty
-		@Size(min = Constans.MIN_USER_NAME_LENGTH, max = Constans.MAX_USER_NAME_LENGTH)
+		@Size(min = Constants.MIN_USER_NAME_LENGTH, max = Constants.MAX_USER_NAME_LENGTH)
 		private String name;
 	
 		@NotEmpty
-		@Size(min = Constans.MIN_USER_NAME_LENGTH, max = Constans.MAX_USER_NAME_LENGTH)
+		@Size(min = Constants.MIN_USER_NAME_LENGTH, max = Constants.MAX_USER_NAME_LENGTH)
 		private String surname;
 	
 		@NotEmpty

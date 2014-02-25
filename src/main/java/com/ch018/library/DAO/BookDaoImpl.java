@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Genre;
 import com.ch018.library.entity.Orders;
-import com.ch018.library.util.Constans;
+import com.ch018.library.util.Constants;
 import com.ch018.library.util.SearchParams;
 import com.ch018.library.util.SearchParamsBook;
 import com.ch018.library.util.SearchParamsPerson;

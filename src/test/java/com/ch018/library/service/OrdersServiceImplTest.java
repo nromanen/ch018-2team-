@@ -35,7 +35,7 @@ import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
 import com.ch018.library.exceptions.BookUnavailableException;
 import com.ch018.library.exceptions.IncorrectDateException;
-import com.ch018.library.util.Constans;
+import com.ch018.library.util.Constants;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:servlet-context_for_service.xml", "classpath:root-context_for_service.xml"})
@@ -183,7 +183,7 @@ public class OrdersServiceImplTest {
 			order1.setOrderDate(orderDate1);
 			order1.setReturnDate(returnDate1);
 
-			term1 = Math.round((order1.getReturnDate().getTime() - order1.getOrderDate().getTime()) / Constans.MILLIS_IN_DAY); 
+			term1 = Math.round((order1.getReturnDate().getTime() - order1.getOrderDate().getTime()) / Constants.MILLIS_IN_DAY); 
 
 			setDatabase(person, book, order1);	
 
@@ -361,7 +361,7 @@ public class OrdersServiceImplTest {
 
 		    int days = orderService.getCorrectAmountOfOrderDays(book, orderDate1);
 
-		    assertEquals(Constans.MAX_ORDER_DAYS, days);
+		    assertEquals(Constants.MAX_ORDER_DAYS, days);
 
 		}
 

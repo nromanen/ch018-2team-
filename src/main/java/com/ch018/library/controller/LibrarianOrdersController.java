@@ -19,7 +19,7 @@ import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
-import com.ch018.library.util.Constans;
+import com.ch018.library.util.Constants;
 
 @Controller
 @RequestMapping(value = "/librarian/orders")
@@ -85,7 +85,7 @@ public class LibrarianOrdersController {
 				return "librarian_orders_issue";
 			}
 			
-			if ((termInt <= Constans.MAX_ISSUE_PERIOD) && (termInt >= Constans.MIN_ISSUE_PERIOD)) {
+			if ((termInt <= Constants.MAX_ISSUE_PERIOD) && (termInt >= Constants.MIN_ISSUE_PERIOD)) {
 				ordersService.issue(order, termInt);
 				return "redirect:/librarian/orders";
 			} else {

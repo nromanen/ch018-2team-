@@ -12,7 +12,7 @@
 	
 	
 	<div  class="well">
-	<div class="text-info"><h3><spring:message code="message.popular" /></h3></div>
+	<div class="text-info"><h3><spring:message code="message.arrivals" /></h3></div>
 		<div id="ca-container_arrival" class="ca-container">
 		<div class="ca-wrapper">
 		<c:set var="i" value="1" scope="page" />
@@ -69,7 +69,7 @@
 	
 	
 	<div  class="well">
-	<div class="text-info"><h3><spring:message code="message.popular" /></h3></div>
+	<div class="text-info"><h3><spring:message code="message.recommend" /></h3></div>
 		<div id="ca-container" class="ca-container">
 		<div class="ca-wrapper">
 		<c:set var="i" value="1" scope="page" />

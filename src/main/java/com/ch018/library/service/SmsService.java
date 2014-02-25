@@ -20,8 +20,8 @@ public class SmsService {
 
 	private final Logger logger = LoggerFactory.getLogger(SmsService.class);
 	
-	private static final String USER_NAME = "";
-	private static final String USER_PASS = "";
+	private static final String USER_NAME = "soliton";
+	private static final String USER_PASS = "cghbyu765";
 	private static final String PHONE = "380911146591";
 	private static final String SERVICE_URL = "http://smsc.ru/sys/send.php?login=" + USER_NAME + "&psw=" + USER_PASS
 										+ "&phones=" + PHONE + "&cost=3";
