@@ -118,7 +118,7 @@ public class LibrarianOrdersController {
 	    @RequestMapping(value = "/searchById", method = RequestMethod.POST)
 	    public String searchById(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date) throws Exception {
 
-			model.addAttribute("orders", ordersDao.testCriteria(title,surname));
+			//model.addAttribute("orders", ordersDao.testCriteria(title,surname));
 
             return "librarian_orders";
 	    }

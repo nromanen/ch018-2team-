@@ -1,22 +1,14 @@
 package com.ch018.library.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
+import com.ch018.library.DAO.BookDao;
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.service.BookInUseService;
+import com.ch018.library.service.BookService;
+import com.ch018.library.service.GenreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,17 +18,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.entity.Genre;
-import com.ch018.library.service.BookInUseService;
-import com.ch018.library.service.BookService;
-import com.ch018.library.service.GenreService;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/librarian/books")
@@ -44,6 +34,9 @@ public class LibrarianBooksController {
 		
 		@Autowired
 		private BookService bookService;
+
+        @Autowired
+        private BookDao bookDao;
 		
 		@Autowired
 		private GenreService genreService;
@@ -199,6 +192,12 @@ public class LibrarianBooksController {
 				System.out.println(e.getMessage());
 			}
 		}
-		
+
+    @RequestMapping(value = "/searchPagin")
+    public String sSurname(Model model,@RequestParam("title") String title,@RequestParam("year") String year,@RequestParam("pages") String pages,@RequestParam("shelf") String shelf,@RequestParam("cq") String cq,@RequestParam("gq") String gq,@RequestParam("how") String how,@RequestParam("what") String what,@RequestParam("page") String page,@RequestParam("count") String count) throws Exception {
+        System.out.println("TITLE:"+title+",YEAR:"+year+",PAGES:"+pages+",SHELF:"+shelf+",CQ:"+cq+",GQ:"+gq+",HOW:"+how+",WHAT:"+what+",PAGE:"+page+",COUNT:"+count+".");
+        model.addAttribute("books", bookDao.hqlSearch(title,year,pages,shelf,cq,gq,how,what,Integer.parseInt(page),Integer.parseInt(count)));
+        return "librarian_books";
+    }
 		
 }

@@ -27,9 +27,9 @@
             <table id="upTable" border="1" width="80%" class="table table-hover table-striped table-bordered table-condensed">
                 <tr>
 
-                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDSurname" onclick="jQuery:clkSurname();">Surname</td>
+                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" id="TDSurname" onclick="jQuery:clkSurname();">Surname</td>
                     <td width="3%" onclick="jQuery:pagin($('#sort').text(),'person.surname',$('#page').text(),$('#countP').text());" contenteditable="false"><img style="height: 20px; width: 20px" src="${pageContext.request.contextPath}/resources/img/sort.ico"></td>
-                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:tdid();" id="TDTitle" onclick="jQuery:clkTitle();">Title</td>
+                    <td width="20%" onblur="jQuery:bl();" contenteditable="true" onkeyup="jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());" id="TDTitle" onclick="jQuery:clkTitle();">Title</td>
                     <td width="3%" onclick="jQuery:pagin($('#sort').text(),'book.title',$('#page').text(),$('#countP').text());" contenteditable="false"><img style="height: 20px; width: 20px" src="${pageContext.request.contextPath}/resources/img/sort.ico"></td>
                     <td width="30%" onblur="jQuery:bl();" contenteditable="true" id="TDDate" onclick="jQuery:clkDate();">Date</td>
                     <td width="30%">Options</td>

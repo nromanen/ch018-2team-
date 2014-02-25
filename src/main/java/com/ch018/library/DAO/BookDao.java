@@ -1,13 +1,11 @@
 package com.ch018.library.DAO;
 
-import java.util.List;
-
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Genre;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.springframework.stereotype.Repository;
 
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Genre;
-import com.ch018.library.util.SearchParams;
+import java.util.List;
 
 
 
@@ -31,5 +29,6 @@ public interface BookDao {
         List<Book> getLastByField(String field, int quantity);
         List<Book> getBooksFromRecommendedList(List<RecommendedItem> items);
         long getBooksCount();
+        List<Book> hqlSearch(String title,String year,String pages,String shelf,String cq,String gq,String how, String what,int page,int count);
         
 }

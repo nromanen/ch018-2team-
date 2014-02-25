@@ -65,7 +65,7 @@ public class OrdersDaoImpl implements OrdersDao {
 	
 		@Override
 		public List<Orders> getAll() {
-			return factory.getCurrentSession().createCriteria(Orders.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+			return factory.getCurrentSession().createCriteria(Orders.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).setFirstResult(0).setMaxResults(10).list();
 		}
 	
 		@Override
@@ -202,11 +202,16 @@ public class OrdersDaoImpl implements OrdersDao {
 
         @Override
         @Transactional
-        public List<Orders> testCriteria(String title, String surname){
+        public List<Orders> testCriteria(String title, String surname, int page, int count){
 
             boolean and = false;
             System.out.println("input data: title:"+title+", surname:"+surname+".");
-            if (title.compareTo("Title")==0 && surname.compareTo("Surname")==0) return getAll();
+            if (title.compareTo("Title")==0 && surname.compareTo("Surname")==0) {
+                Query query = factory.getCurrentSession().createQuery("FROM Orders");
+                query.setFirstResult((page-1)*count);
+                query.setMaxResults(count);
+                return query.list();
+            }
                 StringBuilder QUERY = new StringBuilder("From Orders where ");
                 if (title.compareTo("Title")!=0) {
                     System.out.println("ttl");
@@ -224,7 +229,8 @@ public class OrdersDaoImpl implements OrdersDao {
                 }
             System.out.println("!!!"+QUERY.toString());
                 Query query= factory.getCurrentSession().createQuery(QUERY.toString());
-
+            query.setFirstResult((page-1)*count);
+            query.setMaxResults(count);
             return query.list();
         }
     @Override
@@ -270,11 +276,11 @@ public class OrdersDaoImpl implements OrdersDao {
 
         return query.list();}
         else {
-            List<Orders> answerList = new ArrayList<>();
-            for (int i=0;i<count;i++)
-                answerList.add(getAll().get(((page-1)*count)+i));
-            return answerList;
+            System.out.println("FUCK YOU");
+            return  testCriteria(title,surname,page,count);
         }
+
+
     }
 
         @Override

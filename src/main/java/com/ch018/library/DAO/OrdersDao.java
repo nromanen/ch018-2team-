@@ -27,7 +27,7 @@ public interface OrdersDao {
         List<Orders> getOrdersInHour();
         int getBookIdByPerson(Person person);
         boolean isPersonOrderedBook(Person person, Book book);
-        List<Orders> testCriteria(String title, String surname);
+        List<Orders> testCriteria(String title, String surname, int page, int count);
         List<Orders> testCriteria(String title, String surname, String how, String what,int page,int count);
         List<Orders> sortOrdersBySurname();
         List<Orders> getOrderByIDList(int id); 

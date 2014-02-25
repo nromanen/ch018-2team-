@@ -1,30 +1,18 @@
 package com.ch018.library.DAO;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Genre;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
+import org.hibernate.criterion.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Genre;
-import com.ch018.library.entity.Orders;
-import com.ch018.library.util.Constans;
-import com.ch018.library.util.SearchParams;
-import com.ch018.library.util.SearchParamsBook;
-import com.ch018.library.util.SearchParamsPerson;
+import java.util.List;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -226,6 +214,35 @@ public class BookDaoImpl implements BookDao {
 			return (long) criteria.uniqueResult();
 		}
 
+        @Override
+        public List<Book> hqlSearch(String title,String year,String pages,String shelf,String cq,String gq,String how, String what,int page,int count){
+        if (what.compareTo("")==0){
+            Session session = factory.openSession();
+            Criteria criteria =  session.createCriteria(Book.class);
+            if (title.compareTo("Title")==0 && year.compareTo("Year")==0 && pages.compareTo("Pages")==0 && shelf.compareTo("Shelf")==0 && cq.compareTo("Current QTY")==0 && gq.compareTo("General QTY")==0){
+            if (how.compareTo("asc")==0) criteria.addOrder(Order.asc(what));
+            if (how.compareTo("desc")==0) criteria.addOrder(Order.desc(what));
+            criteria.setFirstResult((page-1)*count);
+            criteria.setMaxResults(count);
+            return criteria.list();
+            }
+            if (title.compareTo("Title")!=0) criteria.add(Restrictions.ilike("title",title,MatchMode.ANYWHERE));
+            if (year.compareTo("Year")!=0) criteria.add(Restrictions.eq("year",Integer.parseInt(year)));
+            if (pages.compareTo("Pages")!=0) criteria.add(Restrictions.eq("pages",Integer.parseInt(pages)));
+            if (shelf.compareTo("Shelf")!=0) criteria.add(Restrictions.eq("shelf",Integer.parseInt(shelf)));
+            if (cq.compareTo("Current QTY")!=0) criteria.add(Restrictions.eq("currentQuantity",Integer.parseInt(cq)));
+            if (gq.compareTo("General QTY")!=0) criteria.add(Restrictions.eq("generalQuantity",Integer.parseInt(gq)));
+            criteria.setFirstResult((page-1)*count);
+            criteria.setMaxResults(count);
+            return criteria.list();
+        }
+            else return hqlSearch(title, year, pages, shelf, cq, gq, how, "1", page, count);
+
+        }
+
+            //criteria.add(Restrictions.like("title", "%" + title + "%"));
+
+            //return criteria.list();
 		
-		
+
 }
