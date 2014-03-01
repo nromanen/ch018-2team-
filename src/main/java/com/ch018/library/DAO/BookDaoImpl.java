@@ -13,6 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.Orders;
+import com.ch018.library.util.Constants;
+import com.ch018.library.util.SearchParams;
+import com.ch018.library.util.SearchParamsBook;
+import com.ch018.library.util.SearchParamsPerson;
+
 
 @Repository
 public class BookDaoImpl implements BookDao {

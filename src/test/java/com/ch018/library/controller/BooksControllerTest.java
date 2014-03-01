@@ -37,7 +37,7 @@ import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
 import com.ch018.library.service.PaginationService;
 import com.ch018.library.service.PersonService;
-import com.ch018.library.util.Constans;
+import com.ch018.library.util.Constants;
 import com.ch018.library.util.PageContainer;
 import com.ch018.library.util.SearchParamsBook;
 import com.ch018.library.util.Switch;
@@ -96,6 +96,8 @@ public class BooksControllerTest {
 		Mockito.reset(switcher);
 		Mockito.reset(useService);
 		Mockito.reset(genreService);
+		Mockito.reset(paginationService);
+		Mockito.reset(pageContainer);
 		
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		
@@ -129,20 +131,20 @@ public class BooksControllerTest {
 	@Test
 	public void booksHomePage() throws Exception {
 		
-		when(bookService.getLastByField("arrivalDate", Constans.AMOUNT_OF_BOOKS_TO_MAIN)).thenReturn(books);
+		when(bookService.getLastByField("arrivalDate", Constants.AMOUNT_OF_BOOKS_TO_MAIN)).thenReturn(books);
 		
-		when(bookService.getRecommended(Constans.AMOUNT_OF_BOOKS_TO_MAIN)).thenReturn(books);
+		when(bookService.getRecommended(Constants.AMOUNT_OF_BOOKS_TO_MAIN)).thenReturn(books);
 		
 		mockMvc.perform(get("/books"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("arrivals"))
 			.andExpect(model().attributeExists("populars"))
-			.andExpect(model().attribute("arrivals", hasSize(Constans.AMOUNT_OF_BOOKS_TO_MAIN)))
-			.andExpect(model().attribute("populars", hasSize(Constans.AMOUNT_OF_BOOKS_TO_MAIN)))
+			.andExpect(model().attribute("arrivals", hasSize(Constants.AMOUNT_OF_BOOKS_TO_MAIN)))
+			.andExpect(model().attribute("populars", hasSize(Constants.AMOUNT_OF_BOOKS_TO_MAIN)))
 			.andExpect(forwardedUrl("/WEB-INF/templates/base-template.jsp"));
 		
-		verify(bookService, times(1)).getLastByField("arrivalDate", Constans.AMOUNT_OF_BOOKS_TO_MAIN);
-		verify(bookService, times(1)).getRecommended(Constans.AMOUNT_OF_BOOKS_TO_MAIN);
+		verify(bookService, times(1)).getLastByField("arrivalDate", Constants.AMOUNT_OF_BOOKS_TO_MAIN);
+		verify(bookService, times(1)).getRecommended(Constants.AMOUNT_OF_BOOKS_TO_MAIN);
 		
 		verifyNoMoreInteractions(bookService);		
 	}

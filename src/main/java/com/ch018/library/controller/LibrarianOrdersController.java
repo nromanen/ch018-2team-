@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.sql.SQLException;
 import java.util.List;
 
+
 @Controller
 @RequestMapping(value = "/librarian/orders")
 public class LibrarianOrdersController {
@@ -80,7 +81,7 @@ public class LibrarianOrdersController {
 				return "librarian_orders_issue";
 			}
 			
-			if ((termInt <= Constans.MAX_ISSUE_PERIOD) && (termInt >= Constans.MIN_ISSUE_PERIOD)) {
+			if ((termInt <= Constants.MAX_ISSUE_PERIOD) && (termInt >= Constants.MIN_ISSUE_PERIOD)) {
 				ordersService.issue(order, termInt);
 				return "redirect:/librarian/orders";
 			} else {

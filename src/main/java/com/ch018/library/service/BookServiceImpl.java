@@ -19,6 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+import com.ch018.library.DAO.BookDao;
+import com.ch018.library.entity.Book;
+import com.ch018.library.entity.BooksInUse;
+import com.ch018.library.entity.Genre;
+import com.ch018.library.entity.Person;
+import com.ch018.library.util.Constants;
+import com.ch018.library.util.DataModelContainer;
+import com.ch018.library.util.Switch;
+
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -187,7 +196,7 @@ public class BookServiceImpl implements BookService {
 				return getLastByField("rating", quantity);
 			}
 			
-			if(switcher.getRecommendationState() && rateService.getRatesCount() > Constans.MIN_COUNT_FOR_RECOMMEND) {
+			if(switcher.getRecommendationState() && rateService.getRatesCount() > Constants.MIN_COUNT_FOR_RECOMMEND) {
 				dataModelContainer.initDataModel();
 				cache = dataModelContainer.getCachedRecommender();
 				try {

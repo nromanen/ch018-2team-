@@ -25,7 +25,7 @@ import com.ch018.library.entity.Person;
 import com.ch018.library.exceptions.BookUnavailableException;
 import com.ch018.library.exceptions.IncorrectDateException;
 import com.ch018.library.exceptions.TooManyOrdersException;
-import com.ch018.library.util.Constans;
+import com.ch018.library.util.Constants;
 
 
 /**
@@ -499,14 +499,14 @@ public class OrdersServiceImpl implements OrdersService {
 				throw new BookUnavailableException();
 			
 			if (currentBookQuantity > ordersQuantity) {
-				return Constans.MAX_DAYS_FOR_INCREASING;
+				return Constants.MAX_DAYS_FOR_INCREASING;
 			}
 			else {	
 				Orders nextOrder = ordersDao.getFirstOrderAfterDate(today, book);
 				if(nextOrder == null)
-					return Constans.MAX_DAYS_FOR_INCREASING;
+					return Constants.MAX_DAYS_FOR_INCREASING;
 				
-				maxIssueDays = Math.round((nextOrder.getOrderDate().getTime() - today.getTime()) / Constans.MILLIS_IN_DAY);
+				maxIssueDays = Math.round((nextOrder.getOrderDate().getTime() - today.getTime()) / Constants.MILLIS_IN_DAY);
 			}
 			
 			return maxIssueDays;
@@ -529,14 +529,14 @@ public class OrdersServiceImpl implements OrdersService {
 					throw new BookUnavailableException();
 
 				if(currentBookQuantity > ordersQuantity)
-					return Constans.MAX_ISSUE_PERIOD;
+					return Constants.MAX_ISSUE_PERIOD;
 
 				Orders nextOrder = ordersDao.getFirstOrderAfterDateWithoutPerson(returnDate, person, book);
 
 				if(nextOrder == null)
-					return Constans.MAX_ISSUE_PERIOD;
+					return Constants.MAX_ISSUE_PERIOD;
 
-				maxIssueDays = Math.round((nextOrder.getOrderDate().getTime() - orderDate.getTime()) / Constans.MILLIS_IN_DAY);
+				maxIssueDays = Math.round((nextOrder.getOrderDate().getTime() - orderDate.getTime()) / Constants.MILLIS_IN_DAY);
 
 
 			} else {
@@ -546,15 +546,15 @@ public class OrdersServiceImpl implements OrdersService {
 				List<Orders> ordersForToday = ordersDao.getOrdersTodayWithoutPerson(book, person);
 
 				if(ordersForToday.isEmpty() && currentBookQuantity > ordersQuantity) {
-					return Constans.MAX_ISSUE_PERIOD;
+					return Constants.MAX_ISSUE_PERIOD;
 				}
 				else if(!ordersForToday.isEmpty() || currentBookQuantity <= ordersQuantity) {
 					Orders nextOrder = ordersDao.getFirstOrderAfterDateWithoutPerson(orderDate, person, book);
 					logger.info("next order = {}", nextOrder);
 					if(nextOrder == null)
-						return Constans.MAX_ISSUE_PERIOD;
+						return Constants.MAX_ISSUE_PERIOD;
 
-					maxIssueDays = Math.round((nextOrder.getOrderDate().getTime() - orderDate.getTime()) / Constans.MILLIS_IN_DAY);
+					maxIssueDays = Math.round((nextOrder.getOrderDate().getTime() - orderDate.getTime()) / Constants.MILLIS_IN_DAY);
 
 				}
 

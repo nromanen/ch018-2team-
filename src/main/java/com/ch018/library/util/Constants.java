@@ -1,6 +1,6 @@
 package com.ch018.library.util;
 
-public interface Constans {
+public interface Constants {
 
 	int MIN_ISSUE_PERIOD = 1;
 	int MAX_ISSUE_PERIOD = 90;

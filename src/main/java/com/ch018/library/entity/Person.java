@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
-import com.ch018.library.util.Constans;
+import com.ch018.library.util.Constants;
 import com.ch018.library.util.Roles;
 
 /**
@@ -41,12 +41,12 @@ public class Person implements Serializable {
 		private int pid;
 	
 		@NotEmpty
-		@Size(min = Constans.MIN_USER_NAME_LENGTH, max = Constans.MAX_USER_NAME_LENGTH)
+		@Size(min = Constants.MIN_USER_NAME_LENGTH, max = Constants.MAX_USER_NAME_LENGTH)
 		@Column(name = "name")
 		private String name;
 	
 		@NotEmpty
-		@Size(min = Constans.MIN_USER_NAME_LENGTH, max = Constans.MAX_USER_NAME_LENGTH)
+		@Size(min = Constants.MIN_USER_NAME_LENGTH, max = Constants.MAX_USER_NAME_LENGTH)
 		@Column(name = "surname")
 		private String surname;
 	
@@ -86,7 +86,7 @@ public class Person implements Serializable {
 		private int untimekyReturn;
 	
 		@NotNull
-		@Range(min = 0, max = Constans.MAX_BOOKS_ALLOWED)
+		@Range(min = 0, max = Constants.MAX_BOOKS_ALLOWED)
 		@Column(name = "booksAllowed")
 		private int booksAllowed;
 	
