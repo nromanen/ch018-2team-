@@ -40,6 +40,7 @@ public interface OrdersService {
          List<Orders> sortOrdersBySurname();
          List<Orders> getOrdersForPeriodFromMonth(Book book, Date date);
          long getOrdersCountWithoutPerson(Book book);
+         long getOrdersCount(Book book);
          int getMaxDaysForIncrease(BooksInUse bookInUse) throws BookUnavailableException;
          int getMaxIssueDays(Orders order) throws BookUnavailableException;
          List<Orders> sortOrdersBySurname(String surname,String title,int how);

@@ -29,6 +29,7 @@ public interface BookInUseService {
         List<BooksInUse> getBooksInUseByBookTitle(String title);
         List<BooksInUse> getBooksInUseByPersonSurname(String surname);
         List<BooksInUse> getBooksInUseByPersonSurnameAndBookTitle(List<BooksInUse> list,String surname);
+        long getBookInUseCount(Book book);
 
 
 }

@@ -93,7 +93,7 @@
     <definition name="librarian_books" extends="base-template">
         <put-attribute name="header" value="librarian_header" />
         <put-attribute name="style-js-main" value="/WEB-INF/templates/layouts/librarian/librarian_main_css_js.jsp" />
-        <put-attribute name="style-js" value="" />
+        <put-attribute name="style-js" value="/WEB-INF/templates/layouts/librarian/books_css_js.jsp" />
         <put-attribute name="content" value="/WEB-INF/templates/layouts/librarian/books.jsp" />
     </definition>
     

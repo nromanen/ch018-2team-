@@ -170,4 +170,15 @@ public class BooksInUseDaoImpl implements BooksInUseDao {
 			return calendar.getTime();
 		}
 
+		@Override
+		public long getBookInUseCount(Book book) {
+			Criteria criteria = factory.getCurrentSession().createCriteria(BooksInUse.class);
+			criteria.add(Restrictions.eq("book", book));
+			criteria.setProjection(Projections.rowCount());
+			
+			return (long) criteria.uniqueResult();
+		}
+
+		
+		
 }

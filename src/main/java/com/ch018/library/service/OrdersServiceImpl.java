@@ -483,6 +483,14 @@ public class OrdersServiceImpl implements OrdersService {
 			logger.info("person {}", person);
 			return ordersDao.getOrdersCountWithoutPerson(book, person);
 		}
+		
+		
+
+		@Override
+		@Transactional
+		public long getOrdersCount(Book book) {	
+			return ordersDao.getOrdersCountForBook(book);
+		}
 
 		@Override
 		@Transactional
