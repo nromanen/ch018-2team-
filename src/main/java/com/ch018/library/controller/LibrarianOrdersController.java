@@ -1,17 +1,6 @@
 package com.ch018.library.controller;
 
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.Orders;
 import com.ch018.library.entity.Person;
@@ -20,6 +9,16 @@ import com.ch018.library.service.BookService;
 import com.ch018.library.service.OrdersService;
 import com.ch018.library.service.PersonService;
 import com.ch018.library.util.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.sql.SQLException;
+import java.util.List;
+
 
 @Controller
 @RequestMapping(value = "/librarian/orders")
@@ -43,11 +42,8 @@ public class LibrarianOrdersController {
 		
 		@RequestMapping(value = "")
 		public String showAll(Model model) throws Exception {
-            List<Orders> orders = new ArrayList<>();
 
-            for (int i=0;i<10;i++)
-            orders.add(ordersService.getAll().get(i));
-			model.addAttribute("orders", orders);
+			model.addAttribute("orders", ordersService.getAllPagin(10));
 			return "librarian_orders";
 		}
 		
@@ -115,7 +111,7 @@ public class LibrarianOrdersController {
 	    public String searchById(Model model,@RequestParam("title") String title,@RequestParam("surname") String surname,@RequestParam("date") String date) throws Exception {
 
 
-			model.addAttribute("orders", ordersService.testCriteria(title,surname));
+			//model.addAttribute("orders", ordersService.testCriteria(title,surname));
 
 
             return "librarian_orders";
@@ -151,6 +147,8 @@ public class LibrarianOrdersController {
 			model.addAttribute("orders", orders);
 			return "librarian_orders";
 		}
+		
+		
 		
     
 }

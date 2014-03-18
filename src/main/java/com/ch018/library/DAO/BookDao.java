@@ -7,9 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.Genre;
-
 
 
 
@@ -34,5 +31,6 @@ public interface BookDao {
         List<Book> getBooksFromRecommendedList(List<RecommendedItem> items);
         long getBooksCount();
         List<Book> hqlSearch(String title,String year,String pages,String shelf,String cq,String gq,String how, String what,int page,int count);
-        
+        List<Book> getAllPagin(int n);
+        int countPagin(String title,String year,String pages,String shelf,String cq,String gq,int count);
 }

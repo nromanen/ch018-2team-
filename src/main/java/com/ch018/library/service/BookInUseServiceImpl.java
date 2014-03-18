@@ -208,6 +208,14 @@ public class BookInUseServiceImpl implements BookInUseService {
             return answerList;
         }
 
+		@Override
+		@Transactional
+		public long getBookInUseCount(Book book) {
+			return useDao.getBookInUseCount(book);
+		}
+
+        
+        
 
 
 

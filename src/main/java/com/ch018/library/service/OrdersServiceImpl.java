@@ -483,6 +483,14 @@ public class OrdersServiceImpl implements OrdersService {
 			logger.info("person {}", person);
 			return ordersDao.getOrdersCountWithoutPerson(book, person);
 		}
+		
+		
+
+		@Override
+		@Transactional
+		public long getOrdersCount(Book book) {	
+			return ordersDao.getOrdersCountForBook(book);
+		}
 
 		@Override
 		@Transactional
@@ -568,8 +576,8 @@ public class OrdersServiceImpl implements OrdersService {
 
 		@Override
 		@Transactional
-		public List<Orders> testCriteria(String title, String surname) {
-			return ordersDao.testCriteria(title, surname);
+		public List<Orders> testCriteria(String title, String surname, int page, int count) {
+			return ordersDao.testCriteria(title, surname, page, count);
 		}
 
 		@Override
@@ -594,7 +602,11 @@ public class OrdersServiceImpl implements OrdersService {
 			
 			return todayDay == orderDay && todayMonth == orderMonth && todayYear == orderYear;
 		}
-		
+		@Override
+        @Transactional
+        public List<Orders> getAllPagin(int n){
+         return ordersDao.getAllPagin(n);
+        }
 		
 		
 		

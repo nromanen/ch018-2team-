@@ -1,13 +1,12 @@
 package com.ch018.library.service;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Service;
-
 import com.ch018.library.entity.Book;
 import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.entity.Genre;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public interface BookService {
@@ -31,4 +30,5 @@ public interface BookService {
              List<Book> getLastByField(String field, int quantity);
              List<Book> getRecommended(int quantity);
              long getBooksCount();
+             List<Book> getAllPagin(int n);
 }

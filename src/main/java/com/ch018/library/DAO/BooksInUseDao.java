@@ -26,4 +26,5 @@ public interface BooksInUseDao {
         boolean isPersonHaveBook(Person person, Book book); 
         List<BooksInUse> getBooksInUseByReturnDateLe(Date date);
         long getBooksInUseCountForPerson(Person person);
+        long getBookInUseCount(Book book);
 }

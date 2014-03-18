@@ -228,13 +228,11 @@ public class BookDaoImpl implements BookDao {
             Session session = factory.openSession();
             Criteria criteria =  session.createCriteria(Book.class);
             if (title.compareTo("Title")==0 && year.compareTo("Year")==0 && pages.compareTo("Pages")==0 && shelf.compareTo("Shelf")==0 && cq.compareTo("Current QTY")==0 && gq.compareTo("General QTY")==0){
-            if (how.compareTo("asc")==0) criteria.addOrder(Order.asc(what));
-            if (how.compareTo("desc")==0) criteria.addOrder(Order.desc(what));
             criteria.setFirstResult((page-1)*count);
             criteria.setMaxResults(count);
             return criteria.list();
             }
-            if (title.compareTo("Title")!=0) criteria.add(Restrictions.ilike("title",title,MatchMode.ANYWHERE));
+            if (title.compareTo("Title")!=0) criteria.add(Restrictions.like("title","%"+title+"%"));
             if (year.compareTo("Year")!=0) criteria.add(Restrictions.eq("year",Integer.parseInt(year)));
             if (pages.compareTo("Pages")!=0) criteria.add(Restrictions.eq("pages",Integer.parseInt(pages)));
             if (shelf.compareTo("Shelf")!=0) criteria.add(Restrictions.eq("shelf",Integer.parseInt(shelf)));
@@ -244,13 +242,55 @@ public class BookDaoImpl implements BookDao {
             criteria.setMaxResults(count);
             return criteria.list();
         }
-            else return hqlSearch(title, year, pages, shelf, cq, gq, how, "1", page, count);
+        else {
+            Session session = factory.openSession();
+            Criteria criteria =  session.createCriteria(Book.class);
+            if (title.compareTo("Title")==0 && year.compareTo("Year")==0 && pages.compareTo("Pages")==0 && shelf.compareTo("Shelf")==0 && cq.compareTo("Current QTY")==0 && gq.compareTo("General QTY")==0){
+                criteria.setFirstResult((page-1)*count);
+                criteria.setMaxResults(count);
+                if (how.compareTo("asc")==0) criteria.addOrder(Order.asc(what));
+                if (how.compareTo("desc")==0) criteria.addOrder(Order.desc(what));
+                return criteria.list();
+            }
+            if (title.compareTo("Title")!=0) criteria.add(Restrictions.like("title","%"+title+"%"));
+            if (year.compareTo("Year")!=0) criteria.add(Restrictions.eq("year",Integer.parseInt(year)));
+            if (pages.compareTo("Pages")!=0) criteria.add(Restrictions.eq("pages",Integer.parseInt(pages)));
+            if (shelf.compareTo("Shelf")!=0) criteria.add(Restrictions.eq("shelf",Integer.parseInt(shelf)));
+            if (cq.compareTo("Current QTY")!=0) criteria.add(Restrictions.eq("currentQuantity",Integer.parseInt(cq)));
+            if (gq.compareTo("General QTY")!=0) criteria.add(Restrictions.eq("generalQuantity",Integer.parseInt(gq)));
+            if (how.compareTo("asc")==0) criteria.addOrder(Order.asc(what));
+            if (how.compareTo("desc")==0) criteria.addOrder(Order.desc(what));
+            criteria.setFirstResult((page-1)*count);
+            criteria.setMaxResults(count);
+            return criteria.list();
+        }
+           // else return hqlSearch(title, year, pages, shelf, cq, gq, how, "1", page, count);
+/*            if (how.compareTo("asc")==0) criteria.addOrder(Order.asc(what));
+            if (how.compareTo("desc")==0) criteria.addOrder(Order.desc(what));   */
+
 
         }
-
-            //criteria.add(Restrictions.like("title", "%" + title + "%"));
-
-            //return criteria.list();
+        @Override
+        public List<Book> getAllPagin(int n){
+            Criteria criteria = factory.getCurrentSession().createCriteria(Book.class);
+            criteria.setFirstResult(0);
+            criteria.setMaxResults(n);
+            return criteria.list();
+        }
+        @Override
+        public int countPagin(String title,String year,String pages,String shelf,String cq,String gq,int count){
+            Session session = factory.openSession();
+            Criteria criteria =  session.createCriteria(Book.class);
+            if (title.compareTo("Title")!=0) criteria.add(Restrictions.like("title","%"+title+"%"));
+            if (year.compareTo("Year")!=0) criteria.add(Restrictions.eq("year",Integer.parseInt(year)));
+            if (pages.compareTo("Pages")!=0) criteria.add(Restrictions.eq("pages",Integer.parseInt(pages)));
+            if (shelf.compareTo("Shelf")!=0) criteria.add(Restrictions.eq("shelf",Integer.parseInt(shelf)));
+            if (cq.compareTo("Current QTY")!=0) criteria.add(Restrictions.eq("currentQuantity",Integer.parseInt(cq)));
+            if (gq.compareTo("General QTY")!=0) criteria.add(Restrictions.eq("generalQuantity",Integer.parseInt(gq)));
+            double param = criteria.list().size()/count;
+            if ((param%2)>0) param++;
+            return (int) param;
+        }
 		
 
 }

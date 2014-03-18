@@ -40,10 +40,11 @@ public interface OrdersService {
          List<Orders> sortOrdersBySurname();
          List<Orders> getOrdersForPeriodFromMonth(Book book, Date date);
          long getOrdersCountWithoutPerson(Book book);
+         long getOrdersCount(Book book);
          int getMaxDaysForIncrease(BooksInUse bookInUse) throws BookUnavailableException;
          int getMaxIssueDays(Orders order) throws BookUnavailableException;
          List<Orders> sortOrdersBySurname(String surname,String title,int how);
-         List<Orders> testCriteria(String title, String surname);
+         List<Orders> testCriteria(String title, String surname, int page, int count);
          List<Orders> testCriteria(String title, String surname, String how, String what,int page,int count);
-
+         List<Orders> getAllPagin(int n);
 }

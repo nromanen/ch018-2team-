@@ -1,0 +1,13 @@
+.asc {
+	float: left;
+	width: 25px;
+	min-height: 25px;
+	background: url(img/asc.png) no-repeat;
+}
+
+.desc {
+	float: left;
+	width: 25px;
+	min-height: 25px;
+	background: url(img/desc.png) no-repeat;
+}

@@ -7,16 +7,11 @@ import com.ch018.library.entity.BooksInUse;
 import com.ch018.library.service.BookInUseService;
 import com.ch018.library.service.BookService;
 import com.ch018.library.service.GenreService;
+import com.ch018.library.service.OrdersService;
+import com.ch018.library.service.PaginationService;
+import com.ch018.library.util.SearchParamsBook;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +26,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
-
-import com.ch018.library.entity.Book;
-import com.ch018.library.entity.BooksInUse;
-import com.ch018.library.service.BookInUseService;
-import com.ch018.library.service.BookService;
-import com.ch018.library.service.GenreService;
 
 
 @Controller
@@ -55,7 +44,7 @@ public class LibrarianBooksController {
 		private BookService bookService;
 
         @Autowired
-        private BookDao bookDao;
+        private OrdersService ordersService;
 		
 		@Autowired
 		private GenreService genreService;
@@ -63,15 +52,43 @@ public class LibrarianBooksController {
 		@Autowired
 		private BookInUseService bookInUseService;
 		
+		@Autowired
+		private SearchParamsBook searchParams;
+		
+		@Autowired
+		private PaginationService<Book> paginationService;
+		
 		final Logger logger = LoggerFactory.getLogger(LibrarianBooksController.class);
 		
 		
-		@RequestMapping(value = "")
-		public String bookList(Model model) {
+		@RequestMapping(value = "", method = RequestMethod.GET)
+		public String bookList(@ModelAttribute SearchParamsBook tmpSearchParams, Model model) {
 			
-			model.addAttribute("books", bookService.getAll());
+			searchParams.setMainFieldsDefault();
+			
+			List<Book> books = paginationService.getPaginatedResult(searchParams, tmpSearchParams, Book.class);
+			
+			model.addAttribute("books", books);
+			
 			return "librarian_books";
 		}
+		
+		@RequestMapping(value = "/search", method = RequestMethod.GET)
+        public String bookSearchGet(@ModelAttribute SearchParamsBook tmpParams, Model model) {
+        	
+        	List<Book> books;
+        	
+        	if(searchParams.isMainFieldsEmpty()) {
+        		searchParams.setMainFieldsDefault();
+        	}
+        	
+        	books = paginationService.getPaginatedResult(searchParams, tmpParams, Book.class);
+
+            model.addAttribute("books", books);
+            return "librarian_books";
+        }
+		
+		
 		
 		@RequestMapping(value = "/addbook", method = RequestMethod.GET)
 	        public String add(Model model) throws Exception {
@@ -210,11 +227,21 @@ public class LibrarianBooksController {
 			}
 		}
 
-    @RequestMapping(value = "/searchPagin")
-    public String sSurname(Model model,@RequestParam("title") String title,@RequestParam("year") String year,@RequestParam("pages") String pages,@RequestParam("shelf") String shelf,@RequestParam("cq") String cq,@RequestParam("gq") String gq,@RequestParam("how") String how,@RequestParam("what") String what,@RequestParam("page") String page,@RequestParam("count") String count) throws Exception {
-        System.out.println("TITLE:"+title+",YEAR:"+year+",PAGES:"+pages+",SHELF:"+shelf+",CQ:"+cq+",GQ:"+gq+",HOW:"+how+",WHAT:"+what+",PAGE:"+page+",COUNT:"+count+".");
-        model.addAttribute("books", bookDao.hqlSearch(title,year,pages,shelf,cq,gq,how,what,Integer.parseInt(page),Integer.parseInt(count)));
-        return "librarian_books";
-    }
 		
+    	@RequestMapping(value = "/getOrdersHolders", method = RequestMethod.POST)
+    	public ResponseEntity<String> getOrdersHolders(@RequestParam("id") Integer bid) {
+    		
+    		Book book = bookService.getBookById(bid);
+    		
+    		long holdersCount = bookInUseService.getBookInUseCount(book);
+    		long ordersCount = ordersService.getOrdersCount(book);
+    		
+    		JSONObject json = new JSONObject();
+    		json.put("holders", holdersCount);
+    		json.put("orders", ordersCount);
+    		
+    		return new ResponseEntity<>(json.toString(), HttpStatus.OK);
+    	}
+    
+    
 }

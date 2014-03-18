@@ -63,7 +63,7 @@
                     <li><a onclick="jQuery:pagePlus($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text());">Next</a></li>
 
                 <li><a>&raquo;</a>
-                    <table><tr><td id="countP" contenteditable="true" onkeyup="jQuery:countChange();jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text())" onclick="$('#countP').text('')">10</td><tr></table>
+                    <table><tr><td><a>fields QTY:</a></td><td id="countP" contenteditable="true" onkeyup="jQuery:countChange();jQuery:pagin($('#sort').text(),$('#whatKindOfSort').text(),$('#page').text(),$('#countP').text())" onclick="$('#countP').text('')">10</td><tr></table>
                 </li>
             </ul>
             </div>
